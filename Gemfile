@@ -23,11 +23,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 
 end
-gem 'less-rails'
-gem 'therubyracer'
-gem 'twitter-bootstrap-rails'
 
-gem 'stylus_rails'
+gem 'bourbon'
 
 gem 'jquery-rails'
 
