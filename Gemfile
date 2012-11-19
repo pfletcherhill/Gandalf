@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
 gem 'haml'
 
@@ -24,7 +21,7 @@ group :assets do
 
 end
 
-gem 'bourbon'
+gem 'bourbon', "~> 0.2.1"
 
 gem 'jquery-rails'
 
