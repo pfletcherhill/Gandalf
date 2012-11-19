@@ -1,3 +1,3 @@
-Pierson::Application.routes.draw do
+Gandalf::Application.routes.draw do
   root :to => "events#index"
 end
