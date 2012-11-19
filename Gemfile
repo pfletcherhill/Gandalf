@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'pg'
 gem 'haml'
 
@@ -23,11 +20,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 
 end
-gem 'less-rails'
-gem 'therubyracer'
-gem 'twitter-bootstrap-rails'
 
-gem 'stylus_rails'
+gem 'bourbon', "~> 0.2.1"
 
 gem 'jquery-rails'
 
