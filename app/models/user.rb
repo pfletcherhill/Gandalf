@@ -9,11 +9,13 @@ class User < ActiveRecord::Base
   # has_many :events, :through => :subscriptions
   # otherwise, we the whole polymorphic thing isn't being used
   has_many :subscribeable_organizations, :through => :subscriptions, :source => :subscribeable, :source_type => 'Organization'
+  has_many :organization_events, :through => :subscribeable_organizations, :source => :events
   has_many :subscribeable_categories, :through => :subscriptions, :source => :subscribeable, :source_type => 'Category'
+  has_many :category_events, :through => :subscribeable_categories, :source => :events
   
   # Subscribed events
   def events
-    (self.subscribeable_organizations.events + self.subscribeable_categories.events).uniq
+    (self.organization_events + self.category_events).uniq
   end
   
 end
