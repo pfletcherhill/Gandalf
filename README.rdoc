@@ -1,3 +1,1 @@
-== Gandalf
-
-Gandalf is the main application for Yale Events, a calendar and events subscription application for the Yale community.
+== Welcome to Gandalf
