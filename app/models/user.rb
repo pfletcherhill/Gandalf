@@ -13,14 +13,7 @@ class User < ActiveRecord::Base
   
   # Subscribed events
   def events
-    events = []
-    self.subscribeable_organizations.each do |org|
-      events += org.events
-    end
-    self.subscribeable_categories.eac do |cat|
-      events += cat.events
-    end
-    events.uniq
+    (self.subscribeable_organizations.events + self.subscribeable_categories.events).uniq
   end
   
 end
