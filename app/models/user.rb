@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     self.subscribeable_categories.map{|s| s.events}.each do |event|
       events << event
     end
-    events.first
+    events.uniq
   end
   
 end
