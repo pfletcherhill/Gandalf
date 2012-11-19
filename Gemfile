@@ -15,7 +15,9 @@ group :assets do
   gem 'jquery-ui-rails'
   gem 'uglifier', '>= 1.0.3'
 end
-
+group :test, :development do
+  gem "rspec-rails", "~> 2.0"
+end
 gem 'bourbon', "~> 0.2.1"
 gem 'jquery-rails'
 gem 'rails-backbone'
