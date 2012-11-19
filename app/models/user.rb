@@ -15,6 +15,6 @@ class User < ActiveRecord::Base
     (self.organization_events + self.category_events).uniq
   end
 
-  # on_create: if admin of an org, add as subscriber as well
+  # TODO: on_create: if admin of an org, add as subscriber as well
   
 end
