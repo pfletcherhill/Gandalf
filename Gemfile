@@ -19,7 +19,6 @@ end
 gem 'bourbon', "~> 0.2.1"
 gem 'jquery-rails'
 gem 'rails-backbone'
-gem 'gmaps4rails'
 gem 'squeel'
 gem 'httpclient'
 gem 'net-ldap'
