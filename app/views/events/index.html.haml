@@ -1,11 +1,12 @@
 .container
   - if flash[:error]
     %p.error= flash[:error]
-  - else
+  - if @user
     %h2= "Welcome #{@user.nickname}!"
     %p= @user.name
     %p= @user.email
     %p= "#{@user.netid}: #{@user.college} #{@user.year} #{@user.division}"
+  %a{:href => '/logout'} Logout
   #events
 
 :javascript
