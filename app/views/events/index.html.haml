@@ -1,5 +1,13 @@
-#events
-  
+.container
+  - if flash[:error]
+    %p.error= flash[:error]
+  - else
+    %h2= "Welcome #{@user.nickname}!"
+    %p= @user.name
+    %p= @user.email
+    %p= "#{@user.netid}: #{@user.college} #{@user.year} #{@user.division}"
+  #events
+
 :javascript
   $(function() {
     window.router = new Gandalf.Router();
