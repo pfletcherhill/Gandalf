@@ -5,7 +5,7 @@ class EventsController < ApplicationController
     @user = User.find_by_netid(session[:cas_user])
     if not @user
       begin 
-        @user = User.create_user_from_directory session[:cas_user]
+        @user = User.create_from_directory session[:cas_user]
       rescue
         flash[:error] = "Couldn't get you from the directory"
       end
