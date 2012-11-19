@@ -6,6 +6,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   initialize: ->
   
   addAll: (events) ->
+    # Why is this a double arrow?
     _.each events.models, (event) =>
       @addOne(event)
 
