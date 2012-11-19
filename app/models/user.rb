@@ -3,7 +3,6 @@ class User < ActiveRecord::Base
   # Associations
   has_many :access_controls
   has_many :organizations, :through => :access_controls
-  
   has_many :subscriptions
   has_many :subscribed_organizations, :through => :subscriptions, :source => :subscribeable, :source_type => 'Organization'
   has_many :organization_events, :through => :subscribed_organizations, :source => :events

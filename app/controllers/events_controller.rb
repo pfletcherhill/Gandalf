@@ -10,6 +10,7 @@ class EventsController < ApplicationController
         flash[:error] = "Couldn't get you from the directory"
       end
     end
+    @events = Event.all
   end
 
 end
