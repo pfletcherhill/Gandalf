@@ -6,12 +6,9 @@ class Organization < ActiveRecord::Base
 
   # To clarify that this should be for admins, the association should be
   # has_many :admins, :class_name => "User", :through => :access_controls
-  has_many :users, :through => :access_controls
+  has_many :admins, :through => :access_controls, :source => :user
 
   has_many :subscriptions, :as => :subscribeable
+  has_many :subscribers, :through => :subscriptions, :source => :user
 
-  # An organization it has a lot of subscribers
-  # has_many :subscribers, :through => subscriptions, :class_name => "User"
-
-  # Should an admin automatically become a subscriber?
 end
