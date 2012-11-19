@@ -16,4 +16,4 @@ rerun.txt
 pickle-email-*.html
 
 # CAS credentials
-/config/cas_credentials.yaml
+/secure/*
