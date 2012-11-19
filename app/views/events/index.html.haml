@@ -2,6 +2,6 @@
   
 :javascript
   $(function() {
-    window.router = new Gandalf.Router();
+    window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
     Backbone.history.start();
   });
