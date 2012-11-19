@@ -1,5 +1,9 @@
 class Gandalf.Router extends Backbone.Router
   initialize: (options) ->
 
-  # routes:
+  routes:
+    '.*' : 'index'
+  
+  index: ->
+    view = new Gandalf.Views.Events.Index
   
