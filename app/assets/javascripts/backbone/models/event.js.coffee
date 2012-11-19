@@ -4,6 +4,6 @@ class Gandalf.Models.Event extends Backbone.Model
   defaults:
     name: null
 
-class Gandalf.Collections.EventsCollection extends Backbone.Collection
+class Gandalf.Collections.Events extends Backbone.Collection
   model: Gandalf.Models.Event
   url: '/events'
