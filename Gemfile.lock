@@ -45,7 +45,6 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    gmaps4rails (1.5.6)
     haml (3.1.7)
     hike (1.2.1)
     httpclient (2.3.0.1)
@@ -146,7 +145,6 @@ PLATFORMS
 DEPENDENCIES
   bourbon (~> 0.2.1)
   coffee-rails (~> 3.2.1)
-  gmaps4rails
   haml
   httpclient
   jquery-rails
