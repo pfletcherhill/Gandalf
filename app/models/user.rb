@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-  
-  #Associations
+
+
+  # Associations
   has_many :access_controls
   has_many :organizations, :through => :access_controls
   has_many :subscriptions
@@ -9,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :subscribeable_categories, :through => :subscriptions, :source => :subscribeable, :source_type => 'Category'
   has_many :category_events, :through => :subscribeable_categories, :source => :events
   
-  #Subscribed events
+  # Subscribed events
   def events
     (self.organization_events + self.category_events).uniq
   end
