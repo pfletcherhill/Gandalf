@@ -1,7 +1,6 @@
 class Gandalf.Router extends Backbone.Router
   initialize: (options) ->
     @events = new Gandalf.Collections.Events
-    @events.add options.events
     
   routes:
     'browse'      : 'browse'
@@ -11,12 +10,16 @@ class Gandalf.Router extends Backbone.Router
     '.*'          : 'index'
   
   index: ->
-    view = new Gandalf.Views.Events.Index
-    $("#events").html(view.render(@events).el)
+    @events.url = '/users/' + Gandalf.currentUser.id + '/events'
+    @events.fetch success: (events) ->
+      view = new Gandalf.Views.Events.Index
+      $("#events").html(view.render(events).el)
   
   browse: ->
-    view = new Gandalf.Views.Events.Browse
-    $("#events").html(view.render().el)
+    @events.url = '/events'
+    @events.fetch success: (events) ->
+      view = new Gandalf.Views.Events.Browse
+      $("#events").html(view.render().el)
     
   preferences: ->
     view = new Gandalf.Views.Users.Preferences
