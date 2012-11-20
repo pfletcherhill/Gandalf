@@ -21,4 +21,3 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @addAll(events)
     return this
     
-    

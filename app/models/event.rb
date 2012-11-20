@@ -11,13 +11,13 @@ class Event < ActiveRecord::Base
   
   def as_json
     {
-      "id" => read_attribute(:id),
-      "name" => read_attribute(:name),
-      "description" => read_attribute(:description),
-      "location" => read_attribute(:location),
-      "start_at" => read_attribute(:start_at),
-      "end_at" => read_attribute(:end_at),
-      "date" => read_attribute(:start_at).strftime("%Y-%m-%d"),
+      "id" => id,
+      "name" => name,
+      "description" => description,
+      "location" => location,
+      "start_at" => start_at,
+      "end_at" => end_at,
+      "date" => start_at.strftime("%Y-%m-%d"),
       "organization" => organization.name
     }
   end
