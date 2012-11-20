@@ -1,4 +1,12 @@
-//Mixins
+// Mixins
+// http://bourbon.io/#font-face
+// Doesn't work for some reason, through transition works...
+/*
+@include font-face(HN, '/helveticaneue', normal, $asset-pipeline: true);
+@include font-face(HNBold, '/helveticaneuebold', normal, $asset-pipeline: true);
+@include font-face(HNLight, '/helveticaneuebold', normal, $asset-pipeline: true);
+@include font-face(HNMedium, '/helveticaneuebold', normal, $asset-pipeline: true);
+*/
 @font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
 @font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
 @font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
@@ -10,43 +18,39 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: HN;
-  .header {
-    width: 100%;
-    height: 60px;
-    background: $blue;
-    .wrapper {
-      width: 960px;
-      margin: auto;
-      #logo {
-        float: left;
-        a {
-          color: white;
-          font-family: HNLight;
-          font-size: 20px;
-          line-height: 60px;
-          text-decoration: none;
-          -webkit-transition: 0.2s;
-          -moz-transition: 0.2s;
-        }
-        &:hover {
-          a {
-            border-bottom: 3px solid white;
-          }
-        }
-      }
-      .link {
-        float: left;
-        line-height: 60px;
-        margin-left: 15px;
-      }
-      #menu {
-        float: right;
-        line-height: 60px;
-      }
-    }
+}
+.header {
+  width: 100%;
+  height: 60px;
+  background: $blue;
+}
+.container {
+  width: 960px;
+  margin: auto;
+  .link {
+    float: left;
+    line-height: 60px;
+    margin-left: 15px;
   }
-  .container {
-    width: 960px;
-    margin: auto;
+}
+
+#logo {
+  float: left;
+  a {
+    color: white;
+    font-family: HNLight;
+    font-size: 20px;
+    line-height: 60px;
+    text-decoration: none;
+    // Use bourbon here!
+    @include transition(all 0.2s);
   }
+  &:hover {
+    border-bottom: 3px solid white;
+  }
+}
+
+#menu {
+  float: right;
+  line-height: 60px;
 }
