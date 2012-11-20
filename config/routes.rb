@@ -7,5 +7,7 @@ Gandalf::Application.routes.draw do
   match '/welcome' => "main#welcome"
   
   match '/me' => "users#me"
+  match '/users/:id/events' => 'users#events'
   
+  match '/events' => 'events#all'
 end

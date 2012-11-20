@@ -16,4 +16,10 @@ class UsersController < ApplicationController
     render json: current_user
   end
   
+  def events
+    user = User.find(params[:id])
+    events = user.events
+    render json: events.as_json
+  end
+  
 end
