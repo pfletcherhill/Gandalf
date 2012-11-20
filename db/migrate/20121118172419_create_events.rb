@@ -4,6 +4,11 @@ class CreateEvents < ActiveRecord::Migration
       t.string :name
       t.integer :organization_id
       
+      t.datetime :start_at
+      t.datetime :end_at
+      t.string :location
+      t.text :description
+      
       t.timestamps
     end
     create_table :categories_events do |t|
