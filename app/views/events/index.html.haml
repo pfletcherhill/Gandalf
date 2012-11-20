@@ -1,16 +1,11 @@
-.container
-  - if flash[:error]
-    %p.error= flash[:error]
-  - if @user
-    %h2= "Welcome #{@user.nickname}!"
-    %p= @user.name
-    %p= @user.email
-    %p= "#{@user.netid}: #{@user.college} #{@user.year} #{@user.division}"
-  %a{:href => '/logout'} Logout
-  #events
+#events
 
 :javascript
-  $(function() {
-    window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
-    Backbone.history.start();
+  Gandalf.currentUser = new Gandalf.Models.User();
+  Gandalf.currentUser.url = '/me';
+  Gandalf.currentUser.fetch({
+    success: function() {
+      window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
+      Backbone.history.start();
+    }
   });

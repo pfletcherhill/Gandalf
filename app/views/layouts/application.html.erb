@@ -16,6 +16,14 @@
 <div class="header">
   <div class="wrapper">
     <div id="logo"><a href="/">Yale Events</a></div>
+    <div id="menu">
+      <% if current_user %>
+        <%= current_user.name %>
+        <a href="/logout">Logout</a>
+      <% else %>
+        <a href="/login">Login</a>
+      <% end %>
+    </div>
   </div>
 </div>
 
