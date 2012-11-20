@@ -17,6 +17,7 @@ group :assets do
 end
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
+  gem 'fabrication'
 end
 gem 'bourbon', "~> 0.2.1"
 gem 'jquery-rails'

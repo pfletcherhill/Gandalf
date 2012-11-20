@@ -1,4 +1,4 @@
-class EventsController < ApplicationController
+class UsersController < ApplicationController
   
   before_filter :require_login
 
@@ -11,9 +11,9 @@ class EventsController < ApplicationController
   def logged_in?
     !!current_user
   end
-
-  def index
-    @events = Event.all
+  
+  def me
+    render json: current_user
   end
-
+  
 end

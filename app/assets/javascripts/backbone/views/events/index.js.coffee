@@ -6,7 +6,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   initialize: ->
   
   addAll: (events) ->
-    # Why is this a double arrow?
     _.each events.models, (event) =>
       @addOne(event)
 
@@ -15,7 +14,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @$("#events_list").prepend(view.render().el)
     
   render: (events) ->
-    $(@el).html(@template())
+    $(@el).html(@template(user: Gandalf.currentUser))
     @addAll(events)
     return this
     
