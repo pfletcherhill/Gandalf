@@ -15,7 +15,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @$("#events_list").prepend(view.render().el)
     
   render: (events) ->
-    $(@el).html(@template())
+    $(@el).html(@template(user: Gandalf.currentUser))
     @addAll(events)
     return this
     
