@@ -34,9 +34,14 @@ body {
           }
         }
       }
+      .link {
+        float: left;
+        line-height: 60px;
+        margin-left: 15px;
+      }
       #menu {
         float: right;
-        
+        line-height: 60px;
       }
     }
   }
