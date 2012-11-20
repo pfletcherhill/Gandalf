@@ -2,15 +2,9 @@ require 'spec_helper'
 
 describe User do 
   before :each do 
-    @user = User.create(
-      :netid => "prf8",
-      :name => "Paul Fletcher-Hill",
-      :nickname => "Paul",
-      :email => "paul.fletcher-hill@yale.edu",
-      :division => "Yale College"
-      )
-    @organization = Organization.create(:name => "TEDxYale")
-    @category = Category.create(:name => "TED Talks")
+    @user = Fabricate(:user)
+    @organization = Fabricate(:organization)
+    @category = Fabricate(:category)
   end
   describe ".events" do
     context "when user doesn't have subscriptions" do
@@ -81,120 +75,78 @@ describe User do
       end
     end
   end
-
-  describe "getting from directory" do 
-    context "rafi" do
-      netid = "fak23"
-      it "makes right user" do
-        u = User.create_from_directory netid
-        u.name.should eql "Faiaz Ahsan Khan"
-        u.nickname.should eql "Rafi"
-        u.email.should eql "faiaz.khan@yale.edu"
-        u.year.should eql "2015"
-        u.college.should eql "PC"
-        u.division.should eql "Yale College"
+  describe ".create_from_directory" do
+    context "when student netid is supplied" do
+      before :each do
+        netid = "fak23"
+        @user = User.create_from_directory(netid)
+      end
+      it "creates correct name" do
+        @user.name.should == "Faiaz Ahsan Khan"
+      end
+      it "creates correct nickname" do
+        @user.nickname.should == "Rafi"
+      end
+      it "creates correct email" do
+        @user.email.should == "faiaz.khan@yale.edu"
+      end
+      it "creates correct year" do
+        @user.year.should == "2015"
+      end
+      it "creates correct college" do
+        @user.college.should == "PC"
+      end
+      it "creates correct division" do
+        @user.division.should == "Yale College"
       end
     end
-=begin 
-This test fails because test use Paul is created, but works without validations
-    context "paul" do
-      netid = "prf8"
-      it "makes right user" do
-        u = User.create_from_directory netid
-        u.name.should eql "Paul Rodgers Fletcher-Hill"
-        u.nickname.should eql "Paul"
-        u.email.should eql "paul.fletcher-hill@yale.edu"
-        u.year.should eql "2015"
-        u.college.should eql "PC"
-        u.division.should eql "Yale College"
+    context "when administrative netid is supplied" do
+      before :each do
+        netid = "rcl6"
+        @user = User.create_from_directory(netid)
       end
-    end
-=end
-    context "pres levin" do
-      netid = "rcl6"
-      it "makes right user" do
-        u = User.create_from_directory netid
-        u.name.should eql "Richard C Levin"
-        u.nickname.should eql "Richard"
-        u.email.should eql "richard.levin@yale.edu"
-        u.year.should eql nil
-        u.college.should eql nil
-        u.division.should eql "President Office"
+      it "creates correct name" do
+        @user.name.should == "Richard C Levin"
       end
-
+      it "creates correct nickname" do
+        @user.nickname.should == "Richard"
+      end
+      it "creates correct email" do
+        @user.email.should == "richard.levin@yale.edu"
+      end
+      it "creates correct year" do
+        @user.year.should == nil
+      end
+      it "creates correct college" do
+        @user.college.should == nil
+      end
+      it "creates correct division" do
+        @user.division.should == "President Office"
+      end
     end
   end
-
-  context "uniqueness validation" do
-    context "netid" do
-      it "fails on same netid" do
-        u = User.create(
+  describe ".create" do
+    context "when using a non-unique netid" do
+      it "fails to create" do
+        user = User.create(
           :netid => "prf8",
           :name => "Paul Fletcher-Hill",
           :nickname => "Paul",
           :email => "paul.hill@yale.edu",
-          :division => "Yale College"
-          ).valid?.should eql false
+          :division => "Yale College"  
+        ).valid?.should == false
       end
     end
-    context "email" do
-      it "fails on same email" do
-        u = User.create(
-          :netid => "paultheball",
+    context "when using a non-unique email" do
+      it "fails to create" do
+        user = User.create(
+          :netid => "paulsballs",
           :name => "Paul Fletcher-Hill",
           :nickname => "Paul",
           :email => "paul.fletcher-hill@yale.edu",
-          :division => "Yale College"
-          )
-        puts "\n\nTEST\n\n"
-        p u
-        p @user
-        u.valid?.should eql false
+          :division => "Yale College"  
+        ).valid?.should == false
       end
     end
-  end
-
-  context "presence validation" do
-    it "fails on no netid" do
-      u = User.create(
-        :name => "Paul Fletcher-Hill",
-        :nickname => "Paul",
-        :email => "paul.hill@yale.edu",
-        :division => "Yale College"
-        ).valid?.should eql false
-    end
-    it "fails on no email" do
-      u = User.create(
-        :netid => "prf",
-        :name => "Paul Fletcher-Hill",
-        :nickname => "Paul",
-        :division => "Yale College"
-        ).valid?.should eql false
-    end
-    it "fails on no name" do
-      u = User.create(
-        :netid => "prf",
-        :nickname => "Paul",
-        :email => "paul.hill@yale.edu",
-        :division => "Yale College"
-        ).valid?.should eql false
-    end
-    it "fails on no nickname" do
-      u = User.create(
-        :netid => "prf",
-        :name => "Paul Fletcher-Hill",
-        :email => "paul.hill@yale.edu",
-        :division => "Yale College"
-        ).valid?.should eql false
-    end
-    it "fails on no division" do
-      u = User.create(
-        :netid => "prf",
-        :name => "Paul Fletcher-Hill",
-        :nickname => "Paul",
-        :email => "paul.hill@yale.edu",
-        ).valid?.should eql false
-    end
-
   end
 end

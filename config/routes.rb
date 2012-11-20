@@ -1,6 +1,11 @@
 Gandalf::Application.routes.draw do
-  root :to => "main#index"
-  match 'logout' => "main#logout"
-
-  match 'feed' => "events#index"
+  
+  root :to => "events#index"
+  
+  match '/login' => "main#login"
+  match '/logout' => "main#logout"
+  match '/welcome' => "main#welcome"
+  
+  match '/me' => "users#me"
+  
 end

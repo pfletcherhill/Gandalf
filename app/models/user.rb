@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   # TODO: on_create: if admin of an org, add as subscriber as well
   
 
-  def User.create_from_directory netid
+  def User.create_from_directory(netid)
     name_regex = /^\s+Name:/
     known_as_regex = /Known As:/
     email_regex = /Email Address:/
