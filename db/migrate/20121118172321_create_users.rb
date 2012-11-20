@@ -8,7 +8,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string :college
       t.string :year
       t.string :division
-      # picture field?
       
       t.timestamps
     end

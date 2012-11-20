@@ -16,12 +16,13 @@ class User < ActiveRecord::Base
   
   # Subscribed events
   def events
-    (self.organization_events + self.category_events).uniq
+    events = (self.organization_events + self.category_events).uniq
+    events = events.sort_by(&:start_at).reverse
+    events
   end
 
   # TODO: on_create: if admin of an org, add as subscriber as well
   
-
   def User.create_from_directory(netid)
     name_regex = /^\s+Name:/
     known_as_regex = /Known As:/

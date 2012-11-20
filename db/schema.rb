@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.text     "bio"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "categories_events", :force => true do |t|
@@ -35,6 +35,10 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.integer  "organization_id"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.string   "location"
+    t.text     "description"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end

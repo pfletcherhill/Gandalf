@@ -5,7 +5,7 @@
   Gandalf.currentUser.url = '/me';
   Gandalf.currentUser.fetch({
     success: function() {
-      window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
+      window.router = new Gandalf.Router();
       Backbone.history.start();
     }
   });

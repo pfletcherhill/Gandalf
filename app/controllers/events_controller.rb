@@ -13,7 +13,11 @@ class EventsController < ApplicationController
   end
 
   def index
-    @events = Event.all
+  end
+  
+  def all
+    events = Event.all
+    render json: events.as_json
   end
 
 end
