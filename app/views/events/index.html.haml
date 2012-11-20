@@ -1,7 +1,11 @@
 #events
-  
+
 :javascript
-  $(function() {
-    window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
-    Backbone.history.start();
+  Gandalf.currentUser = new Gandalf.Models.User();
+  Gandalf.currentUser.url = '/me';
+  Gandalf.currentUser.fetch({
+    success: function() {
+      window.router = new Gandalf.Router({events: #{@events.to_json.html_safe}});
+      Backbone.history.start();
+    }
   });
