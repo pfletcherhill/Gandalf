@@ -7,4 +7,6 @@ class Organization < ActiveRecord::Base
   has_many :subscriptions, :as => :subscribeable
   has_many :subscribers, :through => :subscriptions, :source => :user
 
+  validates_uniqueness_of :name, :case_sensitive => false
+
 end
