@@ -34,4 +34,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Categories.Short(model: subscription)
       @$("#subscribed_categories_list").prepend(view.render().el)
+  
+  events:
+    'scroll' : 'scrolling'
+  
+  scrolling: ->
+    console.log 'scrolling'
+    if("#events_list").scrollTop() + $(".feed").height() == $("#events_list").height()
+      console.log 'go!'
     

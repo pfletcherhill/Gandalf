@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   
   def events
     user = User.find(params[:id])
-    events = user.events
+    events = user.events(params[:start_at], params[:end_at])
     render json: events.as_json
   end
   
