@@ -25,7 +25,6 @@ class Gandalf.Router extends Backbone.Router
       end: end_at
       period: period
     }
-    console.log p
     p
       
   routes:
@@ -46,23 +45,23 @@ class Gandalf.Router extends Backbone.Router
 
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Events.Index
-      $("#events").html(view.render(events, params.start, params.period).el)
+      $("#content").html(view.render(events, params.start, params.period).el)
   
   browse: ->
     @events.url = '/events'
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Events.Browse
-      $("#events").html(view.render().el)
+      $("#content").html(view.render().el)
   
   organizations: ->
     view = new Gandalf.Views.Organizations.Index
-    $("#events").html(view.render().el)
+    $("#content").html(view.render().el)
     
   preferences: ->
     view = new Gandalf.Views.Users.Preferences
-    $("#events").html(view.render().el)
+    $("#content").html(view.render().el)
   
   about: ->
     view = new Gandalf.Views.Static.About
-    $("#events").html(view.render().el)
+    $("#content").html(view.render().el)
   

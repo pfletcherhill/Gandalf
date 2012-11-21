@@ -21,6 +21,7 @@ body {
   padding: 0px;
   font-family: HN;
   font-size: $font;
+  min-width: 1000px;
 }
 
 a {
@@ -33,8 +34,9 @@ a {
   @include transition(color 0.2s);
 }
 .wrapper {
-  width: 100%;
+  //width: 100%;
   min-width: 1000px;
+  overflow: scroll;
 }
 
 $header_height: 50px;
@@ -75,16 +77,16 @@ $side_padding: 15px;
   padding-right: $side_padding;
 }
 
-$sidebar_width: 300px;
+$left_width: 300px;
 
-.sidebar, .main {
+.left, .main {
   position: fixed;
   top: $header_height;
   height: 100%; 
 }
-.sidebar {
+.left {
   left: 0;
-  width: $sidebar_width;
+  width: $left_width;
   border-right: 1px solid #ccc;
 }
 
