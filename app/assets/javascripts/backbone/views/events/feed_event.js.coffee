@@ -14,9 +14,9 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     moment(time).format("h:mm a")
     
   render: ->
-    start_time = @convertTime @model.get('start_at')
-    end_time = @convertTime @model.get('end_at')
+    startTime = @convertTime @model.get('start_at')
+    endTime = @convertTime @model.get('end_at')
 
-    $(@el).html(@template({event: @model.toJSON(), start_time: start_time, end_time: end_time}))
+    $(@el).html(@template({event: @model.toJSON(), startTime: startTime, endTime: endTime}))
     return this
     

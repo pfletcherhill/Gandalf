@@ -10,18 +10,18 @@ class Gandalf.Router extends Backbone.Router
     if date == 'today'
       date = moment().format("MM-DD-YYYY")
     if period == 'week'
-      start_at = moment(date, "MM-DD-YYYY").day(0)
-      end_at = moment(start_at).add('w',1)
+      startAt = moment(date, "MM-DD-YYYY").day(0)
+      endAt = moment(startAt).add('w',1)
     else if period == 'month'
-      start_at = moment(date, "MM-DD-YYYY").date(1)
-      end_at = moment(start_at).add('M',1)
+      startAt = moment(date, "MM-DD-YYYY").date(1)
+      endAt = moment(startAt).add('M',1)
     else
-      start_at = moment()
-      end_at = moment().add('w',1)
+      startAt = moment().day(0)
+      endAt = moment(startAt).add('w',1)
       period = 'week'
     p = {
-      start: start_at
-      end: end_at
+      start: startAt
+      end: endAt
       period: period
     }
     p
@@ -37,10 +37,10 @@ class Gandalf.Router extends Backbone.Router
   
   calendar: (date, period) ->
     params = @processPeriod date, period
-    params_string = "start_at=" + params.start.format("MM-DD-YYYY") 
-    params_string += "&end_at=" + params.end.format("MM-DD-YYYY")
+    paramsString = "start_at=" + params.start.format("MM-DD-YYYY") 
+    paramsString += "&end_at=" + params.end.format("MM-DD-YYYY")
 
-    @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + params_string
+    @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + paramsString
 
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Events.Index

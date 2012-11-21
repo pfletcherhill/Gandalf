@@ -4,7 +4,7 @@
     <% for(i=0; i<7; i++) { %>
       <td>
         <div class="cal-day">
-          <%= moment(start_date).add('d', i).format("MM / DD") %>
+          <%= moment(startDate).add('d', i).format("ddd - MM / DD") %>
         </div>
       </td>
     <% } %>

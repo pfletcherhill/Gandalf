@@ -14,7 +14,7 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
     if events
       container = $(@el).children(".cal-events")[0]
       _.each events, (e) ->
-        e_view = new Gandalf.Views.Events.CalendarEvent()
-        $(container).append(e_view.render(e).el)
+        view = new Gandalf.Views.Events.CalendarEvent()
+        $(container).append(view.render(e).el)
 
     return this

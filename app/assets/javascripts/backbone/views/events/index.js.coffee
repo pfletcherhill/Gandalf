@@ -9,14 +9,14 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
 
-  renderWeekCalendar: (days, start_date) ->
+  renderWeekCalendar: (days, startDate) ->
     view = new Gandalf.Views.Events.CalendarWeek()
-    @$("#calendar-container").append(view.render(moment(start_date)).el)
-    day_count = 0
-    while day_count < 7
-      d = moment(start_date).add('d', day_count).format("YYYY-MM-DD")
+    @$("#calendar-container").append(view.render(moment(startDate)).el)
+    dayCount = 0
+    while dayCount < 7
+      d = moment(startDate).add('d', dayCount).format("YYYY-MM-DD")
       @addCalDay(days[d])
-      day_count++
+      dayCount++
 
   addCalDay: (events) ->
     view = new Gandalf.Views.Events.CalendarDay()
@@ -45,23 +45,23 @@ class Gandalf.Views.Events.Index extends Backbone.View
     t = this
     _.each days, (events) ->
       if events.length > 1
-        _.each events, (my_e) ->
-          my_attrs = my_e.attributes
-          _.each events, (target_e) ->
-            tar_attrs = target_e.attributes
-            if my_attrs.id < tar_attrs.id # && t.overlap(my_attrs, tar_attrs)
-              id = my_attrs.id
+        _.each events, (myE) ->
+          myAttrs = myE.attributes
+          _.each events, (targetE) ->
+            tarAttrs = targetE.attributes
+            if myAttrs.id < tarAttrs.id # && t.overlap(myAttrs, tarAttrs)
+              id = myAttrs.id
               overlaps[id] ||= []
-              overlaps[id].push tar_attrs.id
+              overlaps[id].push tarAttrs.id
 
     @adjustOverlappingEvents overlaps
 
   # Doesn't work becuase jQuery selectors aren't working properly...
   adjustOverlappingEvents: (overlaps) ->
-    _.each overlaps, (ids, my_id) ->
+    _.each overlaps, (ids, myId) ->
       len = ids.length
       
-      $(".cal-event[data_id='"+my_id+"']").addClass("overlap-"+len).addClass("overlap-order-"+0)
+      $(".cal-event[data_id='"+myId+"']").addClass("overlap-"+len).addClass("overlap-order-"+0)
       i = 1
       while i < len + 1
         id = ids[i-1]
@@ -96,19 +96,19 @@ class Gandalf.Views.Events.Index extends Backbone.View
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed_organizations_list").append(view.render().el)
+      @$("#subscribed-organizations-list").append(view.render().el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed_categories_list").append(view.render().el)
+      @$("#subscribed-categories-list").append(view.render().el)
   
   events:
     'scroll' : 'scrolling'
   
   scrolling: ->
     console.log 'scrolling'
-    if("#events_list").scrollTop() + $(".feed").height() == $("#events_list").height()
+    if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
       console.log 'go!'
     
