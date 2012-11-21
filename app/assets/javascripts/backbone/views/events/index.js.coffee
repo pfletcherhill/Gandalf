@@ -51,12 +51,25 @@ class Gandalf.Views.Events.Index extends Backbone.View
           my_attrs = my_e.attributes
           _.each events, (target_e) ->
             tar_attrs = target_e.attributes
-            if my_attrs.id < tar_attrs.id && t.overlap(my_attrs, tar_attrs)
+            if my_attrs.id < tar_attrs.id # && t.overlap(my_attrs, tar_attrs)
               id = my_attrs.id
               overlaps[id] ||= []
               overlaps[id].push tar_attrs.id
-              console.log "yay"
-    overlaps
+
+    @adjust_overlapping_events overlaps
+
+  # Doesn't work becuase jQuery selectors aren't working properly...
+  adjust_overlapping_events: (overlaps) ->
+    _.each overlaps, (ids, my_id) ->
+      len = ids.length
+      
+      $(".cal-event[data_id='"+my_id+"']").addClass("overlap-"+len).addClass("overlap-order-"+0)
+      i = 1
+      while i < len + 1
+        id = ids[i-1]
+        $(".cal-event[data_id='"+id+"']").addClass("overlap-"+len).addClass("overlap-order-"+i)
+        i+=1
+
   
   # Find if two events overlap
   overlap: (e1, e2) ->
