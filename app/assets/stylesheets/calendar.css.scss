@@ -1,0 +1,124 @@
+/* ========= CALENDAR ======== */
+
+$hour_height: 44px;
+$cal_gap: 40px;
+
+.cal {
+  width: 100%;
+  height: 100%;
+}
+
+.cal-header, .cal-body {
+  width: 100%;
+  table-layout: fixed;
+  td:first-child {
+    width: $cal_gap;
+  }
+}
+
+.cal-header {
+  height: 20px;
+  text-align: center;
+  font-size: 8px;
+  line-height: 20px;
+  @include linear-gradient(#fff, #efefef);
+  
+}
+.cal-body {
+  .cal-day {
+    border-right: 1pt solid #ddd;
+  }
+}
+
+.hour {
+  height: $hour_height;
+}
+.hour-label {
+  border-top: 1pt solid transparent;
+}
+.hour-day {
+  border-bottom: 1pt solid #eee;
+}
+
+.hour-num {
+  position: relative;
+  font-size: 8px;
+  line-height: 8px;
+  color: #333;
+  top: -6px;
+  left: 7px;
+}
+.cal-week {
+  .cal-day {
+    
+  }
+}
+
+.cal-month {
+  .cal-day {
+
+  }
+}
+
+.cal-events {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+$cal_z: 10;
+.cal-event {
+  position: absolute;
+  left: 0;
+  z-index: $cal_z;
+  border: 1pt solid #aaa;
+  background-color: rgba(200,200,200,0.7);
+  @include transition(background-color 0.2s);
+  cursor: pointer;
+  font-size: 8px;
+  line-height: 12px;
+  overflow: hidden;
+  width: 97%;
+  p {
+    margin: 0 3px;
+    &:first-child {
+      margin-top: 3px;
+    }
+  }
+  &:hover {
+    background-color: rgba(150,150,150,0.9);
+  }
+}
+
+.overlap-2 {
+  width: 50%;
+  &.overlap-order-1 {
+    left: 47%;
+    z-index: $cal_z - 1;
+  }
+}
+.overlap-3 {
+  width: 35%;
+  &.overlap-order-1 {
+    left: 31%;
+    z-index: $cal_z - 1;
+  }
+  &.overlap-order-2 {
+    left: 62%;
+    z-index: $cal_z - 2;
+  }
+}
+.overlap-4 {
+  width: 25%;
+  &.overlap-order-1 {
+    left: 24%;
+    z-index: $cal_z - 1;
+  }
+  &.overlap-order-2 {
+    left: 48%;
+    z-index: $cal_z - 2;
+  }
+  &.overlap-order-3 {
+    left: 72%;
+    z-index: $cal_z - 3;
+  }
+}

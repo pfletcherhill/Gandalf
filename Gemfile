@@ -22,6 +22,7 @@ end
 gem 'bourbon', :git => 'git://github.com/thoughtbot/bourbon.git', :ref => 'f93cf9e'
 gem 'jquery-rails'
 gem 'rails-backbone'
+gem 'bootstrap-sass', '~> 2.2.1.1'
 gem 'squeel'
 gem 'httpclient'
 gem 'net-ldap'

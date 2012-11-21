@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
       category_events = self.category_events
     end
     events = (organization_events + category_events).uniq
-    events = events.sort_by(&:start_at).reverse
+    events = events.sort_by(&:start_at)
     events
   end
 
