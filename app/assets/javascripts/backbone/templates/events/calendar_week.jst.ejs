@@ -1,57 +1,26 @@
 <table class="cal-header">
   <tr>
-    <td>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
-    <td>
-      <div class="cal-day"><%= start_date.add('d', 1).format("MM / DD") %></div>
-    </td>
+    <td></td>
+    <% for(i=0; i<7; i++) { %>
+      <td>
+        <div class="cal-day">
+          <%= moment(start_date).add('d', i).format("MM / DD") %>
+        </div>
+      </td>
+    <% } %>
   </tr>
 </table>
 <table class="cal-body">
   <tr id="cal-day-container">
     <td>
       <div class="hour hour-label"><span class="hour-num">12 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">1 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">2 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">3 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">4 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">5 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">6 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">7 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">8 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">9 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">10 a.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">11 a.m. </span></div>
+      <% for(i=1; i<12; i++) { %>
+        <div class="hour hour-label"><span class="hour-num"><%= i %>a.m. </span></div>
+      <% } %>
       <div class="hour hour-label"><span class="hour-num">12 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">1 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">2 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">3 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">4 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">5 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">6 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">7 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">8 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">9 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">10 p.m. </span></div>
-      <div class="hour hour-label"><span class="hour-num">11 p.m. </span></div>
+      <% for(i=1; i<12; i++) { %>
+        <div class="hour hour-label"><span class="hour-num"><%= i %>p.m. </span></div>
+      <% } %>
     </td>
   </tr>
 </table>

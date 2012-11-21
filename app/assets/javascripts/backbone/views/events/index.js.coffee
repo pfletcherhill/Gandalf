@@ -6,9 +6,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
   id: "index"
 
   initialize: ->
-    _.bindAll(@)
-    # Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
-    # Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
+    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
 
   renderWeekCalendar: (days, start_date) ->
     view = new Gandalf.Views.Events.CalendarWeek()
@@ -32,17 +31,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay()
     @$("#feed-list").append(view.render(day, events).el)
 
-  sort_and_group_events: (events) ->
-    sorted_events = _.sortBy(events, (e)->
+  sortAndGroupEvents: (events) ->
+    sortedEvents = _.sortBy(events, (e)->
       t = moment(e.attributes.start_at)
       return t
     )
-    grouped_events = _.groupBy(sorted_events, (event) ->
+    groupedEvents = _.groupBy(sortedEvents, (event) ->
       return event.get('date')
     )
-    grouped_events
+    groupedEvents
 
-  find_event_overlaps: (days) ->
+  findEventOverlaps: (days) ->
     overlaps = {}
     t = this
     _.each days, (events) ->
@@ -56,10 +55,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
               overlaps[id] ||= []
               overlaps[id].push tar_attrs.id
 
-    @adjust_overlapping_events overlaps
+    @adjustOverlappingEvents overlaps
 
   # Doesn't work becuase jQuery selectors aren't working properly...
-  adjust_overlapping_events: (overlaps) ->
+  adjustOverlappingEvents: (overlaps) ->
     _.each overlaps, (ids, my_id) ->
       len = ids.length
       
@@ -82,14 +81,14 @@ class Gandalf.Views.Events.Index extends Backbone.View
   render: (events, start, period) ->
     $(@el).html(@template({user: Gandalf.currentUser}))
     
-    days = @sort_and_group_events events.models
+    days = @sortAndGroupEvents events.models
 
     @renderFeed(days)
     if period == "month"
       @renderMonthCalendar(days, moment(start))
     else 
       @renderWeekCalendar(days, moment(start))
-    overlaps = @find_event_overlaps(days)
+    overlaps = @findEventOverlaps(days)
     console.log(overlaps)
     return this
     
