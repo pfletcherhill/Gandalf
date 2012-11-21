@@ -71,7 +71,10 @@ body {
   left: 0px;
   width: 300px;
   border-right: 1px solid #eee;
-  height: 100%;
+  overflow: scroll;
+  height: -webkit-calc(100% - 50px);
+  height: -moz-calc(100% - 50px);
+  height: calc(100% - 50px);
 }
 
 
