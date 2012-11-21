@@ -1,3 +1,2 @@
-== Gandalf
-
-Gandalf is the main application for Yale Events, a calendar and events subscription application for the Yale community.
+== Gandalf README
+Gandalf is the main application for Yale Events, an events calendar and app for Yale students. It provides a full listing of Yale events, the ability to subscribe to event categories and organizations, and an administrator panel for Yale organization members.
