@@ -1,6 +1,6 @@
 /* ========== LAYOUT ========= */
 
-$sidebar_width: 200px;
+$sidebar_width: 240px;
 $feed_width: 300px;
 
 .sidebar, .feed, .calendar {
@@ -16,6 +16,7 @@ $feed_width: 300px;
   width: $sidebar_width;
   overflow: scroll;
   @include linear-gradient(#888, #666);
+  -webkit-transition: 0.5s;
 }
 
 .feed {
@@ -46,8 +47,8 @@ $feed_width: 300px;
 
 /* ====== FEED ==== */
 .feed {
-  left: 200px;
-  width: 300px;
+  left: $sidebar_width;
+  width: $feed_width;
   border-left: 1px solid #eee;
   border-right: 1px solid #eee;
 }
