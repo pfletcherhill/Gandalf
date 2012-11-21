@@ -10,7 +10,7 @@ class Gandalf.Views.Events.FeedDay extends Backbone.View
   
   addOne: (event) ->
     view = new Gandalf.Views.Events.FeedEvent(model: event)
-    @$("#day_events").prepend(view.render().el)
+    @$("#feed-day-events").append(view.render().el)
   
   convertDate: (day) ->
     date = moment(day).format("dddd, MMMM Do YYYY")

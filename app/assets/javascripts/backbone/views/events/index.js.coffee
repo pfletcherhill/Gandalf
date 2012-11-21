@@ -10,12 +10,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
     # Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     # Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
 
-  renderWeekCalendar: (events, start_date) ->
-    days = _.groupBy(events.models, (event) ->
-      return event.get('date')
-    )
+  renderWeekCalendar: (days, start_date) ->
     view = new Gandalf.Views.Events.CalendarWeek()
     @$("#calendar-container").append(view.render(moment(start_date)).el)
+
     day_count = 0
     while day_count < 7
       d = moment(start_date).add('d', day_count).format("YYYY-MM-DD")
@@ -26,26 +24,63 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.CalendarDay()
     @$("#cal-day-container").append(view.render(events).el)
 
-  renderFeed: (events) ->
-    days = _.groupBy(events.models, (event) ->
-      return event.get('date')
-    )
+  renderFeed: (days) ->
     _.each days, (events, day) =>
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
     view = new Gandalf.Views.Events.FeedDay()
-    @$("#feed-list").prepend(view.render(day, events).el)
+    @$("#feed-list").append(view.render(day, events).el)
+
+  sort_and_group_events: (events) ->
+    sorted_events = _.sortBy(events, (e)->
+      t = moment(e.attributes.start_at)
+      return t
+    )
+    grouped_events = _.groupBy(sorted_events, (event) ->
+      return event.get('date')
+    )
+    grouped_events
+
+  find_event_overlaps: (days) ->
+    overlaps = {}
+    t = this
+    _.each days, (events) ->
+      if events.length > 1
+        _.each events, (my_e) ->
+          my_attrs = my_e.attributes
+          _.each events, (target_e) ->
+            tar_attrs = target_e.attributes
+            if my_attrs.id < tar_attrs.id && t.overlap(my_attrs, tar_attrs)
+              id = my_attrs.id
+              overlaps[id] ||= []
+              overlaps[id].push tar_attrs.id
+              console.log "yay"
+    overlaps
+  
+  # Find if two events overlap
+  overlap: (e1, e2) ->
+    one = moment(e1.start_at) < moment(e2.end_at)
+    two = moment(e2.start_at) < moment(e1.end_at)
+    console.log e1, e2
+    console.log one, two
+    one && two
     
   render: (events, start, period) ->
     $(@el).html(@template({user: Gandalf.currentUser}))
-    @renderFeed(events)
+    
+    days = @sort_and_group_events events.models
+
+    @renderFeed(days)
     if period == "month"
-      @renderMonthCalendar(events, moment(start))
+      @renderMonthCalendar(days, moment(start))
     else 
-      @renderWeekCalendar(events, moment(start))
+      @renderWeekCalendar(days, moment(start))
+    overlaps = @find_event_overlaps(days)
+    console.log(overlaps)
     return this
     
+
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     _.each subscriptions, (subscription) ->

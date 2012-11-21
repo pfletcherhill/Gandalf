@@ -14,7 +14,6 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     moment(time).format("h:mm a")
     
   render: ->
-    console.log @model
     start_time = @convertTime @model.get('start_at')
     end_time = @convertTime @model.get('end_at')
 
