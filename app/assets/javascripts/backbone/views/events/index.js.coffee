@@ -34,7 +34,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   render: (events) ->
     $(@el).html(@template(user: Gandalf.currentUser))
     @addFeed(events)
-    @addCalendar(events)
+    @addWeekCalendar(events)
     return this
     
   renderSubscribedOrganizations: ->
