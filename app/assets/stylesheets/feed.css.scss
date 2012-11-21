@@ -1,0 +1,16 @@
+/* ========= CALENDAR ======== */
+
+.calendar {
+  width: 96%;
+  height: 96%;
+  margin: 2%;
+  display: table;
+  table-layout: fixed;
+
+}
+
+.cal-week {
+  &>.cal-day {
+    display: table-cell;
+  }
+}
