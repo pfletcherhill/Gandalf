@@ -30,7 +30,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   addFeedDay: (day, events) ->
     view = new Gandalf.Views.Events.Day()
-    @$("#events_list").prepend(view.render(day, events).el)
+    @$("#events_list").append(view.render(day, events).el)
     
   render: (events, start, period) ->
     $(@el).html(@template(user: Gandalf.currentUser))
@@ -45,13 +45,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed_organizations_list").prepend(view.render().el)
+      @$("#subscribed_organizations_list").append(view.render().el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed_categories_list").prepend(view.render().el)
+      @$("#subscribed_categories_list").append(view.render().el)
   
   events:
     'scroll' : 'scrolling'
