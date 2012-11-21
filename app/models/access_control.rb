@@ -1,6 +1,6 @@
 class AccessControl < ActiveRecord::Base
   
-  #Assocations
+  # Assocations
   belongs_to :user
   belongs_to :organization
   
