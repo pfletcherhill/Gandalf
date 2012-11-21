@@ -26,11 +26,13 @@ body {
 .header {
   width: 100%;
   min-width: 700px;
-  height: 50px;
+  height: 49px;
   background: $blue;
   position: fixed;
   top: 0px;
   left: 0px;
+  border-bottom: 1px solid #00B2B2;
+  z-index: 100;
 }
 .container {
   width: 100%;
@@ -65,18 +67,27 @@ body {
   padding-right: 15px;
 }
 
-.left {
+.left, .feed, .middle {
   position: fixed;
   top: 50px;
-  left: 0px;
-  width: 300px;
-  border-right: 1px solid #eee;
   overflow: scroll;
   height: -webkit-calc(100% - 50px);
   height: -moz-calc(100% - 50px);
   height: calc(100% - 50px);
 }
 
+.left {
+  left: 0px;
+  width: 200px;
+  background: #777;
+}
+
+.feed {
+  left: 200px;
+  width: 300px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+}
 
 .day_header {
   border-top: 1px solid #dadada;
@@ -85,44 +96,43 @@ body {
   padding: 7px 10px;
   font-size: 14px;
 }
-#day_events {
-  padding: 2px 0px;
-  .event {
-    padding: 5px 10px;
-    border-bottom: 1px solid #eee;
-    .organization {
-      padding-left: 80px;
-      font-size: 13px;
-      font-family: HNLight;
-      width: 200px;
-    }
-    .time {
-      width: 80px;
-      float: left;
+.feed_event {
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+  .organization {
+    padding-left: 80px;
+    font-size: 13px;
+    font-family: HNLight;
+    width: 200px;
+  }
+  .time {
+    width: 80px;
+    float: left;
+    font-size: 15px;
+    line-height: 23px;
+    color: #333;
+  }
+  .details {
+    width: 200px;
+    margin-left: 80px;
+    .name {
       font-size: 15px;
-      line-height: 23px;
       color: #333;
+      line-height: 23px;
+      font-family: HNBold;
     }
-    .details {
-      width: 200px;
-      margin-left: 80px;
-      .name {
-        font-size: 15px;
-        color: #333;
-        line-height: 23px;
-        font-family: HNBold;
-      }
-      .location {
-        font-family: HNLight;
-        font-size: 13px;
-      }
+    .location {
+      font-family: HNLight;
+      font-size: 13px;
     }
   }
 }
 
 .middle {
-  margin-top: 50px;
-  margin-left: 301px;
+  left: 502px;
+  width: -webkit-calc(100% - 502px);
+  width: -moz-calc(100% - 502px);
+  width: calc(100% - 502px);
 }
 
 .right {
