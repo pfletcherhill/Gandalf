@@ -7,3 +7,11 @@ Styling with float:left 's isn't scaleable or manageable. It's much better to us
 Use variables in your Sass!!
 
 Were you previously sorting the events somehow? I'm now doing it in the sort_and_group function in index.coffee, but it might better be done in the backend. i also don't know if you're doing it somewhere else...
+
+The calendar is as functional as can be hoped for! For some reason, jQuery selectors aren't working nicely in backbone, but if you open up the console and run 
+$(".cal-event[data_id='1']").addClass("overlap-2").addClass("overlap-order-0")
+$(".cal-event[data_id='4']").addClass("overlap-2").addClass("overlap-order-1")
+
+you'll see what I mean.
+
+I think i just worked more than 12 hours straight...holy cow!

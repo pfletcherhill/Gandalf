@@ -30,4 +30,3 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     ))
     return this
 
-# <div class="cal-event" style="top: <%= top %>px; height: <%= height %>px;">
