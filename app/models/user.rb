@@ -15,8 +15,19 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :case_sensitive => false
   
   # Subscribed events
-  def events
-    events = (self.organization_events + self.category_events).uniq
+  def events(*times)
+    start_at = times[0]
+    end_at = times[1]
+    if start_at && end_at
+      start_at = Date.strptime(start_at, '%m-%d-%Y')
+      end_at = Date.strptime(end_at, '%m-%d-%Y')
+      organization_events = self.organization_events.where(:start_at => start_at..end_at)
+      category_events = self.category_events.where(:start_at => start_at..end_at)
+    else
+      organization_events = self.organization_events
+      category_events = self.category_events
+    end
+    events = (organization_events + category_events).uniq
     events = events.sort_by(&:start_at).reverse
     events
   end
