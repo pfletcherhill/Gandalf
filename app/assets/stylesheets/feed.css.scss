@@ -28,7 +28,7 @@ $feed_width: 250px;
 
 /* ========= CALENDAR ======== */
 
-.calendar {
+.cal {
   width: 100%;
   height: 100%;
   display: table;
@@ -36,7 +36,7 @@ $feed_width: 250px;
 
 }
 
-.cal-week {
+.week-cal {
   &>.cal-day {
     display: table-cell;
   }
