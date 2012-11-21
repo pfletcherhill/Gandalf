@@ -5,6 +5,6 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   tagName: "div"
   className: "cal week-cal"
     
-  render: (start_date) ->
-    $(@el).html(@template(start_date: start_date))
+  render: (startDate) ->
+    $(@el).html(@template(startDate: startDate))
     return this
