@@ -38,9 +38,19 @@ $feed_width: 300px;
 
 }
 
-.week-cal {
-  &>.cal-day {
-    display: table-cell;
+.cal-day {
+  display: table-cell;
+}
+
+.cal-week {
+  .cal-day {
+    
+  }
+}
+
+.cal-month {
+  .cal-day {
+
   }
 }
 
