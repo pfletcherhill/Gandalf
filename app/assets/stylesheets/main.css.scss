@@ -48,6 +48,7 @@ $side_padding: 15px;
   position: fixed;
   top: 0px;
   left: 0px;
+  z-index: 1;
 }
 
 .link {
@@ -73,18 +74,21 @@ $side_padding: 15px;
   line-height: $header_height;
   padding-right: $side_padding;
 }
-$sidebar_right: 300px;
-.sidebar {
+
+$sidebar_width: 300px;
+
+.sidebar, .main {
   position: fixed;
   top: $header_height;
-  left: $side_padding;
-  width: $sidebar_right - $side_padding;
+  height: 100%; 
+}
+.sidebar {
+  left: 0;
+  width: $sidebar_width;
   border-right: 1px solid #ccc;
-  height: 100%;
 }
 
 .main {
-  position: fixed;
-  top: $header_height;
-  left: $sidebar_right
+  left: $sidebar_width;
 }
+
