@@ -1,29 +1,31 @@
 /* ========== LAYOUT ========= */
 
-$sidebar_width: 150px;
-$feed_width: 250px;
+$sidebar_width: 200px;
+$feed_width: 300px;
 
 .sidebar, .feed, .calendar {
   position: fixed;
   top: $header_height;
-  height: 100%; 
+  height: -webkit-calc(100% - 50px);
+  height: -moz-calc(100% - 50px);
+  height: calc(100% - 50px);
 }
 
 .sidebar {
   left: 0;
   width: $sidebar_width;
-  height: 100%;
+  overflow: scroll;
   @include linear-gradient(#888, #666);
 }
 
 .feed {
   left: $sidebar_width;
   width: $feed_width;
+  overflow: scroll;
 }
 
 .calendar {
   left: $sidebar_width + $feed_width;
-  @include linear-gradient(#eee, #ddd);
 }
 
 /* ========= CALENDAR ======== */
