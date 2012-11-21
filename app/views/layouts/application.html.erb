@@ -13,21 +13,24 @@
 <body>
 <div class="wrapper">
   <div class="header">
-    <div id="logo"><a href="/">Yale Events</a></div>
-    <% if current_user %>
-      <div class="link"><a href="/#browse">Browse</a></div>
-      <div class="link"><a href="/#calendar">Calendar</a></div>
-      <div class="link"><a href="/#organizations">Organizations</a></div>
-      <div class="link"><a href="/#about">About</a></div>
-    <% end %>
-    <div id="menu">
+    <div class="header-container">
+      <div id="logo"><a href="/">Yale Events</a></div>
       <% if current_user %>
-        <a href="#preferences"><%= current_user.name %></a>
-        <a href="/logout">Logout</a>
-      <% else %>
-        <a href="/login">Login</a>
+        <div class="link"><a href="/#browse">Browse</a></div>
+        <div class="link"><a href="/#calendar">Calendar</a></div>
+        <div class="link"><a href="/#organizations">Organizations</a></div>
+        <div class="link"><a href="/#about">About</a></div>
       <% end %>
+      <div id="menu">
+        <% if current_user %>
+          <a href="#preferences"><%= current_user.name %></a>
+          <a href="/logout">Logout</a>
+        <% else %>
+          <a href="/login">Login</a>
+        <% end %>
+      </div>
     </div>
+    
   </div>
 
   <%= yield %>

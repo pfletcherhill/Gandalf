@@ -1,7 +1,7 @@
 Gandalf.Views.Events ||= {}
 
-class Gandalf.Views.Events.WeekCalendar extends Backbone.View
-  template: JST["backbone/templates/events/week_calendar"]
+class Gandalf.Views.Events.CalendarWeek extends Backbone.View
+  template: JST["backbone/templates/events/calendar_week"]
   tagName: "div"
   className: "cal week-cal"
     
