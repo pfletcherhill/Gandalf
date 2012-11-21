@@ -1,7 +1,7 @@
 /* ========= CALENDAR ======== */
 
 $hour_height: 44px;
-$cal_gap: 50px;
+$cal_gap: 40px;
 
 .cal {
   width: 100%;
@@ -21,6 +21,8 @@ $cal_gap: 50px;
   text-align: center;
   font-size: 8px;
   line-height: 20px;
+  @include linear-gradient(#fff, #efefef);
+  
 }
 .cal-body {
   .cal-day {
@@ -35,7 +37,7 @@ $cal_gap: 50px;
   border-top: 1pt solid transparent;
 }
 .hour-day {
-  border-top: 1pt solid #eee;
+  border-bottom: 1pt solid #eee;
 }
 
 .hour-num {
@@ -43,9 +45,8 @@ $cal_gap: 50px;
   font-size: 8px;
   line-height: 8px;
   color: #333;
-  top: -12px;
-  left: 10px;
-  background-color: white;
+  top: -6px;
+  left: 7px;
 }
 .cal-week {
   .cal-day {
@@ -72,13 +73,15 @@ $cal_gap: 50px;
   background-color: rgba(200,200,200,0.7);
   @include transition(background-color 0.2s);
   cursor: pointer;
-  padding: 3px;
   font-size: 8px;
   line-height: 12px;
   overflow: hidden;
-  width: 50%;
+  width: 98%;
   p {
-    margin: 0;
+    margin: 0 3px;
+    &:first-child {
+      margin-top: 3px;
+    }
   }
   &:hover {
     background-color: rgba(150,150,150,0.7);
