@@ -20,11 +20,13 @@ class Gandalf.Router extends Backbone.Router
       end_at = moment().add('w',1)
       period = 'week'
 
-    {
+    p = {
       start: start_at
       end: end_at
       period: period
     }
+    console.log p
+    p
       
   routes:
     'browse'                  : 'browse'
