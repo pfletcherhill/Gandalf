@@ -4,6 +4,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
   template: JST["backbone/templates/events/index"]
   
   initialize: ->
+    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
+    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
 
   addWeekCalendar: (events) ->
     days = _.groupBy(events.models, (event) ->
@@ -17,7 +19,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   addCalDay: (day, events) ->
     view = new Gandalf.Views.Events.CalDay()
     $("#calendar-container").html(view.render(day, events).el)
-  
+
   addFeed: (events) ->
     days = _.groupBy(events.models, (event) ->
       return event.get('date')
@@ -34,4 +36,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @addFeed(events)
     @addCalendar(events)
     return this
+    
+  renderSubscribedOrganizations: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
+    console.log subscriptions
+  
+  renderSubscribedCategories: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_categories')
+    console.log subscriptions
     
