@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Pierson::Application.load_tasks
+Gandalf::Application.load_tasks

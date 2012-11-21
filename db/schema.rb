@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119041158) do
+ActiveRecord::Schema.define(:version => 20121118172455) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(:version => 20121119041158) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
-    t.text     "bio"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "categories_events", :force => true do |t|
@@ -35,6 +35,10 @@ ActiveRecord::Schema.define(:version => 20121119041158) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.integer  "organization_id"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.string   "location"
+    t.text     "description"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
@@ -49,14 +53,19 @@ ActiveRecord::Schema.define(:version => 20121119041158) do
   create_table "subscriptions", :force => true do |t|
     t.integer  "subscribeable_id"
     t.integer  "user_id"
+    t.string   "subscribeable_type"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
-    t.string   "subscribeable_type"
   end
 
   create_table "users", :force => true do |t|
+    t.string   "netid"
     t.string   "name"
+    t.string   "nickname"
     t.string   "email"
+    t.string   "college"
+    t.string   "year"
+    t.string   "division"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
