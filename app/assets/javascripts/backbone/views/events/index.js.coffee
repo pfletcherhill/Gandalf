@@ -12,12 +12,14 @@ class Gandalf.Views.Events.Index extends Backbone.View
     days = _.groupBy(events.models, (event) ->
       return event.get('date')
     )
+    view = new Gandalf.Views.Events.WeekCalendar()
+    $("#calendar-container").html(view.render(start_date).el)
     _.each days, (events, day) ->
-      @addCalDay(day, events, tag)
+      @addCalDay(day, events)
 
   addCalDay: (day, events) ->
     view = new Gandalf.Views.Events.CalDay()
-    $("#calendar-container").html(view.render(day, events).el)
+    $("#cal-body").append(view.render(events).el)
 
   renderFeed: (events) ->
     days = _.groupBy(events.models, (event) ->
@@ -30,10 +32,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.Day()
     @$("#events_list").prepend(view.render(day, events).el)
     
-  render: (events) ->
+  render: (events, start, period) ->
     $(@el).html(@template(user: Gandalf.currentUser))
     @renderFeed(events)
-    @renderWeekCalendar(events)
+    if period == "month"
+      @renderMonthCalendar(events, start)
+    else 
+      @renderWeekCalendar(events, start)
     return this
     
   renderSubscribedOrganizations: ->

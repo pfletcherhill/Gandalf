@@ -3,6 +3,9 @@ class Gandalf.Router extends Backbone.Router
   initialize: (options) ->
     @events = new Gandalf.Collections.Events
   
+  # Process period takes the date and period 
+  # (either week or month, from the URL) and finds the start and end of the period
+  # Returns an object with the parameters
   processPeriod: (date, period) ->
     if date == 'today'
       date = moment().format("MM-DD-YYYY")
@@ -15,8 +18,13 @@ class Gandalf.Router extends Backbone.Router
     else
       start_at = moment()
       end_at = moment().add('w',1)
-    params = "start_at=" + start_at.format("MM-DD-YYYY") + "&end_at=" + end_at.format("MM-DD-YYYY")
-    params  
+      period = 'week'
+
+    {
+      start: start_at
+      end: end_at
+      period: period
+    }
       
   routes:
     'browse'                  : 'browse'
@@ -28,10 +36,14 @@ class Gandalf.Router extends Backbone.Router
   
   calendar: (date, period) ->
     params = @processPeriod date, period
-    @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + params
+    params_string = "start_at=" + params.start.format("MM-DD-YYYY") 
+    params_string += "&end_at=" + params.end.format("MM-DD-YYYY")
+
+    @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + params_string
+
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Events.Index
-      $("#events").html(view.render(events).el)
+      $("#events").html(view.render(events, params.start, params.period).el)
   
   browse: ->
     @events.url = '/events'
