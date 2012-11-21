@@ -12,7 +12,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderWeekCalendar: (days, start_date) ->
     view = new Gandalf.Views.Events.CalendarWeek()
     @$("#calendar-container").append(view.render(moment(start_date)).el)
-
     day_count = 0
     while day_count < 7
       d = moment(start_date).add('d', day_count).format("YYYY-MM-DD")
