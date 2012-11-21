@@ -1,12 +1,13 @@
 /* ========== LAYOUT ========= */
 
-$sidebar_width: 200px;
-$feed_width: 300px;
+$sidebar_width: 150px;
+$feed_width: 250px;
 
 .sidebar, .feed, .calendar {
-  position: fixed;
+  position: absolute;
   top: $header_height;
   height: -webkit-calc(100% - 50px);
+  height: -o-calc(100% - 50px);
   height: -moz-calc(100% - 50px);
   height: calc(100% - 50px);
 }
@@ -23,9 +24,15 @@ $feed_width: 300px;
   width: $feed_width;
   overflow: scroll;
 }
+$calendar_left: $sidebar_width + $feed_width;
 
 .calendar {
-  left: $sidebar_width + $feed_width;
+  left: $calendar_left;
+  width: -moz-calc(100% - 500px);
+  width: -webkit-calc(100% - 500px);
+  width: -o-calc(100% - 500px);
+  width: calc(100% - 500px);
+  min-width: 500px;
 }
 
 /* ========= CALENDAR ======== */
@@ -33,13 +40,30 @@ $feed_width: 300px;
 .cal {
   width: 100%;
   height: 100%;
+  overflow: scroll;
   display: table;
-  table-layout: fixed;
+}
 
+.cal-header, #cal-body {
+  display: table-row;
+}
+.cal-header {
+  height: 5%;
+  text-align: center;
+  font-size: 8px;
+  border-bottom: 1pt solid #aaa;
+}
+#cal-body {
+  border-top: 1pt solid #aaa;
+  height: 95%;
 }
 
 .cal-day {
   display: table-cell;
+  border-right: 1pt solid #ddd;
+  &:last-child {
+    border-right: none;
+  }
 }
 
 .cal-week {
