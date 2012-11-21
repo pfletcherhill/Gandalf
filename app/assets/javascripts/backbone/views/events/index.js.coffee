@@ -6,16 +6,18 @@ class Gandalf.Views.Events.Index extends Backbone.View
   initialize: ->
   
   addAll: (events) ->
-    _.each events.models, (event) =>
-      @addOne(event)
+    days = _.groupBy(events.models, (event) ->
+        return event.get('date')
+    )
+    _.each days, (events, day) =>
+      @addDay(day, events)
 
-  addOne: (event) ->
-    view = new Gandalf.Views.Events.Show({model: event})
-    @$("#events_list").prepend(view.render().el)
+  addDay: (day, events) ->
+    view = new Gandalf.Views.Events.Day()
+    @$("#events_list").prepend(view.render(day, events).el)
     
   render: (events) ->
     $(@el).html(@template(user: Gandalf.currentUser))
     @addAll(events)
     return this
-    
     
