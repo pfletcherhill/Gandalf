@@ -1,84 +1,16 @@
-// Mixins
-// http://bourbon.io/#font-face
-// Doesn't work for some reason, through transition works...
-/*
-@include font-face(HN, '/helveticaneue', normal, $asset-pipeline: true);
-@include font-face(HNBold, '/helveticaneuebold', normal, $asset-pipeline: true);
-@include font-face(HNLight, '/helveticaneuebold', normal, $asset-pipeline: true);
-@include font-face(HNMedium, '/helveticaneuebold', normal, $asset-pipeline: true);
-*/
-@font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
-@font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
-@font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
-@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
-$yellow: rgba(255,203,5,1);
-$blue: rgba(31,188,255,1);
+/* ========= CALENDAR ======== */
 
-body {
-  margin: 0px;
-  padding: 0px;
-  font-family: HN;
-}
-.wrapper {
-  width: 100%;
-  min-width: 700px;
-}
-.header {
-  width: 100%;
-  min-width: 700px;
-  height: 50px;
-  background: $blue;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-}
-.container {
-  width: 100%;
-  margin: auto;
-  .link {
-    float: left;
-    line-height: 50px;
-    margin-left: 15px;
-  }
+.calendar {
+  width: 96%;
+  height: 96%;
+  margin: 2%;
+  display: table;
+  table-layout: fixed;
+
 }
 
-#logo {
-  float: left;
-  padding-left: 15px;
-  a {
-    color: white;
-    font-family: HNLight;
-    font-size: 20px;
-    line-height: 50px;
-    text-decoration: none;
-    // Use bourbon here!
-    @include transition(all 0.2s);
+.cal-week {
+  &>.cal-day {
+    display: table-cell;
   }
-  &:hover {
-    border-bottom: 3px solid white;
-  }
-}
-
-#menu {
-  float: right;
-  line-height: 50px;
-  padding-right: 15px;
-}
-.left {
-  position: fixed;
-  top: 50px;
-  left: 0px;
-  width: 300px;
-  border-right: 1px solid #eee;
-  height: 100%;
-}
-.middle {
-  margin-top: 50px;
-  margin-left: 301px;
-}
-.right {
-  position: fixed;
-  top: 50px;
-  right: 0px;
-  width: 300px;
 }
