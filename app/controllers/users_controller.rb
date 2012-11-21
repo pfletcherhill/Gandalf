@@ -18,8 +18,20 @@ class UsersController < ApplicationController
   
   def events
     user = User.find(params[:id])
-    events = user.events
+    events = user.events(params[:start_at], params[:end_at])
     render json: events.as_json
+  end
+  
+  def subscribed_organizations
+    user = User.find(params[:id])
+    organizations = user.subscribed_organizations
+    render json: organizations
+  end
+  
+  def subscribed_categories
+    user = User.find(params[:id])
+    categories = user.subscribed_categories
+    render json: categories
   end
   
 end
