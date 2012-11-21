@@ -15,13 +15,15 @@
 $yellow: rgba(255,203,5,1);
 $blue: rgba(31,188,255,1);
 $font: 12px;
+$min_width: 1000px;
+
+/* =============  GLOBAL STYLES =========== */
 
 body {
   margin: 0px;
   padding: 0px;
   font-family: HN;
   font-size: $font;
-  min-width: 1000px;
 }
 
 a {
@@ -33,16 +35,19 @@ a {
   }
   @include transition(color 0.2s);
 }
+
 .wrapper {
   //width: 100%;
   min-width: 1000px;
-  overflow: scroll;
 }
 
+/* ================== HEADER =============== */
+
+// IF YOU CHANGE HEADER HEIGHT, CHANGE CORRESPONDING NUMBER
+// IN #content HEIGHT!!
 $header_height: 50px;
 $side_padding: 15px;
 .header {
-  width: 100%;
   height: $header_height;
   @include linear-gradient(lighten($blue, 20%), $blue);
   @include box-shadow(0 0 5px rgba(0,0,0,0.7));
@@ -50,7 +55,12 @@ $side_padding: 15px;
   position: fixed;
   top: 0px;
   left: 0px;
-  z-index: 1;
+  width: 100%;
+  z-index: 100;
+}
+.header-container {
+  width: 100%;
+  min-width: $min_width;
 }
 
 .link {
@@ -77,11 +87,60 @@ $side_padding: 15px;
   padding-right: $side_padding;
 }
 
-$left_width: 300px;
+/* ========== CALENDAR / FEED LAYOUT ========= */
 
-.left, .main {
-  position: fixed;
+// #content is the Backbone anchor onto the document
+#content {
+  position: absolute;
+  width: 100%;
+  min-width: $min_width;
+  min-height: 500px;
   top: $header_height;
+  height: -webkit-calc(100% - 50px);
+  height: -o-calc(100% - 50px);
+  height: -moz-calc(100% - 50px);
+  height: calc(100% - 50px);
+}
+
+$sidebar_width: 200px;
+$feed_width: 250px;
+
+.sidebar, .feed, .calendar {
+  position: absolute;
+  top: 0;
+  height:100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  left: 0;
+  width: $sidebar_width;
+  @include linear-gradient(#bbb, #444);
+}
+
+.feed {
+  left: $sidebar_width;
+  width: $feed_width;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+}
+
+.calendar {
+  left: $sidebar_width + $feed_width;
+  width: -moz-calc(100% - 450px);
+  width: -webkit-calc(100% - 450px);
+  width: -o-calc(100% - 450px);
+  width: calc(100% - 450px);
+  //overflow-y: hidden;
+}
+
+/* ============= ALL OTHER LAYOUT ============= */
+
+$left_width: 300px;
+.left, .main {
+  position: absolute;
+  top: 0;
   height: 100%; 
 }
 .left {
@@ -91,6 +150,6 @@ $left_width: 300px;
 }
 
 .main {
-  left: $sidebar_width;
+  left: $left_width;
 }
 

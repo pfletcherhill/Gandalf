@@ -14,14 +14,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
     days = _.groupBy(events.models, (event) ->
       return event.get('date')
     )
-    view = new Gandalf.Views.Events.WeekCalendar()
-    @$("#calendar-container").append(view.render(start_date).el)
-    _.each days, (events, day) =>
-      @addCalDay(day, events)
+    view = new Gandalf.Views.Events.CalendarWeek()
+    @$("#calendar-container").append(view.render(moment(start_date)).el)
+    day_count = 0
+    while day_count < 7
+      d = moment(start_date).add('d', day_count).format("YYYY-MM-DD")
+      @addCalDay(days[d])
+      day_count++
 
-  addCalDay: (day, events) ->
-    view = new Gandalf.Views.Events.DayCalendar()
-    @$("#cal-body").append(view.render(events).el)
+  addCalDay: (events) ->
+    view = new Gandalf.Views.Events.CalendarDay()
+    @$("#cal-day-container").append(view.render(events).el)
 
   renderFeed: (events) ->
     days = _.groupBy(events.models, (event) ->
@@ -31,16 +34,16 @@ class Gandalf.Views.Events.Index extends Backbone.View
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Events.Day()
-    @$("#events_list").append(view.render(day, events).el)
+    view = new Gandalf.Views.Events.FeedDay()
+    @$("#feed-list").prepend(view.render(day, events).el)
     
   render: (events, start, period) ->
-    $(@el).html(@template({user: Gandalf.currentUser, start_date: start}))
+    $(@el).html(@template({user: Gandalf.currentUser}))
     @renderFeed(events)
     if period == "month"
-      @renderMonthCalendar(events, start)
+      @renderMonthCalendar(events, moment(start))
     else 
-      @renderWeekCalendar(events, start)
+      @renderWeekCalendar(events, moment(start))
     return this
     
   renderSubscribedOrganizations: ->
