@@ -1,0 +1,94 @@
+// Mixins
+// http://bourbon.io/#font-face
+// Doesn't work for some reason, through transition works...
+
+/*
+@font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
+@font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
+@font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
+@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
+*/
+@font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
+@font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
+@font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
+@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
+$yellow: rgba(255,203,5,1);
+$blue: rgba(31,188,255,1);
+$font: 12px;
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: HN;
+  font-size: $font;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  &:hover {
+    color: darken(white, 5%);
+    text-decoration: underline;
+  }
+  @include transition(color 0.2s);
+}
+.wrapper {
+  width: 100%;
+  min-width: 1000px;
+}
+
+$header_height: 50px;
+$side_padding: 15px;
+.header {
+  width: 100%;
+  height: $header_height;
+  @include linear-gradient(lighten($blue, 20%), $blue);
+  @include box-shadow(0 0 5px rgba(0,0,0,0.7));
+  //background: $blue;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+
+.link {
+  display: inline-block;
+  line-height: $header_height;
+  margin-left: 15px;
+}
+
+#logo {
+  display: inline-block;
+  padding-left: $side_padding;
+  a {
+    color: white;
+    font-family: HNLight;
+    font-size: 20px;
+    line-height: $header_height;
+    text-decoration: none;
+  }
+}
+
+#menu {
+  float: right;
+  line-height: $header_height;
+  padding-right: $side_padding;
+}
+
+$sidebar_width: 300px;
+
+.sidebar, .main {
+  position: fixed;
+  top: $header_height;
+  height: 100%; 
+}
+.sidebar {
+  left: 0;
+  width: $sidebar_width;
+  border-right: 1px solid #ccc;
+}
+
+.main {
+  left: $sidebar_width;
+}
+
