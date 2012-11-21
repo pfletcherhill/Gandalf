@@ -25,9 +25,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
     
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    console.log subscriptions
+    _.each subscriptions, (subscription) ->
+      view = new Gandalf.Views.Organizations.Short(model: subscription)
+      @$("#subscribed_organizations_list").prepend(view.render().el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    console.log subscriptions
+    _.each subscriptions, (subscription) ->
+      view = new Gandalf.Views.Categories.Short(model: subscription)
+      @$("#subscribed_categories_list").prepend(view.render().el)
     
