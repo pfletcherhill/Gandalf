@@ -64,6 +64,7 @@ body {
   line-height: 50px;
   padding-right: 15px;
 }
+
 .left {
   position: fixed;
   top: 50px;
@@ -72,10 +73,55 @@ body {
   border-right: 1px solid #eee;
   height: 100%;
 }
+
+
+.day_header {
+  border-top: 1px solid #dadada;
+  border-bottom: 1px solid #dadada;
+  background: #EEE;
+  padding: 7px 10px;
+  font-size: 14px;
+}
+#day_events {
+  padding: 2px 0px;
+  .event {
+    padding: 5px 10px;
+    border-bottom: 1px solid #eee;
+    .organization {
+      padding-left: 80px;
+      font-size: 13px;
+      font-family: HNLight;
+      width: 200px;
+    }
+    .time {
+      width: 80px;
+      float: left;
+      font-size: 15px;
+      line-height: 23px;
+      color: #333;
+    }
+    .details {
+      width: 200px;
+      margin-left: 80px;
+      .name {
+        font-size: 15px;
+        color: #333;
+        line-height: 23px;
+        font-family: HNBold;
+      }
+      .location {
+        font-family: HNLight;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
 .middle {
   margin-top: 50px;
   margin-left: 301px;
 }
+
 .right {
   position: fixed;
   top: 50px;
