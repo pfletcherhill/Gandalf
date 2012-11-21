@@ -11,7 +11,7 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: '/users/' + @id + '/subscribed_organizations'
       success: (data) =>
-        @set user: data
+        @set subscribed_organizations: data
   
   fetchSubscribedCategories: ->
     $.ajax
@@ -19,7 +19,7 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: '/users/' + @id + '/subscribed_categories'
       success: (data) =>
-        @set user: data
+        @set subscribed_categories: data
 
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User
