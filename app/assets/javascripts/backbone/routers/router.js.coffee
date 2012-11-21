@@ -22,6 +22,7 @@ class Gandalf.Router extends Backbone.Router
     'browse'                  : 'browse'
     'calendar/:date/:period'  : 'calendar'
     'calendar'                : 'calendar'
+    'organizations'           : 'organizations'
     'preferences'             : 'preferences'
     'about'                   : 'about'
     '.*'                      : 'calendar'
@@ -38,6 +39,10 @@ class Gandalf.Router extends Backbone.Router
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Events.Browse
       $("#events").html(view.render().el)
+  
+  organizations: ->
+    view = new Gandalf.Views.Organizations.Index
+    $("#events").html(view.render().el)
     
   preferences: ->
     view = new Gandalf.Views.Users.Preferences
