@@ -24,6 +24,10 @@ e = Event.new(:name => "Hackathon", :organization_id => o2.id, :start_at => Time
 e.categories << c1
 e.categories << c3
 e.save
+e = Event.new(:name => "HackYale", :organization_id => o2.id, :start_at => Time.now + 28.hour, :end_at => Time.now + 30.hour, :location => "Center for Engineering, Innovation and Design")
+e.categories << c1
+e.categories << c3
+e.save
 print "events created...\n"
 u1 = User.find_by_netid('prf8')
 u2 = User.find_by_netid('fak23')

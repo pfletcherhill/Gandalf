@@ -6,7 +6,7 @@ class Gandalf.Views.Events.Show extends Backbone.View
   initialize: ->
   
   convertTime: (time) ->
-    date = moment(time).format("h:mm:ss a")
+    date = moment(time).format("h:mm a")
     date
     
   render: =>
