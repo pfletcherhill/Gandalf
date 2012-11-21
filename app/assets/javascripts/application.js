@@ -7,9 +7,3 @@
 //= require backbone/gandalf
 //= require bootstrap
 //= require_tree .
-
-window.get_element = function(string) {
-  
-  console.log($(string));
-  return $(string);
-};
