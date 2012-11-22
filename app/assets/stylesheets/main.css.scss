@@ -110,7 +110,7 @@ $side_padding: 15px;
   height: calc(100% - 50px);
 }
 
-$sidebar_width: 0px;
+$sidebar_width: 200px;
 $feed_width: 300px;
 
 .sidebar, .feed, .calendar {
@@ -137,10 +137,10 @@ $feed_width: 300px;
 .calendar {
   $width: $sidebar_width + $feed_width;
   left: $width;
-  width: -moz-calc(100% - 300px);
-  width: -webkit-calc(100% - 300px);
-  width: -o-calc(100% - 300px);
-  width: calc(100% - 300px);
+  width: -moz-calc(100% - 500px);
+  width: -webkit-calc(100% - 500px);
+  width: -o-calc(100% - 500px);
+  width: calc(100% - 500px);
   //overflow-y: hidden;
 }
 

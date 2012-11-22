@@ -25,3 +25,42 @@ li {
     }
   }
 }
+
+#organization {
+  padding: 20px;
+}
+
+#organization-form {
+  label {
+    font-family: HNLight;
+  }
+  input, textarea {
+    border: 1px solid #dadada;
+    width: 300px;
+    padding: 10px;
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  textarea {
+    border-radius: 0px;
+    outline: none;
+    resize: none;
+  }
+  button {
+    @include linear-gradient(#4BA6FF, #1B82E6);
+    width: 322px;
+    padding: 0px;
+    border: 1px solid #1565B2;
+    line-height: 40px;
+    border-radius: 5px;
+    color: white;
+    text-shadow: -1px -1px 1px #777;
+    @include transition(0.2s);
+    &:hover {
+      @include linear-gradient(#4BA6FF, #4BA6FF);
+    }
+    &:active {
+      @include linear-gradient(#1B82E6, #4BA6FF);
+    }
+  }
+}
