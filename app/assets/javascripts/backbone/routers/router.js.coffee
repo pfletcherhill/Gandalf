@@ -72,9 +72,13 @@ class Gandalf.Router extends Backbone.Router
   organizations: (id) ->
     id = @organizations.first().id unless id
     @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/" + id
-    @organization.fetch success: (organization) =>
-      view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization)
+    @organization.url = "/organizations/" + id + "/edit"
+    @organization.fetch
+      success: (organization) =>
+        view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization)
+      error: ->
+        alert 'You do not have access to this organization.'
+        window.location = "#organizations"
     
   preferences: ->
     view = new Gandalf.Views.Users.Preferences

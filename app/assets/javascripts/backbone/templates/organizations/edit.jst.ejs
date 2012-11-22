@@ -3,7 +3,7 @@
   <input name='name' value='<%= name %>' />
   <br/>
   <label>Organization Description:</label>
-  <textarea name='bio'><%= bio %></textarea>
+  <textarea name='bio'><%= bio ? bio : "" %></textarea>
   <br/>
   <label>Organization Logo:</label>
   <input id="image_image" name="image[image]" type="file" value="Upload an Image">
