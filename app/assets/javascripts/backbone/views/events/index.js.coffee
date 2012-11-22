@@ -79,16 +79,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
     
   render: (events, start, period) ->
     $(@el).html(@template({user: Gandalf.currentUser}))
-    
     days = @sortAndGroupEvents events.models
-
     @renderFeed(days)
     if period == "month"
       @renderMonthCalendar(days, moment(start))
     else 
       @renderWeekCalendar(days, moment(start))
     overlaps = @findEventOverlaps(days)
-    console.log(overlaps)
     return this
     
 

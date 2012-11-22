@@ -2,3 +2,18 @@
 .sidebar.extended {
   width: 300px;
 }
+.search-list {
+  a {
+    color: black;
+  }
+}
+#browse-list {
+  padding: 10px;
+  .browse-result {
+    display: inline-block;
+    width: 350px;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin: 5px;
+  }
+}
