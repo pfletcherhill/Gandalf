@@ -9,12 +9,14 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
   tagName: "td"
   className: "cal-day"
 
+
   render: (events) ->
-    $(@el).html(@template())
+
+    $(@el).html(@template()) # Add the calendar day
     if events
-      container = $(@el).children(".cal-events")[0]
-      _.each events, (e) ->
-        view = new Gandalf.Views.Events.CalendarEvent()
-        $(container).append(view.render(e).el)
+      container = $(@el).children(".cal-events:first")
+      _.each events, (e) ->  # Add each of its events
+        view = new Gandalf.Views.Events.CalendarEvent(e)
+        $(container).append(view.el)
 
     return this

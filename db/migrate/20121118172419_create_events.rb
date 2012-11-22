@@ -6,6 +6,7 @@ class CreateEvents < ActiveRecord::Migration
       t.datetime :start_at
       t.datetime :end_at
       t.string :location
+      t.string :address # to google map with
       t.text :description
       
       t.timestamps
