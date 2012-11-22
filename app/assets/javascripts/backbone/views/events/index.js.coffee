@@ -42,20 +42,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
   adjustOverlappingEvents: (overlaps) ->
     _.each overlaps, (ids, myId) ->
       len = ids.length
-      
-      $(".cal-event[data_id='"+myId+"']:first").addClass("overlap-"+len).addClass("overlap-order-"+0)
-      console.log $(".cal-event[data_id='"+myId+"']:first")
-      i = 1
-      while i < len + 1
-        id = ids[i-1]
-        $(".cal-event[data_id='"+id+"']:first").addClass("overlap-"+len).addClass("overlap-order-"+i)
-        i+=1
+      # keep this line in case i need it later
+      # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
+      $(".cal-event[data_id='"+myId+"']").addClass "overlap overlap-"+len
+      _.each ids, (id, i) ->
+        num = i+1
+        $(".cal-event[data_id='"+id+"']").addClass "overlap overlap-"+len
+
     
   render: (events, start, period) ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
-
     days = events.sortAndGroup()
-
     @renderFeed(days)
     if period == "month"
       @renderMonthCalendar moment(start)
@@ -65,7 +62,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
       numDays = 7
 
     @renderCalDays(days, moment(start), numDays)
-
     overlaps = events.findOverlaps days
     @adjustOverlappingEvents overlaps
     # console.log(overlaps)

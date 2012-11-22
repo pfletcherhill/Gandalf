@@ -21,7 +21,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   findOverlaps: (days) ->
     # days = @sortAndGroup
-    console.log "find olap", days
     overlaps = {}
     t = this
     _.each days, (events) ->
@@ -33,7 +32,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
             if myId < tarId && myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
-
+    console.log "overlaps", overlaps
     overlaps
 
 
