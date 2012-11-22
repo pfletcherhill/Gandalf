@@ -89,14 +89,16 @@ $cal_z: 10;
   }
 }
 
-.overlap-2 {
+// 2 things overlapping
+.overlap-1 {
   width: 50%;
   &.overlap-order-1 {
     left: 47%;
     z-index: $cal_z - 1;
   }
 }
-.overlap-3 {
+// 3 things
+.overlap-2 {
   width: 35%;
   &.overlap-order-1 {
     left: 31%;
@@ -107,7 +109,8 @@ $cal_z: 10;
     z-index: $cal_z - 2;
   }
 }
-.overlap-4 {
+// 4 things
+.overlap-3 {
   width: 25%;
   &.overlap-order-1 {
     left: 24%;
