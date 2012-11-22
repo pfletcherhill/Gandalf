@@ -8,13 +8,27 @@ class Gandalf.Views.Organizations.Index extends Backbone.View
   
   initialize: ->
     @organizations = @options.organizations
-    @render()
+    @organization = @options.organization
+    @organization.on 'updated', @updateOrganizations
+    @render(@organization)
   
-  renderOrganizationsList: ->
+  updateOrganizations: =>
+    @organizations.url = "/users/#{Gandalf.currentUser.id}/organizations"
+    @organizations.fetch success: (organizations) =>
+      @organizations = organizations
+      @renderOrganizationsList()
+    
+  renderOrganizationsList: =>
+    @$(".left-list").html('')
     for organization in @organizations.models
       @$(".left-list").append("<li><a data-id=#{organization.id} href='#organizations/#{organization.id}'>#{organization.get('name')}</a></li>")
-        
-  render: =>
+  
+  renderOrganization: (organization) ->
+    view = new Gandalf.Views.Organizations.Edit(model: organization)
+    @$('.main').html(view.el)
+          
+  render: (organization) =>
     $(@el).html(@template())
     @renderOrganizationsList()
+    @renderOrganization(organization)
     return this
