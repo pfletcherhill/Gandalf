@@ -1,13 +1,22 @@
 class OrganizationsController < ApplicationController
   
   def index
-    organizations = Organization.all
-    render json: organizations
+    @organizations = Organization.all
+    render json: @organizations
   end
   
   def show
-    organization = Organization.find(params[:id])
-    render json: organization
+    @organization = Organization.find(params[:id])
+    render json: @organization
+  end
+  
+  def edit
+    @organization = Organization.find(params[:id])
+    if current_user.has_authorization_to(@organization)
+      render json: @organization
+    else
+      render json: "User does not have access", status: 403
+    end
   end
   
   def update

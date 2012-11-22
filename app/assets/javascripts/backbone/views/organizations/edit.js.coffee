@@ -20,6 +20,7 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
   save: (event) ->
     event.preventDefault()
     event.stopPropagation()
+    @model.url = "/organizations/" + @model.id
     @model.save(@model,
       success: (organization) =>
         @model.trigger('updated')

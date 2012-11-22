@@ -43,6 +43,15 @@ class User < ActiveRecord::Base
     }
   end
   
+  def has_authorization_to(organization)
+    access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    if access_control
+      return true
+    else
+      return false
+    end
+  end
+  
   def User.create_from_directory(netid)
     name_regex = /^\s+Name:/
     known_as_regex = /Known As:/
