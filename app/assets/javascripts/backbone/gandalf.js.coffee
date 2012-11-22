@@ -9,3 +9,4 @@ window.Gandalf =
   Collections: {}
   Routers: {}
   Views: {}
+  eventKeyFormat: "YYYY-MM-DD"

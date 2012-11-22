@@ -17,7 +17,6 @@ class Event < ActiveRecord::Base
       "location" => location,
       "start_at" => start_at,
       "end_at" => end_at,
-      "date" => start_at.strftime("%Y-%m-%d"),
       "organization" => organization.name
     }
   end
