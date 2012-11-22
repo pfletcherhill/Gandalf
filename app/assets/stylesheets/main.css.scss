@@ -158,6 +158,12 @@ $left_width: 300px;
   border-right: 1px solid #ccc;
 }
 
+.left-list {
+  list-style: none;
+  margin: 0px;
+  border-top: 1px solid #dadada;
+}
+
 .main {
   left: $left_width;
 }
