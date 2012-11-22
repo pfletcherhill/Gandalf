@@ -1,11 +1,11 @@
 <div class="left">
   <div class='left-search'>
-    <input placeholder="Search..."></input>
+    <input placeholder="Search <%= type %>..."></input>
   </div>
   <ul class="search-list">
-    <li><a href="#browse/organizations">Organizations</a></li>
-    <li><a href="#browse/categories">Categories</a></li>
-    <li><a href="#browse/events">Events</a></li>
+    <li><a data-type='organizations' href="#browse/organizations">Organizations</a></li>
+    <li><a data-type='categories' href="#browse/categories">Categories</a></li>
+    <li><a data-type='events' href="#browse/events">Events</a></li>
   </ul>
 </div>
 <div class="main" id="browse-list">

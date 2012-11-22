@@ -1,12 +1,37 @@
 /* ========== LAYOUT ========= */
-.sidebar.extended {
-  width: 300px;
+
+.left-search input {
+  margin: 18px 15px;
+  padding: 8px;
+  width: 252px;
+  font-family: HN;
+  
 }
 .search-list {
+  list-style: none;
+  margin: 0px;
+  border-top: 1px solid #dadada;
+  li {
+    border-bottom: 1px solid #dadada;
+  }
   a {
+    display: block;
+    padding: 15px;
+    font-family: HNBold;
+    font-size: 15px;
     color: black;
+    outline: none;
+    @include transition(0.2s);
+    &:hover {
+      text-decoration: none;
+      @include linear-gradient(#efefef, #fafafa);
+    }
+    &.active {
+      @include linear-gradient(#efefef, #efefef);
+    }
   }
 }
+
 #browse-list {
   padding: 10px;
   .browse-result {
