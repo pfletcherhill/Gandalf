@@ -48,6 +48,7 @@ class Gandalf.Router extends Backbone.Router
       $("#content").html(view.render(events, params.start, params.period).el)
   
   browse: (type) ->  
+    $(".search-list a").removeClass 'active'
     if type == 'categories'
       @results = new Gandalf.Collections.Categories
       @results.url = '/categories'
@@ -55,11 +56,12 @@ class Gandalf.Router extends Backbone.Router
       @results = new Gandalf.Collections.Events
       @results.url = '/events'
     else
+      type = 'organizations'
       @results = new Gandalf.Collections.Organizations
       @results.url = '/organizations'
     @results.fetch success: (results) ->
-      view = new Gandalf.Views.Events.Browse
-      $("#content").html(view.render(results).el)
+      view = new Gandalf.Views.Events.Browse(results: results, type: type)
+      $("#content").html(view.el)
   
   organizations: ->
     view = new Gandalf.Views.Organizations.Index

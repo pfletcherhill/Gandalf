@@ -19,7 +19,10 @@ CASClient::Frameworks::Rails::Filter.configure(
 # 
 # The file is already added to .gitignore, so don't worry about it being pushed  
 
-cas = YAML.load_file("#{Rails.root}/config/cas_credentials.yml")
+credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
 
-ENV['CAS_NETID'] = cas['netid']
-ENV['CAS_PASS'] = cas['password']
+ENV['CAS_NETID'] = credentials['netid']
+ENV['CAS_PASS'] = credentials['password']
+ENV['aws_access_key_id'] = credentials['aws_access_key_id']
+ENV['aws_secret_access_key'] = credentials['aws_secret_access_key']
+

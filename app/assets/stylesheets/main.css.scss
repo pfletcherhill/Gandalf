@@ -36,6 +36,10 @@ a {
   @include transition(color 0.2s);
 }
 
+input {
+  outline: none;
+}
+
 td {
   padding: 0;
 }

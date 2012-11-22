@@ -6,17 +6,24 @@ class Gandalf.Views.Events.Browse extends Backbone.View
   
   id: "browse"
   
-  initialize: ->
+  initialize: =>
+    @results = @options.results
+    @type = @options.type
+    @render(@results)
   
-  addOrganizations: (organizations) ->
-    _.each organizations.models, (organization) =>
-      @addOrganization organization
+  renderResults: (results) ->
+    _.each results.models, (result) =>
+      @addResult result
   
-  addOrganization: (organization) ->
-    view = new Gandalf.Views.Events.BrowseResult(model: organization)
+  addResult: (result) ->
+    view = new Gandalf.Views.Events.BrowseResult(model: result)
     @$("#browse-list").append(view.render().el)
     
-  render: (organizations) ->
-    $(@el).html(@template())
-    @addOrganizations organizations
+  render: ->
+    $(@el).html(@template(type: @type))
+    @renderResults @results
+    @changeActive(@type)
     return this
+  
+  changeActive: (type) ->
+    @$("a[data-type=#{type}]").addClass 'active'
