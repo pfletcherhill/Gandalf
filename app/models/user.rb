@@ -33,6 +33,15 @@ class User < ActiveRecord::Base
   end
 
   # TODO: on_create: if admin of an org, add as subscriber as well
+  def as_json
+    {
+      "id" => id,
+      "name" => name,
+      "email" => email,
+      "nickname" => nickname,
+      "organizations" => organizations
+    }
+  end
   
   def User.create_from_directory(netid)
     name_regex = /^\s+Name:/

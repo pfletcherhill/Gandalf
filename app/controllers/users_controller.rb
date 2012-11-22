@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def require_login
     unless logged_in?
-      redirect_to '/welcome' # halts request cycle
+      redirect_to '/welcome'
     end
   end
  
@@ -13,13 +13,19 @@ class UsersController < ApplicationController
   end
   
   def me
-    render json: current_user
+    render json: current_user.as_json
   end
   
   def events
     user = User.find(params[:id])
     events = user.events(params[:start_at], params[:end_at])
     render json: events.as_json
+  end
+  
+  def organizations
+    user = User.find(params[:id])
+    organizations = user.organizations
+    render json: organizations
   end
   
   def subscribed_organizations
