@@ -27,7 +27,8 @@ class Gandalf.Router extends Backbone.Router
     p
       
   routes:
-    'browse'                  : 'browse'
+    'browse/:type'            : 'browse'          
+    'browse*'                : 'browse'
     'calendar/:date/:period'  : 'calendar'
     'calendar'                : 'calendar'
     'organizations'           : 'organizations'
@@ -46,11 +47,19 @@ class Gandalf.Router extends Backbone.Router
       view = new Gandalf.Views.Events.Index
       $("#content").html(view.render(events, params.start, params.period).el)
   
-  browse: ->
-    @events.url = '/events'
-    @events.fetch success: (events) ->
+  browse: (type) ->  
+    if type == 'categories'
+      @results = new Gandalf.Collections.Categories
+      @results.url = '/categories'
+    else if type == 'events'
+      @results = new Gandalf.Collections.Events
+      @results.url = '/events'
+    else
+      @results = new Gandalf.Collections.Organizations
+      @results.url = '/organizations'
+    @results.fetch success: (results) ->
       view = new Gandalf.Views.Events.Browse
-      $("#content").html(view.render().el)
+      $("#content").html(view.render(results).el)
   
   organizations: ->
     view = new Gandalf.Views.Organizations.Index
