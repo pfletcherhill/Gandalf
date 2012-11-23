@@ -18,10 +18,16 @@ $cal_gap: 40px;
 
 .cal-header {
   height: 20px;
+  position: fixed;
   text-align: center;
   font-size: 8px;
   line-height: 20px;
   @include linear-gradient(#fff, #efefef);
+  z-index: 20;
+  width: -moz-calc(100% - 500px);
+  width: -webkit-calc(100% - 500px);
+  width: -o-calc(100% - 500px);
+  width: calc(100% - 500px);
   
 }
 .cal-body {
