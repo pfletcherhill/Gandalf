@@ -4,21 +4,24 @@ class Gandalf.Views.Events.FeedDay extends Backbone.View
   template: JST["backbone/templates/events/feed_day"]
   className: "feed-day"
 
-  addAll: (events) ->
-    _.each events, (event) =>
+  initialize: ->
+    @render()
+
+  addAll: () ->
+    _.each @collection, (event) =>
       @addOne(event)
   
   addOne: (event) ->
     view = new Gandalf.Views.Events.FeedEvent(model: event)
-    @$("#feed-day-events").append(view.render().el)
+    @$(".feed-day-events").append(view.el)
   
   convertDate: (day) ->
     date = moment(day).format("dddd, MMMM Do YYYY")
     date
           
-  render: (day, events) =>
-    day = @convertDate day
+  render: () =>
+    day = @convertDate @options.day
     $(@el).html(@template(day: day))
-    @addAll events
+    @addAll()
     return this
     
