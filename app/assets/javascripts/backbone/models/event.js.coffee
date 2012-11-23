@@ -8,7 +8,6 @@ class Gandalf.Models.Event extends Backbone.Model
   overlap: (e) ->
     one = moment(@get("start_at")) < moment(e.get("end_at"))
     two = moment(e.get("start_at")) < moment(@get("end_at"))
-    console.log "olap", this, e
     # console.log one, two
     one && two
 
@@ -32,7 +31,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
             if myId < tarId && myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
-    console.log "overlaps", overlaps
     overlaps
 
 

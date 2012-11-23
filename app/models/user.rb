@@ -33,6 +33,24 @@ class User < ActiveRecord::Base
   end
 
   # TODO: on_create: if admin of an org, add as subscriber as well
+  def as_json
+    {
+      "id" => id,
+      "name" => name,
+      "email" => email,
+      "nickname" => nickname,
+      "organizations" => organizations
+    }
+  end
+  
+  def has_authorization_to(organization)
+    access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    if access_control
+      return true
+    else
+      return false
+    end
+  end
   
   def User.create_from_directory(netid)
     name_regex = /^\s+Name:/

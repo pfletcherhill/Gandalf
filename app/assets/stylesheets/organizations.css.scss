@@ -1,0 +1,104 @@
+/* ========== LAYOUT ========= */
+
+.left-header {
+  padding: 15px;
+  font-family: HN;
+  
+}
+
+li {
+  border-bottom: 1px solid #dadada;
+  a {
+    display: block;
+    padding: 15px;
+    font-family: HNBold;
+    font-size: 15px;
+    color: black;
+    outline: none;
+    @include transition(0.2s);
+    &:hover {
+      text-decoration: none;
+      @include linear-gradient(#efefef, #fafafa);
+    }
+    &.active {
+      @include linear-gradient(#efefef, #efefef);
+    }
+  }
+}
+
+#organization {
+  padding: 20px;
+}
+
+#organization-form {
+  label {
+    font-family: HNLight;
+  }
+  input, textarea {
+    border: 1px solid #dadada;
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  input {
+    font-size: 15px;
+  }
+  textarea {
+    border-radius: 0px;
+    outline: none;
+    resize: none;
+  }
+  #new-image {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+  }
+  #open-image {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5px;
+    width: 120px;
+    border: 1px solid #777;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    @include linear-gradient(#fafafa, #eee);
+    cursor: pointer;
+    &:hover {
+      @include linear-gradient(#fafafa, #fafafa);
+    }
+  }
+  button {
+    @include linear-gradient(#4BA6FF, #1B82E6);
+    width: 322px;
+    padding: 0px;
+    border: 1px solid #1565B2;
+    line-height: 40px;
+    border-radius: 5px;
+    color: white;
+    text-shadow: -1px -1px 1px #777;
+    @include transition(0.2s);
+    &:hover {
+      @include linear-gradient(#4BA6FF, #4BA6FF);
+    }
+    &:active {
+      @include linear-gradient(#1B82E6, #4BA6FF);
+    }
+  }
+  .image {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    border: 1px solid #dadada;
+    &.loading {
+      background: url('/assets/ajax-loader.gif');
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+}
