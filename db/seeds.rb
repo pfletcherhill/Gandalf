@@ -17,8 +17,8 @@ e.categories << c2
 e.categories << c3
 e.save
 e = Event.new(:name => "Hackathon", :organization_id => o2.id, :start_at => Time.now + 22.hour, :end_at => Time.now + 28.hour, :location => "Center for Engineering, Innovation and Design")
-  e.categories << c1
-  e.categories << c3
+e.categories << c1
+e.categories << c3
 e.save
 e = Event.new(:name => "More HackYale", :organization_id => o2.id, :start_at => Time.now + 29.hour, :end_at => Time.now + 30.hour, :location => "Center for Engineering, Innovation and Design")
 e.categories << c1

@@ -19,7 +19,7 @@ group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem 'fabrication'
 end
-gem 'bourbon', :git => 'git://github.com/thoughtbot/bourbon.git', :ref => 'f93cf9e'
+gem 'bourbon'
 gem 'jquery-rails'
 gem 'rails-backbone'
 gem 'bootstrap-sass', '~> 2.2.1.1'
@@ -27,3 +27,6 @@ gem 'squeel'
 gem 'httpclient'
 gem 'net-ldap'
 gem 'rubycas-client'
+gem 'carrierwave'
+gem 'fog'
+gem 'mini_magick'
