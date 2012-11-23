@@ -67,7 +67,6 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
       t.$el.popover('hide')
 
   mouseenter: (id) ->
-    console.log @css
     if !id || @model.get("id") == id
       @$el.css(
         backgroundColor: "rgba(170,170,170,0.9)"
