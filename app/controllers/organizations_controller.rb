@@ -21,7 +21,6 @@ class OrganizationsController < ApplicationController
   
   def update
     @organization = Organization.find(params[:id])
-
     respond_to do |format|
       if @organization.update_attributes(params[:organization])
         format.html
@@ -31,6 +30,13 @@ class OrganizationsController < ApplicationController
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def add_image
+    @organization = Organization.find(params[:id])
+    @organization.image = params[:image]
+    @organization.save
+    render json: @organization
   end
   
 end

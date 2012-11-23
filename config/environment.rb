@@ -23,6 +23,4 @@ credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
 
 ENV['CAS_NETID'] = credentials['netid']
 ENV['CAS_PASS'] = credentials['password']
-ENV['aws_access_key_id'] = credentials['aws_access_key_id']
-ENV['aws_secret_access_key'] = credentials['aws_secret_access_key']
 

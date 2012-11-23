@@ -1,12 +1,14 @@
-<form id='organization-form'>
+<form id='organization-form' accept-charset="UTF-8" action="/organizations" enctype="multipart/form-data" method="post">
   <label>Organization Name:</label>
   <input name='name' value='<%= name %>' />
   <br/>
-  <label>Organization Description:</label>
-  <textarea name='bio'><%= bio ? bio : "" %></textarea>
-  <br/>
   <label>Organization Logo:</label>
-  <input id="image_image" name="image[image]" type="file" value="Upload an Image">
+  <div class="image"><img src="<%= image ? image.thumbnail.url : '' %>"/></div>
+  <input id="new-image" name="image" type="file"/>
+  <div id="open-image">Add an Image</div>
+  <br/>
+  <label>Organization Description:</label>
+  <textarea name='bio' placeholder="What is <%= name %>..."><%= bio ? bio : "" %></textarea>
   <br/>
   <button type="submit">Update Organization</button>
 </form>
