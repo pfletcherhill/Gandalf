@@ -17,7 +17,8 @@ class Event < ActiveRecord::Base
       "location" => location,
       "start_at" => start_at,
       "end_at" => end_at,
-      "organization" => organization.name
+      "organization" => organization.name,
+      "categories" => categories
     }
   end
   
