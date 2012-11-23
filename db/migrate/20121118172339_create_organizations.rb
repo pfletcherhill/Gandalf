@@ -3,7 +3,8 @@ class CreateOrganizations < ActiveRecord::Migration
     create_table :organizations do |t|
       t.string :name
       t.text :bio
-      # should have picture field
+      t.string :image
+      
       t.timestamps
     end
   end
