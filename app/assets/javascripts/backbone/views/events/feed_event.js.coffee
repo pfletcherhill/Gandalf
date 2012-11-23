@@ -3,12 +3,11 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.FeedEvent extends Backbone.View
   
   initialize: ->
+    @render()
 
   template: JST["backbone/templates/events/feed_event"]
 
   className: "feed-event"
-
-  initialize: ->
   
   convertTime: (time) ->
     moment(time).format("h:mm a")
@@ -16,7 +15,10 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
   render: ->
     startTime = @convertTime @model.get('start_at')
     endTime = @convertTime @model.get('end_at')
-
-    $(@el).html(@template({event: @model.toJSON(), startTime: startTime, endTime: endTime}))
+    $(@el).html(@template({ 
+      event: @model
+      startTime: startTime
+      endTime: endTime
+    }))
     return this
     

@@ -8,6 +8,7 @@ class Gandalf.Models.User extends Backbone.Model
   # I think this should be fetchSubscriptions, where the returned json includes
   # the subscribeable. We would then parse the that into subscribed_organizations
   # and subscribed_categories by checking each subscribeable's subscribeable_type
+  # That way, it's one less ajax request.
 
   fetchSubscribedOrganizations: ->
     $.ajax

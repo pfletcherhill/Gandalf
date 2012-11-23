@@ -8,8 +8,6 @@ class Gandalf.Models.Event extends Backbone.Model
   overlap: (e) ->
     one = moment(@get("start_at")) < moment(e.get("end_at"))
     two = moment(e.get("start_at")) < moment(@get("end_at"))
-    console.log "olap", this, e
-    # console.log one, two
     one && two
 
 class Gandalf.Collections.Events extends Backbone.Collection
@@ -32,7 +30,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
             if myId < tarId && myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
-    console.log "overlaps", overlaps
     overlaps
 
 
@@ -42,8 +39,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
       return time
     )
     groupedEvents = _.groupBy(sortedEvents, (e) ->
-      # Using start_at now because the event.to_json in the ruby wasn't
-      # properly converting between timezones
       # Gandalf.eventKeyFormat was set when the app was initialized
       return moment(e.get('start_at')).format(Gandalf.eventKeyFormat)
     )
