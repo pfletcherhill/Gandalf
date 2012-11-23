@@ -2,32 +2,50 @@ Gandalf.Views.Events ||= {}
 
 class Gandalf.Views.Events.CalendarEvent extends Backbone.View
 
-  initialize: (event)->
+  initialize: ()->
     _.bindAll(@)
-    @render(event)
+    @render()
+    @$el.popover(
+      placement: 'left'
+      content: 'My content'
+      title: 'A title'
+    )
 
   template: JST["backbone/templates/events/calendar_event"]
   
-  tagName: "div"
+  # This element is an li so that :nth-of-type works properly in the CSS
+  tagName: "li"
   className: "cal-event"
-  attributes: {}
+  attributes: 
+    rel: "event-popover"
   hourHeight: 45
+  popoverChild: ".event-name:first"
 
-  get_position: (time) ->
+  events:
+    "click": "showPopover"
+    "click:feedEvent" : "showPopover"
+
+  getPosition: (time) ->
     t = moment(time)
     hours = t.hours() + t.minutes()/60
     return Math.floor(hours*@hourHeight)
 
-  render: (e) ->
-    top = @get_position e.get("start_at")
-    height = @get_position(e.get("end_at")) - top
+  render: () ->
+    e = @model
+    top = @getPosition e.get("start_at")
+    height = @getPosition(e.get("end_at")) - top
     style_string = "top: "+top+"px; height: "+height+"px;"
-
-    $(@el).attr({ style: style_string, data_id: e.get("id") }).html(@template(
+    $(@el).attr({ style: style_string, "data-id": e.get("id") }).html(@template(
       event: e
       top: top
       height: height
     ))
-
     return this
+
+  showPopover: () ->
+    id = @model.get("id")
+    # Hide all other popovers
+    $("[rel='event-popover']:not([data-id='"+id+"'])").popover("hide")
+    # Toggle this one
+    @$el.popover('toggle')
 

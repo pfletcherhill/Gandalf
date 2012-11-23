@@ -5,64 +5,66 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   el: "#content"
 
-  initialize: (events, start, period)->
+  # options has keys [collection, startDate, period]
+  initialize: ()->
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
-    @render(events, start, period)
+    @startDate = @options.startDate
+    @period = @options.period
+    @render()
 
-  renderWeekCalendar: (startDate) ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate)
+  renderWeekCalendar: () ->
+    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").html(view.el)
 
-  renderMonthCalendar: (startDate) ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate)
+  renderMonthCalendar: () ->
+    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").html(view.el)
 
-  renderCalDays: (days, startDate, numDays) ->
+  renderCalDays: (numDays) ->
     dayCount = 0
     while dayCount < numDays
       # Gandalf.eventKeyFormat was set when the app was initialized
-      d = moment(startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
-      @addCalDay(days[d])
+      d = moment(@startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
+      @addCalDay(@days[d])
       dayCount++
 
   addCalDay: (events) ->
-    view = new Gandalf.Views.Events.CalendarDay()
-    @$("#cal-day-container").append(view.render(events).el)
+    view = new Gandalf.Views.Events.CalendarDay(model: events)
+    @$("#cal-day-container").append(view.el)
 
-  renderFeed: (days) ->
-    _.each days, (events, day) =>
+  renderFeed: () ->
+    _.each @days, (events, day) =>
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Events.FeedDay()
-    @$("#feed-list").append(view.render(day, events).el)
+    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
+    @$("#feed-list").append(view.el)
 
-  # Doesn't work becuase jQuery selectors aren't working properly...
   adjustOverlappingEvents: (overlaps) ->
     _.each overlaps, (ids, myId) ->
       len = ids.length
       # keep this line in case i need it later
       # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
-      $(".cal-event[data_id='"+myId+"']").addClass "overlap overlap-"+len
+      $(".cal-event[data-id='"+myId+"']").addClass "overlap overlap-"+len
       _.each ids, (id, i) ->
         num = i+1
-        $(".cal-event[data_id='"+id+"']").addClass "overlap overlap-"+len
+        $(".cal-event[data-id='"+id+"']").addClass "overlap overlap-"+len
 
     
-  render: (events, start, period) ->
+  render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
-    days = events.sortAndGroup()
-    @renderFeed(days)
-    if period == "month"
-      @renderMonthCalendar moment(start)
+    @days = @collection.sortAndGroup()
+    @renderFeed()
+    if @period == "month"
+      @renderMonthCalendar()
       numDays = 28 # ACTUALLy number of days in the month of moment(start)
     else 
-      @renderWeekCalendar moment(start)
+      @renderWeekCalendar()
       numDays = 7
 
-    @renderCalDays(days, moment(start), numDays)
-    overlaps = events.findOverlaps days
+    @renderCalDays(numDays)
+    overlaps = @collection.findOverlaps @days
     @adjustOverlappingEvents overlaps
     # console.log(overlaps)
     return this
