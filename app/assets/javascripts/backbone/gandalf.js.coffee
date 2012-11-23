@@ -10,3 +10,4 @@ window.Gandalf =
   Routers: {}
   Views: {}
   eventKeyFormat: "YYYY-MM-DD"
+  dispatcher: _.clone(Backbone.Events)

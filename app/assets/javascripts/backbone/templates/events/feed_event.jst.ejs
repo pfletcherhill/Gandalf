@@ -1,8 +1,8 @@
 <div class="time"><%= startTime %> -<%= endTime %></div>
 <div class="details">
   <div class="feed-left"></div>
-  <div class="organization"><%= event.organization %></div>
-  <div class="name"><%= event.name %></div>
-  <div class="location"><%= event.location %></div>
+  <div class="organization"><%= event.get("organization") %></div>
+  <div class="name"><%= event.get("name") %></div>
+  <div class="location"><%= event.get("location") %></div>
 
 </div>

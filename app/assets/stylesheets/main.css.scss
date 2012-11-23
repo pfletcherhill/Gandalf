@@ -26,6 +26,10 @@ body {
   font-size: $font;
 }
 
+li {
+  list-style: none;
+}
+
 a {
   color: white;
   text-decoration: none;
@@ -124,6 +128,7 @@ $feed_width: 300px;
 .sidebar {
   left: 0;
   width: $sidebar_width;
+  overflow-y: hidden;
   @include linear-gradient(#bbb, #444);
 }
 
@@ -147,12 +152,12 @@ $feed_width: 300px;
 /* ============= ALL OTHER LAYOUT ============= */
 
 $left_width: 300px;
-.left, .main {
+.content-left, .main {
   position: absolute;
   top: 0;
   height: 100%; 
 }
-.left {
+.content-left {
   left: 0;
   width: $left_width;
   border-right: 1px solid #ccc;

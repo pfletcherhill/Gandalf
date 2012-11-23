@@ -50,7 +50,14 @@ class Gandalf.Router extends Backbone.Router
     string = @generateParamsString params
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
     @events.fetch success: (events) ->
-      view = new Gandalf.Views.Events.Index(events, params.start, params.period)
+      _.each(events.models, (e) ->
+        e.set(visible: true)
+      )
+      view = new Gandalf.Views.Events.Index(
+        collection: events
+        startDate: params.start
+        period: params.period
+      )
   
   browse: (type) ->  
     $(".search-list a").removeClass 'active'
