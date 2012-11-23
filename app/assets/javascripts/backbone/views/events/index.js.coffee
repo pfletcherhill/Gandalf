@@ -48,7 +48,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   adjustOverlappingEvents: (eventId) ->
     overlaps = @collection.findOverlaps eventId 
-    console.log "index", eventId, overlaps
     $(".cal-event").removeClass("overlap overlap-1 overlap-2 overlap-3")
     _.each overlaps, (ids, myId) ->
       len = ids.length
