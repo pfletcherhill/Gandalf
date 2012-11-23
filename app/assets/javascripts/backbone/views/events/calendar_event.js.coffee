@@ -43,7 +43,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     top = @getPosition e.get("start_at")
     height = @getPosition(e.get("end_at")) - top
     style_string = "top: "+top+"px; height: "+height+"px;"
-    $(@el).attr({ style: style_string, "data-id": e.get("id") }).html(@template(
+    $(@el).attr({ style: style_string, "data-event-id": e.get("id") }).html(@template(
       event: e
       top: top
       height: height
@@ -60,7 +60,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
   popover: () ->
     id = @model.get("id")
     # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-id='"+id+"'])")
+    otherPopovers = $("[rel='event-popover']:not([data-event-id='"+id+"'])")
     otherPopovers.popover('hide') if otherPopovers
     # Add event handler to close button
     t = this
