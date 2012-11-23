@@ -8,6 +8,7 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
   events: 
     "mouseenter" : "mouseenter"
     "mouseleave" : "mouseleave"
+    "click" : "click"
 
   template: JST["backbone/templates/events/feed_event"]
 
@@ -30,3 +31,5 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     Gandalf.dispatcher.trigger("feedEvent:mouseenter", @model.get("id"))
   mouseleave: () ->
     Gandalf.dispatcher.trigger("feedEvent:mouseleave", @model.get("id"))
+  click: () ->
+    Gandalf.dispatcher.trigger("feedEvent:click", @model.get("id"))
