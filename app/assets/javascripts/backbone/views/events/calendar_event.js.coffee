@@ -11,6 +11,12 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
       trigger: 'click'
       content: @popoverTemplate(e: @model)
     )
+    @css = {}
+    @css.backgroundColor = @$el.css("backgroundColor")
+    @css.zIndex = @$el.css("zIndex")
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
+
 
   template: JST["backbone/templates/events/calendar_event"]
   popoverTemplate: JST["backbone/templates/events/calendar_popover"]
@@ -24,8 +30,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
   popoverChild: ".event-name:first"
 
   events:
-    "click": "showPopover"
-    "click:feedEvent" : "showPopover"
+    "click": "onClick"
 
   getPosition: (time) ->
     t = moment(time)
@@ -44,7 +49,14 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     ))
     return this
 
-  showPopover: () ->
+  onClick: () ->
+    # Demo code to show how one may hide and show events
+    # $(".cal-event").css("opacity", 1)
+    # @$el.css("opacity", 0.2)
+    # Gandalf.dispatcher.trigger("event:changeVisible", @model.get("id"))
+    @popover()
+
+  popover: () ->
     id = @model.get("id")
     # Hide all other popovers
     otherPopovers = $("[rel='event-popover']:not([data-id='"+id+"'])")
@@ -53,4 +65,19 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     t = this
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
+
+  mouseenter: (id) ->
+    console.log @css
+    if !id || @model.get("id") == id
+      @$el.css(
+        backgroundColor: "rgba(170,170,170,0.9)"
+        zIndex: 15
+      )
+
+  mouseleave: (id) ->
+    if !id || @model.get("id") == id
+      @$el.css(
+        backgroundColor: @css.backgroundColor
+        zIndex: @css.zIndex
+      )
 
