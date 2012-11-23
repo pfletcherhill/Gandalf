@@ -13,7 +13,7 @@
 @font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
 @font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
 $yellow: rgba(255,203,5,1);
-$blue: rgba(31,188,255,1);
+$blue: #4BA6FF;
 $font: 12px;
 $min_width: 1000px;
 
@@ -31,13 +31,7 @@ li {
 }
 
 a {
-  color: white;
   text-decoration: none;
-  &:hover {
-    color: darken(white, 5%);
-    text-decoration: underline;
-  }
-  @include transition(color 0.2s);
 }
 
 input {
@@ -61,9 +55,8 @@ $header_height: 50px;
 $side_padding: 15px;
 .header {
   height: $header_height;
-  @include linear-gradient(lighten($blue, 20%), $blue);
-  @include box-shadow(0 0 5px rgba(0,0,0,0.7));
-  //background: $blue;
+  background: white;
+  @include box-shadow(0 0 3px rgba(0,0,0,0.33));
   position: fixed;
   top: 0px;
   left: 0px;
@@ -76,20 +69,34 @@ $side_padding: 15px;
 }
 
 .link {
-  display: inline-block;
-  line-height: $header_height;
-  margin-left: 15px;
+  a {
+    display: block;
+    line-height: $header_height;
+    color: #777;
+    @include transition(color 0.2s);
+  }
 }
 
 #logo {
-  display: inline-block;
-  padding-left: $side_padding;
   a {
-    color: white;
+    color: $blue;
     font-family: HNLight;
     font-size: 20px;
     line-height: $header_height;
     text-decoration: none;
+  }
+}
+
+.link, #logo {
+  float: left;
+  padding: 0px $side_padding;
+  border-right: 1px solid #dadada;
+  @include transition(0.1s);
+  &:hover {
+    a {
+      text-decoration: none;
+    }
+    @include linear-gradient(#F5F5F5, #fff);
   }
 }
 
