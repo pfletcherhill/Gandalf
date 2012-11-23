@@ -3,18 +3,26 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.Index extends Backbone.View
   template: JST["backbone/templates/events/index"]
 
-  id: "index"
+  el: "#content"
 
-  initialize: ->
+  initialize: (events, start, period)->
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+    @render(events, start, period)
 
-  renderWeekCalendar: (days, startDate) ->
-    view = new Gandalf.Views.Events.CalendarWeek()
-    @$("#calendar-container").append(view.render(moment(startDate)).el)
+  renderWeekCalendar: (startDate) ->
+    view = new Gandalf.Views.Events.CalendarWeek(startDate)
+    @$("#calendar-container").html(view.el)
+
+  renderMonthCalendar: (startDate) ->
+    view = new Gandalf.Views.Events.CalendarWeek(startDate)
+    @$("#calendar-container").html(view.el)
+
+  renderCalDays: (days, startDate, numDays) ->
     dayCount = 0
-    while dayCount < 7
-      d = moment(startDate).add('d', dayCount).format("YYYY-MM-DD")
+    while dayCount < numDays
+      # Gandalf.eventKeyFormat was set when the app was initialized
+      d = moment(startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
       @addCalDay(days[d])
       dayCount++
 
@@ -30,62 +38,32 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay()
     @$("#feed-list").append(view.render(day, events).el)
 
-  sortAndGroupEvents: (events) ->
-    sortedEvents = _.sortBy(events, (e)->
-      t = moment(e.attributes.start_at)
-      return t
-    )
-    groupedEvents = _.groupBy(sortedEvents, (event) ->
-      return event.get('date')
-    )
-    groupedEvents
-
-  findEventOverlaps: (days) ->
-    overlaps = {}
-    t = this
-    _.each days, (events) ->
-      if events.length > 1
-        _.each events, (myE) ->
-          myAttrs = myE.attributes
-          _.each events, (targetE) ->
-            tarAttrs = targetE.attributes
-            if myAttrs.id < tarAttrs.id # && t.overlap(myAttrs, tarAttrs)
-              id = myAttrs.id
-              overlaps[id] ||= []
-              overlaps[id].push tarAttrs.id
-
-    @adjustOverlappingEvents overlaps
-
   # Doesn't work becuase jQuery selectors aren't working properly...
   adjustOverlappingEvents: (overlaps) ->
     _.each overlaps, (ids, myId) ->
       len = ids.length
-      
-      $(".cal-event[data_id='"+myId+"']").addClass("overlap-"+len).addClass("overlap-order-"+0)
-      i = 1
-      while i < len + 1
-        id = ids[i-1]
-        $(".cal-event[data_id='"+id+"']").addClass("overlap-"+len).addClass("overlap-order-"+i)
-        i+=1
+      # keep this line in case i need it later
+      # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
+      $(".cal-event[data_id='"+myId+"']").addClass "overlap overlap-"+len
+      _.each ids, (id, i) ->
+        num = i+1
+        $(".cal-event[data_id='"+id+"']").addClass "overlap overlap-"+len
 
-  
-  # Find if two events overlap
-  overlap: (e1, e2) ->
-    one = moment(e1.start_at) < moment(e2.end_at)
-    two = moment(e2.start_at) < moment(e1.end_at)
-    console.log e1, e2
-    console.log one, two
-    one && two
     
   render: (events, start, period) ->
-    $(@el).html(@template({user: Gandalf.currentUser}))
-    days = @sortAndGroupEvents events.models
+    $(@el).html(@template({ user: Gandalf.currentUser }))
+    days = events.sortAndGroup()
     @renderFeed(days)
     if period == "month"
-      @renderMonthCalendar(days, moment(start))
+      @renderMonthCalendar moment(start)
+      numDays = 28 # ACTUALLy number of days in the month of moment(start)
     else 
-      @renderWeekCalendar(days, moment(start))
-    overlaps = @findEventOverlaps(days)
+      @renderWeekCalendar moment(start)
+      numDays = 7
+
+    @renderCalDays(days, moment(start), numDays)
+    overlaps = events.findOverlaps days
+    @adjustOverlappingEvents overlaps
     return this
     
 

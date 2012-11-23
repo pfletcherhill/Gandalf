@@ -5,6 +5,10 @@ class Gandalf.Models.User extends Backbone.Model
     name: null
     email: null
   
+  # I think this should be fetchSubscriptions, where the returned json includes
+  # the subscribeable. We would then parse the that into subscribed_organizations
+  # and subscribed_categories by checking each subscribeable's subscribeable_type
+
   fetchSubscribedOrganizations: ->
     $.ajax
       type: 'GET'
