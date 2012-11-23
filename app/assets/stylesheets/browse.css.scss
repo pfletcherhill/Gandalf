@@ -1,0 +1,41 @@
+/* ========== LAYOUT ========= */
+
+.left-search input {
+  margin: 18px 15px;
+  padding: 8px;
+  width: 252px;
+  font-family: HN;
+  
+}
+
+li {
+  border-bottom: 1px solid #dadada;
+  a {
+    display: block;
+    padding: 15px;
+    font-family: HNBold;
+    font-size: 15px;
+    color: black;
+    outline: none;
+    @include transition(0.2s);
+    &:hover {
+      text-decoration: none;
+      color: black;
+      @include linear-gradient(#efefef, #fafafa);
+    }
+    &.active {
+      @include linear-gradient(#efefef, #efefef);
+    }
+  }
+}
+
+#browse-list {
+  padding: 10px;
+  .browse-result {
+    display: inline-block;
+    width: 350px;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin: 5px;
+  }
+}
