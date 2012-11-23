@@ -64,7 +64,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @renderCalDays(days, moment(start), numDays)
     overlaps = events.findOverlaps days
     @adjustOverlappingEvents overlaps
-    # console.log(overlaps)
     return this
     
 

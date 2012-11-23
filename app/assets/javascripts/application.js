@@ -6,4 +6,7 @@
 //= require backbone_datalink
 //= require backbone/gandalf
 //= require bootstrap
+//= require file-upload/jquery.iframe-transport
+//= require file-upload/jquery.ui.widget
+//= require file-upload/jquery.fileupload
 //= require_tree .

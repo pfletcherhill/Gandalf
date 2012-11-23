@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
+    t.string   "flyer"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.text     "bio"
+    t.string   "image"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
