@@ -16,6 +16,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     @css.zIndex = @$el.css("zIndex")
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
+    Gandalf.dispatcher.on("feedEvent:click", @feedClick)
 
 
   template: JST["backbone/templates/events/calendar_event"]
@@ -49,7 +50,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     ))
     return this
 
-  onClick: () ->
+  onClick: (id) ->
     # Demo code to show how one may hide and show events
     # $(".cal-event").css("opacity", 1)
     # @$el.css("opacity", 0.2)
@@ -79,4 +80,8 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
         backgroundColor: @css.backgroundColor
         zIndex: @css.zIndex
       )
+
+  feedClick:(id) ->
+    if !id || @model.get("id") == id
+      @$el.click()
 
