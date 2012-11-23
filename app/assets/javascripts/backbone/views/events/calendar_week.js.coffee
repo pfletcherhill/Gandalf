@@ -5,6 +5,9 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   
   tagName: "div"
   className: "cal week-cal"
+
+  events:
+    "click .hour-day" : "hidePopovers"
   
   initialize: ()->
     @render()
@@ -12,3 +15,6 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   render: () ->
     $(@el).html(@template(startDate: @options.startDate))
     return this
+
+  hidePopovers: () ->
+    $("[rel='event-popover']").popover("hide")
