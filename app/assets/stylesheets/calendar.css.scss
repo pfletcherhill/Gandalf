@@ -70,7 +70,6 @@ $cal_z: 10;
   position: absolute;
   left: 0;
   z-index: $cal_z;
-  
   border: 1pt solid transparent;
   background-color: rgba(200,200,200,0.7);
   @include transition(all 0.2s);
@@ -95,7 +94,7 @@ $cal_z: 10;
 // 2 things overlapping
 $o_padding: 3%;
 .overlap-1 {
-  $width: 47%;
+  $width: 49%;
   width: $width;
   padding-left: $o_padding;
   &:nth-of-type(2n+1) {
@@ -109,7 +108,7 @@ $o_padding: 3%;
 }
 // 3 things
 .overlap-2 {
-  $width: 30%;
+  $width: 31%;
   width: $width;
   padding-left: $o_padding;
   &:nth-of-type(3n+1) {
@@ -149,17 +148,30 @@ $o_padding: 3%;
 }
 
 .overlap {
-  @include transition(all 0.2s);
   &:hover {
     width: 98%;
     padding: 0;
     left: 0;
-    z-index: $cal_z + 1
+    z-index: $cal_z + 1;
   }
 }
 
 /* ======== POPOVER ========= */
 
+$event-popover-padding: 10px;
 
+.event-popover-head {
+  font-size: 18px;
+  line-height: 24px;
+  background-color: $popover-head-color;
+  padding: $event-popover-padding;
+}
+.event-popover-body {
+  padding: $event-popover-padding;
+}
+
+.popover .close {
+  line-height: 15px;
+}
 
 

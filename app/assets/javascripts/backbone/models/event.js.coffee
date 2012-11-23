@@ -17,8 +17,8 @@ class Gandalf.Collections.Events extends Backbone.Collection
   initialize: ->
     _.bindAll(@)
 
-  findOverlaps: (days) ->
-    # days = @sortAndGroup
+  findOverlaps: (id) ->
+    days = @sortAndGroup id
     overlaps = {}
     t = this
     _.each days, (events) ->
@@ -33,8 +33,15 @@ class Gandalf.Collections.Events extends Backbone.Collection
     overlaps
 
 
-  sortAndGroup: ()->
-    sortedEvents = _.sortBy(@models, (e)->
+  sortAndGroup: (id)->
+    if id
+      visibleModels = _.filter(@models, (m) ->
+        m.get("id") != id
+      )
+    else
+      visibleModels = @models
+
+    sortedEvents = _.sortBy(visibleModels, (e)->
       time = moment(e.get("start_at"))
       return time
     )

@@ -7,19 +7,24 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   # options has keys [collection, startDate, period]
   initialize: ()->
+    _.bindAll(this, "adjustOverlappingEvents")
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+    # Listening for global events
+    Gandalf.dispatcher.bind("event:changeVisible", @adjustOverlappingEvents)
     @startDate = @options.startDate
     @period = @options.period
     @render()
 
+
+
   renderWeekCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
-    @$("#calendar-container").html(view.el)
+    @$("#calendar-container").append(view.el)
 
   renderMonthCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
-    @$("#calendar-container").html(view.el)
+    @$("#calendar-container").append(view.el)
 
   renderCalDays: (numDays) ->
     dayCount = 0
@@ -41,7 +46,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
     @$("#feed-list").append(view.el)
 
-  adjustOverlappingEvents: (overlaps) ->
+  adjustOverlappingEvents: (eventId) ->
+    overlaps = @collection.findOverlaps eventId 
+    console.log "index", eventId, overlaps
+    $(".cal-event").removeClass("overlap overlap-1 overlap-2 overlap-3")
     _.each overlaps, (ids, myId) ->
       len = ids.length
       # keep this line in case i need it later
@@ -64,8 +72,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
       numDays = 7
 
     @renderCalDays(numDays)
-    overlaps = @collection.findOverlaps @days
-    @adjustOverlappingEvents overlaps
+    @adjustOverlappingEvents()
     # console.log(overlaps)
     return this
     
