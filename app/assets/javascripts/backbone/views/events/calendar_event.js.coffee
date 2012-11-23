@@ -7,12 +7,14 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     @render()
     @$el.popover(
       placement: 'left'
-      content: 'My content'
-      title: 'A title'
+      html: true
+      trigger: 'click'
+      content: @popoverTemplate(e: @model)
     )
 
   template: JST["backbone/templates/events/calendar_event"]
-  
+  popoverTemplate: JST["backbone/templates/events/calendar_popover"]
+
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "li"
   className: "cal-event"
@@ -45,7 +47,10 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
   showPopover: () ->
     id = @model.get("id")
     # Hide all other popovers
-    $("[rel='event-popover']:not([data-id='"+id+"'])").popover("hide")
-    # Toggle this one
-    @$el.popover('toggle')
+    otherPopovers = $("[rel='event-popover']:not([data-id='"+id+"'])")
+    otherPopovers.popover('hide') if otherPopovers
+    # Add event handler to close button
+    t = this
+    $(".popover .close").click (e) ->
+      t.$el.popover('hide')
 
