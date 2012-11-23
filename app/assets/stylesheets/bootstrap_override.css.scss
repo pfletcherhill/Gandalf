@@ -13,5 +13,5 @@ $popover-color: lightblue;
   background-color: $popover-color;
 }
 .popover-title {
-  @include border-radius(0);
+  display: none;
 }

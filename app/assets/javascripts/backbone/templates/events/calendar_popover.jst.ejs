@@ -1,0 +1,22 @@
+<div class='event-popover-title'>
+  <strong><%= e.get("name") %></strong>
+  <span class="close">×</span>
+</div>
+<p>By <%= e.get("organization") %></p>
+<% startAt = moment(e.get("start_at")); %>
+<% endAt = moment(e.get("end_at")); %>
+<% if(startAt.format("YYYY-MM-DD") == endAt.format("YYYY-MM-DD")) { %>
+  <p> 
+    <%= startAt.format("dddd, MMMM DD hh:mm a") %> -
+    <%= endAt.format("hh:mm a") %>
+  </p>
+<% } else { %>
+  <p> 
+    <%= startAt.format("dddd, MMMM DD hh:mm a") %>-
+    <%= endAt.format("dddd, MMMM DD hh:mm a") %>
+  </p>
+<% } %>
+<p>At: <%= e.get("location") %></p>
+<p>Description: <%= e.get("description") %></p>
+<p>Address: <%= e.get("address") %></p>
+<div class="map-container">Google map goes here</div>
