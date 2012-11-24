@@ -61,15 +61,15 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    _.each subscriptions, (subscription) ->
+    for s in  subscriptions
       view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed-organizations-list").append(view.el)
+      $("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    _.each subscriptions, (subscription) ->
-      view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed-categories-list").append(view.el)
+    for s in  subscriptions
+      view = new Gandalf.Views.Categories.Short(model: s)
+      $("#subscribed-categories-list").append(view.el)
 
   renderCalendar: () ->
     header = @calHeaderTemplate(startDate: @startDate, period: @period)
@@ -110,7 +110,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @renderCalendar()
 
   today: () ->
-    if @period == "week"
+    if @period is "week"
       @startDate = moment().day(0)
     else
       @startDate = moment().date(1)
@@ -125,11 +125,11 @@ class Gandalf.Views.Events.Index extends Backbone.View
   adjustOverlappingEvents: () ->
     overlaps = @collection.findOverlaps()
     $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
-    _.each overlaps, (ids, myId) ->
+    for ids, myId in overlaps
       num = ids.length + 1
-      $(".cal-event[data-event-id='"+myId+"']").addClass "overlap overlap-"+num
-      _.each ids, (id, i) ->
-        $(".cal-event[data-event-id='"+id+"']").addClass "overlap overlap-"+num
+      $(".cal-event[data-event-id='#{myId}']").addClass "overlap overlap-#{num}"
+      for id in ids
+        $(".cal-event[data-event-id='#{id}']").addClass "overlap overlap-#{num}"
     @makeCSSAdjustments()
 
   # CSS wasn't strong enough for the kind of styling I wanted to do...
@@ -139,32 +139,29 @@ class Gandalf.Views.Events.Index extends Backbone.View
     pLeft = 3
     calZ = 10
     while overlapIndex <= @maxOverlaps
-      evs = $(".cal-event.overlap-"+overlapIndex+":not(.event-hidden-org, .event-hidden-cat)")
+      evs = $(".cal-event.overlap-#{overlapIndex}:not(.event-hidden-org, .event-hidden-cat)")
       width = Math.floor(100/overlapIndex) - overlapIndex
-      longWidth = width + pLeft
-      $(evs).css({ width: width+"%", paddingLeft: pLeft+"%" })
+      $(evs).css({ width: "#{width}%", paddingLeft: "#{pLeft}%" })
       _.each evs, (e, index) ->
-        if index%overlapIndex == 0
+        if index%overlapIndex is 0
           $(e).css(
             left: 0
             paddingLeft: 0
-            width: longWidth+"%"
+            width: "#{width + pLeft}%"
           )
-        else if index%overlapIndex == 1
+        else if index%overlapIndex is 1
           $(e).css(
-            left: width+"%"
+            left: "#{width}%"
             zIndex: calZ - 1
           )
-        else if index%overlapIndex == 2
-          newWidth = width * 2
+        else if index%overlapIndex is 2
           $(e).css(
-            left: newWidth+"%"
+            left: "#{width*2}%"
             zIndex: calZ - 2
           )
-        else if index%overlapIndex == 3
-          newWidth = width * 3
+        else if index%overlapIndex is 3
           $(e).css(
-            left: newWidth+"%"
+            left: "#{width*3}%"
             zIndex: calZ - 3
           )
       overlapIndex++
