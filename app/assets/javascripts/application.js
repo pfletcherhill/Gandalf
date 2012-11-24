@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.effects.all
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync

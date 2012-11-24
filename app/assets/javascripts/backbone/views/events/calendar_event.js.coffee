@@ -135,5 +135,3 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
       left: @css.left
       zIndex: @css.zIndex
     )
-
-

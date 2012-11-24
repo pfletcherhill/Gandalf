@@ -18,7 +18,6 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     return this
 
   hidePopovers: () ->
-    console.log("hey")
     $("[rel='event-popover']").popover("hide")
 
 
