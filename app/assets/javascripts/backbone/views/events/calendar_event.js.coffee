@@ -40,22 +40,32 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
 
   render: () ->
     e = @model
-    top = @getPosition e.get("start_at")
-    height = @getPosition(e.get("end_at")) - top
-    style_string = "top: "+top+"px; height: "+height+"px;"
-    $(@el).attr({ style: style_string, "data-event-id": e.get("id") }).html(@template(
-      event: e
-      top: top
-      height: height
-    ))
+    @top = @getPosition e.get("start_at")
+    @height = @getPosition(e.get("end_at")) - @top
+    style_string = "top: "+@top+"px; height: "+@height+"px;"
+    $(@el).attr(
+      style: style_string
+      "data-event-id": e.get("id")
+    ).html(@template( event: e ))
     return this
 
-  onClick: (id) ->
+  onClick: () ->
     # Demo code to show how one may hide and show events
     # $(".cal-event").css("opacity", 1)
     # @$el.css("opacity", 0.2)
     # Gandalf.dispatcher.trigger("event:changeVisible", @model.get("id"))
+    @scroll()
     @popover()
+
+  scroll:() ->
+    container = @$el.parents("#calendar-container")
+    if @height > 300
+      scrolltop = @top + 100
+    else
+      middle = @top + @height / 2
+      scrolltop = middle - 250
+    $(container).animate scrollTop: scrolltop, 300
+
 
   popover: () ->
     id = @model.get("id")

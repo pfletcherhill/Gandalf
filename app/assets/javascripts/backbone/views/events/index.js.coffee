@@ -51,10 +51,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
       len = ids.length
       # keep this line in case i need it later
       # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
-      $(".cal-event[data-id='"+myId+"']").addClass "overlap overlap-"+len
+      $(".cal-event[data-event-id='"+myId+"']").addClass "overlap overlap-"+len
       _.each ids, (id, i) ->
         num = i+1
-        $(".cal-event[data-id='"+id+"']").addClass "overlap overlap-"+len
+        $(".cal-event[data-event-id='"+id+"']").addClass "overlap overlap-"+len
 
     
   render: () ->
