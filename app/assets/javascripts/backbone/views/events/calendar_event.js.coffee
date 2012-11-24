@@ -45,7 +45,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("start_at")
     @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: "+@top+"px; height: "+@height+"px;"
+    style_string = "top: #{@top}px; height: #{@height}px;"
     $(@el).attr(
       style: style_string
       "data-event-id": e.get("id")
@@ -71,7 +71,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
   popover: () ->
     id = @model.get("id")
     # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-event-id='"+id+"'])")
+    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{id}'])")
     otherPopovers.popover('hide') if otherPopovers
     # Add event handler to close button
     t = this
@@ -79,21 +79,21 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
       t.$el.popover('hide')
 
   feedmouseenter: (id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.css(
         backgroundColor: "rgba(170,170,170,0.9)"
         zIndex: 15
       )
 
   feedmouseleave: (id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.css(
         backgroundColor: @css.backgroundColor
         zIndex: @css.zIndex
       )
 
   feedClick:(id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.click()
 
   visibilityChange: (obj) ->
@@ -101,23 +101,23 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     # User event-hidden-org and event-hidden-cat because of the case when
     # if an event is hidden by both an organization and a category
     # TO DO: what if it's hidden by multiple categories?
-    if obj.kind == "organization"
-      if parseInt(@$el.attr("data-organization-id")) == obj.id
-        if obj.state == "show"
+    if obj.kind is "organization"
+      if parseInt(@$el.attr("data-organization-id")) is obj.id
+        if obj.state is "show"
           @$el.removeClass("event-hidden-org")
-        else if obj.state == "hide"
+        else
           @$el.addClass("event-hidden-org")
-    if obj.kind == "category"
-      if @$el.attr("data-category-ids").indexOf(obj.id+",") != -1
-        if obj.state == "show"
+    if obj.kind is"category"
+      if @$el.attr("data-category-ids").indexOf(obj.id+",") isnt -1
+        if obj.state is "show"
           @$el.removeClass("event-hidden-cat")
-        else if obj.state == "hide"
+        else
           @$el.addClass("event-hidden-cat")
     # Tells index to readjust the overlapping events
     Gandalf.dispatcher.trigger("index:adjust")
 
   mouseenter:() ->
-    
+    # Store current CSS values
     @css.width = @$el.css("width")
     @css.pLeft = @$el.css("paddingLeft")
     @css.left = @$el.css("left")
