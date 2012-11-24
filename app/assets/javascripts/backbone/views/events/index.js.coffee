@@ -8,9 +8,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
     # Listening for global events
-    Gandalf.dispatcher.bind("event:changeVisible", @adjustOverlappingEvents)
+    Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
+    # Class variables
     @startDate = @options.startDate
     @period = @options.period
+    @maxOverlaps = 4
+
     @render()
 
   template: JST["backbone/templates/events/index"]
@@ -53,17 +56,109 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
     @$("#feed-list").append(view.el)
 
-  adjustOverlappingEvents: (eventId) ->
-    overlaps = @collection.findOverlaps eventId 
-    $(".cal-event").removeClass("overlap overlap-1 overlap-2 overlap-3")
+  adjustOverlappingEvents: () ->
+    overlaps = @collection.findOverlaps()
+    $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
     _.each overlaps, (ids, myId) ->
-      len = ids.length
-      # keep this line in case i need it later
-      # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
-      $(".cal-event[data-event-id='"+myId+"']").addClass "overlap overlap-"+len
+      num = ids.length + 1
+      $(".cal-event[data-event-id='"+myId+"']").addClass "overlap overlap-"+num
       _.each ids, (id, i) ->
-        num = i+1
-        $(".cal-event[data-event-id='"+id+"']").addClass "overlap overlap-"+len
+        $(".cal-event[data-event-id='"+id+"']").addClass "overlap overlap-"+num
+    @makeCSSAdjustments()
+
+  # CSS wasn't strong enough for the kind of styling I wanted to do...
+  # so we're doing it in JS
+  makeCSSAdjustments: () ->
+    overlapIndex = 2
+    pLeft = 3
+    calZ = 10
+    while overlapIndex <= @maxOverlaps
+      evs = $(".cal-event.overlap-"+overlapIndex+":not(.event-hidden)")
+      width = Math.floor(100/overlapIndex) - overlapIndex
+      longWidth = width + pLeft
+      $(evs).css({ width: width+"%", paddingLeft: pLeft+"%" })
+      _.each evs, (e, index) ->
+        if index%overlapIndex == 0
+          $(e).css(
+            left: 0
+            paddingLeft: 0
+            width: longWidth+"%"
+          )
+        else if index%overlapIndex == 1
+          $(e).css(
+            left: width+"%"
+            zIndex: calZ - 1
+          )
+        else if index%overlapIndex == 2
+          newWidth = width * 2
+          $(e).css(
+            left: newWidth+"%"
+            zIndex: calZ - 2
+          )
+        else if index%overlapIndex == 3
+          newWidth = width * 3
+          $(e).css(
+            left: newWidth+"%"
+            zIndex: calZ - 3
+          )
+      overlapIndex++
+
+# // 2 things overlapping
+# $o_padding: 3%;
+# .overlap-1 {
+#   $width: 49%;
+#   width: $width;
+#   padding-left: $o_padding;
+#   &:nth-of-type(2n+1) {
+#     padding-left: 0;
+#     width: $width + $o_padding;
+#   }
+#   &:nth-of-type(2n) {
+#     left: $width;
+#     z-index: $cal_z - 1;
+#   }
+# }
+# // 3 things
+# .overlap-2 {
+#   $width: 31%;
+#   width: $width;
+#   padding-left: $o_padding;
+#   &:nth-of-type(3n+1) {
+#     padding-left: 0;
+#     width: $width + $o_padding;
+#   }
+#   &:nth-of-type(3n+2) {
+#     left: $width;
+#     z-index: $cal_z - 1;
+#   }
+#   &:nth-of-type(3n) {
+#     left: $width * 2;
+#     z-index: $cal_z - 2;
+#   }
+# }
+# // 4 things
+# .overlap-3 {
+#   $width: 22%;
+#   width: $width;
+#   padding-left: $o_padding;
+#   &:nth-of-type(4n-3) {
+#     padding-left: 0;
+#     width: $width + $o_padding;
+#   }
+#   &:nth-of-type(4n-2) {
+#     left: $width;
+#     z-index: $cal_z - 1;
+#   }
+#   &:nth-of-type(4n-1) {
+#     left: $width * 2;
+#     z-index: $cal_z - 2;
+#   }
+#   &:nth-of-type(4n) {
+#     left: $width * 3;
+#     z-index: $cal_z - 3;
+#   }
+# }
+
 
   renderCalendar: () ->
     if @period == "month"
@@ -88,13 +183,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed-organizations-list").append(view.render().el)
+      @$("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed-categories-list").append(view.render().el)
+      @$("#subscribed-categories-list").append(view.el)
   
   next: () ->
     @startDate.add('w', 1)
@@ -103,8 +198,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   prev: () ->
     @startDate.subtract('w', 1)
     @renderCalendar()
-
-
 
   # Paul, this code should be in 
   scrolling: ->
