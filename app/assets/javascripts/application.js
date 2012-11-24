@@ -1,13 +1,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.effects.all
+//= require jquery-fileupload/basic
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require backbone/gandalf
 //= require bootstrap
-//= require file-upload/jquery.iframe-transport
-//= require file-upload/jquery.ui.widget
-//= require file-upload/jquery.fileupload
 //= require_tree .
