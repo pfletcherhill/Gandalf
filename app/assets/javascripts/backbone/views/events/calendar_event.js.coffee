@@ -98,18 +98,21 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
 
   visibilityChange: (obj) ->
     time = 200
+    # User event-hidden-org and event-hidden-cat because of the case when
+    # if an event is hidden by both an organization and a category
+    # TO DO: what if it's hidden by multiple categories?
     if obj.kind == "organization"
       if parseInt(@$el.attr("data-organization-id")) == obj.id
         if obj.state == "show"
-          @$el.removeClass("event-hidden")
+          @$el.removeClass("event-hidden-org")
         else if obj.state == "hide"
-          @$el.addClass("event-hidden")
+          @$el.addClass("event-hidden-org")
     if obj.kind == "category"
       if @$el.attr("data-category-ids").indexOf(obj.id+",") != -1
         if obj.state == "show"
-          @$el.removeClass("event-hidden")
+          @$el.removeClass("event-hidden-cat")
         else if obj.state == "hide"
-          @$el.addClass("event-hidden")
+          @$el.addClass("event-hidden-cat")
     # Tells index to readjust the overlapping events
     Gandalf.dispatcher.trigger("index:adjust")
 
