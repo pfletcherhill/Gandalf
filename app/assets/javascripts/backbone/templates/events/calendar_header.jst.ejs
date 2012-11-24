@@ -1,0 +1,27 @@
+<div class="cal-header">
+  <div class="btn-toolbar">
+    <div id="cal-today" class="btn">Today</div>
+    <div class="btn-group">
+      <div id="cal-prev" class="btn">&lt;</div>
+      <div id="cal-next" class="btn">&gt;</div>
+    </div>
+    <div class="btn-group pull-right">
+      <div id="cal-week" class="btn disabled">Week</div>
+      <div id="cal-month" class="btn">Month</div>
+    </div>
+  </div>
+
+  <table class="cal-header-days">
+    <tr>
+      <td></td>
+      <% for(i=0; i<7; i++) { %>
+        <td>
+          <div class="cal-day">
+            <%= moment(startDate).add('d', i).format("ddd - MM / DD") %>
+          </div>
+        </td>
+      <% } %>
+    </tr>
+  </table>
+
+</div>
