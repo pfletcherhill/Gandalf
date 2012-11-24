@@ -5,9 +5,11 @@
       <div id="cal-prev" class="btn">&lt;</div>
       <div id="cal-next" class="btn">&gt;</div>
     </div>
+    <% week = period === "week" ? "disabled" : "" %>
+    <% month = period === "month" ? "disabled" : "" %>
     <div class="btn-group pull-right">
-      <div id="cal-week" class="btn disabled">Week</div>
-      <div id="cal-month" class="btn">Month</div>
+      <div id="cal-week" class="btn <%= week %>">Week</div>
+      <div id="cal-month" class="btn <%= month %>">Month</div>
     </div>
   </div>
 

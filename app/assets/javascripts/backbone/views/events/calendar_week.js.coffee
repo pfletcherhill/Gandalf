@@ -2,6 +2,7 @@ Gandalf.Views.Events ||= {}
 
 class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   initialize: ()->
+    Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
     @render()
 
   template: JST["backbone/templates/events/calendar_week"]
@@ -17,6 +18,7 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     return this
 
   hidePopovers: () ->
+    console.log("hey")
     $("[rel='event-popover']").popover("hide")
 
 

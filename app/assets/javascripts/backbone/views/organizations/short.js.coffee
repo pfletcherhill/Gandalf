@@ -16,4 +16,6 @@ class Gandalf.Views.Organizations.Short extends Backbone.View
 
   clicked: () ->
     @$el.toggleClass("hidden")
+    # Tells models/event.js to update shown organizations
     Gandalf.dispatcher.trigger("organizationShort:click", @model.id)
+    Gandalf.dispatcher.trigger("popovers:hide")

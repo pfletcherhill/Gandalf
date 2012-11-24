@@ -17,3 +17,4 @@ class Gandalf.Views.Categories.Short extends Backbone.View
     @$el.toggleClass("hidden")
     # Tells models/event.js to update shown categories
     Gandalf.dispatcher.trigger("categoryShort:click", @model.id)
+    Gandalf.dispatcher.trigger("popovers:hide")

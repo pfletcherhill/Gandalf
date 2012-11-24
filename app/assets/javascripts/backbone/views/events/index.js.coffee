@@ -18,23 +18,25 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   template: JST["backbone/templates/events/index"]
   calHeaderTemplate: JST["backbone/templates/events/calendar_header"]
-
   el: "#content"
 
   events: 
     "click #cal-next" : "next"
     "click #cal-prev" : "prev"
+    "click #cal-today" : "today"
+    "click #cal-month" : "month"
+    "click #cal-week" : "week"
     "scroll" : "scrolling"
 
+  # Rendering functions
+
   renderWeekCalendar: () ->
-    header = @calHeaderTemplate(startDate: @startDate)
-    @$("#calendar-container").html(header)
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").append(view.el)
 
   renderMonthCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
-    @$("#calendar-container").html(view.el)
+    @$("#calendar-container").append(view.el)
 
   renderCalDays: () ->
     dayCount = 0
@@ -56,6 +58,69 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
     @$("#feed-list").append(view.el)
 
+  renderSubscribedOrganizations: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
+    _.each subscriptions, (subscription) ->
+      view = new Gandalf.Views.Organizations.Short(model: subscription)
+      @$("#subscribed-organizations-list").append(view.el)
+  
+  renderSubscribedCategories: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_categories')
+    _.each subscriptions, (subscription) ->
+      view = new Gandalf.Views.Categories.Short(model: subscription)
+      @$("#subscribed-categories-list").append(view.el)
+
+  renderCalendar: () ->
+    header = @calHeaderTemplate(startDate: @startDate, period: @period)
+    @$("#calendar-container").html(header)
+    if @period == "month"
+      @renderMonthCalendar()
+      @numDays = @startDate.daysInMonth()
+    else 
+      @renderWeekCalendar()
+      @numDays = 7
+    @renderCalDays()
+    @adjustOverlappingEvents()
+
+  render: () ->
+    $(@el).html(@template({ user: Gandalf.currentUser }))
+    @days = @collection.sortAndGroup()
+    @renderFeed()
+    @renderCalendar()
+
+    return this
+  
+  # Event handlers
+
+  next: () ->
+    @startDate.add('w', 1)
+    @renderCalendar()
+
+  prev: () ->
+    @startDate.subtract('w', 1)
+    @renderCalendar()
+
+  month: () ->
+    @period = "month"
+    @renderCalendar()
+
+  week: () ->
+    @period = "week"
+    @renderCalendar()
+
+  today: () ->
+    if @period == "week"
+      @startDate = moment().day(0)
+    else
+      @startDate = moment().date(1)
+    @renderCalendar()
+
+  scrolling: ->
+    if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
+      console.log 'go!'
+
+  # Helpers
+
   adjustOverlappingEvents: () ->
     overlaps = @collection.findOverlaps()
     $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
@@ -73,7 +138,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     pLeft = 3
     calZ = 10
     while overlapIndex <= @maxOverlaps
-      evs = $(".cal-event.overlap-"+overlapIndex+":not(.event-hidden)")
+      evs = $(".cal-event.overlap-"+overlapIndex+":not(.event-hidden-org, .event-hidden-cat)")
       width = Math.floor(100/overlapIndex) - overlapIndex
       longWidth = width + pLeft
       $(evs).css({ width: width+"%", paddingLeft: pLeft+"%" })
@@ -102,105 +167,3 @@ class Gandalf.Views.Events.Index extends Backbone.View
             zIndex: calZ - 3
           )
       overlapIndex++
-
-# // 2 things overlapping
-# $o_padding: 3%;
-# .overlap-1 {
-#   $width: 49%;
-#   width: $width;
-#   padding-left: $o_padding;
-#   &:nth-of-type(2n+1) {
-#     padding-left: 0;
-#     width: $width + $o_padding;
-#   }
-#   &:nth-of-type(2n) {
-#     left: $width;
-#     z-index: $cal_z - 1;
-#   }
-# }
-# // 3 things
-# .overlap-2 {
-#   $width: 31%;
-#   width: $width;
-#   padding-left: $o_padding;
-#   &:nth-of-type(3n+1) {
-#     padding-left: 0;
-#     width: $width + $o_padding;
-#   }
-#   &:nth-of-type(3n+2) {
-#     left: $width;
-#     z-index: $cal_z - 1;
-#   }
-#   &:nth-of-type(3n) {
-#     left: $width * 2;
-#     z-index: $cal_z - 2;
-#   }
-# }
-# // 4 things
-# .overlap-3 {
-#   $width: 22%;
-#   width: $width;
-#   padding-left: $o_padding;
-#   &:nth-of-type(4n-3) {
-#     padding-left: 0;
-#     width: $width + $o_padding;
-#   }
-#   &:nth-of-type(4n-2) {
-#     left: $width;
-#     z-index: $cal_z - 1;
-#   }
-#   &:nth-of-type(4n-1) {
-#     left: $width * 2;
-#     z-index: $cal_z - 2;
-#   }
-#   &:nth-of-type(4n) {
-#     left: $width * 3;
-#     z-index: $cal_z - 3;
-#   }
-# }
-
-
-  renderCalendar: () ->
-    if @period == "month"
-      @renderMonthCalendar()
-      @numDays = 28 # ACTUALLy number of days in the month of moment(start)
-    else 
-      @renderWeekCalendar()
-      @numDays = 7
-    @renderCalDays()
-    @adjustOverlappingEvents()
-
-  render: () ->
-    $(@el).html(@template({ user: Gandalf.currentUser }))
-    @days = @collection.sortAndGroup()
-    @renderFeed()
-    @renderCalendar()
-
-    return this
-    
-
-  renderSubscribedOrganizations: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    _.each subscriptions, (subscription) ->
-      view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed-organizations-list").append(view.el)
-  
-  renderSubscribedCategories: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    _.each subscriptions, (subscription) ->
-      view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed-categories-list").append(view.el)
-  
-  next: () ->
-    @startDate.add('w', 1)
-    @renderCalendar()
-
-  prev: () ->
-    @startDate.subtract('w', 1)
-    @renderCalendar()
-
-  # Paul, this code should be in 
-  scrolling: ->
-    if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
-      console.log 'go!'
-    
