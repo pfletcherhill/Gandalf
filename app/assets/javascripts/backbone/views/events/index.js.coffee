@@ -61,8 +61,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    for s in  subscriptions
-      view = new Gandalf.Views.Organizations.Short(model: subscription)
+    for s in subscriptions
+      view = new Gandalf.Views.Organizations.Short(model: s)
       $("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
@@ -125,7 +125,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   adjustOverlappingEvents: () ->
     overlaps = @collection.findOverlaps()
     $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
-    for ids, myId in overlaps
+    for myId, ids of overlaps
       num = ids.length + 1
       $(".cal-event[data-event-id='#{myId}']").addClass "overlap overlap-#{num}"
       for id in ids

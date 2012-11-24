@@ -36,11 +36,11 @@ class Gandalf.Collections.Events extends Backbone.Collection
   findOverlaps: () ->
     days = @sortAndGroup() 
     overlaps = {}
-    for event in days
-      if events.length > 1
-        for myE in events
+    for day,evs of days
+      if evs.length > 1
+        for myE in evs
           myId = myE.get("id")
-          for targetE in events
+          for targetE in evs
             tarId = targetE.get("id")
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
