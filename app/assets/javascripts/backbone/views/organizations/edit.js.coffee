@@ -3,11 +3,13 @@ Gandalf.Views.Organizations ||= {}
 class Gandalf.Views.Organizations.Edit extends Backbone.View
   
   template: JST["backbone/templates/organizations/edit"]
+  eventTemplate: JST["backbone/templates/organizations/event"]
   
   id: 'organization'
     
-  initialize: ->
+  initialize: =>
     @render(@model)
+    @model.fetchEvents().then @renderEvents
   
   renderUpload: =>
     url = '/organizations/' + @model.id + '/add_image'
@@ -23,15 +25,23 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
       start: (e, data) =>
         @$("#open-image").html('Uploading...')
         @$(".image").html('').addClass 'loading'
-          
+  
+  renderEvents: =>
+    console.log 'renderEvents'
+    for event in @model.get('events')
+      @$("#organization-events-list").append( @eventTemplate( event ))
+           
   render: ->
     $(@el).html(@template( @model.toJSON() ))
+    $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
     @$("form#organization-form").backboneLink(@model)
     @renderUpload()
     return this
   
   events:
     "submit form#organization-form" : 'save'
+    "click button#new-event" : "openModal"
+    "click .close" : "closeModal"
     "click #open-image" : "openImage"
   
   save: (event) ->
@@ -48,5 +58,11 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
   
+  openModal: (event) ->
+    @$(".modal").removeClass 'hide'
+  
+  closeModal: (event) ->
+    @$(".modal").addClass 'hide'
+    
   openImage: (event) ->
     $("#new-image").click()
