@@ -1,9 +1,6 @@
 Gandalf.Views.Events ||= {}
 
 class Gandalf.Views.Events.Index extends Backbone.View
-  template: JST["backbone/templates/events/index"]
-
-  el: "#content"
 
   # options has keys [collection, startDate, period]
   initialize: ()->
@@ -11,24 +8,40 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
     # Listening for global events
-    Gandalf.dispatcher.bind("event:changeVisible", @adjustOverlappingEvents)
+    Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
+    # Class variables
     @startDate = @options.startDate
     @period = @options.period
+    @maxOverlaps = 4
+
     @render()
 
+  template: JST["backbone/templates/events/index"]
+  calHeaderTemplate: JST["backbone/templates/events/calendar_header"]
+  el: "#content"
 
+  events: 
+    "click #cal-next" : "next"
+    "click #cal-prev" : "prev"
+    "click #cal-today" : "today"
+    "click #cal-month" : "month"
+    "click #cal-week" : "week"
+    "scroll" : "scrolling"
+
+  # Rendering functions
 
   renderWeekCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").append(view.el)
+    @$("#calendar-container").animate scrollTop: 350, 1000
 
   renderMonthCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").append(view.el)
 
-  renderCalDays: (numDays) ->
+  renderCalDays: () ->
     dayCount = 0
-    while dayCount < numDays
+    while dayCount < @numDays
       # Gandalf.eventKeyFormat was set when the app was initialized
       d = moment(@startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
       @addCalDay(@days[d])
@@ -46,52 +59,112 @@ class Gandalf.Views.Events.Index extends Backbone.View
     view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
     @$("#feed-list").append(view.el)
 
-  adjustOverlappingEvents: (eventId) ->
-    overlaps = @collection.findOverlaps eventId 
-    $(".cal-event").removeClass("overlap overlap-1 overlap-2 overlap-3")
-    _.each overlaps, (ids, myId) ->
-      len = ids.length
-      # keep this line in case i need it later
-      # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
-      $(".cal-event[data-id='"+myId+"']").addClass "overlap overlap-"+len
-      _.each ids, (id, i) ->
-        num = i+1
-        $(".cal-event[data-id='"+id+"']").addClass "overlap overlap-"+len
-
-    
-  render: () ->
-    $(@el).html(@template({ user: Gandalf.currentUser }))
-    @days = @collection.sortAndGroup()
-    @renderFeed()
-    if @period == "month"
-      @renderMonthCalendar()
-      numDays = 28 # ACTUALLy number of days in the month of moment(start)
-    else 
-      @renderWeekCalendar()
-      numDays = 7
-
-    @renderCalDays(numDays)
-    @adjustOverlappingEvents()
-    return this
-    
-
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed-organizations-list").append(view.render().el)
+      @$("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
     _.each subscriptions, (subscription) ->
       view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed-categories-list").append(view.render().el)
+      @$("#subscribed-categories-list").append(view.el)
+
+  renderCalendar: () ->
+    header = @calHeaderTemplate(startDate: @startDate, period: @period)
+    @$("#calendar-container").html(header)
+    if @period == "month"
+      @renderMonthCalendar()
+      @numDays = @startDate.daysInMonth()
+    else 
+      @renderWeekCalendar()
+      @numDays = 7
+    @renderCalDays()
+    @adjustOverlappingEvents()
+
+  render: () ->
+    $(@el).html(@template({ user: Gandalf.currentUser }))
+    @days = @collection.sortAndGroup()
+    @renderFeed()
+    @renderCalendar()
+
+    return this
   
-  events:
-    'scroll' : 'scrolling'
-  
+  # Event handlers
+
+  next: () ->
+    @startDate.add('w', 1)
+    @renderCalendar()
+
+  prev: () ->
+    @startDate.subtract('w', 1)
+    @renderCalendar()
+
+  month: () ->
+    @period = "month"
+    @renderCalendar()
+
+  week: () ->
+    @period = "week"
+    @renderCalendar()
+
+  today: () ->
+    if @period == "week"
+      @startDate = moment().day(0)
+    else
+      @startDate = moment().date(1)
+    @renderCalendar()
+
   scrolling: ->
-    console.log 'scrolling'
     if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
       console.log 'go!'
-    
+
+  # Helpers
+
+  adjustOverlappingEvents: () ->
+    overlaps = @collection.findOverlaps()
+    $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
+    _.each overlaps, (ids, myId) ->
+      num = ids.length + 1
+      $(".cal-event[data-event-id='"+myId+"']").addClass "overlap overlap-"+num
+      _.each ids, (id, i) ->
+        $(".cal-event[data-event-id='"+id+"']").addClass "overlap overlap-"+num
+    @makeCSSAdjustments()
+
+  # CSS wasn't strong enough for the kind of styling I wanted to do...
+  # so we're doing it in JS
+  makeCSSAdjustments: () ->
+    overlapIndex = 2
+    pLeft = 3
+    calZ = 10
+    while overlapIndex <= @maxOverlaps
+      evs = $(".cal-event.overlap-"+overlapIndex+":not(.event-hidden-org, .event-hidden-cat)")
+      width = Math.floor(100/overlapIndex) - overlapIndex
+      longWidth = width + pLeft
+      $(evs).css({ width: width+"%", paddingLeft: pLeft+"%" })
+      _.each evs, (e, index) ->
+        if index%overlapIndex == 0
+          $(e).css(
+            left: 0
+            paddingLeft: 0
+            width: longWidth+"%"
+          )
+        else if index%overlapIndex == 1
+          $(e).css(
+            left: width+"%"
+            zIndex: calZ - 1
+          )
+        else if index%overlapIndex == 2
+          newWidth = width * 2
+          $(e).css(
+            left: newWidth+"%"
+            zIndex: calZ - 2
+          )
+        else if index%overlapIndex == 3
+          newWidth = width * 3
+          $(e).css(
+            left: newWidth+"%"
+            zIndex: calZ - 3
+          )
+      overlapIndex++
