@@ -132,30 +132,6 @@ $feed_width: 300px;
   overflow-x: hidden;
 }
 
-.sidebar {
-  left: 0;
-  width: $sidebar_width;
-  overflow-y: hidden;
-  @include linear-gradient(#bbb, #444);
-}
-
-.feed {
-  left: $sidebar_width;
-  width: $feed_width;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
-}
-
-.calendar {
-  $width: $sidebar_width + $feed_width;
-  left: $width;
-  width: -moz-calc(100% - 500px);
-  width: -webkit-calc(100% - 500px);
-  width: -o-calc(100% - 500px);
-  width: calc(100% - 500px);
-  //overflow-y: hidden;
-}
-
 /* ============= ALL OTHER LAYOUT ============= */
 
 $left_width: 300px;
