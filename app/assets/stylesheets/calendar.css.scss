@@ -1,5 +1,15 @@
 /* ========= CALENDAR ======== */
 
+.calendar {
+  $width: $sidebar_width + $feed_width;
+  left: $width;
+  width: -moz-calc(100% - 500px);
+  width: -webkit-calc(100% - 500px);
+  width: -o-calc(100% - 500px);
+  width: calc(100% - 500px);
+  //overflow-y: hidden;
+}
+
 $hour_height: 44px;
 $cal_gap: 40px;
 
@@ -17,11 +27,24 @@ $cal_gap: 40px;
 }
 
 .cal-header {
-  height: 20px;
-  text-align: center;
-  font-size: 8px;
-  line-height: 20px;
-  @include linear-gradient(#fff, #efefef);
+  position: fixed;
+  z-index: 20;
+  width: -moz-calc(100% - 500px);
+  width: -webkit-calc(100% - 500px);
+  width: -o-calc(100% - 500px);
+  width: calc(100% - 500px);
+  background-color: white;
+  .cal-header-days {
+    text-align: center;
+    height: 20px;
+    width: 100%;
+    font-size: 8px;
+    line-height: 20px;
+    @include linear-gradient(#fff, #efefef);
+  }
+  .btn-toolbar {
+    padding: 0 10px;
+  }
   
 }
 .cal-body {
@@ -72,7 +95,7 @@ $cal_z: 10;
   z-index: $cal_z;
   border: 1pt solid transparent;
   background-color: rgba(200,200,200,0.7);
-  @include transition(all 0.2s);
+  @include transition(all 0.2s, opacity 0.5s);
   cursor: pointer;
   font-size: 8px;
   line-height: 12px;
@@ -91,69 +114,8 @@ $cal_z: 10;
   }
 }
 
-// 2 things overlapping
-$o_padding: 3%;
-.overlap-1 {
-  $width: 49%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(2n+1) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(2n) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-}
-// 3 things
-.overlap-2 {
-  $width: 31%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(3n+1) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(3n+2) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-  &:nth-of-type(3n) {
-    left: $width * 2;
-    z-index: $cal_z - 2;
-  }
-}
-// 4 things
-.overlap-3 {
-  $width: 22%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(4n-3) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(4n-2) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-  &:nth-of-type(4n-1) {
-    left: $width * 2;
-    z-index: $cal_z - 2;
-  }
-  &:nth-of-type(4n) {
-    left: $width * 3;
-    z-index: $cal_z - 3;
-  }
-}
-
-.overlap {
-  &:hover {
-    width: 98%;
-    padding: 0;
-    left: 0;
-    z-index: $cal_z + 1;
-  }
+.event-hidden-org, .event-hidden-cat {
+  opacity: 0;
 }
 
 /* ======== POPOVER ========= */
