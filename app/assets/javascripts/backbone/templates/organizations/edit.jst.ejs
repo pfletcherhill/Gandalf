@@ -1,14 +1,39 @@
 <form id='organization-form' accept-charset="UTF-8" action="/organizations" enctype="multipart/form-data" method="post">
   <label>Organization Name:</label>
   <input name='name' value='<%= name %>' />
-  <br/>
+  <label>Organization Description:</label>
+  <textarea name='bio' placeholder="What is <%= name %>..."><%= bio ? bio : "" %></textarea>
   <label>Organization Logo:</label>
-  <div class="image"><img src="<%= image ? image.thumbnail.url : '' %>"/></div>
+  <div class="image loading"><img src="<%= image ? image.thumbnail.url : '' %>"/></div>
   <input id="new-image" name="image" type="file"/>
   <div id="open-image">Add an Image</div>
   <br/>
-  <label>Organization Description:</label>
-  <textarea name='bio' placeholder="What is <%= name %>..."><%= bio ? bio : "" %></textarea>
-  <br/>
   <button type="submit">Update Organization</button>
+</form>
+<div id="organization-events">
+  <button id="new-event">New Event</button>
+  <div id='organization-events-list'></div>
+</div>
+<form class="modal hide">
+  <div class="modal-body">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>New Event</h3>
+    </div>
+    <label>Event Name:</label>
+    <input name="name"/>
+    <label>Event Description:</label>
+    <textarea name="description"></textarea>
+    <label>Event Location:</label>
+    <input name="location"/>
+    <label>Venue Address:</label>
+    <input name="address"/>
+    <label>Start At</label>
+    <input name="start_at"/>
+    <label>End At</label>
+    <input name="end_at"/>
+  </div>
+  <div class="modal-footer">
+    <button type="submit">+ Add Event</button>
+  </div>
 </form>
