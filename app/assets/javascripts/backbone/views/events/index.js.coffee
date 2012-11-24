@@ -33,6 +33,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderWeekCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
     @$("#calendar-container").append(view.el)
+    @$("#calendar-container").animate scrollTop: 350, 1000
 
   renderMonthCalendar: () ->
     view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))

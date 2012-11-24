@@ -39,9 +39,9 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     if obj.kind == "organization"
       if parseInt(@$el.attr("data-organization-id")) == obj.id
         if obj.state == "show"
-          @$el.slideDown(time)
+          @$el.effect("click", time)
         else if obj.state == "hide"
-          @$el.slideUp(time)
+          @$el.effect("click", time)
     if obj.kind == "category"
       if @$el.attr("data-category-ids").indexOf(obj.id+",") != -1
         if obj.state == "show"
