@@ -10,7 +10,7 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   template: JST["backbone/templates/events/calendar_week"]
   
   tagName: "div"
-  className: "cal cal-week"
+  className: "cal"
 
   events:
     "click .hour-day" : "hidePopovers"

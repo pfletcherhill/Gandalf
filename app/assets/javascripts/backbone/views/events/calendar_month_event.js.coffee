@@ -13,25 +13,24 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     @css = {}
     @css.backgroundColor = @$el.css("backgroundColor")
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:feedmouseenter", @mouseenter)
-    Gandalf.dispatcher.on("feedEvent:feedmouseleave", @mouseleave)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
     Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
-
-  template: JST["backbone/templates/events/calendar_event"]
+  template: JST["backbone/templates/events/calendar_month_event"]
   popoverTemplate: JST["backbone/templates/events/calendar_popover"]
 
   tagName: "div"
-  className: "cal-event"
+  className: "cal-month-event"
   attributes: 
     rel: "event-popover"
   popoverChild: ".event-name:first"
 
-  events:
-    "click": "onClick"
-    "mouseenter" : "mouseenter"
-    "mouseleave" : "mouseleave"
+  # events:
+  #   "click": "onClick"
+  #   "mouseenter" : "mouseenter"
+  #   "mouseleave" : "mouseleave"
 
   render: () ->
     $(@el).html(@template( event: @model ))

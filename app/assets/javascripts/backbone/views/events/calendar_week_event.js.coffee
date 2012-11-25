@@ -14,18 +14,18 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @css = {}
     @css.backgroundColor = @$el.css("backgroundColor")
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:feedmouseenter", @mouseenter)
-    Gandalf.dispatcher.on("feedEvent:feedmouseleave", @mouseleave)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
     Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
 
-  template: JST["backbone/templates/events/calendar_event"]
+  template: JST["backbone/templates/events/calendar_week_event"]
   popoverTemplate: JST["backbone/templates/events/calendar_popover"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
-  className: "cal-event"
+  className: "cal-week-event"
   attributes: 
     rel: "event-popover"
   hourHeight: 45

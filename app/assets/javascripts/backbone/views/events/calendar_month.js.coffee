@@ -10,7 +10,7 @@ class Gandalf.Views.Events.CalendarMonth extends Backbone.View
   template: JST["backbone/templates/events/calendar_month"]
   
   tagName: "div"
-  className: "cal cal-month"
+  className: "cal"
 
   addCalDay: (events) ->
     view = new Gandalf.Views.Events.CalendarDay(model: events, type: "month")
