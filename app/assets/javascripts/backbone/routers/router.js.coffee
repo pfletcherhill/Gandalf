@@ -10,13 +10,13 @@ class Gandalf.Router extends Backbone.Router
   # Returns an object with the parameters
   processPeriod: (date, period) ->
     if date == 'today'
-      date = moment().format("MM-DD-YYYY")
+      date = moment().format(Gandalf.displayFormat)
     if period == 'week'
-      startAt = moment(date, "MM-DD-YYYY").day(0)
+      startAt = moment(date, Gandalf.displayFormat).day(0)
       endAt = moment(startAt).add('w',1)
     else if period == 'month'
       # Start at the Sunday before the first
-      startAt = moment(date, "MM-DD-YYYY").date(1).day(0)
+      startAt = moment(date, Gandalf.displayFormat).date(1).day(0)
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
     else
@@ -32,20 +32,21 @@ class Gandalf.Router extends Backbone.Router
   
   # Process params and generate params string
   generateParamsString: (params) ->
-    paramsString = "start_at=" + params.start.format("MM-DD-YYYY") 
-    paramsString += "&end_at=" + params.end.format("MM-DD-YYYY")
+    paramsString = "start_at=" + params.start.format(Gandalf.displayFormat) 
+    paramsString += "&end_at=" + params.end.format(Gandalf.displayFormat)
     paramsString
         
   routes:
     'browse/:type'              : 'browse'          
     'browse*'                   : 'browse'
     'calendar/:date/:period'    : 'calendar'
-    'calendar'                  : 'calendar'
+    'calendar'                  : 'calendarRedirect'
+    'calendar/:date'            : 'calendarRedirect'
     'organizations/:id'         : 'organizations'
     'organizations*'            : 'organizations'
     'preferences'               : 'preferences'
     'about'                     : 'about'
-    '.*'                        : 'calendar'
+    '.*'                        : 'calendarRedirect'
   
   calendar: (date, period) ->
     params = @processPeriod date, period
@@ -57,6 +58,10 @@ class Gandalf.Router extends Backbone.Router
         startDate: params.start
         period: params.period
       )
+
+  calendarRedirect: (date) ->
+    date = "today" if not date
+    @navigate("calendar/#{date}/week", {trigger: true, replace: true});
   
   browse: (type) ->  
     $(".search-list a").removeClass 'active'

@@ -7,10 +7,11 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     @render()
     Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
 
-  template: JST["backbone/templates/events/calendar_week"]
+  template: JST["backbone/templates/calendar/calendar_week"]
+  headerTemplate: JST["backbone/templates/calendar/calendar_week_header"]
   
   tagName: "div"
-  className: "cal"
+  className: "cal cal-week"
 
   events:
     "click .hour-day" : "hidePopovers"
@@ -20,7 +21,8 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     @$(".cal-day-container").append(view.el)
   
   render: () ->
-    $(@el).html(@template())
+    @$el.html(@headerTemplate(startDate: @startDate))
+    $(@el).append(@template())
     tempDate = moment(@startDate)
     dayCount = 0
     while dayCount < 7

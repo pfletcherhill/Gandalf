@@ -18,8 +18,8 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
     Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
-  template: JST["backbone/templates/events/calendar_month_event"]
-  popoverTemplate: JST["backbone/templates/events/calendar_popover"]
+  template: JST["backbone/templates/calendar/calendar_month_event"]
+  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   tagName: "div"
   className: "cal-month-event"

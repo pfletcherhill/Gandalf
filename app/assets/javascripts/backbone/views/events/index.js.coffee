@@ -7,17 +7,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
     _.bindAll(this, "adjustOverlappingEvents")
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
-    # Listening for global events
-    Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
     # Class variables
     @startDate = @options.startDate
     @period = @options.period
     @maxOverlaps = 4
     @first = true # first time rendering
     @render()
+    # Listening for global events
+    Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
 
   template: JST["backbone/templates/events/index"]
-  calHeaderTemplate: JST["backbone/templates/events/calendar_header"]
+
   el: "#content"
 
   events: 
@@ -48,7 +48,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @$("#calendar-container").append(view.el)
 
   renderFeed: () ->
-    _.each @days, (events, day) =>
+    for day, events of @days
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
@@ -68,11 +68,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
       $("#subscribed-categories-list").append(view.el)
 
   renderCalendar: () ->
-    header = @calHeaderTemplate(startDate: @startDate, period: @period)
-    cs = ["cal-week", "cal-month"]
-    if @period == "week" then addIndex = 0 else addIndex = 1
-    @$("#calendar-container").html(header)
-    @$("#calendar-container").removeClass(cs[(addIndex+1)%2]).addClass(cs[addIndex])
     if @period == "month"
       @renderMonthCalendar()
     else 
