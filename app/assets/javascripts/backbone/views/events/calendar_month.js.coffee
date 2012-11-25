@@ -7,17 +7,13 @@ class Gandalf.Views.Events.CalendarMonth extends Backbone.View
     @render()
     Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
 
-  template: JST["backbone/templates/events/calendar_month"]
+  template: JST["backbone/templates/calendar/calendar_month"]
+  headerTemplate: JST["backbone/templates/calendar/calendar_month_header"]
   
   tagName: "div"
-  className: "cal"
+  className: "cal cal-month"
 
-  addCalDay: (events) ->
-    view = new Gandalf.Views.Events.CalendarDay(model: events, type: "month")
-    @$(".cal-day-container:last").append(view.el)
-  
-  render: () ->
-    $(@el).html(@template())
+  addWeeks: () ->
     tempDate = moment(@startDate)
     dayCount = 0
     while dayCount < 35
@@ -25,11 +21,17 @@ class Gandalf.Views.Events.CalendarMonth extends Backbone.View
         @$(".cal-body").append("<tr class='cal-day-container'></tr>")
       # Gandalf.eventKeyFormat was set when the app was initialized
       d = tempDate.add('d', 1).format(Gandalf.eventKeyFormat)
-      @addCalDay(@days[d])
+      @addDay(@days[d])
       dayCount++
-    while (i+dayCount) < 35
-      @addBlankDay()
-      i++
+
+  addDay: (events) ->
+    view = new Gandalf.Views.Events.CalendarDay(model: events, type: "month")
+    @$(".cal-day-container:last").append(view.el)
+  
+  render: () ->
+    @$el.html(@headerTemplate(startDate: @startDate))
+    @$el.append(@template())
+    @addWeeks()
     return this
 
   hidePopovers: () ->

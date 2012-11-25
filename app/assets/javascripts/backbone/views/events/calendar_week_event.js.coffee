@@ -20,8 +20,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
 
-  template: JST["backbone/templates/events/calendar_week_event"]
-  popoverTemplate: JST["backbone/templates/events/calendar_popover"]
+  template: JST["backbone/templates/calendar/calendar_week_event"]
+  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
