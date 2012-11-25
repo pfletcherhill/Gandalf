@@ -13,7 +13,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @startDate = @options.startDate
     @period = @options.period
     @maxOverlaps = 4
-
+    @first = true # first time rendering
     @render()
 
   template: JST["backbone/templates/events/index"]
@@ -31,25 +31,21 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Rendering functions
 
   renderWeekCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
+    view = new Gandalf.Views.Events.CalendarWeek(
+      startDate: moment(@startDate)
+      days: @days
+    )
     @$("#calendar-container").append(view.el)
-    @$("#calendar-container").animate scrollTop: 350, 1000
+    if @first
+      @$("#calendar-container").animate scrollTop: 400, 1000
+      @first = false
 
   renderMonthCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
+    view = new Gandalf.Views.Events.CalendarMonth(
+      startDate: moment(@startDate)
+      days: @days
+    )
     @$("#calendar-container").append(view.el)
-
-  renderCalDays: () ->
-    dayCount = 0
-    while dayCount < @numDays
-      # Gandalf.eventKeyFormat was set when the app was initialized
-      d = moment(@startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
-      @addCalDay(@days[d])
-      dayCount++
-
-  addCalDay: (events) ->
-    view = new Gandalf.Views.Events.CalendarDay(model: events)
-    @$("#cal-day-container").append(view.el)
 
   renderFeed: () ->
     _.each @days, (events, day) =>
@@ -76,12 +72,9 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @$("#calendar-container").html(header)
     if @period == "month"
       @renderMonthCalendar()
-      @numDays = @startDate.daysInMonth()
     else 
       @renderWeekCalendar()
-      @numDays = 7
-    @renderCalDays()
-    @adjustOverlappingEvents()
+      @adjustOverlappingEvents()
 
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))

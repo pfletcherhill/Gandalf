@@ -15,8 +15,10 @@ class Gandalf.Router extends Backbone.Router
       startAt = moment(date, "MM-DD-YYYY").day(0)
       endAt = moment(startAt).add('w',1)
     else if period == 'month'
-      startAt = moment(date, "MM-DD-YYYY").date(1)
-      endAt = moment(startAt).add('M',1)
+      # Start at the Sunday before the first
+      startAt = moment(date, "MM-DD-YYYY").date(1).day(0)
+      # And go for 5 weeks
+      endAt = moment(startAt).add('w', 5)
     else
       startAt = moment().day(0)
       endAt = moment(startAt).add('w',1)
