@@ -20,25 +20,27 @@ $cal_head_height: 80px;
   height: 100%;
 }
 
-.cal-header, .cal-body {
+/* ==== CALENDAR HEADER ==== */
+.cal-header-days, .cal-body {
   width: 100%;
   table-layout: fixed;
-  td:first-child {
-    width: $cal_gap;
-  }
 }
 
 .cal-header {
   position: fixed;
   height: $cal_head_height;
-  z-index: 20;
+  z-index: 30;
   width: -moz-calc(100% - 500px);
   width: -webkit-calc(100% - 500px);
   width: -o-calc(100% - 500px);
   width: calc(100% - 500px);
   background-color: white;
+  @include box-shadow(0 5px 5px -5px #444);
   .btn-toolbar {
     padding: 0 10px;
+  }
+  .cal-day {
+    border-left: 1pt solid #eee;
   }
 }
 .cal-header-days {
@@ -52,10 +54,16 @@ $cal_head_height: 80px;
   @include linear-gradient(#fff, #efefef);
 }
 
-.cal-body {
-  .cal-day {
-    border-right: 1pt solid #ddd;
+/* ===== CALENDAR BODY ===== */
+
+.cal-week .cal-header, .cal-week .cal-body {
+  td:first-child {
+    width: $cal_gap;
   }
+}
+
+.cal-day {
+  border-right: 1pt solid #ddd;
 }
 
 .hour {
@@ -76,18 +84,13 @@ $cal_head_height: 80px;
   top: -6px;
   left: 7px;
 }
-.cal-week {
-  .cal-day {
-    
-  }
+
+.cal-month .cal-body .cal-day {
+  height: 150px;
+  border-bottom: 1pt solid #aaa;
 }
 
-.cal-month {
-  .cal-day {
-    height: 100px;
-    border-bottom: 1pt solid #aaa;
-  }
-}
+/* ===== CALENDAR EVENTS ===== */
 
 .cal-events {
   position: relative;
@@ -95,10 +98,16 @@ $cal_head_height: 80px;
   left: 0;
 }
 $cal_z: 10;
-.cal-month .cal-event {
+.cal-month-event {
   overflow: hidden;
+  font-size: 8px;
+  line-height: 12px;
+  p {
+    margin: 0;
+    padding: 0 5px;
+  }
 }
-.cal-week .cal-event {
+.cal-week-event {
   position: absolute;
   left: 0;
   z-index: $cal_z;

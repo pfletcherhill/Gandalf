@@ -69,7 +69,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderCalendar: () ->
     header = @calHeaderTemplate(startDate: @startDate, period: @period)
+    cs = ["cal-week", "cal-month"]
+    if @period == "week" then addIndex = 0 else addIndex = 1
     @$("#calendar-container").html(header)
+    @$("#calendar-container").removeClass(cs[(addIndex+1)%2]).addClass(cs[addIndex])
     if @period == "month"
       @renderMonthCalendar()
     else 
@@ -116,13 +119,14 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Helpers
 
   adjustOverlappingEvents: () ->
+    # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
     overlaps = @collection.findOverlaps()
-    $(".cal-event").removeClass("overlap-2 overlap-3 overlap-4")
+    $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4")
     for myId, ids of overlaps
       num = ids.length + 1
-      $(".cal-event[data-event-id='#{myId}']").addClass "overlap overlap-#{num}"
+      $(".cal-week-event[data-event-id='#{myId}']").addClass "overlap-#{num}"
       for id in ids
-        $(".cal-event[data-event-id='#{id}']").addClass "overlap overlap-#{num}"
+        $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
     @makeCSSAdjustments()
 
   # CSS wasn't strong enough for the kind of styling I wanted to do...
@@ -132,7 +136,9 @@ class Gandalf.Views.Events.Index extends Backbone.View
     pLeft = 3
     calZ = 10
     while overlapIndex <= @maxOverlaps
-      evs = $(".cal-event.overlap-#{overlapIndex}:not(.event-hidden-org, .event-hidden-cat)")
+      selector = ".cal-week-event.overlap-#{overlapIndex}"
+      selector += ":not(.event-hidden-org, .event-hidden-cat)"
+      evs = $(selector)
       width = Math.floor(100/overlapIndex) - overlapIndex
       $(evs).css({ width: "#{width}%", paddingLeft: "#{pLeft}%" })
       _.each evs, (e, index) ->
