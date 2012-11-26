@@ -5,9 +5,14 @@
       <% month = moment(startDate).date(1).format(Gandalf.displayFormat) %>
       <% prevWeek = moment(startDate).subtract('w', 1).format(Gandalf.displayFormat) %>
       <% nextWeek = moment(startDate).add('w', 1).format(Gandalf.displayFormat) %>
+      <% headDisplayFormat = "MMMM Mo YYYY" %>
+      <% dateEnd = moment(startDate).add('days', 6).format(headDisplayFormat) %> 
       <a href=<%= "#calendar/"+prevWeek+"/week" %> class="btn">&lt;</a>
       <a href=<%= "#calendar/"+nextWeek+"/week" %> class="btn">&gt;</a>
     </div>
+    <span class="cal-header-date" style="font-size: 10px;">
+      <%= startDate.format(headDisplayFormat) %> - <%= dateEnd %>
+    </span>
     <div class="btn-group pull-right">
       <a class="btn disabled">Week</a>
       <a href=<%= "#calendar/"+month+"/month" %> class="btn">Month</a>
