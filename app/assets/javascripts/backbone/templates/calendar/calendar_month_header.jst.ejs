@@ -1,6 +1,6 @@
 <div class="cal-header">
   <div class="btn-toolbar">
-    <a href="/calendar/today/month" class="btn">Today</a>
+    <a href="#calendar/today/month" class="btn">Today</a>
     <div class="btn-group">
       <% now = moment(startDate).format(Gandalf.displayFormat) %>
       <% prevMonth = moment(startDate).day(6).date(1).subtract('M', 1).format(Gandalf.displayFormat) %>
