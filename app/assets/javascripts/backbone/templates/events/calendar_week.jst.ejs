@@ -1,25 +1,13 @@
-<table class="cal-header">
-  <tr>
-    <td></td>
-    <% for(i=0; i<7; i++) { %>
-      <td>
-        <div class="cal-day">
-          <%= moment(startDate).add('d', i).format("ddd - MM / DD") %>
-        </div>
-      </td>
-    <% } %>
-  </tr>
-</table>
 <table class="cal-body">
-  <tr id="cal-day-container">
+  <tr class="cal-day-container">
     <td>
       <div class="hour hour-label"><span class="hour-num">12 a.m. </span></div>
       <% for(i=1; i<12; i++) { %>
-        <div class="hour hour-label"><span class="hour-num"><%= i %>a.m. </span></div>
+        <div class="hour hour-label"><span class="hour-num"><%= i %> a.m. </span></div>
       <% } %>
       <div class="hour hour-label"><span class="hour-num">12 p.m. </span></div>
       <% for(i=1; i<12; i++) { %>
-        <div class="hour hour-label"><span class="hour-num"><%= i %>p.m. </span></div>
+        <div class="hour hour-label"><span class="hour-num"><%= i %> p.m. </span></div>
       <% } %>
     </td>
   </tr>

@@ -8,19 +8,25 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
   events: 
     "mouseenter" : "mouseenter"
     "mouseleave" : "mouseleave"
+    "click" : "click"
 
   template: JST["backbone/templates/events/feed_event"]
 
-  className: "feed-event"
+  className: "js-event feed-event"
   
   convertTime: (time) ->
     moment(time).format("h:mm a")
     
   render: ->
-    startTime = @convertTime @model.get('start_at')
-    endTime = @convertTime @model.get('end_at')
-    $(@el).html(@template({ 
-      event: @model
+    e = @model
+    startTime = @convertTime e.get('start_at')
+    endTime = @convertTime e.get('end_at')
+    $(@el).attr(
+      "data-event-id": e.get("id")
+      "data-organization-id" : e.get("organization_id")
+      "data-category-ids" : e.makeCatIdString()
+    ).html(@template({ 
+      event: e
       startTime: startTime
       endTime: endTime
     }))
@@ -30,3 +36,5 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     Gandalf.dispatcher.trigger("feedEvent:mouseenter", @model.get("id"))
   mouseleave: () ->
     Gandalf.dispatcher.trigger("feedEvent:mouseleave", @model.get("id"))
+  click: () ->
+    Gandalf.dispatcher.trigger("feedEvent:click", @model.get("id"))

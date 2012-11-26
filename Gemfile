@@ -21,6 +21,8 @@ group :test, :development do
 end
 gem 'bourbon'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem 'jquery-fileupload-rails'
 gem 'rails-backbone'
 gem 'bootstrap-sass', '~> 2.2.1.1'
 gem 'squeel'

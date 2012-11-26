@@ -1,0 +1,32 @@
+<div class="cal-header">
+  <div class="btn-toolbar">
+    <div id="cal-today" class="btn">Today</div>
+    <div class="btn-group">
+      <div id="cal-prev" class="btn">&lt;</div>
+      <div id="cal-next" class="btn">&gt;</div>
+    </div>
+    <% week = period === "week" ? "disabled" : ""; %>
+    <% month = period === "month" ? "disabled" : ""; %>
+    <div class="btn-group pull-right">
+      <div id="cal-week" class="btn <%= week %>">Week</div>
+      <div id="cal-month" class="btn <%= month %>">Month</div>
+    </div>
+  </div>
+
+  <table class="cal-header-days">
+    <tr>
+      <% if(period === "week"){ %>
+        <td></td>
+      <% } %>
+      <% formatString = period === "week" ? "ddd - MM / DD" : "dddd"; %>
+      <% for(i=0; i<7; i++) { %>
+        <td>
+          <div class="cal-day">
+            <%= moment(startDate).add('d', i).format(formatString) %>
+          </div>
+        </td>
+      <% } %>
+    </tr>
+  </table>
+
+</div>

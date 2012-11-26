@@ -1,37 +1,85 @@
 /* ========= CALENDAR ======== */
 
-$hour_height: 44px;
-$cal_gap: 40px;
+.calendar {
+  $width: $sidebar_width + $feed_width;
+  left: $width;
+  width: -moz-calc(100% - 520px);
+  width: -webkit-calc(100% - 520px);
+  width: -o-calc(100% - 520px);
+  width: calc(100% - 520px);
+  overflow-y: auto;
+}
 
+$week_hour_height: 44px;
+$cal_gap: 40px;
+$cal_head_height: 70px;
+$cal_top_pad: 10px;
 .cal {
+  // position:relative;
+  // top: $cal_head_height;
   width: 100%;
   height: 100%;
 }
 
-.cal-header, .cal-body {
+.cal table {
   width: 100%;
   table-layout: fixed;
-  td:first-child {
-    width: $cal_gap;
+}
+
+/* ==== CALENDAR HEADER ==== */
+
+.cal-header {
+  position: fixed;
+  padding-top: $cal_top_pad;
+  height: $cal_head_height;
+  z-index: 30;
+  //width: 100%;
+  width: -moz-calc(100% - 520px);
+  width: -webkit-calc(100% - 520px);
+  width: -o-calc(100% - 520px);
+  width: calc(100% - 520px);
+  min-width: $min_width - 520px;
+  background-color: white;
+  @include box-shadow(0 5px 5px -5px #444);
+  .btn-toolbar {
+    padding: 0 10px;
   }
 }
 
-.cal-header {
-  height: 20px;
+.cal-header-days {
+  //position: absolute;
+  //bottom: 0;
   text-align: center;
+  height: 20px;
+  width: 100%;
   font-size: 8px;
   line-height: 20px;
   @include linear-gradient(#fff, #efefef);
-  
 }
+
+/* ===== CALENDAR BODY ===== */
+
 .cal-body {
-  .cal-day {
-    border-right: 1pt solid #ddd;
-  }
+  position: absolute;
+  top: $cal_head_height + $cal_top_pad;
+  width: 100%;
+  overflow-y: scroll;
+}
+.cal-week td:first-child {
+  width: $cal_gap;
+}
+
+.cal-day {
+  border-right: 1pt solid #ddd;
+}
+
+.cal-month .cal-body .cal-day {
+  height: 150px;
+  border-bottom: 1pt solid #aaa;
 }
 
 .hour {
-  height: $hour_height;
+  height: $week_hour_height;
 }
 .hour-label {
   border-top: 1pt solid transparent;
@@ -48,17 +96,8 @@ $cal_gap: 40px;
   top: -6px;
   left: 7px;
 }
-.cal-week {
-  .cal-day {
-    
-  }
-}
 
-.cal-month {
-  .cal-day {
-
-  }
-}
+/* ===== CALENDAR EVENTS ===== */
 
 .cal-events {
   position: relative;
@@ -66,13 +105,22 @@ $cal_gap: 40px;
   left: 0;
 }
 $cal_z: 10;
-.cal-event {
+.cal-month-event {
+  overflow: hidden;
+  font-size: 8px;
+  line-height: 12px;
+  p {
+    margin: 0;
+    padding: 0 5px;
+  }
+}
+.cal-week-event {
   position: absolute;
   left: 0;
   z-index: $cal_z;
   border: 1pt solid transparent;
   background-color: rgba(200,200,200,0.7);
-  @include transition(all 0.2s);
+  @include transition(all 0.2s, opacity 0.5s);
   cursor: pointer;
   font-size: 8px;
   line-height: 12px;
@@ -91,68 +139,9 @@ $cal_z: 10;
   }
 }
 
-// 2 things overlapping
-$o_padding: 3%;
-.overlap-1 {
-  $width: 49%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(2n+1) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(2n) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-}
-// 3 things
-.overlap-2 {
-  $width: 31%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(3n+1) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(3n+2) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-  &:nth-of-type(3n) {
-    left: $width * 2;
-    z-index: $cal_z - 2;
-  }
-}
-// 4 things
-.overlap-3 {
-  $width: 22%;
-  width: $width;
-  padding-left: $o_padding;
-  &:nth-of-type(4n-3) {
-    padding-left: 0;
-    width: $width + $o_padding;
-  }
-  &:nth-of-type(4n-2) {
-    left: $width;
-    z-index: $cal_z - 1;
-  }
-  &:nth-of-type(4n-1) {
-    left: $width * 2;
-    z-index: $cal_z - 2;
-  }
-  &:nth-of-type(4n) {
-    left: $width * 3;
-    z-index: $cal_z - 3;
-  }
-}
-
-.overlap {
-  &:hover {
-    width: 98%;
-    padding: 0;
-    left: 0;
-    z-index: $cal_z + 1;
+.cal-event {
+  &.event-hidden-org, &.event-hidden-cat {
+    opacity: 0;
   }
 }
 

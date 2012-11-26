@@ -18,6 +18,7 @@ class Event < ActiveRecord::Base
       "start_at" => start_at,
       "end_at" => end_at,
       "organization" => organization.name,
+      "organization_id" => organization.id,
       "categories" => categories
     }
   end
