@@ -34,6 +34,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
     Gandalf.dispatcher.bind("organizationShort:click", @adjustOrganization)
 
   findOverlaps: () ->
+    # REMOVE HIDDEN EVENTS HERE
     days = @sortAndGroup() 
     overlaps = {}
     for day,evs of days
@@ -48,6 +49,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
     overlaps
 
   sortAndGroup: ()->
+    # KEEP HIDDEN EVENTS HERE 
     sortedEvents = _.sortBy(@getVisibleModels(), (e) ->
       time = moment(e.get("start_at"))
       return time
@@ -75,9 +77,12 @@ class Gandalf.Collections.Events extends Backbone.Collection
       state = "show"
     # Tells views/events/calendar_event to toggle the visibility 
     # of the relavent events
+    Gandalf.dispatcher.trigger("organizationVisibility:change", @hiddenOrgs)
+    ###
     Gandalf.dispatcher.trigger("eventVisibility:change", {
       id: id, state: state, kind: "organization"
     })
+    ###
 
   adjustCategory: (id) ->
     idIndex = @hiddenCats.indexOf(id)
@@ -87,6 +92,9 @@ class Gandalf.Collections.Events extends Backbone.Collection
     else
       @hiddenCats.splice(idIndex, 1)
       state = "show"
+    Gandalf.dispatcher.trigger("categoryVisibility:change", @hiddenCats)
+    ###
     Gandalf.dispatcher.trigger("eventVisibility:change", {
       id: id, state: state, kind: "category"
     })
+    ###

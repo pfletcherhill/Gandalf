@@ -4,7 +4,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   # options has keys [collection, startDate, period]
   initialize: ()->
-    _.bindAll(this, "adjustOverlappingEvents")
+    _.bindAll(this, "adjustOverlappingEvents", "orgVisChange", "catVisChange")
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
     # Class variables
@@ -14,18 +14,15 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @first = true # first time rendering
     @render()
     # Listening for global events
-    Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
+    Gandalf.dispatcher.bind("organizationVisibility:change", @orgVisChange)
+    Gandalf.dispatcher.bind("categoryVisibility:change", @catVisChange)
+    # Gandalf.dispatcher.bind("index:adjust", @adjustOverlappingEvents)
 
   template: JST["backbone/templates/events/index"]
 
   el: "#content"
 
-  events: 
-    "click #cal-next" : "next"
-    "click #cal-prev" : "prev"
-    "click #cal-today" : "today"
-    "click #cal-month" : "month"
-    "click #cal-week" : "week"
+  events:
     "scroll" : "scrolling"
 
   # Rendering functions
@@ -37,7 +34,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     )
     @$("#calendar-container").append(view.el)
     if @first
-      @$("#calendar-container").animate scrollTop: 400, 1000
+      # @$("#calendar-container").animate scrollTop: 400, 1000
       @first = false
 
   renderMonthCalendar: () ->
@@ -78,6 +75,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
+    # MAKE SURE SORT AND GROUP CONTAINS HIDDEN ELEMENTS
     @days = @collection.sortAndGroup()
     @renderFeed()
     @renderCalendar()
@@ -86,28 +84,22 @@ class Gandalf.Views.Events.Index extends Backbone.View
   
   # Event handlers
 
-  next: () ->
-    @startDate.add('w', 1)
-    @renderCalendar()
+  orgVisChange: (hiddenOrgs) ->
+    console.log "orgvis"
+    $(".cal-event").removeClass("event-hidden-org")
+    for orgId in hiddenOrgs
+      $(".cal-event[data-organization-id='#{orgId}']").addClass "event-hidden-org"
+    @adjustOverlappingEvents()
 
-  prev: () ->
-    @startDate.subtract('w', 1)
-    @renderCalendar()
+  catVisChange: (hiddenCats) ->
+    console.log "catvis"
+    $(".cal-event").removeClass("event-hidden-cat")
+    for catId in hiddenCats
+      id = catId+","
+      console.log $(".cal-event[data-category-ids~='#{id}']")
+      $(".cal-event[data-category-ids*='#{id}']").addClass "event-hidden-cat"
+    @adjustOverlappingEvents()
 
-  month: () ->
-    @period = "month"
-    @renderCalendar()
-
-  week: () ->
-    @period = "week"
-    @renderCalendar()
-
-  today: () ->
-    if @period is "week"
-      @startDate = moment().day(0)
-    else
-      @startDate = moment().date(1)
-    @renderCalendar()
 
   scrolling: ->
     if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
@@ -118,6 +110,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   adjustOverlappingEvents: () ->
     # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
     overlaps = @collection.findOverlaps()
+    console.log overlaps
     $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4")
     for myId, ids of overlaps
       num = ids.length + 1
