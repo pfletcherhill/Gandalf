@@ -3,10 +3,10 @@
 .calendar {
   $width: $sidebar_width + $feed_width;
   left: $width;
-  width: -moz-calc(100% - 500px);
-  width: -webkit-calc(100% - 500px);
-  width: -o-calc(100% - 500px);
-  width: calc(100% - 500px);
+  width: -moz-calc(100% - 520px);
+  width: -webkit-calc(100% - 520px);
+  width: -o-calc(100% - 520px);
+  width: calc(100% - 520px);
   //overflow-y: hidden;
 }
 
@@ -30,17 +30,18 @@ $cal_head_height: 80px;
   position: fixed;
   height: $cal_head_height;
   z-index: 30;
-  width: -moz-calc(100% - 500px);
-  width: -webkit-calc(100% - 500px);
-  width: -o-calc(100% - 500px);
-  width: calc(100% - 500px);
+  width: -moz-calc(100% - 520px);
+  width: -webkit-calc(100% - 520px);
+  width: -o-calc(100% - 520px);
+  width: calc(100% - 520px);
+  min-width: $min_width - 520px;
   background-color: white;
   @include box-shadow(0 5px 5px -5px #444);
   .btn-toolbar {
     padding: 0 10px;
   }
   .cal-day {
-    border-left: 1pt solid #eee;
+    border-right: 1pt solid #eee;
   }
 }
 .cal-header-days {
