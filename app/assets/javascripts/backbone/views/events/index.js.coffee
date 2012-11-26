@@ -13,7 +13,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @startDate = @options.startDate
     @period = @options.period
     @maxOverlaps = 4
-
     @render()
 
   template: JST["backbone/templates/events/index"]
