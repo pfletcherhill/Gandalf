@@ -4,6 +4,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :name
       t.text :bio
       t.string :image
+      t.string :color #format r, g, b
       
       t.timestamps
     end
