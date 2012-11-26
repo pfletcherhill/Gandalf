@@ -16,13 +16,13 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
-    Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
+    # Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
   template: JST["backbone/templates/calendar/calendar_month_event"]
   popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   tagName: "div"
-  className: "cal-month-event"
+  className: "cal-event cal-month-event"
   attributes: 
     rel: "event-popover"
   popoverChild: ".event-name:first"
@@ -43,7 +43,7 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
   scroll:() ->
     tHeight = 300 # popover height
     padTop = 50   # space above popover when scrolling to
-    container = @$el.parents("#calendar-container")
+    container = @$el.parents(".cal-body")
     if @height > tHeight
       scrolltop = @top - padTop
     else

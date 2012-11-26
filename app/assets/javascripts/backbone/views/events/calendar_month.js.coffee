@@ -18,7 +18,7 @@ class Gandalf.Views.Events.CalendarMonth extends Backbone.View
     dayCount = 0
     while dayCount < 35
       if dayCount%7 is 0
-        @$(".cal-body").append("<tr class='cal-day-container'></tr>")
+        @$(".cal-body-table").append("<tr class='cal-day-container'></tr>")
       # Gandalf.eventKeyFormat was set when the app was initialized
       d = tempDate.add('d', 1).format(Gandalf.eventKeyFormat)
       @addDay(@days[d])
