@@ -5,6 +5,7 @@ $popover-body-color: #eee;
   width: 300px;
   padding: 0;
   @include border-radius(0);
+  z-index: 20;
   &.left .arrow {
     border-left-color: $popover-body-color;
   }
@@ -18,4 +19,7 @@ $popover-body-color: #eee;
 }
 .popover-title {
   display: none;
+}
+.btn-toolbar > a {
+  vertical-align: top;
 }

@@ -1,13 +1,3 @@
-// Mixins
-// http://bourbon.io/#font-face
-// Doesn't work for some reason, through transition works...
-
-/*
-@font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
-@font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
-@font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
-@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
-*/
 @font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
 @font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
 @font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
@@ -44,7 +34,7 @@ td {
 
 .wrapper {
   //width: 100%;
-  min-width: 1000px;
+  min-width: $min_width;
 }
 
 /* ================== HEADER =============== */
@@ -130,30 +120,6 @@ $feed_width: 300px;
   height:100%;
   overflow-y: scroll;
   overflow-x: hidden;
-}
-
-.sidebar {
-  left: 0;
-  width: $sidebar_width;
-  overflow-y: hidden;
-  @include linear-gradient(#bbb, #444);
-}
-
-.feed {
-  left: $sidebar_width;
-  width: $feed_width;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
-}
-
-.calendar {
-  $width: $sidebar_width + $feed_width;
-  left: $width;
-  width: -moz-calc(100% - 500px);
-  width: -webkit-calc(100% - 500px);
-  width: -o-calc(100% - 500px);
-  width: calc(100% - 500px);
-  //overflow-y: hidden;
 }
 
 /* ============= ALL OTHER LAYOUT ============= */

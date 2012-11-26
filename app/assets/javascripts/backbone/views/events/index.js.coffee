@@ -1,97 +1,170 @@
 Gandalf.Views.Events ||= {}
 
 class Gandalf.Views.Events.Index extends Backbone.View
+
+  # options has keys [collection, startDate, period]
+  initialize: ()->
+    _.bindAll(this, 
+      "adjustOverlappingEvents", 
+      "orgVisChange", 
+      "catVisChange",
+      "hideHidden",
+      "renderSubscribedOrganizations",
+      "renderSubscribedCategories"
+    )
+    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
+    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+    # Class variables
+    @startDate = @options.startDate
+    @period = @options.period
+    @maxOverlaps = 4
+    @first = true # first time rendering
+    @render()
+    # Listening for global events
+    Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden)
+
   template: JST["backbone/templates/events/index"]
 
   el: "#content"
 
-  # options has keys [collection, startDate, period]
-  initialize: ()->
-    _.bindAll(this, "adjustOverlappingEvents")
-    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
-    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
-    # Listening for global events
-    Gandalf.dispatcher.bind("event:changeVisible", @adjustOverlappingEvents)
-    @startDate = @options.startDate
-    @period = @options.period
-    @render()
+  events:
+    "scroll" : "scrolling"
 
-
+  # Rendering functions
 
   renderWeekCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
+    view = new Gandalf.Views.Events.CalendarWeek(
+      startDate: moment(@startDate)
+      days: @days
+    )
     @$("#calendar-container").append(view.el)
+    if @first
+      @$("#calendar-container").animate scrollTop: 400, 300
+      @first = false
+    @hideHidden()
 
   renderMonthCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarWeek(startDate: moment(@startDate))
+    view = new Gandalf.Views.Events.CalendarMonth(
+      startDate: moment(@startDate)
+      days: @days
+    )
     @$("#calendar-container").append(view.el)
-
-  renderCalDays: (numDays) ->
-    dayCount = 0
-    while dayCount < numDays
-      # Gandalf.eventKeyFormat was set when the app was initialized
-      d = moment(@startDate).add('d', dayCount).format(Gandalf.eventKeyFormat)
-      @addCalDay(@days[d])
-      dayCount++
-
-  addCalDay: (events) ->
-    view = new Gandalf.Views.Events.CalendarDay(model: events)
-    @$("#cal-day-container").append(view.el)
+    @hideHidden()
 
   renderFeed: () ->
-    _.each @days, (events, day) =>
+    @$("#feed-list").append("<p>Upcoming events</p>")
+    @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
+    for day, events of @days
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
     view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
     @$("#feed-list").append(view.el)
 
-  adjustOverlappingEvents: (eventId) ->
-    overlaps = @collection.findOverlaps eventId 
-    $(".cal-event").removeClass("overlap overlap-1 overlap-2 overlap-3")
-    _.each overlaps, (ids, myId) ->
-      len = ids.length
-      # keep this line in case i need it later
-      # $(".cal-event[data_id='"+myId+"']").addClass "overlap-"+len+" overlap-order-"+0 
-      $(".cal-event[data-id='"+myId+"']").addClass "overlap overlap-"+len
-      _.each ids, (id, i) ->
-        num = i+1
-        $(".cal-event[data-id='"+id+"']").addClass "overlap overlap-"+len
+  renderSubscribedOrganizations: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
+    hidden = @collection.getHiddenOrgs()
+    console.log hidden
+    for s in subscriptions
+      invisible = false
+      invisible = true if s.id in hidden
+      view = new Gandalf.Views.Organizations.Short(model: s, checked: invisible)
+      $("#subscribed-organizations-list").append(view.el)
+  
+  renderSubscribedCategories: ->
+    subscriptions = Gandalf.currentUser.get('subscribed_categories')
+    hidden = @collection.getHiddenCats()
+    for s in subscriptions
+      invisible = false
+      invisible = true if s.id in hidden
+      view = new Gandalf.Views.Categories.Short(model: s, checked: invisible)
+      $("#subscribed-categories-list").append(view.el)
 
-    
+  renderCalendar: () ->
+    if @period == "month"
+      @renderMonthCalendar()
+    else 
+      @renderWeekCalendar()
+      @adjustOverlappingEvents()
+
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
     @days = @collection.sortAndGroup()
     @renderFeed()
-    if @period == "month"
-      @renderMonthCalendar()
-      numDays = 28 # ACTUALLy number of days in the month of moment(start)
-    else 
-      @renderWeekCalendar()
-      numDays = 7
+    @renderCalendar()
 
-    @renderCalDays(numDays)
-    @adjustOverlappingEvents()
     return this
-    
+  
+  # Event handlers
 
-  renderSubscribedOrganizations: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    _.each subscriptions, (subscription) ->
-      view = new Gandalf.Views.Organizations.Short(model: subscription)
-      @$("#subscribed-organizations-list").append(view.render().el)
-  
-  renderSubscribedCategories: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    _.each subscriptions, (subscription) ->
-      view = new Gandalf.Views.Categories.Short(model: subscription)
-      @$("#subscribed-categories-list").append(view.render().el)
-  
-  events:
-    'scroll' : 'scrolling'
-  
+  hideHidden: () ->
+    orgs = @collection.getHiddenOrgs()
+    cats = @collection.getHiddenCats()
+    @orgVisChange(orgs)
+    @catVisChange(cats)
+
   scrolling: ->
-    console.log 'scrolling'
     if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
       console.log 'go!'
-    
+
+  # Helpers
+
+  orgVisChange: (hiddenOrgs) ->
+    $(".js-event").removeClass("event-hidden-org")
+    for orgId in hiddenOrgs
+      $(".js-event[data-organization-id='#{orgId}']").addClass "event-hidden-org"
+    @adjustOverlappingEvents()
+
+  catVisChange: (hiddenCats) ->
+    $(".cal-event").removeClass("event-hidden-cat")
+    for catId in hiddenCats
+      id = catId+","
+      $(".js-event[data-category-ids*='#{id}']").addClass "event-hidden-cat"
+    @adjustOverlappingEvents()
+
+  adjustOverlappingEvents: () ->
+    # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
+    overlaps = @collection.findOverlaps()
+    $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4")
+    for myId, ids of overlaps
+      num = ids.length + 1
+      $(".cal-week-event[data-event-id='#{myId}']").addClass "overlap-#{num}"
+      for id in ids
+        $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
+    @makeCSSAdjustments()
+
+  # CSS wasn't strong enough for the kind of styling I wanted to do...
+  # so we're doing it in JS
+  makeCSSAdjustments: () ->
+    overlapIndex = 2
+    pLeft = 3
+    calZ = 10
+    while overlapIndex <= @maxOverlaps
+      selector = ".cal-week-event.overlap-#{overlapIndex}"
+      selector += ":not(.event-hidden-org, .event-hidden-cat)"
+      evs = $(selector)
+      width = Math.floor(100/overlapIndex) - overlapIndex
+      $(evs).css({ width: "#{width}%", paddingLeft: "#{pLeft}%" })
+      _.each evs, (e, index) ->
+        if index%overlapIndex is 0
+          $(e).css(
+            left: 0
+            paddingLeft: 0
+            width: "#{width + pLeft}%"
+          )
+        else if index%overlapIndex is 1
+          $(e).css(
+            left: "#{width}%"
+            zIndex: calZ - 1
+          )
+        else if index%overlapIndex is 2
+          $(e).css(
+            left: "#{width*2}%"
+            zIndex: calZ - 2
+          )
+        else if index%overlapIndex is 3
+          $(e).css(
+            left: "#{width*3}%"
+            zIndex: calZ - 3
+          )
+      overlapIndex++
