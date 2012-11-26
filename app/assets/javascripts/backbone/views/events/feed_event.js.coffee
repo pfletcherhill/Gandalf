@@ -3,8 +3,6 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.FeedEvent extends Backbone.View
   
   initialize: ->
-    _.bindAll(this, "visibilityChange")
-    Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
     @render()
 
   events: 
@@ -14,7 +12,7 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
 
   template: JST["backbone/templates/events/feed_event"]
 
-  className: "feed-event"
+  className: "js-event feed-event"
   
   convertTime: (time) ->
     moment(time).format("h:mm a")
@@ -33,21 +31,6 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
       endTime: endTime
     }))
     return this
-
-  visibilityChange: (obj) ->
-    time = 200
-    if obj.kind == "organization"
-      if parseInt(@$el.attr("data-organization-id")) == obj.id
-        if obj.state == "show"
-          @$el.slideDown(time)
-        else if obj.state == "hide"
-          @$el.slideUp time
-    if obj.kind == "category"
-      if @$el.attr("data-category-ids").indexOf(obj.id+",") != -1
-        if obj.state == "show"
-          @$el.slideDown(time)
-        else if obj.state == "hide"
-          @$el.slideUp(time)
   
   mouseenter: () ->
     Gandalf.dispatcher.trigger("feedEvent:mouseenter", @model.get("id"))

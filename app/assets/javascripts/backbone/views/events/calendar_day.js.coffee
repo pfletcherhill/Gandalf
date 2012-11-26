@@ -19,6 +19,7 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
         view = new Gandalf.Views.Events.CalendarWeekEvent(model: e) if @options.type == "week"
         view = new Gandalf.Views.Events.CalendarMonthEvent(model: e) if @options.type == "month"
         $(container).append(view.el)
+      Gandalf.dispatcher.trigger("calEvents:ready")
 
   render: () ->
     $(@el).html(@template()) # Add the calendar day
