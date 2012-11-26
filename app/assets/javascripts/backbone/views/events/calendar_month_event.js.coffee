@@ -13,16 +13,16 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     @css = {}
     @css.backgroundColor = @$el.css("backgroundColor")
     @css.zIndex = @$el.css("zIndex")
+    # Yet to be done for month
     Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
-    # Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
   template: JST["backbone/templates/calendar/calendar_month_event"]
   popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   tagName: "div"
-  className: "cal-event cal-month-event"
+  className: "js-event cal-event cal-month-event"
   attributes: 
     rel: "event-popover"
   popoverChild: ".event-name:first"
@@ -78,21 +78,3 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
   feedClick:(id) ->
     if not id or @model.get("id") is id
       @$el.click()
-
-  visibilityChange: (obj) ->
-    time = 200
-    # User event-hidden-org and event-hidden-cat because of the case when
-    # if an event is hidden by both an organization and a category
-    # TO DO: what if it's hidden by multiple categories?
-    if obj.kind is "organization"
-      if parseInt(@$el.attr("data-organization-id")) is obj.id
-        if obj.state is "show"
-          @$el.removeClass("event-hidden-org")
-        else
-          @$el.addClass("event-hidden-org")
-    if obj.kind is"category"
-      if @$el.attr("data-category-ids").indexOf(obj.id+",") isnt -1
-        if obj.state is "show"
-          @$el.removeClass("event-hidden-cat")
-        else
-          @$el.addClass("event-hidden-cat")

@@ -139,8 +139,10 @@ $cal_z: 10;
   }
 }
 
-.event-hidden-org, .event-hidden-cat {
-  opacity: 0;
+.cal-event {
+  &.event-hidden-org, &.event-hidden-cat {
+    opacity: 0;
+  }
 }
 
 /* ======== POPOVER ========= */

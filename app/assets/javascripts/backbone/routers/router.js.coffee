@@ -97,4 +97,3 @@ class Gandalf.Router extends Backbone.Router
   about: ->
     view = new Gandalf.Views.Static.About
     $("#content").html(view.render().el)
-  
