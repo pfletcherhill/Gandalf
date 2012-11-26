@@ -27,10 +27,13 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
         @$(".image").html('').addClass 'loading'
   
   renderEvents: =>
-    console.log 'renderEvents'
     for event in @model.get('events')
-      @$("#organization-events-list").append( @eventTemplate( event ))
-           
+      startTime = @convertTime event.start_at
+      @$("#organization-events-list").append( @eventTemplate( event: event, startTime: startTime ))
+  
+  convertTime: (time) ->
+    moment(time).format("h:mm a")
+       
   render: ->
     $(@el).html(@template( @model.toJSON() ))
     $("li a[data-id='#{@model.id}']").parent().addClass 'selected'

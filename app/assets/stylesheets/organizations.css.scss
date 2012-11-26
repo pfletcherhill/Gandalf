@@ -74,12 +74,13 @@ li {
     margin-bottom: 20px;
     margin-right: 10px;
     border: 1px solid #dadada;
-    &.loading {
-      background: url('/assets/ajax-loader.gif');
-      background-repeat: no-repeat;
-      background-position: center;
-    }
   }
+}
+
+.image.loading {
+  background: url('/assets/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #organization-events {
@@ -88,6 +89,21 @@ li {
   top: 20px;
   padding-left: 30px;
   border-left: 1px solid #dadada;
+  table {
+    width: 400px;
+  }
+}
+
+.organization-event {
+  border-bottom: 1px solid #dadada;
+  td {
+    padding: 10px 0px;
+    .image {
+      width: 50px;
+      min-height: 50px;
+      border: 1px solid #dadada;
+    }
+  }
 }
 
 #new-event-form {
