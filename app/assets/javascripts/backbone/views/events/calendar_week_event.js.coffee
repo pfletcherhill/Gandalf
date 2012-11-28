@@ -46,7 +46,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("start_at")
     @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: #{@top}px; height: #{@height}px; background-color: #{@lightColor}"
+    style_string = "top: #{@top}px; height: #{@height}px;\
+background-color: #{@lightColor}; border: 1pt solid #{@color};"
     $(@el).attr(
       style: style_string
       "data-event-id": e.get("id")
@@ -110,6 +111,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       left: 0
       zIndex: 19
       backgroundColor: @color
+      border: "1pt solid #222"
     )
   mouseleave: ()->
     @$el.css(
@@ -118,4 +120,5 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       left: @css.left
       zIndex: @css.zIndex
       backgroundColor: @lightColor
+      border: "1pt solid #{@color}"
     )
