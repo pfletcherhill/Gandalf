@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>Hey</title>
+</head>
+<body onload="init()">
+  <div id="map" style="width:300px; height: 500px;"></div>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC09xDhfZSSQwy2-P9x7LAyz7T-TLjNQwo&sensor=false">
+  </script>
+  <script type="text/javascript">
+    function init() {
+      var mapOptions = {
+          center: new google.maps.LatLng(-34.397, 150.644),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map"),
+            mapOptions);
+    }
+  </script>
+</body>
+</html>

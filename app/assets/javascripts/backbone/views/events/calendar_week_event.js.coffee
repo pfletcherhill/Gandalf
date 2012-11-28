@@ -4,18 +4,21 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
     _.bindAll(@)
+    @color = "rgba(#{@model.get("color")},1)"
+    @lightColor = "rgba(#{@model.get("color")},0.7)"
     @render()
     @$el.popover(
       placement: 'left'
       html: true
       trigger: 'click'
-      content: @popoverTemplate(e: @model)
+      content: @popoverTemplate(e: @model, color: @lightColor)
     )
     @css = {}
-    @css.backgroundColor = @$el.css("backgroundColor")
+    @css.backgroundColor = @color
+    @css.lightBackgroundColor = @lightColor
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
 
   template: JST["backbone/templates/calendar/calendar_week_event"]
@@ -43,7 +46,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("start_at")
     @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: #{@top}px; height: #{@height}px;"
+    style_string = "top: #{@top}px; height: #{@height}px;\
+background-color: #{@lightColor}; border: 1pt solid #{@color};"
     $(@el).attr(
       style: style_string
       "data-event-id": e.get("id")
@@ -57,15 +61,14 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @popover()
 
   scroll:() ->
-    tHeight = 300 # popover height
-    padTop = 50   # space above popover when scrolling to
+    tHeight = 400 # popover height
+    padTop = 25   # space above popover when scrolling to
     container = @$el.parents("#calendar-container")
     if @height > tHeight
       scrolltop = @top - padTop
     else
       scrolltop = @top + (@height-tHeight) / 2 - padTop
     $(container).animate scrollTop: scrolltop, 300
-
 
   popover: () ->
     id = @model.get("id")
@@ -76,41 +79,50 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     t = this
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
+    @makeGMap()
 
-  feedmouseenter: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: "rgba(170,170,170,0.9)"
-        zIndex: 15
-      )
-
-  feedmouseleave: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: @css.backgroundColor
-        zIndex: @css.zIndex
-      )
+  makeGMap: () ->
+    lat = @model.get("lat")
+    lon = @model.get("lon")
+    console.log lat, lon
+    myPos = new google.maps.LatLng(lat, lon)
+    options = 
+      center: myPos
+      zoom: 15
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map(document.getElementById("map-canvas"), options)
+    marker = new google.maps.Marker(
+      position: myPos
+      map: map
+      title: "Here it is!"
+    )
 
   feedClick:(id) ->
-    if not id or @model.get("id") is id
+    if @model.get("id") is id
       @$el.click()
 
-  mouseenter:() ->
+  mouseenter:(id) ->
+    return if typeof id is "number" and @model.get("id") isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
-    @css.pLeft = @$el.css("paddingLeft")
+    # @css.pLeft = @$el.css("paddingLeft")
     @css.left = @$el.css("left")
     @css.zIndex = @$el.css("zIndex")
     @$el.css(
-      width: "98%"
+      width: "97%"
       padding: 0
       left: 0
       zIndex: 19
+      backgroundColor: @color
+      border: "1pt solid #333"
     )
-  mouseleave: ()->
+  mouseleave: (id)->
+    return if typeof id is "number" and @model.get("id") isnt id
     @$el.css(
       width: @css.width
-      paddingLeft: @css.pLeft
+      # paddingLeft: @css.pLeft
       left: @css.left
       zIndex: @css.zIndex
+      backgroundColor: @lightColor
+      border: "1pt solid #{@color}"
     )

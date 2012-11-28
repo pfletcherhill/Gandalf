@@ -41,6 +41,9 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
     t.string   "location"
     t.string   "address"
     t.text     "description"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.boolean  "gmaps"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
@@ -49,8 +52,9 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
     t.string   "name"
     t.text     "bio"
     t.string   "image"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "color",      :default => "220,220,220"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
   create_table "subscriptions", :force => true do |t|

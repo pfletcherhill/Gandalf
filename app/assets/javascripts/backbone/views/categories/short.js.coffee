@@ -5,6 +5,10 @@ class Gandalf.Views.Categories.Short extends Backbone.View
   
   initialize: ->
     @render()
+    @$('input').tooltip(
+      placement: 'left'
+      title: 'Toggle visibility'
+    )
 
   className: "sidebar-item category"
 
@@ -12,8 +16,8 @@ class Gandalf.Views.Categories.Short extends Backbone.View
     "click input" : "clicked"
 
   render: =>
-    $(@el).html({m: @model, checked: @options.checked})
-    @$el.addClass("hidden") if @options.checked
+    $(@el).html(@template({m: @model, invisible: @options.invisible}))
+    @$el.addClass("hidden") if @options.invisible
     return this
 
   clicked: () ->
