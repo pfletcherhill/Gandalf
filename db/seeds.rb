@@ -4,7 +4,7 @@ netids.each do |id|
   User.create_from_directory id
 end
 
-o1 = Organization.create(:name => "TEDxYale", :color => "251,51,51")
+o1 = Organization.create(:name => "TEDxYale", :color => "255,66,51")
 o2 = Organization.create(:name => "HackYale", :color => "107,189,246")
 print "organizations created...\n"
 c1 = Category.create(:name => "Tech")
