@@ -61,8 +61,8 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     @popover()
 
   scroll:() ->
-    tHeight = 300 # popover height
-    padTop = 50   # space above popover when scrolling to
+    tHeight = 400 # popover height
+    padTop = 25   # space above popover when scrolling to
     container = @$el.parents("#calendar-container")
     if @height > tHeight
       scrolltop = @top - padTop
@@ -82,21 +82,20 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     @makeGMap()
 
   makeGMap: () ->
+    lat = @model.get("lat")
+    lon = @model.get("lon")
+    console.log lat, lon
+    myPos = new google.maps.LatLng(lat, lon)
     options = 
-      center: new google.maps.LatLng("41.3017", "-72.9333")
-      zoom: 10
+      center: myPos
+      zoom: 15
       mapTypeId: google.maps.MapTypeId.ROADMAP
     map = new google.maps.Map(document.getElementById("map-canvas"), options)
-
-  ###
-  feedmouseenter: (id) ->
-    if @model.get("id") is id
-      @$el.mouseenter()
-
-  feedmouseleave: (id) ->
-    if @model.get("id") is id
-      @$el.mouseenter()
-  ###
+    marker = new google.maps.Marker(
+      position: myPos
+      map: map
+      title: "Here it is!"
+    )
 
   feedClick:(id) ->
     if @model.get("id") is id

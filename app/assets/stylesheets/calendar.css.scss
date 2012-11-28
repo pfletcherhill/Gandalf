@@ -197,7 +197,11 @@ $event-popover-padding: 10px;
 .popover .close {
   line-height: 15px;
 }
-
+#map-canvas {
+  margin-top: 10px;
+  height: 170px;
+  width: 100%;
+}
 #map-canvas label { width: auto; display:inline; }
 #map-canvas img { max-width: none; max-height: none; }
 
