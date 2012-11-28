@@ -68,7 +68,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     for s in subscriptions
       invisible = false
       invisible = true if s.id in hidden
-      view = new Gandalf.Views.Organizations.Short(model: s, checked: invisible)
+      view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
       $("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
@@ -77,7 +77,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     for s in subscriptions
       invisible = false
       invisible = true if s.id in hidden
-      view = new Gandalf.Views.Categories.Short(model: s, checked: invisible)
+      view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
       $("#subscribed-categories-list").append(view.el)
 
   renderCalendar: () ->
@@ -116,7 +116,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @adjustOverlappingEvents()
 
   catVisChange: (hiddenCats) ->
-    $(".cal-event").removeClass("event-hidden-cat")
+    $(".js-event").removeClass("event-hidden-cat")
     for catId in hiddenCats
       id = catId+","
       $(".js-event[data-category-ids*='#{id}']").addClass "event-hidden-cat"

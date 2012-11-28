@@ -66,14 +66,29 @@
   overflow-y: hidden;
   background-color: #f8f8f8;
 }
-.sidebar-label {
+.sidebar-header {
   font-size: 120%;
   line-height: 120%;
+  font-weight: bold;
   padding: 10px;
 }
 
+.sidebar-list {
+  border-bottom: 1pt solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.sidebar-label {
+  padding-left: 15px; 
+  padding-bottom: 5px;
+}
+
 .sidebar-item {
-  padding: 5px 0 5px 20px;
+  padding: 3px 35px 3px 25px;
   cursor: pointer;
   @include transition(all 0.2s);
   &:hover {
@@ -81,6 +96,11 @@
   }
   &.hidden {
     opacity: 0.5;
+  }
+  input[type='checkbox'] {
+    margin-top: 3px; 
+    float: right;
+    vertical-align: bottom;
   }
 }
 

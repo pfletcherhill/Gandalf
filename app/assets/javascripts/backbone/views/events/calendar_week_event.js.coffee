@@ -4,6 +4,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
     _.bindAll(@)
+    @color = "rgba(#{@model.get("color")},1)"
+    @lightColor = "rgba(#{@model.get("color")},0.7)"
     @render()
     @$el.popover(
       placement: 'left'
@@ -12,7 +14,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       content: @popoverTemplate(e: @model)
     )
     @css = {}
-    @css.backgroundColor = @$el.css("backgroundColor")
+    @css.backgroundColor = @color
+    @css.lightBackgroundColor = @lightColor
     @css.zIndex = @$el.css("zIndex")
     Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
@@ -43,7 +46,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("start_at")
     @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: #{@top}px; height: #{@height}px;"
+    style_string = "top: #{@top}px; height: #{@height}px; background-color: #{@lightColor}"
     $(@el).attr(
       style: style_string
       "data-event-id": e.get("id")
@@ -80,14 +83,14 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
   feedmouseenter: (id) ->
     if not id or @model.get("id") is id
       @$el.css(
-        backgroundColor: "rgba(170,170,170,0.9)"
+        backgroundColor: @css.backgroundColor
         zIndex: 15
       )
 
   feedmouseleave: (id) ->
     if not id or @model.get("id") is id
       @$el.css(
-        backgroundColor: @css.backgroundColor
+        backgroundColor: @css.lightBackgroundColor
         zIndex: @css.zIndex
       )
 
@@ -102,10 +105,11 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @css.left = @$el.css("left")
     @css.zIndex = @$el.css("zIndex")
     @$el.css(
-      width: "98%"
+      width: "95%"
       padding: 0
       left: 0
       zIndex: 19
+      backgroundColor: @color
     )
   mouseleave: ()->
     @$el.css(
@@ -113,4 +117,5 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       paddingLeft: @css.pLeft
       left: @css.left
       zIndex: @css.zIndex
+      backgroundColor: @lightColor
     )

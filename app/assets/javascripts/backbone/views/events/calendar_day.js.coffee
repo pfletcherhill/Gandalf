@@ -22,8 +22,6 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
       Gandalf.dispatcher.trigger("calEvents:ready")
 
   render: () ->
-    $(@el).html(@template()) # Add the calendar day
+    $(@el).html(@template(date: @options.date)) # Add the calendar day
     @addEvents()
-    
-
     return this
