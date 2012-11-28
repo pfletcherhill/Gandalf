@@ -17,7 +17,7 @@ e = Event.new(
   :start_at => Time.now + 20.hour,
   :end_at => Time.now + 26.hour,
   :location => "Yale University Art Gallery Auditorium",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "1111 Chapel Street, New Haven, CT 06511"
 )
 
@@ -43,7 +43,7 @@ e = Event.new(
   :start_at => Time.now + 29.hour,
   :end_at => Time.now + 30.hour,
   :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 e.categories << c1
@@ -55,7 +55,7 @@ e = Event.new(
   :start_at => Time.now + 25.hour,
   :end_at => Time.now + 27.hour,
   :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 e.categories << c1
@@ -67,7 +67,7 @@ e = Event.new(
   :start_at => Time.now + 27.hour, 
   :end_at => Time.now + 30.hour, 
   :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 e.categories << c1
@@ -79,7 +79,7 @@ e = Event.new(
   :start_at => Time.now + 2.day,
   :end_at => Time.now + 50.hour,
   :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 e.categories << c1
@@ -91,7 +91,7 @@ e = Event.new(
   :start_at => Time.now + 10.day,
   :end_at => Time.now + 11.day,
   :location => "Shubert Theater",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam cursus dui tellus, ut accumsan turpis. Sed ut tortor ut eros sagittis facilisis. Nulla magna tortor, semper et tristique dictum, laoreet ac libero. Ut a magna urna, vel hendrerit nisl.",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "247 College Street, New Haven, CT 06511"
 )
 e.categories << c2

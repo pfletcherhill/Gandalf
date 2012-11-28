@@ -149,7 +149,6 @@ $test-color: lighten(#0f91ec, 20%);
   font-size: 8px;
   line-height: 12px;
   overflow: hidden;
-  width: 97%;
   p {
     margin: 0 3px;
     &:first-child {
@@ -174,17 +173,32 @@ $test-color: lighten(#0f91ec, 20%);
 $event-popover-padding: 10px;
 
 .event-popover-head {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 20px;
   background-color: $popover-head-color;
   padding: $event-popover-padding;
 }
 .event-popover-body {
   padding: $event-popover-padding;
+  tr {
+    padding: 3px 0;
+  }
+  td:first-child {
+    width: 25%;
+    font-weight: bold;
+    padding-bottom: 3px;
+  }
+}
+.event-popover-description {
+  font-size: 10px;
+  line-height: 16px;
 }
 
 .popover .close {
   line-height: 15px;
 }
+
+#map-canvas label { width: auto; display:inline; }
+#map-canvas img { max-width: none; max-height: none; }
 
 

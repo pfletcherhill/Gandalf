@@ -79,6 +79,14 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     t = this
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
+    @makeGMap()
+
+  makeGMap: () ->
+    options = 
+      center: new google.maps.LatLng("41.3017", "-72.9333")
+      zoom: 10
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map(document.getElementById("map-canvas"), options)
 
   ###
   feedmouseenter: (id) ->
@@ -98,22 +106,22 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     return if typeof id is "number" and @model.get("id") isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
-    @css.pLeft = @$el.css("paddingLeft")
+    # @css.pLeft = @$el.css("paddingLeft")
     @css.left = @$el.css("left")
     @css.zIndex = @$el.css("zIndex")
     @$el.css(
-      width: "95%"
+      width: "97%"
       padding: 0
       left: 0
       zIndex: 19
       backgroundColor: @color
-      border: "1pt solid #222"
+      border: "1pt solid #333"
     )
   mouseleave: (id)->
     return if typeof id is "number" and @model.get("id") isnt id
     @$el.css(
       width: @css.width
-      paddingLeft: @css.pLeft
+      # paddingLeft: @css.pLeft
       left: @css.left
       zIndex: @css.zIndex
       backgroundColor: @lightColor
