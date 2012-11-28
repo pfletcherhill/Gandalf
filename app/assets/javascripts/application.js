@@ -7,6 +7,5 @@
 //= require backbone_rails_sync
 //= require backbone_datalink
 //= require backbone/gandalf
-//= require gmaps.js
 //= require bootstrap
 //= require_tree .
