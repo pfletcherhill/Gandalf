@@ -4,6 +4,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
     _.bindAll(@)
+    @model.set("color", "255,66,51") if @model.get("id") is 1
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @render()
@@ -11,14 +12,14 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       placement: 'left'
       html: true
       trigger: 'click'
-      content: @popoverTemplate(e: @model)
+      content: @popoverTemplate(e: @model, color: @lightColor)
     )
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
 
   template: JST["backbone/templates/calendar/calendar_week_event"]
@@ -70,7 +71,6 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       scrolltop = @top + (@height-tHeight) / 2 - padTop
     $(container).animate scrollTop: scrolltop, 300
 
-
   popover: () ->
     id = @model.get("id")
     # Hide all other popovers
@@ -81,25 +81,22 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
 
+  ###
   feedmouseenter: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: @css.backgroundColor
-        zIndex: 15
-      )
+    if @model.get("id") is id
+      @$el.mouseenter()
 
   feedmouseleave: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: @css.lightBackgroundColor
-        zIndex: @css.zIndex
-      )
+    if @model.get("id") is id
+      @$el.mouseenter()
+  ###
 
   feedClick:(id) ->
-    if not id or @model.get("id") is id
+    if @model.get("id") is id
       @$el.click()
 
-  mouseenter:() ->
+  mouseenter:(id) ->
+    return if typeof id is "number" and @model.get("id") isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
     @css.pLeft = @$el.css("paddingLeft")
@@ -113,7 +110,8 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       backgroundColor: @color
       border: "1pt solid #222"
     )
-  mouseleave: ()->
+  mouseleave: (id)->
+    return if typeof id is "number" and @model.get("id") isnt id
     @$el.css(
       width: @css.width
       paddingLeft: @css.pLeft
