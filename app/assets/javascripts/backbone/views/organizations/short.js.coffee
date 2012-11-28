@@ -5,10 +5,12 @@ class Gandalf.Views.Organizations.Short extends Backbone.View
   
   initialize: ->
     @render()
+    ###
     @$('input').tooltip(
       placement: 'left'
       title: 'Toggle visibility'
     )
+    ###
 
   className: "sidebar-item organization"
   events:

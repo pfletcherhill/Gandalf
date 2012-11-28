@@ -13,3 +13,6 @@ window.Gandalf =
   eventKeyFormat: "YYYY-MM-DD"
   displayFormat: "MM-DD-YYYY"
   dispatcher: _.clone(Backbone.Events)
+
+window.onresize = (e) ->
+  Gandalf.dispatcher.trigger("window:resize")

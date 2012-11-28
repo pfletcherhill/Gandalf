@@ -8,6 +8,12 @@ class Event < ActiveRecord::Base
     date = self.start_at.strftime("%Y-%m-%d")
     date
   end
+
+  def short_address
+    ad = address.sub(/,? New Haven,? /,"")
+    ad = ad.sub(/\w\w \d\d\d\d\d/, "")
+    ad.strip
+  end
   
   def as_json
     {
@@ -15,6 +21,7 @@ class Event < ActiveRecord::Base
       "name" => name,
       "description" => description,
       "location" => location,
+      "address" => short_address,
       "start_at" => start_at,
       "end_at" => end_at,
       "organization" => organization.name,
