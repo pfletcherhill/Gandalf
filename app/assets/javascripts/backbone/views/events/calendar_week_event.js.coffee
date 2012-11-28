@@ -4,7 +4,6 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
     _.bindAll(@)
-    @model.set("color", "255,66,51") if @model.get("id") is 1
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @render()
