@@ -28,8 +28,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   initialize: ->
     _.bindAll(this, "adjustOrganization", "adjustCategory")
-    # These won't persist across page loads, so switching between weeks
-    # and months will render these null
     @hiddenOrgs = []
     @hiddenCats = []
     Gandalf.dispatcher.bind("categoryShort:click", @adjustCategory)

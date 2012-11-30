@@ -5,14 +5,20 @@ class Gandalf.Views.Organizations.Short extends Backbone.View
   
   initialize: ->
     @render()
+    ###
+    @$('input').tooltip(
+      placement: 'left'
+      title: 'Toggle visibility'
+    )
+    ###
 
   className: "sidebar-item organization"
   events:
     "click input" : "clicked"
     
   render: =>
-    $(@el).html(@template({m: @model, checked: @options.checked}))
-    @$el.addClass("hidden") if @options.checked
+    $(@el).html(@template({m: @model, invisible: @options.invisible}))
+    @$el.addClass("hidden") if @options.invisible
     return this
 
   clicked: () ->
