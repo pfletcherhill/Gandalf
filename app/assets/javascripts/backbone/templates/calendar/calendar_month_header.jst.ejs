@@ -1,0 +1,29 @@
+<div class="cal-header">
+  <div class="btn-toolbar">
+    <a href="#calendar/today/month" class="btn">Today</a>
+    <div class="btn-group">
+      <% now = moment(startDate).format(Gandalf.displayFormat) %>
+      <% prevMonth = moment(startDate).day(6).date(1).subtract('M', 1).format(Gandalf.displayFormat) %>
+      <% nextMonth = moment(startDate).day(6).date(1).add('M', 1).format(Gandalf.displayFormat) %>
+      <a href=<%= "#calendar/"+prevMonth+"/month" %> class="btn">&lt;</a>
+      <a href=<%= "#calendar/"+nextMonth+"/month" %> class="btn">&gt;</a>
+    </div>
+    <div class="btn-group pull-right">
+      <a href=<%= "#calendar/"+now+"/week" %> class="btn">Week</a>
+      <a class="btn disabled">Month</a>
+    </div>
+  </div>
+  <table class="cal-header-days">
+    <tr>
+      <% formatString = "dddd"; %>
+      <% for(i=0; i<7; i++) { %>
+        <td>
+          <div class="cal-day">
+            <%= moment(startDate).add('d', i).format(formatString) %>
+          </div>
+        </td>
+      <% } %>
+    </tr>
+  </table>
+
+</div>

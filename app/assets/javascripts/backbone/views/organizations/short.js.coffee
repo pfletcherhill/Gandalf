@@ -8,10 +8,11 @@ class Gandalf.Views.Organizations.Short extends Backbone.View
 
   className: "sidebar-item organization"
   events:
-    "click" : "clicked"
+    "click input" : "clicked"
     
   render: =>
-    $(@el).html(@model.name)
+    $(@el).html(@template({m: @model, checked: @options.checked}))
+    @$el.addClass("hidden") if @options.checked
     return this
 
   clicked: () ->
