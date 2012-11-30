@@ -5,8 +5,8 @@
       <div id="cal-prev" class="btn">&lt;</div>
       <div id="cal-next" class="btn">&gt;</div>
     </div>
-    <% week = period === "week" ? "disabled" : "" %>
-    <% month = period === "month" ? "disabled" : "" %>
+    <% week = period === "week" ? "disabled" : ""; %>
+    <% month = period === "month" ? "disabled" : ""; %>
     <div class="btn-group pull-right">
       <div id="cal-week" class="btn <%= week %>">Week</div>
       <div id="cal-month" class="btn <%= month %>">Month</div>
@@ -15,11 +15,14 @@
 
   <table class="cal-header-days">
     <tr>
-      <td></td>
+      <% if(period === "week"){ %>
+        <td></td>
+      <% } %>
+      <% formatString = period === "week" ? "ddd - MM / DD" : "dddd"; %>
       <% for(i=0; i<7; i++) { %>
         <td>
           <div class="cal-day">
-            <%= moment(startDate).add('d', i).format("ddd - MM / DD") %>
+            <%= moment(startDate).add('d', i).format(formatString) %>
           </div>
         </td>
       <% } %>

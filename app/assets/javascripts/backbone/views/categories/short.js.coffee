@@ -1,16 +1,19 @@
 Gandalf.Views.Categories ||= {}
 
 class Gandalf.Views.Categories.Short extends Backbone.View
-  template: JST["backbone/templates/categories/short"]
+  template: JST["backbone/templates/organizations/short"]
   
   initialize: ->
     @render()
 
   className: "sidebar-item category"
+
   events:
-    "click" : "clicked"
+    "click input" : "clicked"
+
   render: =>
-    $(@el).html(@model.name)
+    $(@el).html({m: @model, checked: @options.checked})
+    @$el.addClass("hidden") if @options.checked
     return this
 
   clicked: () ->

@@ -1,6 +1,6 @@
 Gandalf.Views.Events ||= {}
 
-class Gandalf.Views.Events.CalendarEvent extends Backbone.View
+class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
     _.bindAll(@)
@@ -14,18 +14,16 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     @css = {}
     @css.backgroundColor = @$el.css("backgroundColor")
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:feedmouseenter", @mouseenter)
-    Gandalf.dispatcher.on("feedEvent:feedmouseleave", @mouseleave)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
-    Gandalf.dispatcher.on("eventVisibility:change", @visibilityChange)
 
-
-  template: JST["backbone/templates/events/calendar_event"]
-  popoverTemplate: JST["backbone/templates/events/calendar_popover"]
+  template: JST["backbone/templates/calendar/calendar_week_event"]
+  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
-  className: "cal-event"
+  className: "js-event cal-event cal-week-event"
   attributes: 
     rel: "event-popover"
   hourHeight: 45
@@ -45,7 +43,7 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("start_at")
     @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: "+@top+"px; height: "+@height+"px;"
+    style_string = "top: #{@top}px; height: #{@height}px;"
     $(@el).attr(
       style: style_string
       "data-event-id": e.get("id")
@@ -59,19 +57,20 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
     @popover()
 
   scroll:() ->
+    tHeight = 300 # popover height
+    padTop = 50   # space above popover when scrolling to
     container = @$el.parents("#calendar-container")
-    if @height > 300
-      scrolltop = @top + 100
+    if @height > tHeight
+      scrolltop = @top - padTop
     else
-      middle = @top + @height / 2
-      scrolltop = middle - 250
+      scrolltop = @top + (@height-tHeight) / 2 - padTop
     $(container).animate scrollTop: scrolltop, 300
 
 
   popover: () ->
     id = @model.get("id")
     # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-event-id='"+id+"'])")
+    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{id}'])")
     otherPopovers.popover('hide') if otherPopovers
     # Add event handler to close button
     t = this
@@ -79,45 +78,25 @@ class Gandalf.Views.Events.CalendarEvent extends Backbone.View
       t.$el.popover('hide')
 
   feedmouseenter: (id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.css(
         backgroundColor: "rgba(170,170,170,0.9)"
         zIndex: 15
       )
 
   feedmouseleave: (id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.css(
         backgroundColor: @css.backgroundColor
         zIndex: @css.zIndex
       )
 
   feedClick:(id) ->
-    if !id || @model.get("id") == id
+    if not id or @model.get("id") is id
       @$el.click()
 
-  visibilityChange: (obj) ->
-    time = 200
-    # User event-hidden-org and event-hidden-cat because of the case when
-    # if an event is hidden by both an organization and a category
-    # TO DO: what if it's hidden by multiple categories?
-    if obj.kind == "organization"
-      if parseInt(@$el.attr("data-organization-id")) == obj.id
-        if obj.state == "show"
-          @$el.removeClass("event-hidden-org")
-        else if obj.state == "hide"
-          @$el.addClass("event-hidden-org")
-    if obj.kind == "category"
-      if @$el.attr("data-category-ids").indexOf(obj.id+",") != -1
-        if obj.state == "show"
-          @$el.removeClass("event-hidden-cat")
-        else if obj.state == "hide"
-          @$el.addClass("event-hidden-cat")
-    # Tells index to readjust the overlapping events
-    Gandalf.dispatcher.trigger("index:adjust")
-
   mouseenter:() ->
-    
+    # Store current CSS values
     @css.width = @$el.css("width")
     @css.pLeft = @$el.css("paddingLeft")
     @css.left = @$el.css("left")
