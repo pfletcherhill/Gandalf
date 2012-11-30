@@ -3,10 +3,10 @@
 .calendar {
   $width: $sidebar_width + $feed_width;
   left: $width;
-  width: -moz-calc(100% - 520px);
-  width: -webkit-calc(100% - 520px);
-  width: -o-calc(100% - 520px);
-  width: calc(100% - 520px);
+  width: -moz-calc(100% - 440px);
+  width: -webkit-calc(100% - 440px);
+  width: -o-calc(100% - 440px);
+  width: calc(100% - 440px);
   overflow-y: auto;
 }
 
@@ -34,11 +34,11 @@ $cal_top_pad: 10px;
   height: $cal_head_height;
   z-index: 30;
   //width: 100%;
-  width: -moz-calc(100% - 520px);
-  width: -webkit-calc(100% - 520px);
-  width: -o-calc(100% - 520px);
-  width: calc(100% - 520px);
-  min-width: $min_width - 520px;
+  width: -moz-calc(100% - 440px);
+  width: -webkit-calc(100% - 440px);
+  width: -o-calc(100% - 440px);
+  width: calc(100% - 440px);
+  min-width: $min-width - 440px;
   background-color: white;
   @include box-shadow(0 5px 5px -5px #444);
   .btn-toolbar {
@@ -76,9 +76,11 @@ $cal_top_pad: 10px;
 .cal-month .cal-body .cal-day {
   height: 150px;
   border-bottom: 1pt solid #aaa;
+  position: relative;
 }
 
 .hour {
+  position: relative;
   height: $week_hour_height;
 }
 .hour-label {
@@ -86,6 +88,13 @@ $cal_top_pad: 10px;
 }
 .hour-day {
   border-bottom: 1pt solid #eee;
+}
+.hour-half {
+  position: absolute;
+  top: 50%;
+  height: 0;
+  width: 100%;
+  border-bottom: 1pt dashed #eee;
 }
 
 .hour-num {
@@ -97,12 +106,25 @@ $cal_top_pad: 10px;
   left: 7px;
 }
 
+.month-day-date {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  font-size: 10px;
+  color: #555;
+  z-index: -1;
+}
+
 /* ===== CALENDAR EVENTS ===== */
 
 .cal-events {
   position: relative;
-  top: 0;
-  left: 0;
+}
+.cal-month .cal-events {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  overflow-x: hidden;
 }
 $cal_z: 10;
 .cal-month-event {
@@ -112,20 +134,21 @@ $cal_z: 10;
   p {
     margin: 0;
     padding: 0 5px;
+    height: 12px;
   }
 }
+$test-color: lighten(#0f91ec, 20%);
 .cal-week-event {
   position: absolute;
   left: 0;
   z-index: $cal_z;
   border: 1pt solid transparent;
-  background-color: rgba(200,200,200,0.7);
+  background-color: rgba($test-color,0.7);
   @include transition(all 0.2s, opacity 0.5s);
   cursor: pointer;
   font-size: 8px;
   line-height: 12px;
   overflow: hidden;
-  width: 97%;
   p {
     margin: 0 3px;
     &:first-child {
@@ -133,9 +156,9 @@ $cal_z: 10;
     }
   }
   &:hover {
-    border: 1pt solid #444;
-    @include box-shadow(0 0 3px rgba(0,0,0,0.8));
-    background-color: rgba(170,170,170,0.9);
+    border: 1pt solid #222;
+    //@include box-shadow(0 0 3px rgba(0,0,0,0.8));
+    background-color: rgba($test-color,1);
   }
 }
 
@@ -150,17 +173,36 @@ $cal_z: 10;
 $event-popover-padding: 10px;
 
 .event-popover-head {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 16px;
+  line-height: 20px;
   background-color: $popover-head-color;
   padding: $event-popover-padding;
 }
 .event-popover-body {
   padding: $event-popover-padding;
+  tr {
+    padding: 3px 0;
+  }
+  td:first-child {
+    width: 25%;
+    font-weight: bold;
+    padding-bottom: 3px;
+  }
+}
+.event-popover-description {
+  font-size: 10px;
+  line-height: 16px;
 }
 
 .popover .close {
   line-height: 15px;
 }
+#map-canvas {
+  margin-top: 10px;
+  height: 170px;
+  width: 100%;
+}
+#map-canvas label { width: auto; display:inline; }
+#map-canvas img { max-width: none; max-height: none; }
 
 

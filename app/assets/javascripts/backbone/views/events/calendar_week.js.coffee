@@ -21,7 +21,7 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     @$(".cal-day-container").append(view.el)
   
   render: () ->
-    @$el.html(@headerTemplate(startDate: @startDate))
+    @$el.html(@headerTemplate(startDate: moment(@startDate)))
     $(@el).append(@template())
     tempDate = moment(@startDate)
     dayCount = 0

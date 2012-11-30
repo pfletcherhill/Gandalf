@@ -5,10 +5,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # options has keys [collection, startDate, period]
   initialize: ()->
     _.bindAll(this, 
-      "adjustOverlappingEvents", 
+      "adjustOverlappingEvents",
+      "makeCSSAdjustments",
       "orgVisChange", 
       "catVisChange",
-      "hideHidden",
       "renderSubscribedOrganizations",
       "renderSubscribedCategories"
     )
@@ -19,9 +19,11 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @period = @options.period
     @maxOverlaps = 4
     @first = true # first time rendering
+    @second
     @render()
     # Listening for global events
-    Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden)
+    Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
+    Gandalf.dispatcher.bind("window:resize", @resize, this)
 
   template: JST["backbone/templates/events/index"]
 
@@ -64,11 +66,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     hidden = @collection.getHiddenOrgs()
-    console.log hidden
     for s in subscriptions
       invisible = false
       invisible = true if s.id in hidden
-      view = new Gandalf.Views.Organizations.Short(model: s, checked: invisible)
+      view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
       $("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
@@ -77,7 +78,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     for s in subscriptions
       invisible = false
       invisible = true if s.id in hidden
-      view = new Gandalf.Views.Categories.Short(model: s, checked: invisible)
+      view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
       $("#subscribed-categories-list").append(view.el)
 
   renderCalendar: () ->
@@ -98,14 +99,20 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Event handlers
 
   hideHidden: () ->
+    console.log "hidden" if not @first
+    # $(".cal-week-event").effect("puff")
     orgs = @collection.getHiddenOrgs()
     cats = @collection.getHiddenCats()
     @orgVisChange(orgs)
     @catVisChange(cats)
 
-  scrolling: ->
+  scrolling: () ->
     if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
       console.log 'go!'
+
+  resize: () ->
+    $(".cal-week-event").css({ width: "96%" }) # For window resizing
+    @makeCSSAdjustments()
 
   # Helpers
 
@@ -116,7 +123,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @adjustOverlappingEvents()
 
   catVisChange: (hiddenCats) ->
-    $(".cal-event").removeClass("event-hidden-cat")
+    $(".js-event").removeClass("event-hidden-cat")
     for catId in hiddenCats
       id = catId+","
       $(".js-event[data-category-ids*='#{id}']").addClass "event-hidden-cat"
@@ -124,6 +131,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   adjustOverlappingEvents: () ->
     # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
+    # TO DO: if there are more than @maxOverlaps overlaps, create an alert
+    # that says not all the events are being shown
     overlaps = @collection.findOverlaps()
     $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4")
     for myId, ids of overlaps
@@ -137,20 +146,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # so we're doing it in JS
   makeCSSAdjustments: () ->
     overlapIndex = 2
-    pLeft = 3
     calZ = 10
     while overlapIndex <= @maxOverlaps
+      width = Math.floor(98/overlapIndex)
       selector = ".cal-week-event.overlap-#{overlapIndex}"
       selector += ":not(.event-hidden-org, .event-hidden-cat)"
       evs = $(selector)
-      width = Math.floor(100/overlapIndex) - overlapIndex
-      $(evs).css({ width: "#{width}%", paddingLeft: "#{pLeft}%" })
+      $(evs).css({ width: "#{width}%"})
       _.each evs, (e, index) ->
         if index%overlapIndex is 0
           $(e).css(
             left: 0
-            paddingLeft: 0
-            width: "#{width + pLeft}%"
           )
         else if index%overlapIndex is 1
           $(e).css(

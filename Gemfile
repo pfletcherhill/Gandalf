@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.2'
 
+gem 'rake', '10.0.2'
 gem 'pg'
 gem 'haml'
 gem 'nokogiri'
@@ -32,3 +33,4 @@ gem 'rubycas-client'
 gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
+gem 'gmaps4rails'
