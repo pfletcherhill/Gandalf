@@ -125,15 +125,15 @@ $side_padding: 15px;
   height: calc(100% - 50px);
 }
 
-$sidebar_width: 200px;
-$feed_width: 300px;
+$sidebar_width: 180px;
+$feed_width: 250px;
 
 .sidebar, .feed, .calendar {
   position: absolute;
   top: 0;
   height:100%;
   overflow-y: scroll;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 /* ============= ALL OTHER LAYOUT ============= */

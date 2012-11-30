@@ -1,24 +1,37 @@
-<div class='event-popover-head'>
+<div class='event-popover-head' style='background-color: <%= color %>;'>
   <strong><%= e.get("name") %></strong>
   <span class="close">×</span>
 </div>
 <div class="event-popover-body">
-  <p>By <%= e.get("organization") %></p>
-  <% startAt = moment(e.get("start_at")); %>
-  <% endAt = moment(e.get("end_at")); %>
-  <% if(startAt.format("YYYY-MM-DD") == endAt.format("YYYY-MM-DD")) { %>
-    <p> 
-      <%= startAt.format("dddd, MMMM DD hh:mm a") %> -
-      <%= endAt.format("hh:mm a") %>
-    </p>
-  <% } else { %>
-    <p> 
-      <%= startAt.format("dddd, MMMM DD hh:mm a") %>-
-      <%= endAt.format("dddd, MMMM DD hh:mm a") %>
-    </p>
-  <% } %>
-  <p>At: <%= e.get("location") %></p>
-  <p>Description: <%= e.get("description") %></p>
-  <p>Address: <%= e.get("address") %></p>
-  <div class="map-container">Google map goes here</div>
+  <table>
+    <tr>
+      <td>Held by</td>
+      <td><%= e.get("organization") %></td>
+    </tr>
+    <tr>
+      <% startAt = moment(e.get("start_at")); %>
+      <% endAt = moment(e.get("end_at")); %>
+      <% format = "ddd, MMM DD h:mm a" %>
+      <td>When</td>
+      <td>
+      <% if(startAt.format("YYYY-MM-DD") == endAt.format("YYYY-MM-DD")) { %> 
+        <%= startAt.format("dddd, MMMM Do") %><br/>
+        <%= startAt.format("h:mm a") %> - <%= endAt.format("h:mm a") %>
+      <% } else { %>
+        <%= startAt.format(format) %><br/>-
+        <%= endAt.format(format) %>
+      <% } %>
+      </td>
+    </tr>
+    <tr>
+      <td>Where</td>
+      <td><%= e.get("location") %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= e.get("address") %></td>
+    </tr>
+  </table>
+  <p class="event-popover-description"><%= e.get("description") %></p>
+  <div id="map-canvas"></div>
 </div>
