@@ -13,20 +13,23 @@
   padding: 7px 10px;
   font-size: 14px;
 }
-
+$feed_height: 90px;
 .feed-event {
   padding: 5px 10px;
   border-bottom: 1px solid #eee;
-  &:last-child {
-    border-bottom: none;
-  }
+  height: $feed_height;
   font-size: 0;
+  cursor: pointer;
+  &:last-child {
+    //border-bottom: none;
+  }
   .time {
     width: 30%;
     height: 100%;
     display: inline-block;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 66px;
     color: #333;
   }
   .details {
@@ -49,12 +52,9 @@
   &:hover {
     background-color: #f5f5f5;
   }
-  @include transition(all 0.5s);
+  // @include transition(height 0.2s);
   &.event-hidden-org, &.event-hidden-cat {
-    height: 0;
-    padding: 0;
-    border: none;
-    overflow-y: hidden;
+    display: none;
   }
 }
 
