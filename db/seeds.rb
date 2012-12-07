@@ -20,11 +20,11 @@ e = Event.new(
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "1111 Chapel Street, New Haven, CT 06511"
 )
-
 e.categories << c1
 e.categories << c2
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "Hackathon",
   :organization_id => o2.id,
@@ -37,6 +37,7 @@ e = Event.new(
 e.categories << c1
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "More HackYale",
   :organization_id => o2.id,
@@ -49,6 +50,7 @@ e = Event.new(
 e.categories << c1
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "Art.sy Visit",
   :organization_id => o2.id,
@@ -61,6 +63,7 @@ e = Event.new(
 e.categories << c1
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "Tech Talk",
   :organization_id => o2.id, 
@@ -73,6 +76,7 @@ e = Event.new(
 e.categories << c1
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "HackYale",
   :organization_id => o2.id,
@@ -85,6 +89,7 @@ e = Event.new(
 e.categories << c1
 e.categories << c3
 e.save
+
 e = Event.new(
   :name => "TEDxYale Solve for y",
   :organization_id => o1.id,
