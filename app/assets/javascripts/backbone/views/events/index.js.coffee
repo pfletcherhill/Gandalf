@@ -55,6 +55,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderFeed: () ->
     @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
+    console.log @days
     for day, events of @days
       @addFeedDay(day, events)
 
@@ -98,7 +99,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Event handlers
 
   hideHidden: () ->
-    console.log "hidden" if not @first
     # $(".cal-week-event").effect("puff")
     orgs = @collection.getHiddenOrgs()
     cats = @collection.getHiddenCats()
