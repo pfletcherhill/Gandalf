@@ -3,20 +3,19 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
 
   initialize: ()->
-    @render()
+    @color = "rgba(#{@model.get("color")},1)"
+    @lightColor = "rgba(#{@model.get("color")},0.7)"
     @$el.popover(
       placement: 'top'
       html: true
       trigger: 'click'
-      content: @popoverTemplate(e: @model)
+      content: @popoverTemplate(e: @model, color: @lightColor)
     )
-    @css = {}
-    @css.backgroundColor = @$el.css("backgroundColor")
-    @css.zIndex = @$el.css("zIndex")
+    @render()
     # Yet to be done for month
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @feedmouseenter)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @feedmouseleave)
-    Gandalf.dispatcher.on("feedEvent:click", @feedClick)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
 
   template: JST["backbone/templates/calendar/calendar_month_event"]
   popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
@@ -27,18 +26,20 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     rel: "event-popover"
   popoverChild: ".event-name:first"
 
-  # events:
-  #   "click": "onClick"
-  #   "mouseenter" : "mouseenter"
-  #   "mouseleave" : "mouseleave"
+  events:
+    "click": "onClick"
+    "mouseenter" : "mouseenter"
+    "mouseleave" : "mouseleave"
 
   render: () ->
-    $(@el).html(@template( event: @model ))
+    $(@el).css(
+      color: @lightColor
+    ).html(@template( event: @model ))
     return this
 
   onClick: () ->
     @scroll()
-    @popover()
+    # @popover()
 
   scroll:() ->
     tHeight = 300 # popover height
@@ -50,7 +51,6 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
       scrolltop = @top + (@height-tHeight) / 2 - padTop
     $(container).animate scrollTop: scrolltop, 300
 
-
   popover: () ->
     id = @model.get("id")
     # Hide all other popovers
@@ -61,19 +61,13 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
 
-  feedmouseenter: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: "rgba(170,170,170,0.9)"
-        zIndex: 15
-      )
+  mouseenter: (id) ->
+    return if typeof id is "number" and @model.get("id") isnt id
+    @$el.css({ color: @color })
 
-  feedmouseleave: (id) ->
-    if not id or @model.get("id") is id
-      @$el.css(
-        backgroundColor: @css.backgroundColor
-        zIndex: @css.zIndex
-      )
+  mouseleave: (id) ->
+    return if typeof id is "number" and @model.get("id") isnt id
+    @$el.css({ color: @lightColor })
 
   feedClick:(id) ->
     if not id or @model.get("id") is id
