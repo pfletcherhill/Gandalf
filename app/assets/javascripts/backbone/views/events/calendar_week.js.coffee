@@ -27,8 +27,9 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     dayCount = 0
     while dayCount < 7
       # Gandalf.eventKeyFormat was set when the app was initialized
-      d = tempDate.add('d', 1).format(Gandalf.eventKeyFormat)
+      d = tempDate.format(Gandalf.eventKeyFormat)
       @addCalDay(@days[d])
+      tempDate.add('d', 1)
       dayCount++
     return this
 
