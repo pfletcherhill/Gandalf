@@ -12,15 +12,19 @@ class Gandalf.Views.Events.Index extends Backbone.View
       "renderSubscribedOrganizations",
       "renderSubscribedCategories"
     )
-    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
-    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+
     # Class variables
     @startDate = @options.startDate
     @period = @options.period
-    @maxOverlaps = 4
-    @first = true # first time rendering
-    @second
+    @maxOverlaps = 4                  # Maximum allowed event overlaps
+    @first = true                     # First time rendering
+    @collection.splitMultiDay()       # Adjust multi-day events
     @render()
+
+    # Render AJAX info
+    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
+    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+
     # Listening for global events
     Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
@@ -41,7 +45,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     )
     @$("#calendar-container").append(view.el)
     if @first
-      @$("#calendar-container").animate scrollTop: 400, 300
+      @$(".cal-body").animate scrollTop: 550, 300
       @first = false
     @hideHidden()
 
@@ -55,11 +59,13 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderFeed: () ->
     @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
+    @doneEvents = []
     for day, events of @days
+      console.log @doneEvents
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events)
+    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events, done: @doneEvents)
     @$("#feed-list").append(view.el)
 
   renderSubscribedOrganizations: ->
@@ -90,6 +96,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
     @days = @collection.sortAndGroup()
+    console.log @days
     @renderFeed()
     @renderCalendar()
     t = this

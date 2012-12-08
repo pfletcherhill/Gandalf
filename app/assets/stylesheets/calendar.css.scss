@@ -7,7 +7,7 @@
   width: -webkit-calc(100% - 440px);
   width: -o-calc(100% - 440px);
   width: calc(100% - 440px);
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 $week_hour_height: 44px;
@@ -57,12 +57,21 @@ $cal_top_pad: 10px;
   @include linear-gradient(#fff, #efefef);
 }
 
+.cal-padding {
+  height: 150px;
+  background-color: #eee;
+}
+
 /* ===== CALENDAR BODY ===== */
 
 .cal-body {
   position: absolute;
   top: $cal_head_height + $cal_top_pad;
   width: 100%;
+  height: -moz-calc(100% - 70px);
+  height: -webkit-calc(100% - 70px);
+  height: -o-calc(100% - 70px);
+  height: calc(100% - 70px);
   overflow-y: scroll;
 }
 .cal-week td:first-child {

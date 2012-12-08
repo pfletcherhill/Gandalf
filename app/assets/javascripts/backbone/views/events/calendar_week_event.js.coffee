@@ -6,9 +6,12 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     _.bindAll(@)
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
+    @eventId = @model.get("eventId")
     @render()
+    placement = "left"
+    placement = "right" if moment(@model.get("start_at")).day() < 3
     @$el.popover(
-      placement: 'left'
+      placement: placement
       html: true
       trigger: 'click'
       content: @popoverTemplate(e: @model, color: @lightColor)
@@ -50,7 +53,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 background-color: #{@lightColor}; border: 1pt solid #{@color};"
     $(@el).attr(
       style: style_string
-      "data-event-id": e.get("id")
+      "data-event-id": @eventId
       "data-organization-id" : e.get("organization_id")
       "data-category-ids" : e.makeCatIdString()
     ).html(@template( event: e ))
@@ -61,19 +64,23 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     @popover()
 
   scroll:() ->
-    tHeight = 400 # popover height
+    tHeight = 300 # popover height
+    maxHeight = 500
     padTop = 25   # space above popover when scrolling to
-    container = @$el.parents("#calendar-container")
-    if @height > tHeight
+    container = @$el.parents(".cal-body")
+    if @height > maxHeight
+      console.log @height - maxHeight
+      scrolltop = @top + (@height - maxHeight) - padTop
+    else if @height > tHeight
       scrolltop = @top - padTop
     else
       scrolltop = @top + (@height-tHeight) / 2 - padTop
-    $(container).animate scrollTop: scrolltop, 300
+    $(container).animate scrollTop: (scrolltop), 300
 
   popover: () ->
-    id = @model.get("id")
+    eventId = @model.get("eventId")
     # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{id}'])")
+    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{eventId}'])")
     otherPopovers.popover('hide') if otherPopovers
     # Add event handler to close button
     t = this
@@ -95,11 +102,12 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     )
 
   feedClick: (id) ->
-    if @model.get("id") is id
+    if @eventId is id
       @$el.click()
 
   mouseenter: (id) ->
-    return if typeof id is "number" and @model.get("id") isnt id
+    console.log "enter", id, @eventId
+    return if typeof id is "number" and @eventId isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
     # @css.pLeft = @$el.css("paddingLeft")
@@ -114,7 +122,7 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       border: "1pt solid #333"
     )
   mouseleave: (id)->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @eventId isnt id
     @$el.css(
       width: @css.width
       # paddingLeft: @css.pLeft
