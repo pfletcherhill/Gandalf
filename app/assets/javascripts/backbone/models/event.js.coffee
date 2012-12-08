@@ -51,7 +51,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   sortAndGroup: ()->
     sortedEvents = _.sortBy(@models, (e) ->
-      time = moment(e.get("start_at"))
+      time = moment(e.get("start_at")).sod()
       return time
     )
     groupedEvents = _.groupBy(sortedEvents, (e) ->
