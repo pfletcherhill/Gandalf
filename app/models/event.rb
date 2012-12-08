@@ -4,6 +4,11 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :organization
   has_and_belongs_to_many :categories
+  belongs_to :location
+  
+  validates_presence_of :name
+  validates_presence_of :organization_id
+  validates_presence_of :start_at
 
   # todo: before save convert to UTC and check that before < after
   

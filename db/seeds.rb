@@ -6,6 +6,7 @@ end
 
 o1 = Organization.create(:name => "TEDxYale", :color => "255,66,51")
 o2 = Organization.create(:name => "HackYale", :color => "107,189,246")
+o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
 print "organizations created...\n"
 c1 = Category.create(:name => "Tech")
 c2 = Category.create(:name => "TED Talks")
