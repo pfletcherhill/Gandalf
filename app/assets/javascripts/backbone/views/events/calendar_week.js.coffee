@@ -4,8 +4,11 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   initialize: ()->
     @days = @options.days
     @startDate = @options.startDate
-    @render()
+    
     Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
+    Gandalf.dispatcher.on("weekEvent:multiday", @multiday, this)
+
+    @render()
 
   template: JST["backbone/templates/calendar/calendar_week"]
   headerTemplate: JST["backbone/templates/calendar/calendar_week_header"]
@@ -33,6 +36,9 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
       dayCount++
     return this
 
-
   hidePopovers: () ->
     $("[rel='event-popover']").popover("hide")
+
+  multiday: (text) ->
+    console.log @$el.find(".cal-multiday")
+    @$el.children(".cal-multiday").html(text)

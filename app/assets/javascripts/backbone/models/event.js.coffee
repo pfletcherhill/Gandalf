@@ -60,6 +60,12 @@ class Gandalf.Collections.Events extends Backbone.Collection
     )
     groupedEvents
 
+  getMultidayEvents: () ->
+    events = _.filter(@models, (e) ->
+      e.get("multiday")
+    )
+    events 
+
   splitMultiDay: () ->
     for event in @models
       event.set

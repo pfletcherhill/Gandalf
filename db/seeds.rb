@@ -94,6 +94,19 @@ e = Event.new(
   :name => "TEDxYale Solve for y",
   :organization_id => o1.id,
   :start_at => Time.now + 1.day + 10.hour,
+  :end_at => Time.now + 2.day + 11.hour,
+  :location => "Shubert Theater",
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
+  :address => "247 College Street, New Haven, CT 06511"
+)
+e.categories << c2
+e.categories << c3
+e.save
+
+e = Event.new(
+  :name => "TEDxYale Not all day",
+  :organization_id => o1.id,
+  :start_at => Time.now + 1.day + 10.hour,
   :end_at => Time.now + 2.day + 9.hour,
   :location => "Shubert Theater",
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",

@@ -7,7 +7,6 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
       when "week" then @template = JST["backbone/templates/calendar/calendar_week_day"]
       when "month" then @template = JST["backbone/templates/calendar/calendar_month_day"]
       when "blank" then @template = JST["backbone/templates/calendar/calendar_blank_day"]
-    @multidayTemplate = JST["backbone/templates/calendar/calendar_week_multiday"]
     @render()
 
   tagName: "td"
@@ -16,10 +15,7 @@ class Gandalf.Views.Events.CalendarDay extends Backbone.View
   addEvents: () ->
     if @model
       for e in @model
-        if e.get("multiday")
-          text = @multidayTemplate(e: e)
-
-        else
+        if not e.get("multiday")
           container = $(@el).children(".cal-events:first")
           if @options.type == "week"
             view = new Gandalf.Views.Events.CalendarWeekEvent(model: e) 

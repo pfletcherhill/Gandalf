@@ -30,6 +30,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
 
   template: JST["backbone/templates/events/index"]
+  multidayTemplate: JST["backbone/templates/calendar/calendar_week_multiday"]
 
   el: "#content"
 
@@ -57,15 +58,21 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @$("#calendar-container").append(view.el)
     @hideHidden()
 
+  renderWeekMultiday: () ->
+    evs = @collection.getMultidayEvents()
+    for event in evs
+      html = @multidayTemplate({ e: event })
+      $(".cal-multiday").append(html)
+      console.log "multiday", $(".cal-multiday")
+
   renderFeed: () ->
     @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
     @doneEvents = []
     for day, events of @days
-      console.log @doneEvents
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events, done: @doneEvents)
+    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events,done: @doneEvents)
     @$("#feed-list").append(view.el)
 
   renderSubscribedOrganizations: ->
@@ -91,12 +98,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
       @renderMonthCalendar()
     else 
       @renderWeekCalendar()
+      @renderWeekMultiday()
       @adjustOverlappingEvents()
 
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
     @days = @collection.sortAndGroup()
-    console.log @days
     @renderFeed()
     @renderCalendar()
     t = this
