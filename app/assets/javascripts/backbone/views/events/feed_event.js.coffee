@@ -3,6 +3,7 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.FeedEvent extends Backbone.View
   
   initialize: ->
+    @eventId = @model.get("eventId")
     @render()
 
   events: 
@@ -33,8 +34,8 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     return this
   
   mouseenter: () ->
-    Gandalf.dispatcher.trigger("feedEvent:mouseenter", @model.get("id"))
+    Gandalf.dispatcher.trigger("feedEvent:mouseenter", @eventId)
   mouseleave: () ->
-    Gandalf.dispatcher.trigger("feedEvent:mouseleave", @model.get("id"))
+    Gandalf.dispatcher.trigger("feedEvent:mouseleave", @eventId)
   click: () ->
-    Gandalf.dispatcher.trigger("feedEvent:click", @model.get("id"))
+    Gandalf.dispatcher.trigger("feedEvent:click", @eventId)

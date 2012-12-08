@@ -60,6 +60,28 @@ class Gandalf.Collections.Events extends Backbone.Collection
     )
     groupedEvents
 
+  splitMultiDay: () ->
+    for event in @models
+      event.set(eventId: event.get("id"))
+      start = event.get("start_at")
+      end = event.get("end_at")
+      diffDay = moment(end).diff(moment(start), 'days')
+      diffHour = moment(end).diff(moment(start), 'hours')
+      continue if diffDay is 0
+      if diffDay is 1 and diffHour < 24
+        # Don't save -- these changes should only be client side
+        event.set
+          end_at: moment(start).hours(23).minutes(59)
+        newEvent = event.clone()
+        newEvent.set
+          start_at: moment(end).sod().format()
+          end_at: end
+          id: Math.random()
+          eventId: event.get("id")
+        @add(newEvent)
+      else 
+        console.log "Multi-day!"
+
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1
     catHidden = _.intersection(@hiddenCats, e.categoryIds()).length > 0
