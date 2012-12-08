@@ -3,11 +3,10 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
-    _.bindAll(@)
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
-    @render()
+    
     placement = "left"
     placement = "right" if moment(@model.get("start_at")).day() < 3
     @$el.popover(
@@ -23,6 +22,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick)
+
+    @render()
 
   template: JST["backbone/templates/calendar/calendar_week_event"]
   popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
@@ -106,7 +107,6 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       @$el.click()
 
   mouseenter: (id) ->
-    console.log "enter", id, @eventId
     return if typeof id is "number" and @eventId isnt id
     # Store current CSS values
     @css.width = @$el.css("width")

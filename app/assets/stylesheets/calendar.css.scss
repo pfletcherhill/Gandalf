@@ -47,8 +47,6 @@ $cal_top_pad: 10px;
 }
 
 .cal-header-days {
-  //position: absolute;
-  //bottom: 0;
   text-align: center;
   height: 20px;
   width: 100%;
@@ -60,6 +58,10 @@ $cal_top_pad: 10px;
 .cal-padding {
   height: 150px;
   background-color: #eee;
+}
+
+.cal-multiday {
+  border: 1pt solid red;
 }
 
 /* ===== CALENDAR BODY ===== */
