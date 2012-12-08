@@ -62,7 +62,9 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   splitMultiDay: () ->
     for event in @models
-      event.set(eventId: event.get("id"))
+      event.set
+        eventId: event.get("id")
+        multiday: false
       start = event.get("start_at")
       end = event.get("end_at")
       diffDay = moment(end).diff(moment(start), 'days')
@@ -80,7 +82,8 @@ class Gandalf.Collections.Events extends Backbone.Collection
           eventId: event.get("id")
         @add(newEvent)
       else 
-        console.log "Multi-day!"
+        event.set
+          multiday: true
 
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1
