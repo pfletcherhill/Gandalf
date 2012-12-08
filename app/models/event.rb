@@ -4,6 +4,8 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :organization
   has_and_belongs_to_many :categories
+
+  # todo: before save convert to UTC and check that before < after
   
   def date
     date = self.start_at.strftime("%Y-%m-%d")

@@ -23,7 +23,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @render()
     # Listening for global events
     Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
-    Gandalf.dispatcher.bind("window:resize", @resize, this)
+    Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
 
   template: JST["backbone/templates/events/index"]
 
@@ -55,7 +55,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   renderFeed: () ->
     @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
-    console.log @days
     for day, events of @days
       @addFeedDay(day, events)
 
@@ -93,7 +92,10 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @days = @collection.sortAndGroup()
     @renderFeed()
     @renderCalendar()
-
+    t = this
+    setInterval( ->
+      t.resetEventPositions()
+    , 20000)
     return this
   
   # Event handlers
@@ -109,7 +111,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
       console.log 'go!'
 
-  resize: () ->
+  resetEventPositions: () ->
     $(".cal-week-event").css({ width: "96%" }) # For window resizing
     @makeCSSAdjustments()
 
