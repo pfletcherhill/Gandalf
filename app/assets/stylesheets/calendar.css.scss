@@ -123,14 +123,15 @@ $cal_top_pad: 10px;
 .cal-month .cal-events {
   position: absolute;
   top: 15px;
-  left: 10px;
+  left: 0px;
   overflow-x: hidden;
 }
 $cal_z: 10;
 .cal-month-event {
   overflow: hidden;
-  font-size: 8px;
-  line-height: 12px;
+  font-size: 10px;
+  line-height: 15px;
+  cursor: pointer;
   p {
     margin: 0;
     padding: 0 5px;

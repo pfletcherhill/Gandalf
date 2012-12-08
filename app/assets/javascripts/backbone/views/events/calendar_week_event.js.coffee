@@ -82,10 +82,7 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     @makeGMap()
 
   makeGMap: () ->
-    lat = @model.get("lat")
-    lon = @model.get("lon")
-    console.log lat, lon
-    myPos = new google.maps.LatLng(lat, lon)
+    myPos = new google.maps.LatLng(@model.get("lat"), @model.get("lon"))
     options = 
       center: myPos
       zoom: 15
@@ -97,11 +94,11 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       title: "Here it is!"
     )
 
-  feedClick:(id) ->
+  feedClick: (id) ->
     if @model.get("id") is id
       @$el.click()
 
-  mouseenter:(id) ->
+  mouseenter: (id) ->
     return if typeof id is "number" and @model.get("id") isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
