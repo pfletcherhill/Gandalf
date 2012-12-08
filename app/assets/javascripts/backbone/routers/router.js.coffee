@@ -24,8 +24,8 @@ class Gandalf.Router extends Backbone.Router
       endAt = moment(startAt).add('w',1)
       period = 'week'
     params = {
-      start: startAt
-      end: endAt
+      start: startAt.sod()
+      end: endAt.sod()
       period: period
     }
     params
