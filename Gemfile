@@ -15,7 +15,9 @@ group :test, :development do
   gem 'fabrication'
 end
 
-gem 'thin'
+group :production do
+  gem 'thin'
+end
 
 gem 'pg'
 gem 'haml'

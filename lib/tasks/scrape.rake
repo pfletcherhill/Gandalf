@@ -1,26 +1,44 @@
+require 'rake'
 namespace :db do
   desc "scrape Yale's events calendar"
-  task :scrape => :environment do
-    link = "http://calendar.yale.edu/cal/opa/day/20121208/All/?showDetails=yes"
+  task :scrape, [:date] => [:environment] do |t, args|
+    date = args["date"]
+    link = "http://calendar.yale.edu/cal/opa/day/#{date}/All/?showDetails=yes"
     page = Nokogiri::HTML(open(link))
     results = page.xpath("//table[@class='eventList']/tr")
     organization = Organization.where(:name => "Yale University").first
     results.each_with_index do |row, index|
       @event = Event.new
       @event.organization = organization
-      @event.gmaps = false
-      @event.address = "1111 Chapel Street, New Haven, CT 06511"
       length = results.length - 1
       if index > 0 && index < length
         time = row.css("td")[0].text
         details = row.css("td.description ul")
         title = details.css("li.titleEvent a")
         title = title.text.gsub(/\"/,"")
-        pp title
         @event.name = title
         location = details.css("li")[1]
         location = location.text.gsub(/Location:\n/,"").strip
-        @event.location = location
+        @location = Location.where(:name => location).first
+        unless @location
+          key = "AIzaSyDxC7qcloU94l5dvOEdAoQTZ7AijIX65gw"
+          search = location.gsub(" ","+")
+          map_results = JSON.parse(open("https://maps.googleapis.com/maps/api/place/textsearch/json?location=41.310362,-72.928914&radius=500&key=#{key}&query=#{search}&sensor=true").read)
+          loc = map_results['results'].first
+          if loc
+            address = loc["formatted_address"]
+            lat = loc["geometry"]["location"]["lat"]
+            lng = loc["geometry"]["location"]["lng"]
+          else
+            address = "38 Hillhouse Avenue, New Haven, CT 06511"
+            lat = "41.310362"
+            lng = "-72.928914"
+          end
+          @location = Location.new(:name => location, :address => address, :gmaps => true, :latitude => lat, :longitude => lng)
+          @location.save
+        end
+        pp "#{location}: #{@location.address}"
+        @event.location = @location
         description = details.css("li")[3].text
         @event.description = description
         if time.include? "All day"
