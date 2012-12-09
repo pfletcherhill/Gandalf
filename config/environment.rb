@@ -21,6 +21,7 @@ CASClient::Frameworks::Rails::Filter.configure(
 
 credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
 
-ENV['CAS_NETID'] = credentials['netid']
-ENV['CAS_PASS'] = credentials['password']
+if credentials
+  ENV['CAS_NETID'] = credentials['netid']
+  ENV['CAS_PASS'] = credentials['password']
 
