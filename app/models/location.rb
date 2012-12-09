@@ -13,4 +13,6 @@ class Location < ActiveRecord::Base
   def gmaps4rails_address
     self.address
   end
+  
+  
 end

@@ -110,6 +110,7 @@ u2.organizations << o2
 print "access controls created...\n"
 u1.subscribed_organizations << o1
 u1.subscribed_organizations << o2
+u1.subscribed_organizations << o3
 u2.subscribed_organizations << o1
 u2.subscribed_organizations << o2
 u3.subscribed_organizations << o1
