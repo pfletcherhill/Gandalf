@@ -5,14 +5,8 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :organization_id
       t.datetime :start_at
       t.datetime :end_at
-      t.string :location
-      t.string :address
+      t.integer :location_id
       t.text :description
-
-      t.float :latitude
-      t.float :longitude
-      t.boolean :gmaps
-      
       t.timestamps
     end
     create_table :categories_events do |t|

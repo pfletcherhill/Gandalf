@@ -12,6 +12,7 @@ c1 = Category.create(:name => "Tech")
 c2 = Category.create(:name => "TED Talks")
 c3 = Category.create(:name => "Awesomeness")
 print "categories created...\n"
+l1 = Location.create(:name => "Yale University Art Gallery Auditorium")
 e = Event.new(
   :name => "TEDxYale City 2.0",
   :organization_id => o1.id,
