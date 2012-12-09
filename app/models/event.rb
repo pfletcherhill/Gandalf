@@ -1,5 +1,4 @@
 class Event < ActiveRecord::Base
-  acts_as_gmappable
 
   # Associations
   belongs_to :organization
@@ -15,16 +14,6 @@ class Event < ActiveRecord::Base
   def date
     date = self.start_at.strftime("%Y-%m-%d")
     date
-  end
-
-  def short_address
-    ad = address.sub(/,? New Haven,? /,"")
-    ad = ad.sub(/\w\w \d\d\d\d\d/, "")
-    ad.strip
-  end
-
-  def gmaps4rails_address
-    self.address
   end
   
   def as_json
