@@ -1,7 +1,6 @@
 #config/initializers/carrierwave.rb
-credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
-
-if credentials
+unless Rails.env.production?
+  credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
   ENV['aws_access_key_id'] = credentials['aws_access_key_id']
   ENV['aws_secret_access_key'] = credentials['aws_secret_access_key']
 
