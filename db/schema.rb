@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121118172455) do
+ActiveRecord::Schema.define(:version => 20121208223027) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -38,14 +38,20 @@ ActiveRecord::Schema.define(:version => 20121118172455) do
     t.integer  "organization_id"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.string   "location"
-    t.string   "address"
+    t.integer  "location_id"
     t.text     "description"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
     t.float    "latitude"
     t.float    "longitude"
     t.boolean  "gmaps"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "organizations", :force => true do |t|
