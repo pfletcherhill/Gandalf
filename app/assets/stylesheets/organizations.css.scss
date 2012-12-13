@@ -1,5 +1,7 @@
 /* ========== LAYOUT ========= */
 
+$organization-width: 380px;
+
 .left-header {
   padding: 15px;
   font-family: HN;
@@ -8,6 +10,7 @@
 
 li {
   border-bottom: 1px solid #dadada;
+  width: 100%;
   a {
     display: block;
     padding: 15px;
@@ -24,30 +27,23 @@ li {
       @include linear-gradient(#efefef, #efefef);
     }
   }
+  &.selected {
+    border-right: 1px solid white;
+    a:hover {
+      background: white;
+    }
+    a:active {
+      background: white;
+    }
+  }
 }
 
 #organization {
-  padding: 20px;
+  padding: 20px 30px;
+  position: relative;
 }
 
 #organization-form {
-  label {
-    font-family: HNLight;
-  }
-  input, textarea {
-    border: 1px solid #dadada;
-    width: 300px;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  input {
-    font-size: 15px;
-  }
-  textarea {
-    border-radius: 0px;
-    outline: none;
-    resize: none;
-  }
   #new-image {
     width: 0px;
     height: 0px;
@@ -70,7 +66,69 @@ li {
       @include linear-gradient(#fafafa, #fafafa);
     }
   }
-  button {
+  .image {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    border: 1px solid #dadada;
+  }
+}
+
+.image.loading {
+  background: url('/assets/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#organization-events {
+  position: absolute;
+  left: $organization-width;
+  top: 20px;
+  padding-left: 30px;
+  border-left: 1px solid #dadada;
+  table {
+    width: 400px;
+  }
+}
+
+.organization-event {
+  border-bottom: 1px solid #dadada;
+  td {
+    padding: 10px 0px;
+    .image {
+      width: 50px;
+      min-height: 50px;
+      border: 1px solid #dadada;
+    }
+  }
+}
+
+#new-event-form {
+  @include transition(0.5s);
+}
+
+form {
+  label {
+    font-family: HNLight;
+  }
+  input, textarea {
+    border: 1px solid #dadada;
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  input {
+    font-size: 15px;
+  }
+  textarea {
+    border-radius: 0px;
+    outline: none;
+    resize: none;
+  }
+  button[type="submit"] {
     @include linear-gradient(#4BA6FF, #1B82E6);
     width: 322px;
     padding: 0px;
@@ -85,20 +143,6 @@ li {
     }
     &:active {
       @include linear-gradient(#1B82E6, #4BA6FF);
-    }
-  }
-  .image {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    border: 1px solid #dadada;
-    &.loading {
-      background: url('/assets/ajax-loader.gif');
-      background-repeat: no-repeat;
-      background-position: center;
     }
   }
 }

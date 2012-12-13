@@ -1,7 +1,8 @@
 @font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
 @font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
 @font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
-@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); } 
+@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); }
+
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 12px;
@@ -30,6 +31,20 @@ input {
 
 td {
   padding: 0;
+}
+
+button {
+  display: inline-block;
+  border: 1px solid #777;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 12px;
+  text-align: center;
+  @include linear-gradient(#fafafa, #eee);
+  cursor: pointer;
+  &:hover {
+    @include linear-gradient(#fafafa, #fafafa);
+  }
 }
 
 .wrapper {

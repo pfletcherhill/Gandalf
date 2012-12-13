@@ -39,4 +39,10 @@ class OrganizationsController < ApplicationController
     render json: @organization
   end
   
+  def events
+    @organization = Organization.find(params[:id])
+    @events = @organization.events
+    render json: @events.as_json
+  end
+  
 end
