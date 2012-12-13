@@ -15,6 +15,10 @@ group :test, :development do
   gem 'fabrication'
 end
 
+group :production do
+  gem 'thin'
+end
+
 gem 'pg'
 gem 'haml'
 
@@ -30,6 +34,7 @@ gem 'mechanize'
 gem 'httpclient'
 gem 'net-ldap'
 gem 'rubycas-client'
+gem 'heroku'
 
 # Style
 gem 'bourbon'

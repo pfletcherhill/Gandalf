@@ -6,19 +6,23 @@ end
 
 o1 = Organization.create(:name => "TEDxYale", :color => "255,66,51")
 o2 = Organization.create(:name => "HackYale", :color => "107,189,246")
+o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
 print "organizations created...\n"
 c1 = Category.create(:name => "Tech")
 c2 = Category.create(:name => "TED Talks")
 c3 = Category.create(:name => "Awesomeness")
 print "categories created...\n"
+l1 = Location.create(:name => "Yale University Art Gallery Auditorium", :address => "1111 Chapel Street, New Haven, CT 06511")
+l2 = Location.create(:name => "Center for Engineering, Innovation and Design", :address => "15 Prospect St., New Haven, CT 06511")
+l3 = Location.create(:name => "Shubert Theater", :address => "247 College Street, New Haven, CT 06511")
+print "locations created...\n"
 e = Event.new(
   :name => "TEDxYale City 2.0",
   :organization_id => o1.id,
   :start_at => Time.now + 20.hour,
   :end_at => Time.now + 26.hour,
-  :location => "Yale University Art Gallery Auditorium",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "1111 Chapel Street, New Haven, CT 06511"
+  :location_id => l1.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c1
 e.categories << c2
@@ -30,9 +34,8 @@ e = Event.new(
   :organization_id => o2.id,
   :start_at => Time.now + 22.hour,
   :end_at => Time.now + 28.hour,
-  :location => "Center for Engineering, Innovation and Design",
-  :description => "A super long Hackathon!",
-  :address => "15 Prospect St., New Haven, CT 06511"
+  :location_id => l2.id,
+  :description => "A super long Hackathon!"
 )
 e.categories << c1
 e.categories << c3
@@ -43,9 +46,8 @@ e = Event.new(
   :organization_id => o2.id,
   :start_at => Time.now + 29.hour,
   :end_at => Time.now + 30.hour,
-  :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "15 Prospect St., New Haven, CT 06511"
+  :location_id => l2.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c1
 e.categories << c3
@@ -56,9 +58,8 @@ e = Event.new(
   :organization_id => o2.id,
   :start_at => Time.now + 25.hour,
   :end_at => Time.now + 27.hour,
-  :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "15 Prospect St., New Haven, CT 06511"
+  :location_id => l2.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c1
 e.categories << c3
@@ -69,9 +70,8 @@ e = Event.new(
   :organization_id => o2.id, 
   :start_at => Time.now + 27.hour, 
   :end_at => Time.now + 30.hour, 
-  :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "15 Prospect St., New Haven, CT 06511"
+  :location_id => l2.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c1
 e.categories << c3
@@ -82,9 +82,8 @@ e = Event.new(
   :organization_id => o2.id,
   :start_at => Time.now + 2.day,
   :end_at => Time.now + 50.hour,
-  :location => "Center for Engineering, Innovation and Design",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "15 Prospect St., New Haven, CT 06511"
+  :location_id => l2.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c1
 e.categories << c3
@@ -111,6 +110,10 @@ e = Event.new(
   :location => "Shubert Theater",
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
   :address => "247 College Street, New Haven, CT 06511"
+  :start_at => Time.now + 5.hour,
+  :end_at => Time.now + 1.day + 7.hour,
+  :location_id => l3.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c2
 e.categories << c3
@@ -125,6 +128,7 @@ u2.organizations << o2
 print "access controls created...\n"
 u1.subscribed_organizations << o1
 u1.subscribed_organizations << o2
+u1.subscribed_organizations << o3
 u2.subscribed_organizations << o1
 u2.subscribed_organizations << o2
 u3.subscribed_organizations << o1
