@@ -46,5 +46,5 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     console.log @$el.find(".cal-multiday")
     @$el.children(".cal-multiday").html(text)
 
-  eventClick: (event) ->
-    console.log event
+  eventClick: (e) ->
+    console.log e
