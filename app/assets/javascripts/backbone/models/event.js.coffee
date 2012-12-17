@@ -90,6 +90,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
       else 
         event.set
           multiday: true
+    console.log this
 
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1

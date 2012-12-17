@@ -19,8 +19,8 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   events:
     "click .hour-day" : "hidePopovers"
 
-  addCalDay: (events) ->
-    view = new Gandalf.Views.Events.CalendarDay(model: events, type: "week")
+  addCalDay: (events, dayNum) ->
+    view = new Gandalf.Views.Events.CalendarDay(model: events, type: "week", dayNum: dayNum)
     @$(".cal-day-container").append(view.el)
   
   render: () ->
@@ -31,7 +31,7 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     while dayCount < 7
       # Gandalf.eventKeyFormat was set when the app was initialized
       d = tempDate.format(Gandalf.eventKeyFormat)
-      @addCalDay(@days[d])
+      @addCalDay(@days[d], dayCount)
       tempDate.add('d', 1)
       dayCount++
     return this
