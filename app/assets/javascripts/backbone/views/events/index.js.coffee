@@ -149,26 +149,44 @@ class Gandalf.Views.Events.Index extends Backbone.View
     # TO DO: if there are more than @maxOverlaps overlaps, create an alert
     # that says not all the events are being shown
     overlaps = @collection.findOverlaps()
-    $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4")
+    $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4 hide")
     for myId, ids of overlaps
       num = ids.length + 1
       $(".cal-week-event[data-event-id='#{myId}']").addClass "overlap-#{num}"
+      count = 0
       for id in ids
-        $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
+        if count < @maxOverlaps
+          $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
+        else
+          $(".cal-week-event[data-event-id='#{id}']").addClass "hide"
+        count++
+
     @makeCSSAdjustments()
 
   # CSS wasn't strong enough for the kind of styling I wanted to do...
   # so we're doing it in JS
   makeCSSAdjustments: () ->
-    overlapIndex = 2
+    overlapIndex = 2  # Because we start caring when 2 or more things overlap
     calZ = 10
-    while overlapIndex <= @maxOverlaps
-      width = Math.floor(98/overlapIndex)
-      selector = ".cal-week-event.overlap-#{overlapIndex}"
-      selector += ":not(.event-hidden-org, .event-hidden-cat)"
-      evs = $(selector)
-      $(evs).css({ width: "#{width}%"})
-      _.each evs, (e, index) ->
+    all = $(".cal-events")
+    for a in all
+      console.log a
+      while overlapIndex <= @maxOverlaps
+        width = Math.floor(98/overlapIndex)
+        selector = ".cal-week-event.overlap-#{overlapIndex}"
+        selector += ":not(.event-hidden-org, .event-hidden-cat)"
+        evs = $(a).find(selector)
+        $(evs).css({ width: "#{width}%"})
+        _.each evs, (e, index) ->
+          num = index%overlapIndex
+          console.log "#{width*num}"
+          $(e).css(
+            left: "#{width*num}%"
+            zIndex: calZ - num
+          )
+
+        overlapIndex++
+        ### 
         if index%overlapIndex is 0
           $(e).css(
             left: 0
@@ -188,4 +206,5 @@ class Gandalf.Views.Events.Index extends Backbone.View
             left: "#{width*3}%"
             zIndex: calZ - 3
           )
-      overlapIndex++
+        ###
+        

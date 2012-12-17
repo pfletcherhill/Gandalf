@@ -1,12 +1,7 @@
-@include font-face("MyMyriad", "/MyriadPro-LightSemiExt", 400, $asset_pipeline: true);
-@include font-face("MyMyriad", "/MyriadPro-Regular", 500, $asset_pipeline: true);
-@include font-face("MyMyriad", "/MyriadPro-Semibold", 700, $asset_pipeline: true);
-
-/*
 @font-face {
   font-family: "MyMyriad";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 200;
   src: local("MyMyriad"), 
     url(/assets/MyriadPro-LightSemiExt.otf) format("opentype");
 }
@@ -14,7 +9,7 @@
 @font-face {
   font-family: "MyMyriad";
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   src: local("MyMyriad"), 
     url(/assets/MyriadPro-Regular.otf) format("opentype");
 }
@@ -26,7 +21,7 @@
   src: local("MyMyriad"), 
     url(/assets/MyriadPro-Semibold.otf) format("opentype");
 }
-*/
+
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 13px;
@@ -110,6 +105,7 @@ $side_padding: 15px;
   a {
     color: $blue;
     // font-family: HNLight;
+    font-weight: 200;
     font-size: 20px;
     line-height: $header_height;
     text-decoration: none;
