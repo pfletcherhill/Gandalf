@@ -18,6 +18,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @period = @options.period
     @maxOverlaps = 4                  # Maximum allowed event overlaps
     @first = true                     # First time rendering
+    @eventsHidden = 0                 # Whether some events were not rendered
     @collection.splitMultiDay()       # Adjust multi-day events
     @render()
 
@@ -106,6 +107,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @days = @collection.sortAndGroup()
     @renderFeed()
     @renderCalendar()
+    alert("#{@eventsHidden} events were not shown due to space constraints") if @eventsHidden > 0
     t = this
     setInterval( ->
       t.resetEventPositions()
@@ -115,7 +117,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Event handlers
 
   hideHidden: () ->
-    # $(".cal-week-event").effect("puff")
     orgs = @collection.getHiddenOrgs()
     cats = @collection.getHiddenCats()
     @orgVisChange(orgs)
@@ -152,59 +153,30 @@ class Gandalf.Views.Events.Index extends Backbone.View
     $(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4 hide")
     for myId, ids of overlaps
       num = ids.length + 1
+      num = @maxOverlaps if num > @maxOverlaps
       $(".cal-week-event[data-event-id='#{myId}']").addClass "overlap-#{num}"
       count = 0
       for id in ids
-        if count < @maxOverlaps
-          $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
-        else
-          $(".cal-week-event[data-event-id='#{id}']").addClass "hide"
+        $(".cal-week-event[data-event-id='#{id}']").addClass "overlap-#{num}"
         count++
-
     @makeCSSAdjustments()
 
   # CSS wasn't strong enough for the kind of styling I wanted to do...
   # so we're doing it in JS
+  # Cost: 21 * number of events
   makeCSSAdjustments: () ->
-    overlapIndex = 2  # Because we start caring when 2 or more things overlap
     calZ = 10
-    all = $(".cal-events")
-    for a in all
-      console.log a
-      while overlapIndex <= @maxOverlaps
+    for i in [0...7]
+      for overlapIndex in [2..@maxOverlaps]
         width = Math.floor(98/overlapIndex)
-        selector = ".cal-week-event.overlap-#{overlapIndex}"
-        selector += ":not(.event-hidden-org, .event-hidden-cat)"
-        evs = $(a).find(selector)
+        selector = ".cal-week-event.overlap-#{overlapIndex}.day-#{i}"
+        selector += ":not(.hide, .event-hidden-org, .event-hidden-cat)"
+        evs = $(selector)
         $(evs).css({ width: "#{width}%"})
         _.each evs, (e, index) ->
           num = index%overlapIndex
-          console.log "#{width*num}"
           $(e).css(
             left: "#{width*num}%"
             zIndex: calZ - num
           )
-
-        overlapIndex++
-        ### 
-        if index%overlapIndex is 0
-          $(e).css(
-            left: 0
-          )
-        else if index%overlapIndex is 1
-          $(e).css(
-            left: "#{width}%"
-            zIndex: calZ - 1
-          )
-        else if index%overlapIndex is 2
-          $(e).css(
-            left: "#{width*2}%"
-            zIndex: calZ - 2
-          )
-        else if index%overlapIndex is 3
-          $(e).css(
-            left: "#{width*3}%"
-            zIndex: calZ - 3
-          )
-        ###
         

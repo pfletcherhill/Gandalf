@@ -6,6 +6,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
+    @dayNum = @options.dayNum
     
     placement = "left"
     placement = "right" if moment(@model.get("start_at")).day() < 3
@@ -58,6 +59,7 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       "data-organization-id" : e.get("organization_id")
       "data-category-ids" : e.makeCatIdString()
     ).html(@template( event: e ))
+    @$el.addClass("day-#{@dayNum}")
     return this
 
   onClick: () ->

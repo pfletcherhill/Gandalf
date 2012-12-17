@@ -53,7 +53,6 @@ class Gandalf.Router extends Backbone.Router
     string = @generateParamsString params
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
     @events.fetch success: (events) ->
-      console.log events
       view = new Gandalf.Views.Events.Index(
         collection: events
         startDate: params.start
