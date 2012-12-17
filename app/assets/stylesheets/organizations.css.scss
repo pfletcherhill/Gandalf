@@ -4,7 +4,7 @@ $organization-width: 380px;
 
 .left-header {
   padding: 15px;
-  font-family: HN;
+  // font-family: HN;
   
 }
 
@@ -14,7 +14,8 @@ li {
   a {
     display: block;
     padding: 15px;
-    font-family: HNBold;
+    // font-family: HNBold;
+    font-weight: bold;
     font-size: 15px;
     color: black;
     outline: none;
@@ -112,7 +113,8 @@ li {
 
 form {
   label {
-    font-family: HNLight;
+    // font-family: HNLight;
+    font-weight: bold;
   }
   input, textarea {
     border: 1px solid #dadada;

@@ -19,9 +19,9 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
-    Gandalf.dispatcher.on("feedEvent:click", @feedClick)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
 
     @render()
 
