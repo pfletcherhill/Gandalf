@@ -94,9 +94,8 @@ e = Event.new(
   :organization_id => o1.id,
   :start_at => Time.now + 1.day + 10.hour,
   :end_at => Time.now + 2.day + 11.hour,
-  :location => "Shubert Theater",
+  :location_id => l1.id,
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "247 College Street, New Haven, CT 06511"
 )
 e.categories << c2
 e.categories << c3
@@ -107,12 +106,7 @@ e = Event.new(
   :organization_id => o1.id,
   :start_at => Time.now + 1.day + 10.hour,
   :end_at => Time.now + 2.day + 9.hour,
-  :location => "Shubert Theater",
-  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
-  :address => "247 College Street, New Haven, CT 06511"
-  :start_at => Time.now + 5.hour,
-  :end_at => Time.now + 1.day + 7.hour,
-  :location_id => l3.id,
+  :location_id => l1.id,
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c2
