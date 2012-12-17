@@ -1,13 +1,15 @@
 $popover-head-color: lightblue;
 $popover-body-color: #eee;
 .popover {
-  height: 400px;
   width: 300px;
   padding: 0;
   @include border-radius(0);
-  z-index: 20;
+  z-index: 30;
   &.left .arrow {
     border-left-color: $popover-body-color;
+  }
+  .arrow {
+    display: none;
   }
 }
 .popover-inner {

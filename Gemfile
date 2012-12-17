@@ -21,7 +21,6 @@ end
 
 gem 'pg'
 gem 'haml'
-gem 'squeel'
 
 # jQuery
 gem 'jquery-rails'
