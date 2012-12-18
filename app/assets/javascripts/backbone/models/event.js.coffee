@@ -91,7 +91,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
           id: Math.random() # So it can be added to the collection
           eventId: event.get("id")
         @add(newEvent)
-        console.log event, newEvent
+        # console.log event, newEvent
 
     
 

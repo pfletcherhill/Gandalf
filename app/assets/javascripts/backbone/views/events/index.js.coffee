@@ -40,7 +40,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Rendering functions
 
   renderWeekCalendar: () ->
-    console.log @days
     view = new Gandalf.Views.Events.CalendarWeek(
       startDate: moment(@startDate)
       days: @days
@@ -99,7 +98,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderCalendar: () ->
     if @period == "month"
       @renderMonthCalendar()
-      @renderMonthMultiday()
     else 
       @renderWeekCalendar()
       @renderWeekMultiday()
