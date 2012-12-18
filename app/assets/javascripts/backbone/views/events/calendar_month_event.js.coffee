@@ -39,7 +39,7 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
       )
 
     @$el.attr(
-      "data-event-id": @model.get("eventId")
+      "data-event-id": @model.get("id")
       "data-organization-id" : @model.get("organization_id")
       "data-category-ids" : @model.makeCatIdString()
     ).html(@template({ event: @model, continued: @continued }))

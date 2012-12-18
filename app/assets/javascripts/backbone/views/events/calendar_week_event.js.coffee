@@ -48,7 +48,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
         backgroundColor: @lightColor
         border: "1pt solid #{@color}"
       ).attr(
-        "data-event-id": @eventId
+        "data-event-id": e.get("id") # Should be unique per visual event
         "data-organization-id" : e.get("organization_id")
         "data-category-ids" : e.makeCatIdString()
       ).html(@template( event: e ))

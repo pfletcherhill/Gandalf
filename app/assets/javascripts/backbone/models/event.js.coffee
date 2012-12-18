@@ -35,6 +35,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   findOverlaps: () ->
     days = @group() 
+    console.log "days", days
     overlaps = {}
     for day,evs of days
       if evs.length > 1
@@ -47,6 +48,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
+    console.log "olap" ,overlaps
     overlaps
 
   group: ()->
@@ -71,7 +73,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
       end = event.get("end_at")
       diffDay = moment(end).diff(moment(start), 'days')
       diffHour = moment(end).diff(moment(start), 'hours')
-
       continue if diffDay is 0                        # Normal event
       if diffHour >= 24 # At least one whole cycle
         event.set({ multiday: true }) 
@@ -88,10 +89,9 @@ class Gandalf.Collections.Events extends Backbone.Collection
         newEvent.set
           calStart: eventStart.format()
           calEnd: eventEnd.format()
-          id: Math.random() # So it can be added to the collection
+          id: event.get("id") + Math.random() # So it can be added to the collection
           eventId: event.get("id")
         @add(newEvent)
-        # console.log event, newEvent
 
     
 
