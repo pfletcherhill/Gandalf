@@ -34,28 +34,27 @@ class Gandalf.Collections.Events extends Backbone.Collection
     Gandalf.dispatcher.bind("organizationShort:click", @adjustOrganization)
 
   findOverlaps: () ->
-    days = @sortAndGroup() 
+    days = @group() 
     overlaps = {}
     for day,evs of days
       if evs.length > 1
         for myE in evs
-          continue if @invisible(myE)
+          console.log myE if myE.get("multiday")
+          continue if @invisible(myE) or myE.get("multiday")
           myId = myE.get("id")
           for targetE in evs
-            continue if @invisible (targetE)
+            console.log targetE if targetE.get("multiday")
+            continue if @invisible (targetE) or targetE.get("multiday")
             tarId = targetE.get("id")
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
-    console.log "events", overlaps
+    console.log overlaps
     overlaps
 
-  sortAndGroup: ()->
+  group: ()->
     # Events are already sorted (in backend)...
-    nonMultiday = _.filter(@models, (e) ->
-      not e.get("multiday")
-    )
-    groupedEvents = _.groupBy(nonMultiday, (e) ->
+    groupedEvents = _.groupBy(@models, (e) ->
       # Gandalf.eventKeyFormat was set when the app was initialized
       return moment(e.get("calStart")).format(Gandalf.eventKeyFormat)
     )
@@ -88,7 +87,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
       else 
         event.set
           multiday: true
-    console.log "events multiday", this
 
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1

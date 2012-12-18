@@ -14,7 +14,7 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
 
 
   template: JST["backbone/templates/calendar/calendar_week_multiday"]
-  className: "cal-multiday-event"
+  className: "js-event cal-multiday-event"
 
   events:
     "click" : "click"
@@ -47,6 +47,10 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
         border: "1pt solid #{@color}"
         width: @width+"%"
         marginLeft: @left+"%"
+      ).attr(
+        "data-event-id": @model.get("eventId")
+        "data-organization-id" : @model.get("organization_id")
+        "data-category-ids" : @model.makeCatIdString()
       )
 
   # Event handlers

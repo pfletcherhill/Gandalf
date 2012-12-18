@@ -106,7 +106,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
-    @days = @collection.sortAndGroup()
+    @days = @collection.group()
     @renderFeed()
     @renderCalendar()
     t = this
