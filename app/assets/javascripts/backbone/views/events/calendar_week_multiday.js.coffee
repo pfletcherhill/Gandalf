@@ -7,10 +7,11 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
     @startDate = @options.startDate.sod() 
-    # Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
-    # Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
-    # Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
     @render()
+
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feedEvent:click", @click, this)
 
 
   template: JST["backbone/templates/calendar/calendar_week_multiday"]
@@ -22,8 +23,8 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
     "mouseleave" : "mouseleave"
 
   render: () ->
-    start = @model.get("calStart")
-    end = @model.get("calEnd")
+    start = @model.get("start_at")
+    end = @model.get("end_at")
     if moment(start) < @startDate
       startDay = 0
       start = @startDate
@@ -33,7 +34,6 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
     @left = startDay* 14.2857
 
     diff = moment(end).diff(moment(start), 'days')
-    console.log start, startDay, diff
     if startDay + diff > 6
       endDay = 6
     else
@@ -55,16 +55,19 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
 
   # Event handlers
 
-  click: () ->
+  click: (id) ->
+    return if typeof id is "number" and @eventId isnt id
     Gandalf.dispatcher.trigger("event:click", { model: @model, color: @lightColor })
 
-  mouseenter: () ->
+  mouseenter: (id) ->
+    return if typeof id is "number" and @eventId isnt id
     @$el.css(
       backgroundColor: @color
       border: "1pt solid #333"
     )
 
-  mouseleave: () ->
+  mouseleave: (id) ->
+    return if typeof id is "number" and @eventId isnt id
     @$el.css(
       backgroundColor: @lightColor
       border: "1pt solid #{@color}"

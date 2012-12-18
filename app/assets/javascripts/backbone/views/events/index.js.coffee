@@ -18,7 +18,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @period = @options.period
     @maxOverlaps = 4                  # Maximum allowed event overlaps
     @first = true                     # First time rendering
-    @collection.splitMultiDay()       # Adjust multi-day events
     @render()
 
     # Render AJAX info
@@ -41,6 +40,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Rendering functions
 
   renderWeekCalendar: () ->
+    console.log @days
     view = new Gandalf.Views.Events.CalendarWeek(
       startDate: moment(@startDate)
       days: @days
@@ -99,6 +99,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderCalendar: () ->
     if @period == "month"
       @renderMonthCalendar()
+      @renderMonthMultiday()
     else 
       @renderWeekCalendar()
       @renderWeekMultiday()
@@ -106,6 +107,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   render: () ->
     $(@el).html(@template({ user: Gandalf.currentUser }))
+    split = (@period is "month")
+    @collection.splitMultiDay(split)       # Adjust multi-day events
     @days = @collection.group()
     @renderFeed()
     @renderCalendar()
@@ -132,7 +135,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @makeCSSAdjustments()
 
   eventClick: (e) ->
-    console.log "eventClick receiver"
     @showPopover(e.model, e.color)
 
   # Helpers
@@ -187,7 +189,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   showPopover: (model, color) ->
     popover = $(".cal-popover")
-    console.log popover
     placement = "left"
     placement = "right" if moment(model.get("calStart")).day() < 3
     realId = model.get("eventId")

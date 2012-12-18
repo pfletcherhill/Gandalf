@@ -8,6 +8,7 @@ class Gandalf.Views.Events.FeedDay extends Backbone.View
     @render()
 
   addAll: () ->
+    @numAdded = 0
     for event in @collection
       @addOne(event)
   
@@ -18,6 +19,7 @@ class Gandalf.Views.Events.FeedDay extends Backbone.View
     view = new Gandalf.Views.Events.FeedEvent(model: event)
     @$(".feed-day-events").append(view.el)
     # Add this event to the list of done events
+    @numAdded++
     @options.done.push event.get("eventId")
   
   convertDate: (day) ->
@@ -26,7 +28,9 @@ class Gandalf.Views.Events.FeedDay extends Backbone.View
           
   render: () ->
     day = @convertDate @options.day
+
     $(@el).html(@template(day: day))
     @addAll()
+    @$el.html("") if @numAdded is 0 # Don't render the day header unnecessarily
     return this
     
