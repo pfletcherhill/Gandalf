@@ -53,6 +53,9 @@ $cal_top_pad: 10px;
   font-size: 8px;
   line-height: 20px;
   @include linear-gradient(#fff, #efefef);
+  td:first-child {
+    border-left: 1pt solid transparent;
+  }
 }
 
 .cal-multiday {
@@ -96,6 +99,7 @@ $cal_top_pad: 10px;
   height: 150px;
   border-bottom: 1pt solid #aaa;
   position: relative;
+  vertical-align: top;
 }
 
 .hour {
@@ -140,9 +144,9 @@ $cal_top_pad: 10px;
   position: relative;
 }
 .cal-month .cal-events {
-  position: absolute;
+  position: relative;
   top: 15px;
-  left: 0px;
+  left: 0;
   overflow-x: hidden;
 }
 $cal_z: 10;

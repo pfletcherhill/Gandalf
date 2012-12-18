@@ -5,6 +5,8 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
+    @continued = (@model.get("start_at") isnt @model.get("calStart"))
+    @continues = (@model.get("end_at") isnt @model.get("calEnd"))
     @render()
     # Yet to be done for month
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
@@ -26,9 +28,18 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     "mouseleave" : "mouseleave"
 
   render: () ->
-    $(@el).css(
-      color: @lightColor
-    ).html(@template( event: @model ))
+    if @continued or @continues
+      $(@el).css(
+        color: "#222"
+        backgroundColor: @lightColor
+        width: "100%"
+      )
+    else
+      $(@el).css(
+        color: @lightColor
+      )
+
+    @$el.html(@template({ event: @model, continued: @continued }))
     return this
 
   onClick: () ->
@@ -58,11 +69,17 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
   ###
   mouseenter: (id) ->
     return if typeof id is "number" and @model.get("id") isnt id
-    @$el.css({ color: @color })
+    if @continues or @continued
+      @$el.css({ backgroundColor: @color })
+    else
+      @$el.css({ color: @color })
 
   mouseleave: (id) ->
     return if typeof id is "number" and @model.get("id") isnt id
-    @$el.css({ color: @lightColor })
+    if @continues or @continued
+      @$el.css({ backgroundColor: @lightColor })
+    else
+      @$el.css({ color: @lightColor })
 
   feedClick:(id) ->
     if not id or @model.get("id") is id
