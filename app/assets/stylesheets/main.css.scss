@@ -1,11 +1,30 @@
-@font-face { font-family: HN; src: url('/assets/helveticaneue.otf'); } 
-@font-face { font-family: HNBold; src: url('/assets/helveticaneuebold.otf'); }
-@font-face { font-family: HNLight; src: url('/assets/helveticaneuelight.otf'); }
-@font-face { font-family: HNMedium; src: url('/assets/helveticaneuemedium.otf'); }
+@font-face {
+  font-family: "MyMyriad";
+  font-style: normal;
+  font-weight: 200;
+  src: local("MyMyriad"), 
+    url(/assets/MyriadPro-LightSemiExt.otf) format("opentype");
+}
+
+@font-face {
+  font-family: "MyMyriad";
+  font-style: normal;
+  font-weight: 400;
+  src: local("MyMyriad"), 
+    url(/assets/MyriadPro-Regular.otf) format("opentype");
+}
+
+@font-face {
+  font-family: "MyMyriad";
+  font-style: normal;
+  font-weight: 700;
+  src: local("MyMyriad"), 
+    url(/assets/MyriadPro-Semibold.otf) format("opentype");
+}
 
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
-$font: 12px;
+$font: 13px;
 $min_width: 1000px;
 
 /* =============  GLOBAL STYLES =========== */
@@ -13,7 +32,7 @@ $min_width: 1000px;
 body {
   margin: 0px;
   padding: 0px;
-  font-family: HN;
+  font-family: "MyMyriad", "HelveticaNeue", helvetica;
   font-size: $font;
 }
 
@@ -85,7 +104,8 @@ $side_padding: 15px;
 #logo {
   a {
     color: $blue;
-    font-family: HNLight;
+    // font-family: HNLight;
+    font-weight: 200;
     font-size: 20px;
     line-height: $header_height;
     text-decoration: none;

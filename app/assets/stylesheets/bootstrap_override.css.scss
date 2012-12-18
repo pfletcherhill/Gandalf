@@ -1,25 +1,3 @@
-$popover-head-color: lightblue;
-$popover-body-color: #eee;
-.popover {
-  height: 400px;
-  width: 300px;
-  padding: 0;
-  @include border-radius(0);
-  z-index: 20;
-  &.left .arrow {
-    border-left-color: $popover-body-color;
-  }
-}
-.popover-inner {
-  height: 100%;
-  background-color: $popover-body-color;
-}
-.popover-content {
-  padding: 0;
-}
-.popover-title {
-  display: none;
-}
 .btn-toolbar > a {
   vertical-align: top;
 }
