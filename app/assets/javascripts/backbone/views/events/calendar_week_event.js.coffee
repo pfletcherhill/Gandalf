@@ -41,14 +41,17 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     e = @model
     @top = @getPosition e.get("calStart")
     @height = @getPosition(e.get("calEnd")) - @top
-    style_string = "top: #{@top}px; height: #{@height}px;\
-background-color: #{@lightColor}; border: 1pt solid #{@color};"
-    $(@el).attr(
-      style: style_string
-      "data-event-id": @eventId
-      "data-organization-id" : e.get("organization_id")
-      "data-category-ids" : e.makeCatIdString()
-    ).html(@template( event: e ))
+    $(@el)
+      .css(
+        top: "#{@top}px"
+        height: "#{@height}px"
+        backgroundColor: @lightColor
+        border: "1pt solid #{@color}"
+      ).attr(
+        "data-event-id": @eventId
+        "data-organization-id" : e.get("organization_id")
+        "data-category-ids" : e.makeCatIdString()
+      ).html(@template( event: e ))
     @$el.addClass("day-#{@dayNum}")
     return this
 

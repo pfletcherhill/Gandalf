@@ -56,7 +56,20 @@ $cal_top_pad: 10px;
 }
 
 .cal-multiday {
-  border: 1pt solid red;
+  position: relative;
+  margin-left: $cal_gap;
+}
+
+.cal-multiday-event {
+  height: $week_hour_height / 2;
+  overflow: hidden;
+  cursor: pointer;
+  &:first-child {
+    margin-top: 2px;
+  }
+  &:last-child {
+    margin-bottom: 2px;
+  }
 }
 
 /* ===== CALENDAR BODY ===== */
