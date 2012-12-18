@@ -7,7 +7,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
     @dayNum = @options.dayNum
-    
+    ### 
     placement = "left"
     placement = "right" if moment(@model.get("start_at")).day() < 3
     @$el.popover(
@@ -16,6 +16,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
       trigger: 'click'
       content: @popoverTemplate(e: @model, color: @lightColor)
     )
+    ### 
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
@@ -27,7 +28,6 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @render()
 
   template: JST["backbone/templates/calendar/calendar_week_event"]
-  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
@@ -49,8 +49,8 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   render: () ->
     e = @model
-    @top = @getPosition e.get("start_at")
-    @height = @getPosition(e.get("end_at")) - @top
+    @top = @getPosition e.get("calStart")
+    @height = @getPosition(e.get("calEnd")) - @top
     style_string = "top: #{@top}px; height: #{@height}px;\
 background-color: #{@lightColor}; border: 1pt solid #{@color};"
     $(@el).attr(
@@ -63,8 +63,10 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     return this
 
   onClick: () ->
-    @scroll()
-    @popover()
+    Gandalf.dispatcher.trigger("event:click", 
+      { model: @model, color: @lightColor })
+    # @scroll()
+    # @popover()
 
   scroll:() ->
     tHeight = 300 # popover height
@@ -79,30 +81,6 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
     else
       scrolltop = @top + (@height-tHeight) / 2 - padTop
     $(container).animate scrollTop: (scrolltop), 300
-
-  popover: () ->
-    eventId = @model.get("eventId")
-    # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{eventId}'])")
-    otherPopovers.popover('hide') if otherPopovers
-    # Add event handler to close button
-    t = this
-    $(".popover .close").click (e) ->
-      t.$el.popover('hide')
-    @makeGMap()
-
-  makeGMap: () ->
-    myPos = new google.maps.LatLng(@model.get("lat"), @model.get("lon"))
-    options = 
-      center: myPos
-      zoom: 15
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    map = new google.maps.Map(document.getElementById("map-canvas"), options)
-    marker = new google.maps.Marker(
-      position: myPos
-      map: map
-      title: "Here it is!"
-    )
 
   feedClick: (id) ->
     if @eventId is id

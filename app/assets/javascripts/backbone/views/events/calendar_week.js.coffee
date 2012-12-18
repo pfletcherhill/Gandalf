@@ -7,7 +7,6 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     
     Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
     Gandalf.dispatcher.on("weekEvent:multiday", @multiday, this)
-    Gandalf.dispatcher.on("event:click", @eventClick, this)
 
     @render()
 
@@ -45,6 +44,3 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
   multiday: (text) ->
     console.log @$el.find(".cal-multiday")
     @$el.children(".cal-multiday").html(text)
-
-  eventClick: (e) ->
-    console.log e

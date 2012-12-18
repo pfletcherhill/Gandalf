@@ -29,14 +29,17 @@ class Gandalf.Views.Events.Index extends Backbone.View
     # Listening for global events
     Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
+    Gandalf.dispatcher.on("event:click", @eventClick, this)
 
   template: JST["backbone/templates/events/index"]
   multidayTemplate: JST["backbone/templates/calendar/calendar_week_multiday"]
+  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   el: "#content"
 
   events:
     "scroll" : "scrolling"
+    "click" : "onClick"
 
   # Rendering functions
 
@@ -130,6 +133,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
     $(".cal-week-event").css({ width: "96%" }) # For window resizing
     @makeCSSAdjustments()
 
+  eventClick: (e) ->
+    @showPopover(e.model, e.color)
+
+  onClick: () ->
+    console.log "index click"
+
   # Helpers
 
   orgVisChange: (hiddenOrgs) ->
@@ -179,4 +188,34 @@ class Gandalf.Views.Events.Index extends Backbone.View
             left: "#{width*num}%"
             zIndex: calZ - num
           )
+
+  showPopover: (model, color) ->
+    popover = $(".cal-popover")
+    console.log popover
+    placement = "left"
+    placement = "right" if moment(model.get("calStart")).day() < 3
+    realId = model.get("eventId")
+    if model.get("id") isnt realId
+      model = @collection.get(realId)
+    $(popover)
+      .css(placement, "10px")
+      .html(@popoverTemplate(e: model, color: color))
+      .fadeIn("fast")
+    $(".cal-popover .close").click(() ->
+      $(this).parents(".cal-popover").fadeOut("fast")
+    )
+    @makeGMap(model)
+
+  makeGMap: (model) ->
+    myPos = new google.maps.LatLng(model.get("lat"), model.get("lon"))
+    options = 
+      center: myPos
+      zoom: 15
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map(document.getElementById("map-canvas"), options)
+    marker = new google.maps.Marker(
+      position: myPos
+      map: map
+      title: "Here it is!"
+    )
         
