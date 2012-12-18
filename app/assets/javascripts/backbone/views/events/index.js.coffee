@@ -187,14 +187,28 @@ class Gandalf.Views.Events.Index extends Backbone.View
 
   showPopover: (model, color) ->
     popover = $(".cal-popover")
-    placement = "left"
-    placement = "right" if moment(model.get("calStart")).day() < 3
-    realId = model.get("eventId")
-    if model.get("id") isnt realId
-      model = @collection.get(realId)
+    calDayWidth = $(".cal-body .cal-day").width()
+    mDay = moment(model.get("calStart")).day()
+
+    left = right = "auto"
+    # Comment this if else block and uncomment the next to see moving popups
+    if mDay < 3
+      right = "10px"
+    else
+      left = "10px"
+    # if mDay < 3
+    #   left = (mDay+1) * calDayWidth + 60
+    # else
+    #   right = ((7-mDay) * calDayWidth) + 20
+
+    eId = model.get("eventId")
+    if model.get("id") isnt eId
+      model = @collection.get(eId)
     $(popover)
-      .css(placement, "10px")
-      .html(@popoverTemplate(e: model, color: color))
+      .css(
+        left: left
+        right: right
+      ).html(@popoverTemplate(e: model, color: color))
       .fadeIn("fast")
     $(".cal-popover .close").click(() ->
       $(this).parents(".cal-popover").fadeOut("fast")

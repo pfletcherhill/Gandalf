@@ -48,7 +48,7 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
         width: @width+"%"
         marginLeft: @left+"%"
       ).attr(
-        "data-event-id": @model.get("eventId")
+        "data-event-id": @model.get("id")
         "data-organization-id" : @model.get("organization_id")
         "data-category-ids" : @model.makeCatIdString()
       )
