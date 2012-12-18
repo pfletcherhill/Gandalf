@@ -39,17 +39,14 @@ class Gandalf.Collections.Events extends Backbone.Collection
     for day,evs of days
       if evs.length > 1
         for myE in evs
-          console.log myE if myE.get("multiday")
           continue if @invisible(myE) or myE.get("multiday")
           myId = myE.get("id")
           for targetE in evs
-            console.log targetE if targetE.get("multiday")
-            continue if @invisible (targetE) or targetE.get("multiday")
+            continue if @invisible(targetE) or targetE.get("multiday")
             tarId = targetE.get("id")
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
-    console.log overlaps
     overlaps
 
   group: ()->
@@ -66,27 +63,37 @@ class Gandalf.Collections.Events extends Backbone.Collection
     )
     events 
 
-  splitMultiDay: () ->
+  # Don't save in this method -- these changes should only be client side
+  # If splitMultidayEvents is true, then 
+  splitMultiDay: (splitMultidayEvents) ->
     for event in @models
       start = event.get("start_at")
       end = event.get("end_at")
       diffDay = moment(end).diff(moment(start), 'days')
       diffHour = moment(end).diff(moment(start), 'hours')
-      continue if diffDay is 0
-      if diffDay is 1 and diffHour < 24
-        # Don't save -- these changes should only be client side
-        event.set
-          calEnd: moment(start).hours(23).minutes(59)
+
+      continue if diffDay is 0                        # Normal event
+      if diffHour >= 24 # At least one whole cycle
+        event.set({ multiday: true }) 
+        continue if not splitMultidayEvents
+
+      event.set({ calEnd: moment(start).eod().format() })
+      for i in [1..diffDay] # 1, 2, ... diffDay
         newEvent = event.clone()
+        eventStart = moment(start).add('d', i).sod()
+        if i is diffDay # Last day of event
+          eventEnd = moment(end)
+        else
+          eventEnd = moment(eventStart).eod()
         newEvent.set
-          calStart: moment(end).sod().format()
-          calEnd: end
+          calStart: eventStart.format()
+          calEnd: eventEnd.format()
           id: Math.random() # So it can be added to the collection
           eventId: event.get("id")
         @add(newEvent)
-      else 
-        event.set
-          multiday: true
+        console.log event, newEvent
+
+    
 
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1
