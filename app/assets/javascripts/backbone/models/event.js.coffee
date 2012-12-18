@@ -6,8 +6,8 @@ class Gandalf.Models.Event extends Backbone.Model
 
   # Find if two events overlap
   overlap: (e) ->
-    one = moment(@get("start_at")) < moment(e.get("end_at"))
-    two = moment(e.get("start_at")) < moment(@get("end_at"))
+    one = moment(@get("calStart")) < moment(e.get("calEnd"))
+    two = moment(e.get("calStart")) < moment(@get("calEnd"))
     one and two
 
   categoryIds: () ->
@@ -39,24 +39,25 @@ class Gandalf.Collections.Events extends Backbone.Collection
     for day,evs of days
       if evs.length > 1
         for myE in evs
-          continue if @invisible(myE) 
+          continue if @invisible(myE) or myE.get("multiday")
           myId = myE.get("id")
           for targetE in evs
-            continue if @invisible (targetE)
+            continue if @invisible (targetE) or targetE.get("multiday")
             tarId = targetE.get("id")
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
+    console.log overlaps
     overlaps
 
   sortAndGroup: ()->
     sortedEvents = _.sortBy(@models, (e) ->
-      time = moment(e.get("start_at")).sod()
+      time = moment(e.get("calStart")).sod()
       return time
     )
     groupedEvents = _.groupBy(sortedEvents, (e) ->
       # Gandalf.eventKeyFormat was set when the app was initialized
-      return moment(e.get('start_at')).format(Gandalf.eventKeyFormat)
+      return moment(e.get("calStart")).format(Gandalf.eventKeyFormat)
     )
     groupedEvents
 
@@ -68,9 +69,6 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   splitMultiDay: () ->
     for event in @models
-      event.set
-        eventId: event.get("id")
-        multiday: false
       start = event.get("start_at")
       end = event.get("end_at")
       diffDay = moment(end).diff(moment(start), 'days')
@@ -79,12 +77,12 @@ class Gandalf.Collections.Events extends Backbone.Collection
       if diffDay is 1 and diffHour < 24
         # Don't save -- these changes should only be client side
         event.set
-          end_at: moment(start).hours(23).minutes(59)
+          calEnd: moment(start).hours(23).minutes(59)
         newEvent = event.clone()
         newEvent.set
-          start_at: moment(end).sod().format()
-          end_at: end
-          id: Math.random()
+          calStart: moment(end).sod().format()
+          calEnd: end
+          id: Math.random() # So it can be added to the collection
           eventId: event.get("id")
         @add(newEvent)
       else 

@@ -177,21 +177,42 @@ $test-color: lighten(#0f91ec, 20%);
 
 /* ======== POPOVER ========= */
 
-$event-popover-padding: 10px;
+$cal-popover-padding: 10px;
 
+$cal-popover-head-color: lightblue;
+$cal-popover-body-color: #eee;
 .cal-popover {
+  top: $cal_head_height + 30;
+  width: 300px;
+  z-index: 30;
   position: absolute;
   display: none;
+  background-color: rgba(#eee, 0.9);
+  @include box-shadow(0 0px 5px 0 #444);
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    line-height: 15px;
+    opacity: 0.4;
+  }
 }
 
-.event-popover-head {
+.cal-popover-inner {
+  height: 100%;
+  background-color: $cal-popover-body-color;
+}
+
+.cal-popover-head {
   font-size: 16px;
   line-height: 20px;
-  background-color: $popover-head-color;
-  padding: $event-popover-padding;
+  background-color: $cal-popover-head-color;
+  padding: $cal-popover-padding;
+  padding-right: $cal-popover-padding + 15;
 }
-.event-popover-body {
-  padding: $event-popover-padding;
+.cal-popover-body {
+  padding: $cal-popover-padding;
   tr {
     padding: 3px 0;
   }
@@ -201,14 +222,11 @@ $event-popover-padding: 10px;
     padding-bottom: 3px;
   }
 }
-.event-popover-description {
+.cal-popover-description {
   font-size: 10px;
   line-height: 16px;
 }
 
-.popover .close {
-  line-height: 15px;
-}
 #map-canvas {
   margin-top: 10px;
   height: 170px;
