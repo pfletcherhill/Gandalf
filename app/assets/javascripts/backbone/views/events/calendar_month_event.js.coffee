@@ -5,12 +5,6 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
-    @$el.popover(
-      placement: 'top'
-      html: true
-      trigger: 'click'
-      content: @popoverTemplate(e: @model, color: @lightColor)
-    )
     @render()
     # Yet to be done for month
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
@@ -38,9 +32,10 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     return this
 
   onClick: () ->
-    @scroll()
-    # @popover()
+    Gandalf.dispatcher.trigger("event:click", 
+      { model: @model, color: @lightColor })
 
+  ###
   scroll:() ->
     tHeight = 300 # popover height
     padTop = 50   # space above popover when scrolling to
@@ -60,7 +55,7 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     t = this
     $(".popover .close").click (e) ->
       t.$el.popover('hide')
-
+  ###
   mouseenter: (id) ->
     return if typeof id is "number" and @model.get("id") isnt id
     @$el.css({ color: @color })

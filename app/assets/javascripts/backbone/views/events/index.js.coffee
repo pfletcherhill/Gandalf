@@ -32,14 +32,12 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.dispatcher.on("event:click", @eventClick, this)
 
   template: JST["backbone/templates/events/index"]
-  multidayTemplate: JST["backbone/templates/calendar/calendar_week_multiday"]
   popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   el: "#content"
 
   events:
     "scroll" : "scrolling"
-    "click" : "onClick"
 
   # Rendering functions
 
@@ -65,9 +63,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderWeekMultiday: () ->
     evs = @collection.getMultidayEvents()
     for event in evs
-      html = @multidayTemplate({ e: event })
+      view - new Galdalf.Views.Events.CalendarWeekMultiday(event: event)
       $(".cal-multiday").append(html)
-      console.log "multiday", $(".cal-multiday")
 
   renderFeed: () ->
     @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
@@ -134,10 +131,8 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @makeCSSAdjustments()
 
   eventClick: (e) ->
+    console.log "eventClick receiver"
     @showPopover(e.model, e.color)
-
-  onClick: () ->
-    console.log "index click"
 
   # Helpers
 

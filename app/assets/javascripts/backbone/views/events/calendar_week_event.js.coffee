@@ -6,17 +6,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
-    @dayNum = @options.dayNum
-    ### 
-    placement = "left"
-    placement = "right" if moment(@model.get("start_at")).day() < 3
-    @$el.popover(
-      placement: placement
-      html: true
-      trigger: 'click'
-      content: @popoverTemplate(e: @model, color: @lightColor)
-    )
-    ### 
+    @dayNum = @options.dayNum 
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor

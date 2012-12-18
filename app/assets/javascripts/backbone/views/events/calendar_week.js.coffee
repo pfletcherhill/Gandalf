@@ -40,7 +40,3 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
 
   hidePopovers: () ->
     $("[rel='event-popover']").popover("hide")
-
-  multiday: (text) ->
-    console.log @$el.find(".cal-multiday")
-    @$el.children(".cal-multiday").html(text)
