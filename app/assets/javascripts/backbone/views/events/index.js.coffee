@@ -18,7 +18,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @period = @options.period
     @maxOverlaps = 4                  # Maximum allowed event overlaps
     @first = true                     # First time rendering
-    @eventsHidden = 0                 # Whether some events were not rendered
     @collection.splitMultiDay()       # Adjust multi-day events
     @render()
 
@@ -63,11 +62,14 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderWeekMultiday: () ->
     evs = @collection.getMultidayEvents()
     for event in evs
-      view - new Galdalf.Views.Events.CalendarWeekMultiday(event: event)
-      $(".cal-multiday").append(html)
+      view = new Gandalf.Views.Events.CalendarWeekMultiday(
+        { model: event, startDate: moment(@startDate) }
+      )
+      $(".cal-multiday").append(view.el)
 
   renderFeed: () ->
-    @$("#feed-list").append("<p>You have no upcoming events</p>") if _.isEmpty(@days)
+    noEvents = "<div class='feed-day-header'>You have no upcoming events</div>"
+    @$("#feed-list").append(noEvents) if _.isEmpty(@days)
     @doneEvents = []
     for day, events of @days
       @addFeedDay(day, events)
@@ -107,7 +109,6 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @days = @collection.sortAndGroup()
     @renderFeed()
     @renderCalendar()
-    alert("#{@eventsHidden} events were not shown due to space constraints") if @eventsHidden > 0
     t = this
     setInterval( ->
       t.resetEventPositions()
