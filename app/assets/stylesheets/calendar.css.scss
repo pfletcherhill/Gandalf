@@ -186,9 +186,21 @@ $test-color: lighten(#0f91ec, 20%);
   }
 }
 
-.cal-event {
-  &.event-hidden-org, &.event-hidden-cat {
+.cal-week .cal-body {
+  .event-hidden-org, .event-hidden-cat {
     opacity: 0;
+  }
+}
+
+.cal-month  {
+  .event-hidden-org, .event-hidden-cat {
+    display: none;
+  }
+}
+
+.cal-multiday {
+  .event-hidden-org, .event-hidden-cat {
+    display: none;
   }
 }
 

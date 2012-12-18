@@ -39,7 +39,11 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
         color: @lightColor
       )
 
-    @$el.html(@template({ event: @model, continued: @continued }))
+    @$el.attr(
+      "data-event-id": @model.get("eventId")
+      "data-organization-id" : @model.get("organization_id")
+      "data-category-ids" : @model.makeCatIdString()
+    ).html(@template({ event: @model, continued: @continued }))
     return this
 
   onClick: () ->
