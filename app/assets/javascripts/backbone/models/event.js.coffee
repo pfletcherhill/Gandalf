@@ -6,8 +6,8 @@ class Gandalf.Models.Event extends Backbone.Model
 
   # Find if two events overlap
   overlap: (e) ->
-    one = moment(@get("start_at")) < moment(e.get("end_at"))
-    two = moment(e.get("start_at")) < moment(@get("end_at"))
+    one = moment(@get("calStart")) < moment(e.get("calEnd"))
+    two = moment(e.get("calStart")) < moment(@get("calEnd"))
     one and two
 
   categoryIds: () ->
@@ -34,31 +34,66 @@ class Gandalf.Collections.Events extends Backbone.Collection
     Gandalf.dispatcher.bind("organizationShort:click", @adjustOrganization)
 
   findOverlaps: () ->
-    days = @sortAndGroup() 
+    days = @group() 
+    console.log "days", days
     overlaps = {}
     for day,evs of days
       if evs.length > 1
         for myE in evs
-          continue if @invisible(myE) 
+          continue if @invisible(myE) or myE.get("multiday")
           myId = myE.get("id")
           for targetE in evs
-            continue if @invisible (targetE)
+            continue if @invisible(targetE) or targetE.get("multiday")
             tarId = targetE.get("id")
             if myId < tarId and myE.overlap(targetE)
               overlaps[myId] ||= []
               overlaps[myId].push tarId
+    console.log "olap" ,overlaps
     overlaps
 
-  sortAndGroup: ()->
-    sortedEvents = _.sortBy(@models, (e) ->
-      time = moment(e.get("start_at")).sod()
-      return time
-    )
-    groupedEvents = _.groupBy(sortedEvents, (e) ->
+  group: ()->
+    # Events are already sorted (in backend)...
+    groupedEvents = _.groupBy(@models, (e) ->
       # Gandalf.eventKeyFormat was set when the app was initialized
-      return moment(e.get('start_at')).format(Gandalf.eventKeyFormat)
+      return moment(e.get("calStart")).format(Gandalf.eventKeyFormat)
     )
     groupedEvents
+
+  getMultidayEvents: () ->
+    events = _.filter(@models, (e) ->
+      e.get("multiday")
+    )
+    events 
+
+  # Don't save in this method -- these changes should only be client side
+  # If splitMultidayEvents is true, then 
+  splitMultiDay: (splitMultidayEvents) ->
+    for event in @models
+      start = event.get("start_at")
+      end = event.get("end_at")
+      diffDay = moment(end).diff(moment(start), 'days')
+      diffHour = moment(end).diff(moment(start), 'hours')
+      continue if diffDay is 0                        # Normal event
+      if diffHour >= 24 # At least one whole cycle
+        event.set({ multiday: true }) 
+        continue if not splitMultidayEvents
+
+      event.set({ calEnd: moment(start).eod().format() })
+      for i in [1..diffDay] # 1, 2, ... diffDay
+        newEvent = event.clone()
+        eventStart = moment(start).add('d', i).sod()
+        if i is diffDay # Last day of event
+          eventEnd = moment(end)
+        else
+          eventEnd = moment(eventStart).eod()
+        newEvent.set
+          calStart: eventStart.format()
+          calEnd: eventEnd.format()
+          id: event.get("id") + Math.random() # So it can be added to the collection
+          eventId: event.get("id")
+        @add(newEvent)
+
+    
 
   invisible: (e) ->
     orgHidden = @hiddenOrgs.indexOf(e.get("organization_id")) isnt -1

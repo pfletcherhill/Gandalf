@@ -92,9 +92,21 @@ e.save
 e = Event.new(
   :name => "TEDxYale Solve for y",
   :organization_id => o1.id,
-  :start_at => Time.now + 5.hour,
-  :end_at => Time.now + 1.day + 7.hour,
-  :location_id => l3.id,
+  :start_at => Time.now + 1.day + 10.hour,
+  :end_at => Time.now + 11.day + 11.hour,
+  :location_id => l1.id,
+  :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs",
+)
+e.categories << c2
+e.categories << c3
+e.save
+
+e = Event.new(
+  :name => "TEDxYale Not all day",
+  :organization_id => o1.id,
+  :start_at => Time.now + 1.day + 10.hour,
+  :end_at => Time.now + 2.day + 9.hour,
+  :location_id => l1.id,
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << c2
@@ -113,6 +125,7 @@ u1.subscribed_organizations << o2
 u1.subscribed_organizations << o3
 u2.subscribed_organizations << o1
 u2.subscribed_organizations << o2
+u2.subscribed_organizations << o3
 u3.subscribed_organizations << o1
 u3.subscribed_organizations << o2
 u1.subscribed_categories << c1

@@ -30,7 +30,12 @@ class Event < ActiveRecord::Base
       "organization" => organization.name,
       "organization_id" => organization.id,
       "color" => organization.color,
-      "categories" => categories
+      "categories" => categories,
+      # Data for rendering calendar (hence the camel case)
+      "calStart" => start_at,
+      "calEnd" => end_at,
+      "multiday" => false,
+      "eventId" => id
     }
   end
   

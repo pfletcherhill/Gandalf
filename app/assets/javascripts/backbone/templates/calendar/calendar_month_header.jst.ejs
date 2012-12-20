@@ -26,10 +26,8 @@
     <tr>
       <% formatString = "dddd"; %>
       <% for(i=0; i<7; i++) { %>
-        <td>
-          <div class="cal-day">
-            <%= moment(startDate).add('d', i).format(formatString) %>
-          </div>
+        <td class="cal-day">
+          <%= moment(startDate).add('d', i).format(formatString) %>
         </td>
       <% } %>
     </tr>
