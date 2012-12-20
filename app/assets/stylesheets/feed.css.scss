@@ -15,7 +15,7 @@
 }
 $feed_height: 90px;
 .feed-event {
-  padding: 5px 10px;
+  padding: 8px 5px;
   border-bottom: 1px solid #eee;
   min-height: $feed_height;
   font-size: 0;
@@ -24,7 +24,7 @@ $feed_height: 90px;
     //border-bottom: none;
   }
   .time {
-    width: 30%;
+    width: 25%;
     height: 100%;
     display: inline-block;
     vertical-align: middle;
@@ -33,8 +33,8 @@ $feed_height: 90px;
     color: #333;
   }
   .details {
-    width: 65%;
-    margin-left: 5%;
+    width: 68%;
+    margin-left: 3%;
     vertical-align: middle;
     height: 100%;
     display: inline-block;
@@ -50,9 +50,9 @@ $feed_height: 90px;
     font-weight: 200;
   }
   &:hover {
-    background-color: #f5f5f5;
+    background-color: white;
   }
-  // @include transition(height 0.2s);
+  @include transition(background-color 0.2s);
   &.event-hidden-org, &.event-hidden-cat {
     display: none;
   }
@@ -64,7 +64,7 @@ $feed_height: 90px;
   left: 0;
   width: $sidebar_width;
   overflow-y: hidden;
-  background-color: #f8f8f8;
+  background-color: rgba($blue, 0.8);
 }
 .sidebar-header {
   font-size: 120%;
