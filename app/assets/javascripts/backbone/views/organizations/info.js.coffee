@@ -1,14 +1,14 @@
 Gandalf.Views.Organizations ||= {}
 
-class Gandalf.Views.Organizations.Edit extends Backbone.View
+class Gandalf.Views.Organizations.Info extends Backbone.View
   
-  template: JST["backbone/templates/organizations/edit"]
+  template: JST["backbone/templates/organizations/info/index"]
   eventTemplate: JST["backbone/templates/organizations/event"]
   
   id: 'organization'
     
   initialize: =>
-    @render(@model)
+    @render()
     @model.fetchEvents().then @renderEvents
   
   renderUpload: =>
@@ -25,14 +25,6 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
       start: (e, data) =>
         @$("#open-image").html('Uploading...')
         @$(".image").html('').addClass 'loading'
-  
-  renderEvents: =>
-    for event in @model.get('events')
-      startTime = @convertTime event.start_at
-      @$("#organization-events-list").append( @eventTemplate( event: event, startTime: startTime ))
-  
-  convertTime: (time) ->
-    moment(time).format("h:mm a")
        
   render: ->
     $(@el).html(@template( @model.toJSON() ))
@@ -51,6 +43,7 @@ class Gandalf.Views.Organizations.Edit extends Backbone.View
     event.preventDefault()
     event.stopPropagation()
     @$("button").html('Updating...')
+    @model.unset 'events'
     @model.url = "/organizations/" + @model.id
     @model.save(@model,
       success: (organization) =>

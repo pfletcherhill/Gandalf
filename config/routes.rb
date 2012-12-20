@@ -17,6 +17,7 @@ Gandalf::Application.routes.draw do
   resources :organizations
   match '/organizations/:id/add_image' => 'organizations#add_image'
   match '/organizations/:id/events' => 'organizations#events'
+  match '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
   
   match '/categories' => 'categories#all'
 end

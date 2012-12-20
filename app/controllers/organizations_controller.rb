@@ -21,14 +21,10 @@ class OrganizationsController < ApplicationController
   
   def update
     @organization = Organization.find(params[:id])
-    respond_to do |format|
-      if @organization.update_attributes(params[:organization])
-        format.html
-        format.json { render json: @organization }
-      else
-        format.html
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
-      end
+    if @organization.update_attributes(params[:organization])
+      render json: @organization
+    else
+      render json: @organization.errors, status: :unprocessable_entity
     end
   end
   
@@ -43,6 +39,12 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     @events = @organization.events
     render json: @events.as_json
+  end
+  
+  def subscribed_users
+    @organization = Organization.find(params[:id])
+    @users = @organization.subscribers
+    render json: @users.as_json
   end
   
 end
