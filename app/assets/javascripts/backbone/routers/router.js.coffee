@@ -37,16 +37,17 @@ class Gandalf.Router extends Backbone.Router
     paramsString
         
   routes:
-    'browse/:type'              : 'browse'          
-    'browse*'                   : 'browse'
-    'calendar/:date/:period'    : 'calendar'
-    'calendar'                  : 'calendarRedirect'
-    'calendar/:date'            : 'calendarRedirect'
-    'organizations/:id'         : 'organizations'
-    'organizations*'            : 'organizations'
-    'preferences'               : 'preferences'
-    'about'                     : 'about'
-    '.*'                        : 'calendarRedirect'
+    'browse/:type'               : 'browse'          
+    'browse*'                    : 'browse'
+    'calendar/:date/:period'     : 'calendar'
+    'calendar'                   : 'calendarRedirect'
+    'calendar/:date'             : 'calendarRedirect'
+    'organizations/:id'          : 'organizations'
+    'organizations/:id/:type'    : 'organizations'
+    'organizations*'             : 'organizations'
+    'preferences'                : 'preferences'
+    'about'                      : 'about'
+    '.*'                         : 'calendarRedirect'
   
   calendar: (date, period) ->
     params = @processPeriod date, period
@@ -79,13 +80,14 @@ class Gandalf.Router extends Backbone.Router
       view = new Gandalf.Views.Events.Browse(results: results, type: type)
       $("#content").html(view.el)
   
-  organizations: (id) ->
+  organizations: (id, type) ->
     id = @organizations.first().id unless id
+    type = 'info' unless type  == 'events' || type == 'settings' || type == 'users'
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/" + id + "/edit"
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization)
+        view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization, type: type)
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"

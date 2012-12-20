@@ -3,6 +3,7 @@ Gandalf.Views.Organizations ||= {}
 class Gandalf.Views.Organizations.Index extends Backbone.View
   
   template: JST["backbone/templates/organizations/index"]
+  menuTemplate: JST["backbone/templates/organizations/menu"]
   
   el: '#content'
   
@@ -10,7 +11,7 @@ class Gandalf.Views.Organizations.Index extends Backbone.View
     @organizations = @options.organizations
     @organization = @options.organization
     @organization.on 'updated', @updateOrganizations
-    @render(@organization)
+    @render(@options.type)
   
   updateOrganizations: =>
     @organizations.url = "/users/#{Gandalf.currentUser.id}/organizations"
@@ -23,12 +24,21 @@ class Gandalf.Views.Organizations.Index extends Backbone.View
     for organization in @organizations.models
       @$(".left-list").append("<li><a data-id=#{organization.id} href='#organizations/#{organization.id}'>#{organization.get('name')}</a></li>")
   
-  renderOrganization: (organization) ->
-    view = new Gandalf.Views.Organizations.Edit(model: organization)
-    @$('.main').html(view.el)
+  renderOrganizationMenu: (type) ->
+    @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
+    @$('.main-menu a[data-type=' + type + ']').addClass 'selected'
           
-  render: (organization) =>
+  render: (type) =>
     $(@el).html(@template())
     @renderOrganizationsList()
-    @renderOrganization(organization)
+    @renderOrganizationMenu(type)
+    if type == 'info'
+      view = new Gandalf.Views.Organizations.Info(model: @organization)
+    else if type == 'events'
+      view = new Gandalf.Views.Organizations.Events(model: @organization)
+    else if type == 'users'
+      view = new Gandalf.Views.Organizations.Users(model: @organization)
+    else
+      view = new Gandalf.Views.Organizations.Settings(model: @organization)
+    @$('.organizations-main .main-content').html(view.el)
     return this

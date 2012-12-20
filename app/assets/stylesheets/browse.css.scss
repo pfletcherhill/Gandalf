@@ -4,7 +4,7 @@
   margin: 18px 15px;
   padding: 8px;
   width: 252px;
-  font-family: HN;
+  @include HN-Regular;
   
 }
 
@@ -13,7 +13,7 @@ li {
   a {
     display: block;
     padding: 15px;
-    font-family: HNBold;
+    @include HN-Bold;
     font-size: 15px;
     color: black;
     outline: none;
