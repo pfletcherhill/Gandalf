@@ -51,14 +51,14 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
       { model: @model, color: @lightColor })
 
   mouseenter: (id) ->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @model.get("eventId") isnt id
     if @continues or @continued
       @$el.css({ backgroundColor: @color })
     else
       @$el.css({ color: @color })
 
   mouseleave: (id) ->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @model.get("eventId") isnt id
     if @continues or @continued
       @$el.css({ backgroundColor: @lightColor })
     else
