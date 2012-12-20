@@ -52,12 +52,14 @@ class Gandalf.Collections.Events extends Backbone.Collection
     overlaps
 
   group: ()->
-    # Events are already sorted (in backend)...
-    groupedEvents = _.groupBy(@models, (e) ->
+    sorted = _.sortBy(@models, (e) ->
+      return e.get("calStart")
+    )
+    grouped = _.groupBy(sorted, (e) ->
       # Gandalf.eventKeyFormat was set when the app was initialized
       return moment(e.get("calStart")).format(Gandalf.eventKeyFormat)
     )
-    groupedEvents
+    grouped
 
   getMultidayEvents: () ->
     events = _.filter(@models, (e) ->
