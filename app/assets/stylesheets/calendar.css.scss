@@ -2,12 +2,12 @@
 
 .calendar {
   $width: $sidebar_width + $feed_width;
-  left: $width;
-  width: -moz-calc(100% - 440px);
-  width: -webkit-calc(100% - 440px);
-  width: -o-calc(100% - 440px);
-  width: calc(100% - 440px);
-  overflow-y: auto;
+  left: $width + 2; // For borders
+  width: -moz-calc(100% - 442px);
+  width: -webkit-calc(100% - 442px);
+  width: -o-calc(100% - 442px);
+  width: calc(100% - 442px);
+  overflow-y: hidden;
 }
 
 $week_hour_height: 44px;
@@ -32,13 +32,12 @@ $cal_top_pad: 10px;
   position: fixed;
   padding-top: $cal_top_pad;
   height: $cal_head_height;
-  z-index: 30;
-  //width: 100%;
-  width: -moz-calc(100% - 440px);
-  width: -webkit-calc(100% - 440px);
-  width: -o-calc(100% - 440px);
-  width: calc(100% - 440px);
-  min-width: $min-width - 440px;
+  z-index: 20;
+  width: -moz-calc(100% - 442px);
+  width: -webkit-calc(100% - 442px);
+  width: -o-calc(100% - 442px);
+  width: calc(100% - 442px);
+  min-width: $min-width - 442px;
   background-color: white;
   @include box-shadow(0 5px 5px -5px #444);
   .btn-toolbar {
@@ -47,14 +46,32 @@ $cal_top_pad: 10px;
 }
 
 .cal-header-days {
-  //position: absolute;
-  //bottom: 0;
   text-align: center;
   height: 20px;
   width: 100%;
   font-size: 8px;
   line-height: 20px;
   @include linear-gradient(#fff, #efefef);
+  .cal-day:last-child {
+    border-right: 1pt solid transparent;
+  }
+}
+
+.cal-multiday {
+  position: relative;
+  margin-left: $cal_gap;
+}
+
+.cal-multiday-event {
+  height: $week_hour_height / 2;
+  overflow: hidden;
+  cursor: pointer;
+  &:first-child {
+    margin-top: 2px;
+  }
+  &:last-child {
+    margin-bottom: 2px;
+  }
 }
 
 /* ===== CALENDAR BODY ===== */
@@ -63,6 +80,10 @@ $cal_top_pad: 10px;
   position: absolute;
   top: $cal_head_height + $cal_top_pad;
   width: 100%;
+  height: -moz-calc(100% - 70px);
+  height: -webkit-calc(100% - 70px);
+  height: -o-calc(100% - 70px);
+  height: calc(100% - 70px);
   overflow-y: scroll;
 }
 .cal-week td:first-child {
@@ -77,6 +98,7 @@ $cal_top_pad: 10px;
   height: 150px;
   border-bottom: 1pt solid #aaa;
   position: relative;
+  vertical-align: top;
 }
 
 .hour {
@@ -121,9 +143,9 @@ $cal_top_pad: 10px;
   position: relative;
 }
 .cal-month .cal-events {
-  position: absolute;
+  position: relative;
   top: 15px;
-  left: 0px;
+  left: 0;
   overflow-x: hidden;
 }
 $cal_z: 10;
@@ -163,24 +185,62 @@ $test-color: lighten(#0f91ec, 20%);
   }
 }
 
-.cal-event {
-  &.event-hidden-org, &.event-hidden-cat {
+.cal-week .cal-body {
+  .event-hidden-org, .event-hidden-cat {
     opacity: 0;
+  }
+}
+
+.cal-month  {
+  .event-hidden-org, .event-hidden-cat {
+    display: none;
+  }
+}
+
+.cal-multiday {
+  .event-hidden-org, .event-hidden-cat {
+    display: none;
   }
 }
 
 /* ======== POPOVER ========= */
 
-$event-popover-padding: 10px;
+$cal-popover-padding: 10px;
 
-.event-popover-head {
+$cal-popover-head-color: lightblue;
+$cal-popover-body-color: #eee;
+.cal-popover {
+  top: $cal_head_height + 30;
+  width: 300px;
+  z-index: 30;
+  position: absolute;
+  display: none;
+  background-color: rgba(#eee, 0.9);
+  @include box-shadow(0 0px 5px 0 #444);
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    line-height: 15px;
+    opacity: 0.4;
+  }
+}
+
+.cal-popover-inner {
+  height: 100%;
+  background-color: $cal-popover-body-color;
+}
+
+.cal-popover-head {
   font-size: 16px;
   line-height: 20px;
-  background-color: $popover-head-color;
-  padding: $event-popover-padding;
+  background-color: $cal-popover-head-color;
+  padding: $cal-popover-padding;
+  padding-right: $cal-popover-padding + 15;
 }
-.event-popover-body {
-  padding: $event-popover-padding;
+.cal-popover-body {
+  padding: $cal-popover-padding;
   tr {
     padding: 3px 0;
   }
@@ -190,14 +250,11 @@ $event-popover-padding: 10px;
     padding-bottom: 3px;
   }
 }
-.event-popover-description {
+.cal-popover-description {
   font-size: 10px;
   line-height: 16px;
 }
 
-.popover .close {
-  line-height: 15px;
-}
 #map-canvas {
   margin-top: 10px;
   height: 170px;

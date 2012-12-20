@@ -1,8 +1,8 @@
-<div class='event-popover-head' style='background-color: <%= color %>;'>
+<div class='cal-popover-head' style='background-color: <%= color %>;'>
   <strong><%= e.get("name") %></strong>
   <span class="close">×</span>
 </div>
-<div class="event-popover-body">
+<div class="cal-popover-body">
   <table>
     <tr>
       <td>Held by</td>
@@ -32,6 +32,6 @@
       <td><%= e.get("address") %></td>
     </tr>
   </table>
-  <p class="event-popover-description"><%= e.get("description") %></p>
+  <p class="cal-popover-description"><%= e.get("description") %></p>
   <div id="map-canvas"></div>
 </div>

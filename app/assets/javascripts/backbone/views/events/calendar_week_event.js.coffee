@@ -3,26 +3,21 @@ Gandalf.Views.Events ||= {}
 class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   initialize: ()->
-    _.bindAll(@)
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
-    @render()
-    @$el.popover(
-      placement: 'left'
-      html: true
-      trigger: 'click'
-      content: @popoverTemplate(e: @model, color: @lightColor)
-    )
+    @eventId = @model.get("eventId")
+    @dayNum = @options.dayNum 
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
     @css.zIndex = @$el.css("zIndex")
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave)
-    Gandalf.dispatcher.on("feedEvent:click", @feedClick)
+    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
+
+    @render()
 
   template: JST["backbone/templates/calendar/calendar_week_event"]
-  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
@@ -44,62 +39,48 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
   render: () ->
     e = @model
-    @top = @getPosition e.get("start_at")
-    @height = @getPosition(e.get("end_at")) - @top
-    style_string = "top: #{@top}px; height: #{@height}px;\
-background-color: #{@lightColor}; border: 1pt solid #{@color};"
-    $(@el).attr(
-      style: style_string
-      "data-event-id": e.get("id")
-      "data-organization-id" : e.get("organization_id")
-      "data-category-ids" : e.makeCatIdString()
-    ).html(@template( event: e ))
+    @top = @getPosition e.get("calStart")
+    @height = @getPosition(e.get("calEnd")) - @top
+    $(@el)
+      .css(
+        top: "#{@top}px"
+        height: "#{@height}px"
+        backgroundColor: @lightColor
+        border: "1pt solid #{@color}"
+      ).attr(
+        "data-event-id": e.get("id") # Should be unique per visual event
+        "data-organization-id" : e.get("organization_id")
+        "data-category-ids" : e.makeCatIdString()
+      ).html(@template( event: e ))
+    @$el.addClass("day-#{@dayNum}")
     return this
 
   onClick: () ->
-    @scroll()
-    @popover()
+    Gandalf.dispatcher.trigger("event:click", 
+      { model: @model, color: @lightColor })
+    # @scroll()
+    # @popover()
 
   scroll:() ->
-    tHeight = 400 # popover height
+    tHeight = 300 # popover height
+    maxHeight = 500
     padTop = 25   # space above popover when scrolling to
-    container = @$el.parents("#calendar-container")
-    if @height > tHeight
+    container = @$el.parents(".cal-body")
+    if @height > maxHeight
+      console.log @height - maxHeight
+      scrolltop = @top + (@height - maxHeight) - padTop
+    else if @height > tHeight
       scrolltop = @top - padTop
     else
       scrolltop = @top + (@height-tHeight) / 2 - padTop
-    $(container).animate scrollTop: scrolltop, 300
-
-  popover: () ->
-    id = @model.get("id")
-    # Hide all other popovers
-    otherPopovers = $("[rel='event-popover']:not([data-event-id='#{id}'])")
-    otherPopovers.popover('hide') if otherPopovers
-    # Add event handler to close button
-    t = this
-    $(".popover .close").click (e) ->
-      t.$el.popover('hide')
-    @makeGMap()
-
-  makeGMap: () ->
-    myPos = new google.maps.LatLng(@model.get("lat"), @model.get("lon"))
-    options = 
-      center: myPos
-      zoom: 15
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    map = new google.maps.Map(document.getElementById("map-canvas"), options)
-    marker = new google.maps.Marker(
-      position: myPos
-      map: map
-      title: "Here it is!"
-    )
+    $(container).animate scrollTop: (scrolltop), 300
 
   feedClick: (id) ->
-    if @model.get("id") is id
+    if @eventId is id
       @$el.click()
 
   mouseenter: (id) ->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @eventId isnt id
     # Store current CSS values
     @css.width = @$el.css("width")
     # @css.pLeft = @$el.css("paddingLeft")
@@ -114,7 +95,7 @@ background-color: #{@lightColor}; border: 1pt solid #{@color};"
       border: "1pt solid #333"
     )
   mouseleave: (id)->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @eventId isnt id
     @$el.css(
       width: @css.width
       # paddingLeft: @css.pLeft

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   
   def current_user
     if session[:cas_user]
-      @current_user = User.find_by_netid(session[:cas_user])
+      @current_user = User.includes(:organizations).find_by_netid(session[:cas_user])
       if not @current_user
         begin 
           @current_user = User.create_from_directory(session[:cas_user])

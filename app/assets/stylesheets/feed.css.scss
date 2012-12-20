@@ -17,7 +17,7 @@ $feed_height: 90px;
 .feed-event {
   padding: 5px 10px;
   border-bottom: 1px solid #eee;
-  height: $feed_height;
+  min-height: $feed_height;
   font-size: 0;
   cursor: pointer;
   &:last-child {
@@ -43,11 +43,13 @@ $feed_height: 90px;
     font-size: 15px;
     color: #333;
     line-height: 23px;
-    font-family: HNBold;
+    // font-family: HNBold;
+    font-weight: bold;
   }
   .location, .organization {
     font-size: 13px;
-    font-family: HNLight;
+    font-weight: 200;
+    // font-family: HNLight;
   }
   &:hover {
     background-color: #f5f5f5;
