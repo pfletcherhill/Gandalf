@@ -23,4 +23,14 @@ class Gandalf.Views.Organizations.Events extends Backbone.View
     $(@el).html(@template( @model.toJSON() ))
     $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
     return this
+  
+  events:
+    "click button#new-event" : "newEvent"
+    "click button#close-event" : "closeEvent"
+  
+  newEvent: ->
+    @$("#event-form").addClass 'open'
+  
+  closeEvent: ->
+    @$("#event-form").removeClass 'open'
     
