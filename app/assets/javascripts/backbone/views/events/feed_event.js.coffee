@@ -5,7 +5,7 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
   initialize: ->
     @eventId = @model.get("eventId")
     @color = "rgba(#{@model.get("color")},0.08)"
-    @darkColor = "rgba(#{@model.get("color")},0.1)"
+    @darkColor = "rgba(#{@model.get("color")},0.15)"
     @render()
 
   events: 
