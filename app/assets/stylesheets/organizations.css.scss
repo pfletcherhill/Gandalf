@@ -43,3 +43,12 @@ ul.main-menu {
     }
   }
 }
+
+#organization-events {
+  #event-form {
+    display: none;
+    &.open {
+      display: block;
+    }
+  }
+}
