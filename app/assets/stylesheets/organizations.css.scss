@@ -1,14 +1,22 @@
 /* ========== LAYOUT ========= */
 
 $full-width: 1000px;
-$left-width: 250px;
+$left-width: 240px;
 $main-width: 750px;
+$blue: #3399FF;
 
 .organizations {
   width: $full-width;
   margin: auto;
   position: relative;
   margin-top: 10px;
+  padding-bottom: 50px;
+}
+
+#organization {
+  border-right: 1px solid #dadada;
+  border-bottom: 1px solid #dadada;
+  padding: 15px;
 }
 
 .content-left {
@@ -16,18 +24,41 @@ $main-width: 750px;
   position: absolute;
   top: 0px;
   left: 0px;
+  margin-right: 10px;
+  border: 1px solid #DADADA;
+  border-bottom: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  .left-header {
+    padding: 10px 15px;
+    @include HN-Regular;
+    background: #FAFAFA;
+    color: $blue;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  ul.left-list {
+    li.selected a {
+      margin-right: -1px;
+      border-right: 5px solid $blue;
+    }
+    a:hover {
+      background: #fafafa;
+    }
+  }
 }
 
 .organizations-main {
   width: $main-width;
-  margin-left: $left-width;
+  margin-left: 250px;
+  border-left: 1px solid #dadada;
 }
 
 ul.main-menu {
   margin: 0px;
   padding: 0px;
   width: $main-width;
-  height: 60px;
+  height: 57px;
   border-bottom: 1px solid #dadada;
   li {
     border: 0px;
@@ -35,11 +66,22 @@ ul.main-menu {
   }
   a {
     display: block;
-    padding: 20px;
-    background: #eee;
+    padding: 18px 20px;
+    background: #fafafa;
+    border-right: 1px solid #dadada;
+    border-top: 1px solid #dadada;
+    color: #333;
+    @include transition(border 0);
+    @include transition(background 0.2s);
     &.selected {
       background: white;
       border-bottom: 1px solid white;
+      &:hover {
+        background: white;
+      }
+    }
+    &:hover {
+      background: #F1F1F1;
     }
   }
 }
@@ -50,5 +92,22 @@ ul.main-menu {
     &.open {
       display: block;
     }
+  }
+}
+table {
+  width: $main-width;
+}
+tr.organization-event {
+  border-bottom: 1px solid #dadada;
+  td {
+    padding: 10px 0px;
+  }
+  .image {
+    width: 80px;
+    height: 100px;
+    border: 3px solid #dadada;
+  }
+  .description {
+    width: 300px;
   }
 }
