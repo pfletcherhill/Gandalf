@@ -40,5 +40,5 @@ class Gandalf.Views.Organizations.Index extends Backbone.View
       view = new Gandalf.Views.Organizations.Users(model: @organization)
     else
       view = new Gandalf.Views.Organizations.Settings(model: @organization)
-    @$('.organizations-main .main-content').html(view.el)
+    @$('.content-main .main-content').html(view.el)
     return this

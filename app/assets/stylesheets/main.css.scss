@@ -26,6 +26,7 @@ $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 12px;
 $min_width: 1000px;
+$width: 1000px;
 
 /* =============  GLOBAL STYLES =========== */
 
@@ -73,10 +74,9 @@ button {
 
 /* ================== HEADER =============== */
 
-// IF YOU CHANGE HEADER HEIGHT, CHANGE CORRESPONDING NUMBER
-// IN #content HEIGHT!!
 $header_height: 50px;
 $side_padding: 15px;
+
 .header {
   height: $header_height;
   background: white;
@@ -86,28 +86,34 @@ $side_padding: 15px;
   left: 0px;
   width: 100%;
   z-index: 100;
+  border-top: 3px solid $blue;
 }
 .header-container {
-  width: 100%;
+  width: $width;
   min-width: $min_width;
+  margin: auto;
 }
 
 .link {
   a {
     display: block;
     line-height: $header_height;
-    color: #777;
-    @include transition(color 0.2s);
+    color: #333;
+    font-size: 13px;
+    @include HN-Bold;
+    @include transition(color 0.1s);
   }
 }
 
 #logo {
+  border-left: 1px solid #dadada;
   a {
     color: $blue;
     font-weight: 200;
     font-size: 20px;
     line-height: $header_height;
     text-decoration: none;
+    @include transition(0.1s);
   }
 }
 
@@ -115,12 +121,13 @@ $side_padding: 15px;
   float: left;
   padding: 0px $side_padding;
   border-right: 1px solid #dadada;
-  @include transition(0.1s);
+  @include transition(background 0.1s);
   &:hover {
     a {
       text-decoration: none;
+      color: $blue;
     }
-    @include linear-gradient(#F5F5F5, #fff);
+    background: #fafafa;
   }
 }
 
@@ -159,6 +166,7 @@ $feed_width: 250px;
 /* ============= ALL OTHER LAYOUT ============= */
 
 $left_width: 300px;
+
 .content-left, .main {
   position: absolute;
   top: 0;
@@ -167,6 +175,12 @@ $left_width: 300px;
 .content-left {
   left: 0;
   width: $left_width;
+}
+
+.content-header {
+  width: $width;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .left-list {

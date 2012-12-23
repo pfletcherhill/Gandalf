@@ -21,4 +21,11 @@ Gandalf::Application.routes.draw do
   match '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
   
   match '/categories' => 'categories#all'
+  
+  #Search
+  match '/search/organizations/:query' => 'organizations#search'
+  match '/search/events/:query' => 'events#search'
+  match '/search/categories/:query' => 'categories#search'
+  match '/search/all/:query' => 'main#search_all'
+  
 end

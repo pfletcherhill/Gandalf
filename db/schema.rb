@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208223027) do
+ActiveRecord::Schema.define(:version => 20121223131504) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(:version => 20121208223027) do
     t.string   "color",      :default => "220,220,220"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+  end
+
+  create_table "pg_search_documents", :force => true do |t|
+    t.text     "content"
+    t.integer  "searchable_id"
+    t.string   "searchable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "subscriptions", :force => true do |t|
