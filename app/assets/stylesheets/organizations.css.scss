@@ -5,22 +5,26 @@ $left-width: 240px;
 $main-width: 750px;
 $blue: #3399FF;
 
-.organizations {
+#content {
+  background: #fafafa;
+}
+
+.content-container {
   width: $full-width;
   margin: auto;
   position: relative;
-  margin-top: 10px;
+  margin-top: 20px;
   padding-bottom: 50px;
 }
 
 #organization {
   border-right: 1px solid #dadada;
   border-bottom: 1px solid #dadada;
-  padding: 15px;
 }
 
 .content-left {
   width: $left-width;
+  background: white;
   position: absolute;
   top: 0px;
   left: 0px;
@@ -48,10 +52,9 @@ $blue: #3399FF;
   }
 }
 
-.organizations-main {
+.content-main {
   width: $main-width;
   margin-left: 250px;
-  border-left: 1px solid #dadada;
 }
 
 ul.main-menu {
@@ -60,6 +63,7 @@ ul.main-menu {
   width: $main-width;
   height: 57px;
   border-bottom: 1px solid #dadada;
+  border-left: 1px solid #dadada;
   li {
     border: 0px;
     float: left;    
@@ -86,6 +90,11 @@ ul.main-menu {
   }
 }
 
+.main-content {
+  background: white;
+  border-left: 1px solid #dadada;
+}
+
 #organization-events {
   #event-form {
     display: none;
@@ -94,9 +103,15 @@ ul.main-menu {
     }
   }
 }
+
+#organization-form {
+  padding: 15px;
+}
+
 table {
   width: $main-width;
 }
+
 tr.organization-event {
   border-bottom: 1px solid #dadada;
   td {

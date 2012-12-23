@@ -33,5 +33,11 @@ class EventsController < ApplicationController
       render json: @event.errors, status: :unprocessable_entity
     end
   end
+  
+  def search
+    query = params[:query]
+    events = Event.fulltext_search(query)
+    render json: events.as_json
+  end
 
 end

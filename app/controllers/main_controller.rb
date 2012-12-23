@@ -12,4 +12,8 @@ class MainController < ApplicationController
   def logout
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
+  
+  def search_all
+  end
+  
 end

@@ -119,6 +119,9 @@ GEM
     nokogiri (1.5.5)
     ntlm-http (0.1.1)
     pg (0.14.1)
+    pg_search (0.5.7)
+      activerecord (>= 3)
+      activesupport (>= 3)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -233,6 +236,7 @@ DEPENDENCIES
   net-ldap
   nokogiri
   pg
+  pg_search
   rails (= 3.2.2)
   rails-backbone
   rake (= 10.0.2)

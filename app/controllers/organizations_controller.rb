@@ -47,4 +47,10 @@ class OrganizationsController < ApplicationController
     render json: @users.as_json
   end
   
+  def search
+    query = params[:query]
+    organizations = Organization.fulltext_search(query)
+    render json: organizations
+  end
+  
 end
