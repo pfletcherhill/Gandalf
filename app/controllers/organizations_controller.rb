@@ -2,7 +2,7 @@ class OrganizationsController < ApplicationController
   
   def index
     @organizations = Organization.all
-    render json: @organizations
+    render json: @organizations.to_json(:include => [:categories])
   end
   
   def show
@@ -50,7 +50,7 @@ class OrganizationsController < ApplicationController
   def search
     query = params[:query]
     organizations = Organization.fulltext_search(query)
-    render json: organizations
+    render json: organizations.to_json(:include => [:categories])
   end
   
 end
