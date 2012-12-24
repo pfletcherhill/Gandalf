@@ -1,0 +1,17 @@
+<div class="org-cal-body">
+  <div class="org-cal-multiday"></div>
+  <table class="cal-body-table">
+    <tr class="cal-day-container">
+      <td class="cal_day_hours">
+        <div class="hour hour-label"><span class="hour-num">12 a.m. </span></div>
+        <% for(i=1; i<6; i++) { %>
+          <div class="hour hour-label"><span class="hour-num"><%= 2*i %> a.m. </span></div>
+        <% } %>
+        <div class="hour hour-label"><span class="hour-num">12 p.m. </span></div>
+        <% for(i=1; i<6; i++) { %>
+          <div class="hour hour-label"><span class="hour-num"><%= 2*i %> p.m. </span></div>
+        <% } %>
+      </td>
+    </tr>
+  </table>
+</div>

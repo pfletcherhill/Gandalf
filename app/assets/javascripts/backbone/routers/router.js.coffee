@@ -37,17 +37,19 @@ class Gandalf.Router extends Backbone.Router
     paramsString
         
   routes:
-    'browse/:type'               : 'browse'          
-    'browse*'                    : 'browse'
-    'calendar/:date/:period'     : 'calendar'
-    'calendar'                   : 'calendarRedirect'
-    'calendar/:date'             : 'calendarRedirect'
-    'organizations/:id'          : 'organizations'
-    'organizations/:id/:type'    : 'organizations'
-    'organizations*'             : 'organizations'
-    'preferences'                : 'preferences'
-    'about'                      : 'about'
-    '.*'                         : 'calendarRedirect'
+    'browse/:type'                    : 'browse'          
+    'browse*'                         : 'browse'
+    'calendar/:date/:period'          : 'calendar'
+    'calendar'                        : 'calendarRedirect'
+    'calendar/:date'                  : 'calendarRedirect'
+    'organizations/edit/:id'          : 'organizationsEdit'
+    'organizations/edit/:id/:type'    : 'organizationsEdit'
+    'organizations/edit*'             : 'organizationsEdit'
+    'organizations/:id'               : 'organizations'
+    'organizations*'                  : 'organizations'
+    'preferences'                     : 'preferences'
+    'about'                           : 'about'
+    '.*'                              : 'calendarRedirect'
   
   calendar: (date, period) ->
     params = @processPeriod date, period
@@ -80,7 +82,7 @@ class Gandalf.Router extends Backbone.Router
       view = new Gandalf.Views.Events.Browse(results: results, type: type)
       $("#content").html(view.el)
   
-  organizations: (id, type) ->
+  organizationsEdit: (id, type) ->
     id = @organizations.first().id unless id
     type = 'info' unless type  == 'events' || type == 'settings' || type == 'users'
     @organization = new Gandalf.Models.Organization
@@ -91,7 +93,14 @@ class Gandalf.Router extends Backbone.Router
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"
-    
+  
+  organizations: (id) ->
+    @organization = new Gandalf.Models.Organization
+    @organization.url = "/organizations/" + id
+    @organization.fetch
+      success: (organization) =>
+        view = new Gandalf.Views.Organizations.Show( model: organization )
+     
   preferences: ->
     view = new Gandalf.Views.Users.Preferences
     $("#content").html(view.render().el)
