@@ -1,6 +1,6 @@
 <div class="cover"></div>
 <div class="content">
-  <div class="organization"><span class="organization-logo"></span><%= result.get('organization') %></div>
+  <div class="organization"><a href="#organizations/<%= result.get('organization_id') %>"><span class="organization-logo"></span><%= result.get('organization') %></a></div>
   <div class="name"><%= result.get('name') %></div>
   <div class="location"><%= result.get('location') %></div>
   <div class="time"><%= startAt %></div>

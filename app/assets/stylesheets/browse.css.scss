@@ -83,6 +83,9 @@ li {
       border-bottom: 1px solid #dadada;
       padding-bottom: 8px;
       margin-bottom: 5px;
+      a {
+        color: #333;
+      }
     }
     .location {
       @include HN-Bold;
