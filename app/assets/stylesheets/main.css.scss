@@ -134,7 +134,9 @@ $side_padding: 15px;
 #menu {
   float: right;
   line-height: $header_height;
-  padding-right: $side_padding;
+  padding: 0px $side_padding;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
 }
 
 /* ========== CALENDAR / FEED LAYOUT ========= */

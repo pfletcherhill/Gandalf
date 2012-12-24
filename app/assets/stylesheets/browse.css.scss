@@ -34,12 +34,19 @@ li {
   padding-left: 10px;
   .browse-result {
     display: inline-block;
-    width: 365px;
+    width: 360px;
     border: 1px solid #eee;
     margin-bottom: 15px;
     vertical-align: top;
     &:nth-child(odd) {
-      margin-right: 15px;
+      margin-right: 16px;
+    }
+    &.organization {
+      width: 234px;
+      margin-right: 16px;
+      &:nth-child(3n+3) {
+        margin-right: 0px;
+      }
     }
     .cover {
       width: 100%;
@@ -84,6 +91,9 @@ li {
       margin-top: 5px;
       padding-top: 5px;
       border-top: 1px solid #dadada;
+    }
+    ul#categories {
+      list-style: none;
     }
   }
 }

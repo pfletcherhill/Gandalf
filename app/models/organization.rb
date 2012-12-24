@@ -19,5 +19,12 @@ class Organization < ActiveRecord::Base
                   
   #Image Uploader
   mount_uploader :image, ImageUploader
+  
+  #Categories, sorted by most frequent
+  def categories
+    events = self.events
+    categories = events.map{|event| event.categories}.flatten
+    categories.uniq.sort_by{ |c| categories.grep(c).size }.reverse
+  end
 
 end
