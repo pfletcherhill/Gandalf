@@ -11,3 +11,10 @@
   font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: normal;
 }
+
+@mixin calc($attribute, $x, $y) {
+  #{$attribute}: -moz-calc(#{$x} - #{$y});
+  #{$attribute}: -webkit-calc(#{$x} - #{$y});
+  #{$attribute}: -o-calc(#{$x} - #{$y});
+  #{$attribute}: calc(#{$x} - #{$y});
+}
