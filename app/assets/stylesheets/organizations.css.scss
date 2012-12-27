@@ -208,3 +208,17 @@ $bg-color: #ddd;
     right: 0px;
   }
 }
+
+button.follow {
+  width: 100px;
+  &.following {
+    @include linear-gradient($blue, #4B80FC);
+    color: white;
+    border: 1px solid blue;
+  }
+  &.unfollow {
+    background: #e60000;
+    color: white;
+    border: 1px solid #cc0000;
+  }
+}

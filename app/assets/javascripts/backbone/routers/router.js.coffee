@@ -95,11 +95,14 @@ class Gandalf.Router extends Backbone.Router
         window.location = "#organizations"
   
   organizations: (id) ->
+    params = @processPeriod 'today', 'week'
+    @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/" + id
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Organizations.Show( model: organization )
+        console.log @string
+        view = new Gandalf.Views.Organizations.Show( model: organization, string: @string )
      
   preferences: ->
     view = new Gandalf.Views.Users.Preferences

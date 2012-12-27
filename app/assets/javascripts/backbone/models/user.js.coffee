@@ -16,7 +16,9 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: '/users/' + @id + '/subscribed_organizations'
       success: (data) =>
-        @set subscribed_organizations: data
+        organizations = new Gandalf.Collections.Organizations
+        organizations.add data
+        @set subscribed_organizations: organizations
   
   fetchSubscribedCategories: ->
     $.ajax
@@ -25,6 +27,31 @@ class Gandalf.Models.User extends Backbone.Model
       url: '/users/' + @id + '/subscribed_categories'
       success: (data) =>
         @set subscribed_categories: data
+  
+  isFollowing: (organization) ->
+    subscribed = []
+    for org in this.get('subscribed_organizations').models
+      subscribed.push(org.id)
+    if _.contains(subscribed, organization.id)
+      true
+    else
+      false
+  
+  follow: (organization) ->
+    $.ajax
+      type: 'POST'
+      dataType: 'json'
+      url: '/users/' + @id + '/follow/organization/' + organization.id
+      success: (data) =>
+        this.get('subscribed_organizations').add data
+  
+  unfollow: (organization) ->
+    $.ajax
+      type: 'POST'
+      dataType: 'json'
+      url: '/users/' + @id + '/unfollow/organization/' + organization.id
+      success: (data) =>
+        this.get('subscribed_organizations').remove data
 
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User

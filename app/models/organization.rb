@@ -20,6 +20,22 @@ class Organization < ActiveRecord::Base
   #Image Uploader
   mount_uploader :image, ImageUploader
   
+  #Events, can have start and end
+  def events_with_period(*times)
+    start_at = times[0]
+    end_at = times[1]
+    if start_at && end_at
+      start_at = Date.strptime(start_at, '%m-%d-%Y')
+      end_at = Date.strptime(end_at, '%m-%d-%Y')
+      query = "start_at BETWEEN :start AND :end OR end_at BETWEEN :start AND :end"
+      @events = self.events.where(query,
+        { :start => start_at, :end => end_at })
+    else
+      @events = self.events
+    end
+    @events
+  end
+  
   #Categories, sorted by most frequent
   def categories
     events = self.events

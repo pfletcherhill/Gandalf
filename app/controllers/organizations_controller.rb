@@ -37,7 +37,11 @@ class OrganizationsController < ApplicationController
   
   def events
     @organization = Organization.find(params[:id])
-    @events = @organization.events
+    if params[:start_at] && params[:end_at]
+      @events = @organization.events_with_period(params[:start_at], params[:end_at])
+    else
+      @events = @organization.events
+    end
     render json: @events.as_json
   end
   
