@@ -11,6 +11,8 @@ Gandalf::Application.routes.draw do
   match '/users/:id/organizations' => 'users#organizations'
   match '/users/:id/subscribed_organizations' => 'users#subscribed_organizations'
   match '/users/:id/subscribed_categories' => 'users#subscribed_categories'
+  match '/users/:id/follow/organization/:organization_id' => 'users#follow_organization'
+  match '/users/:id/unfollow/organization/:organization_id' => 'users#unfollow_organization'
   
   match '/events' => 'events#all'
   match '/events/create' => 'events#create'
