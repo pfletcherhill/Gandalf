@@ -87,7 +87,6 @@ $side_padding: 15px;
 }
 
 #logo {
-  border-left: 1px solid #dadada;
   a {
     display: block;
     background-image: url('/assets/y_logo_200.png');
@@ -103,7 +102,6 @@ $side_padding: 15px;
 
 .link, #logo {
   float: left;
-  border-right: 1px solid #dadada;
   @include transition(background 0.1s);
   &:hover {
     a {
