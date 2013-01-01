@@ -21,7 +21,7 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
       else
         console.log 'not following'
         $("button.follow").text "Follow"
-        $("button.follow").attr 'class','follow'
+        $("button.follow").attr 'class','following'
     else
       Gandalf.currentUser.fetchSubscribedOrganizations().then @renderFollowing
     
