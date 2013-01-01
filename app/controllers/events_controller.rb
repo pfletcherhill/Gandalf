@@ -19,5 +19,25 @@ class EventsController < ApplicationController
     events = Event.all
     render json: events.as_json
   end
+  
+  def create
+    name = params[:event][:location]
+    location = Location.where(:name => name).first
+    location = Location.create(:name => name, :gmaps => true) unless location
+    params[:event][:location] = nil
+    @event = Event.new(params[:event])
+    @event.location = location
+    if @event.save
+      render json: @event.as_json
+    else
+      render json: @event.errors, status: :unprocessable_entity
+    end
+  end
+  
+  def search
+    query = params[:query]
+    events = Event.fulltext_search(query)
+    render json: events.as_json
+  end
 
 end

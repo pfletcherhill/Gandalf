@@ -3,6 +3,10 @@ class Gandalf.Models.Event extends Backbone.Model
 
   defaults:
     name: null
+    start_at: null
+    end_at: null
+    organization_id: null
+    description: null
 
   # Find if two events overlap
   overlap: (e) ->

@@ -1,4 +1,4 @@
-<tr class='organization-event'>
+<tr class='organization-event' data-id=<%= event.id %>>
   <td>
     <div class="image loading"></div>
   </td>
@@ -8,6 +8,11 @@
     <div class="location"><%= event.location %></div>
   </td>
   <td>
+    <div class="description"><%= event.description %></div>
+  <td>
     <button>Edit</button>
+  </td>
+  <td>
+    <button>Delete</button>
   </td>
 </tr>
