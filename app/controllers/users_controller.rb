@@ -40,4 +40,18 @@ class UsersController < ApplicationController
     render json: categories
   end
   
+  def follow_organization
+    user = User.find(params[:id])
+    organization = Organization.find(params[:organization_id])
+    user.subscribed_organizations << organization
+    render json: organization
+  end
+  
+  def unfollow_organization
+    organization = Organization.find(params[:organization_id])
+    subscription = Subscription.where(:subscribeable_type => "Organization", :subscribeable_id => organization.id, :user_id => params[:id]).first
+    subscription.destroy
+    render json: organization
+  end
+  
 end

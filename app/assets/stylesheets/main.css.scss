@@ -1,38 +1,15 @@
-@font-face {
-  font-family: "MyMyriad";
-  font-style: normal;
-  font-weight: 200;
-  src: local("MyMyriad"), 
-    url(/assets/MyriadPro-LightSemiExt.otf) format("opentype");
-}
-
-@font-face {
-  font-family: "MyMyriad";
-  font-style: normal;
-  font-weight: 400;
-  src: local("MyMyriad"), 
-    url(/assets/MyriadPro-Regular.otf) format("opentype");
-}
-
-@font-face {
-  font-family: "MyMyriad";
-  font-style: normal;
-  font-weight: 700;
-  src: local("MyMyriad"), 
-    url(/assets/MyriadPro-Semibold.otf) format("opentype");
-}
-
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
-$font: 13px;
+$font: 12px;
 $min_width: 1000px;
+$width: 1000px;
 
 /* =============  GLOBAL STYLES =========== */
 
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "MyMyriad", "HelveticaNeue", helvetica;
+  @include HN-Regular;
   font-size: $font;
 }
 
@@ -50,6 +27,10 @@ input {
 
 td {
   padding: 0;
+}
+
+h3 {
+  border-bottom: 2px solid #dadada;
 }
 
 button {
@@ -73,10 +54,9 @@ button {
 
 /* ================== HEADER =============== */
 
-// IF YOU CHANGE HEADER HEIGHT, CHANGE CORRESPONDING NUMBER
-// IN #content HEIGHT!!
 $header_height: 50px;
 $side_padding: 15px;
+
 .header {
   height: $header_height;
   background: white;
@@ -86,49 +66,60 @@ $side_padding: 15px;
   left: 0px;
   width: 100%;
   z-index: 100;
+  border-top: 3px solid $blue;
 }
 .header-container {
-  width: 100%;
+  width: $width;
   min-width: $min_width;
+  margin: auto;
 }
 
 .link {
   a {
     display: block;
     line-height: $header_height;
-    color: #777;
-    @include transition(color 0.2s);
+    color: #333;
+    font-size: 13px;
+    @include HN-Bold;
+    @include transition(color 0.1s);
+    padding: 0px $side_padding;
   }
 }
 
 #logo {
+  border-left: 1px solid #dadada;
   a {
-    color: $blue;
-    // font-family: HNLight;
-    font-weight: 200;
-    font-size: 20px;
-    line-height: $header_height;
-    text-decoration: none;
+    display: block;
+    background-image: url('/assets/y_logo_200.png');
+    background-position: center;
+    height: 50px;
+    width: 50px;
+    background-repeat: no-repeat;
+    background-size: 35px;
+    @include transition(0.1s);
+    padding: 0px 5px;
   }
 }
 
 .link, #logo {
   float: left;
-  padding: 0px $side_padding;
   border-right: 1px solid #dadada;
-  @include transition(0.1s);
+  @include transition(background 0.1s);
   &:hover {
     a {
       text-decoration: none;
+      color: $blue;
     }
-    @include linear-gradient(#F5F5F5, #fff);
+    background: #fafafa;
   }
 }
 
 #menu {
   float: right;
   line-height: $header_height;
-  padding-right: $side_padding;
+  padding: 0px $side_padding;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
 }
 
 /* ========== CALENDAR / FEED LAYOUT ========= */
@@ -139,7 +130,7 @@ $side_padding: 15px;
   width: 100%;
   min-width: $min_width;
   min-height: 500px;
-  top: $header_height;
+  top: 53px;
   height: -webkit-calc(100% - 50px);
   height: -o-calc(100% - 50px);
   height: -moz-calc(100% - 50px);
@@ -160,15 +151,21 @@ $feed_width: 250px;
 /* ============= ALL OTHER LAYOUT ============= */
 
 $left_width: 300px;
+
 .content-left, .main {
   position: absolute;
   top: 0;
-  height: 100%; 
+  //height: 100%; 
 }
 .content-left {
   left: 0;
   width: $left_width;
-  border-right: 1px solid #ccc;
+}
+
+.content-header {
+  width: $width;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .left-list {

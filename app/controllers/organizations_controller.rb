@@ -2,12 +2,12 @@ class OrganizationsController < ApplicationController
   
   def index
     @organizations = Organization.all
-    render json: @organizations
+    render json: @organizations.to_json(:include => [:categories])
   end
   
   def show
     @organization = Organization.find(params[:id])
-    render json: @organization
+    render json: @organization.to_json(:include => [:categories])
   end
   
   def edit
@@ -21,14 +21,10 @@ class OrganizationsController < ApplicationController
   
   def update
     @organization = Organization.find(params[:id])
-    respond_to do |format|
-      if @organization.update_attributes(params[:organization])
-        format.html
-        format.json { render json: @organization }
-      else
-        format.html
-        format.json { render json: @organization.errors, status: :unprocessable_entity }
-      end
+    if @organization.update_attributes(params[:organization])
+      render json: @organization
+    else
+      render json: @organization.errors, status: :unprocessable_entity
     end
   end
   
@@ -41,8 +37,24 @@ class OrganizationsController < ApplicationController
   
   def events
     @organization = Organization.find(params[:id])
-    @events = @organization.events
+    if params[:start_at] && params[:end_at]
+      @events = @organization.events_with_period(params[:start_at], params[:end_at])
+    else
+      @events = @organization.events
+    end
     render json: @events.as_json
+  end
+  
+  def subscribed_users
+    @organization = Organization.find(params[:id])
+    @users = @organization.subscribers
+    render json: @users.as_json
+  end
+  
+  def search
+    query = params[:query]
+    organizations = Organization.fulltext_search(query)
+    render json: organizations.to_json(:include => [:categories])
   end
   
 end

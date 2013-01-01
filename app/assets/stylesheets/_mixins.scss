@@ -1,0 +1,20 @@
+//Fonts Mixins
+@mixin HN-Light {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: lighter;
+}
+@mixin HN-Bold {
+  font-family: "HelveticaNeue-Bold", "Helvetica Neue Bold", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: bold;
+}
+@mixin HN-Regular {
+  font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: normal;
+}
+
+@mixin calc($attribute, $x, $y) {
+  #{$attribute}: -moz-calc(#{$x} - #{$y});
+  #{$attribute}: -webkit-calc(#{$x} - #{$y});
+  #{$attribute}: -o-calc(#{$x} - #{$y});
+  #{$attribute}: calc(#{$x} - #{$y});
+}
