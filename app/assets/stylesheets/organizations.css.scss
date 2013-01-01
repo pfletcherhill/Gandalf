@@ -1,150 +1,224 @@
 /* ========== LAYOUT ========= */
 
-$organization-width: 380px;
+$full-width: 1000px;
+$left-width: 240px;
+$main-width: 750px;
+$blue: #3399FF;
 
-.left-header {
-  padding: 15px;
-  // font-family: HN;
-  
+#content {
+  background: #fafafa;
 }
 
-li {
-  border-bottom: 1px solid #dadada;
-  width: 100%;
-  a {
-    display: block;
-    padding: 15px;
-    // font-family: HNBold;
-    font-weight: bold;
-    font-size: 15px;
-    color: black;
-    outline: none;
-    @include transition(0.2s);
-    &:hover {
-      text-decoration: none;
-      @include linear-gradient(#efefef, #fafafa);
-    }
-    &.active {
-      @include linear-gradient(#efefef, #efefef);
-    }
-  }
-  &.selected {
-    border-right: 1px solid white;
-    a:hover {
-      background: white;
-    }
-    a:active {
-      background: white;
-    }
-  }
+.content-container {
+  width: $full-width;
+  margin: auto;
+  position: relative;
+  margin-top: 20px;
+  padding-bottom: 50px;
 }
 
 #organization {
-  padding: 20px 30px;
-  position: relative;
+  border-right: 1px solid #dadada;
+  border-bottom: 1px solid #dadada;
 }
 
-#organization-form {
-  #new-image {
-    width: 0px;
-    height: 0px;
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
+.content-left {
+  width: $left-width;
+  background: white;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  margin-right: 10px;
+  border: 1px solid #DADADA;
+  border-bottom: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  .left-header {
+    padding: 10px 15px;
+    @include HN-Regular;
+    background: #FAFAFA;
+    color: $blue;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
   }
-  #open-image {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 5px;
-    width: 120px;
-    border: 1px solid #777;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    @include linear-gradient(#fafafa, #eee);
-    cursor: pointer;
-    &:hover {
-      @include linear-gradient(#fafafa, #fafafa);
+  ul.left-list {
+    li.selected a {
+      margin-right: -1px;
+      border-right: 5px solid $blue;
+    }
+    a:hover {
+      background: #fafafa;
     }
   }
-  .image {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    margin-right: 10px;
-    border: 1px solid #dadada;
+}
+
+.content-main {
+  width: $main-width;
+  margin-left: 250px;
+}
+
+ul.main-menu {
+  margin: 0px;
+  padding: 0px;
+  width: $main-width;
+  height: 57px;
+  border-bottom: 1px solid #dadada;
+  border-left: 1px solid #dadada;
+  li {
+    border: 0px;
+    float: left;    
+  }
+  a {
+    display: block;
+    padding: 18px 20px;
+    background: #fafafa;
+    border-right: 1px solid #dadada;
+    border-top: 1px solid #dadada;
+    color: #333;
+    @include transition(border 0);
+    @include transition(background 0.2s);
+    &.selected {
+      background: white;
+      border-bottom: 1px solid white;
+      &:hover {
+        background: white;
+      }
+    }
+    &:hover {
+      background: #F1F1F1;
+    }
   }
 }
 
-.image.loading {
-  background: url('/assets/ajax-loader.gif');
-  background-repeat: no-repeat;
-  background-position: center;
+.main-content {
+  background: white;
+  border-left: 1px solid #dadada;
 }
 
 #organization-events {
-  position: absolute;
-  left: $organization-width;
-  top: 20px;
-  padding-left: 30px;
-  border-left: 1px solid #dadada;
-  table {
-    width: 400px;
+  #event-form {
+    display: none;
+    &.open {
+      display: block;
+    }
   }
 }
 
-.organization-event {
+#organization-form {
+  padding: 15px;
+}
+
+table#organization-events-list {
+  width: $main-width;
+}
+
+tr.organization-event {
   border-bottom: 1px solid #dadada;
   td {
     padding: 10px 0px;
-    .image {
-      width: 50px;
-      min-height: 50px;
-      border: 1px solid #dadada;
-    }
   }
-}
-
-#new-event-form {
-  @include transition(0.5s);
-}
-
-form {
-  label {
-    // font-family: HNLight;
-    font-weight: 200;
+  .image {
+    width: 80px;
+    height: 100px;
+    border: 3px solid #dadada;
   }
-  input, textarea {
-    border: 1px solid #dadada;
+  .description {
     width: 300px;
-    padding: 10px;
-    margin-bottom: 20px;
   }
-  input {
-    font-size: 15px;
+}
+
+//Show
+
+$cal-header-height: 200px;
+$bg-color: #ddd;
+
+.content-calendar {
+  width: 100%;
+  height: 400px;
+  background: $bg-color;
+  table {
+    width: 100%;
   }
-  textarea {
-    border-radius: 0px;
-    outline: none;
-    resize: none;
+  td {
+    border-right: 1px solid white;
+    &:last {
+      border-right: none;
+    }
   }
-  button[type="submit"] {
-    @include linear-gradient(#4BA6FF, #1B82E6);
-    width: 322px;
-    padding: 0px;
-    border: 1px solid #1565B2;
-    line-height: 40px;
-    border-radius: 5px;
+}
+
+.org-cal-header {
+  height: $cal-header-height;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: $blue;
+  .org-cal-header-days-week {
+    @include calc(width,100%,50px);
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    background: $bg-color;
+    table {
+      width: 100%;
+      table-layout:fixed; 
+    }
+    td.org-cal-day-week {
+      text-align: center;
+      height: $cal-header-height;
+      vertical-align: middle;
+      @include HN-Light;
+      color: #aaa;
+      font-size: 15px;
+      .org-cal-day-week-num {
+        color: #bbb;
+        font-size: 90px;
+        @include HN-Bold;
+        line-height: 90px;
+      }
+    }
+  }
+}
+
+.org-cal-body {
+  height: 400px;
+  width: 100%;
+  overflow: scroll;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  td.org-cal-day-hours {
+    padding-top: 30px;
+    width: 50px;
+    background: $blue;
+    border-right: none;
+    span {
+      color: white;
+    }
+  }
+}
+
+.organization-header {
+  border-bottom: 1px solid #dadada;
+  position: relative;
+  button {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+  }
+}
+
+button.follow {
+  width: 100px;
+  &.following {
+    @include linear-gradient($blue, #4B80FC);
     color: white;
-    text-shadow: -1px -1px 1px #777;
-    @include transition(0.2s);
-    &:hover {
-      @include linear-gradient(#4BA6FF, #4BA6FF);
-    }
-    &:active {
-      @include linear-gradient(#1B82E6, #4BA6FF);
-    }
+    border: 1px solid blue;
+  }
+  &.unfollow {
+    background: #e60000;
+    color: white;
+    border: 1px solid #cc0000;
   }
 }

@@ -8,6 +8,17 @@ class Event < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :organization_id
   validates_presence_of :start_at
+  
+  #pg_search
+  include PgSearch
+  multisearchable :against => [:name, :description]
+  pg_search_scope :fulltext_search, 
+                  :against => [:name, :description], 
+                  :associated_against => {
+                    :organization => [:name],
+                    :location => [:name]
+                  },
+                  :using => { :tsearch => {:prefix => true} }
 
   # todo: before save convert to UTC and check that before < after
   
