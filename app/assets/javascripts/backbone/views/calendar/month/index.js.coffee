@@ -33,7 +33,7 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
   
   render: () ->
     @$el.html(@headerTemplate(startDate: moment(@startDate)))
-    @$el.append(@template())
+    @$el.append(@template(startDate: moment(@startDate)))
     @addWeeks()
     return this
 
