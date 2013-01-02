@@ -1,8 +1,13 @@
+/* ============ VARIABLES ================ */
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 12px;
-$min_width: 1000px;
-$width: 1000px;
+$min_width: 960px;
+$width: 960px;
+$header_height: 50px;
+$side_padding: 15px;
+$calendar-height: 250px;
+$background-color: #fafafa;
 
 /* =============  GLOBAL STYLES =========== */
 
@@ -48,14 +53,10 @@ button {
 }
 
 .wrapper {
-  //width: 100%;
   min-width: $min_width;
 }
 
 /* ================== HEADER =============== */
-
-$header_height: 50px;
-$side_padding: 15px;
 
 .header {
   height: $header_height;
@@ -118,7 +119,7 @@ $side_padding: 15px;
   padding: 0px $side_padding;
 }
 
-/* ========== CALENDAR / FEED LAYOUT ========= */
+/* ================== LAYOUT =============== */
 
 // #content is the Backbone anchor onto the document
 #content {
@@ -127,11 +128,33 @@ $side_padding: 15px;
   min-width: $min_width;
   min-height: 500px;
   top: 53px;
-  height: -webkit-calc(100% - 50px);
-  height: -o-calc(100% - 50px);
-  height: -moz-calc(100% - 50px);
-  height: calc(100% - 50px);
 }
+
+.content-calendar {
+  position: fixed;
+  top: $header-height + 3px;
+  left: 0;
+  width: 100%;
+  height: $calendar-height;
+}
+
+.content-body {
+  position: relative;
+  margin-top: $calendar-height + $header-height + 3px;
+  width: 100%;
+  background-color: $background-color;
+  min-height: 500px;
+}
+
+.content-body-container {
+  width: $width;
+  margin: 0 auto;
+}
+
+
+/* ========== CALENDAR / FEED LAYOUT ========= */
+
+
 
 $sidebar_width: 180px;
 $feed_width: 250px;
