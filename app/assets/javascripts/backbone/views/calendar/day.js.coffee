@@ -14,6 +14,7 @@ class Gandalf.Views.Calendar.Day extends Backbone.View
   addEvents: () ->
     if @model
       for e in @model
+        console.log 'e', e
         container = $(@el).children(".cal-events:first")
         if @options.type is "week" and not e.get("multiday")
           view = new Gandalf.Views.Calendar.Week.Event(model: e, dayNum: @options.dayNum) 
