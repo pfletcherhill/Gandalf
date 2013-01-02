@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Calendar.Month ||= {}
 
-class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
+class Gandalf.Views.Calendar.Month.Event extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
@@ -12,8 +12,8 @@ class Gandalf.Views.Events.CalendarMonthEvent extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
     Gandalf.dispatcher.on("feedEvent:click", @click, this)
 
-  template: JST["backbone/templates/calendar/calendar_month_event"]
-  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
+  template: JST["backbone/templates/calendar/month/event"]
+  popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   tagName: "div"
   className: "js-event cal-event cal-month-event"

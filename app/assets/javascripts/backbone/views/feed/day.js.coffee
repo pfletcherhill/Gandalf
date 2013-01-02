@@ -1,7 +1,7 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Feed ||= {}
 
-class Gandalf.Views.Events.FeedDay extends Backbone.View
-  template: JST["backbone/templates/events/feed_day"]
+class Gandalf.Views.Feed.Day extends Backbone.View
+  template: JST["backbone/templates/feed/day"]
   className: "feed-day"
 
   initialize: ->
