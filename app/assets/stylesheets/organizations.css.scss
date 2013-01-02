@@ -1,6 +1,5 @@
 /* ========== LAYOUT ========= */
 
-$full-width: 1000px;
 $left-width: 240px;
 $main-width: 750px;
 $blue: #3399FF;
@@ -10,8 +9,8 @@ $blue: #3399FF;
 }
 
 .content-container {
-  width: $full-width;
-  margin: auto;
+  width: $width;
+  margin: 0 auto;
   position: relative;
   margin-top: 20px;
   padding-bottom: 50px;
