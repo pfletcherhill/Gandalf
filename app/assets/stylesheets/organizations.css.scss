@@ -199,7 +199,7 @@ $bg-color: #ddd;
   }
 }
 
-.organization-header {
+.body-header {
   border-bottom: 1px solid #dadada;
   position: relative;
   button {
@@ -211,14 +211,23 @@ $bg-color: #ddd;
 
 button.follow {
   width: 100px;
+  &:after {
+    content: "Follow";
+  }
   &.following {
     @include linear-gradient($blue, #4B80FC);
     color: white;
     border: 1px solid blue;
+    &:after {
+      content: "Following";
+    }
   }
-  &.unfollow {
+  &.following:hover {
     background: #e60000;
     color: white;
     border: 1px solid #cc0000;
+    &:after {
+      content: "Unfollow";
+    }
   }
 }

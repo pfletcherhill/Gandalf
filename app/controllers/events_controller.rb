@@ -20,6 +20,11 @@ class EventsController < ApplicationController
     render json: events.as_json
   end
   
+  def show
+    event = Event.find(params[:id])
+    render json: event.as_json
+  end
+  
   def create
     name = params[:event][:location]
     location = Location.where(:name => name).first
