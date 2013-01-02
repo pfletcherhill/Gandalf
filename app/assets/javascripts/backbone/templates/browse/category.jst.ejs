@@ -1,6 +1,5 @@
 <div class="cover"></div>
 <div class="content">
-  <div class="type">Category:</div>
-  <div class="name"><%= result.get('name') %></div>
+  <div class="name"><a href="#categories/<%= result.id %>"><%= result.get('name') %></a></div>
   <div class="description"><%= result.get('description') %></div>
 </div>
