@@ -4,11 +4,6 @@ class Gandalf.Models.User extends Backbone.Model
   defaults:
     name: null
     email: null
-  
-  # I think this should be fetchSubscriptions, where the returned json includes
-  # the subscribeable. We would then parse the that into subscribed_organizations
-  # and subscribed_categories by checking each subscribeable's subscribeable_type
-  # That way, it's one less ajax request.
 
   fetchSubscribedOrganizations: ->
     $.ajax
@@ -26,32 +21,43 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: '/users/' + @id + '/subscribed_categories'
       success: (data) =>
-        @set subscribed_categories: data
+        categories = new Gandalf.Collections.Categories
+        categories.add data
+        @set subscribed_categories: categories
   
-  isFollowing: (organization) ->
+  isFollowing: (model, collection) ->
+    collection = 'subscribed_organizations' unless collection
     subscribed = []
-    for org in this.get('subscribed_organizations').models
-      subscribed.push(org.id)
-    if _.contains(subscribed, organization.id)
+    for mod in this.get(collection).models
+      subscribed.push(mod.id)
+    if _.contains(subscribed, model.id)
       true
     else
       false
   
-  follow: (organization) ->
+  follow: (object) ->
+    type = object.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/organization/' + organization.id
+      url: '/users/' + @id + '/follow/' + type + '/' + object.id
       success: (data) =>
-        this.get('subscribed_organizations').add data
+        if type == 'organization'
+          this.get('subscribed_organizations').add data
+        else if type == 'category'
+          this.get('subscribed_categories').add data
   
-  unfollow: (organization) ->
+  unfollow: (object) ->
+    type = object.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/organization/' + organization.id
+      url: '/users/' + @id + '/unfollow/' + type + '/' + object.id
       success: (data) =>
-        this.get('subscribed_organizations').remove data
+        if type == 'organization'
+          this.get('subscribed_organizations').remove data
+        else if type == 'category'
+          this.get('subscribed_categories').remove data
 
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User

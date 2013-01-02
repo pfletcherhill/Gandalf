@@ -1,6 +1,6 @@
-Gandalf.Views ||= {}
+Gandalf.Views.Feed ||= {}
 
-class Gandalf.Views.Index extends Backbone.View
+class Gandalf.Views.Feed.Index extends Backbone.View
 
   # options has keys [collection, startDate, period]
   initialize: ()->
@@ -29,7 +29,7 @@ class Gandalf.Views.Index extends Backbone.View
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
     Gandalf.dispatcher.on("event:click", @eventClick, this)
 
-  template: JST["backbone/templates/index"]
+  template: JST["backbone/templates/feed/index"]
   popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   el: "#content"
