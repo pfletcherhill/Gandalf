@@ -4,8 +4,8 @@ class Gandalf.Views.Calendar.Day extends Backbone.View
 
   initialize: ->
     switch @options.type
-      when "week" then @template = JST["backbone/templates/calendar/calendar_week_day"]
-      when "month" then @template = JST["backbone/templates/calendar/calendar_month_day"]
+      when "week" then @template = JST["backbone/templates/calendar/week/day"]
+      when "month" then @template = JST["backbone/templates/calendar/month/day"]
     @render()
 
   tagName: "td"

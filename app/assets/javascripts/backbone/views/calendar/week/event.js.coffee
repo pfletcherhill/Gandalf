@@ -7,6 +7,8 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
     @dayNum = @options.dayNum 
+    @hourHeight = Gandalf.calendarHeight / 24.0
+    console.log "event", @hourHeight
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
@@ -14,7 +16,6 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
     Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
-
     @render()
 
   template: JST["backbone/templates/calendar/week/event"]
@@ -24,7 +25,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
   className: "js-event cal-event cal-week-event"
   attributes: 
     rel: "event-popover"
-  hourHeight: 45
+  # hourHeight: 45
   popoverChild: ".event-name:first"
 
   events:
@@ -41,7 +42,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     e = @model
     @top = @getPosition e.get("calStart")
     @height = @getPosition(e.get("calEnd")) - @top
-    $(@el)
+    @$el
       .css(
         top: "#{@top}px"
         height: "#{@height}px"
