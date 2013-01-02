@@ -8,6 +8,7 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
     @render()
 
   template: JST["backbone/templates/calendar/week/index"]
+  headerTemplate: JST["backbone/templates/calendar/week/header"]
   
   tagName: "div"
   className: "cal cal-week"
@@ -36,4 +37,6 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
       tempDate.add('d', 1)
       dayCount++
     return this
+
+
 
