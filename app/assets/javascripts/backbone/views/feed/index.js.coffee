@@ -2,7 +2,7 @@ Gandalf.Views.Feed ||= {}
 
 class Gandalf.Views.Feed.Index extends Backbone.View
 
-  # options has keys [collection, startDate, period]
+  # options has keys [events, startDate, period]
   initialize: ()->
     _.bindAll(this, 
       "renderSubscribedOrganizations",
@@ -69,7 +69,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    hidden = @collection.getHiddenOrgs()
+    hidden = @options.events.getHiddenOrgs()
     # for s in subscriptions
     #       invisible = false
     #       invisible = true if s.id in hidden
@@ -78,7 +78,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    hidden = @collection.getHiddenCats()
+    hidden = @options.events.getHiddenCats()
     # for s in subscriptions
     #       invisible = false
     #       invisible = true if s.id in hidden
@@ -89,14 +89,15 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   render: () ->
     @$el.html(@template({ user: Gandalf.currentUser, startDate: @options.startDate }))
     Gandalf.calendarHeight = $(".content-calendar").height()
-    @days = @collection.group()
+    @days = @options.events.group()
     @renderMenu(@options.period, @options.startDate)
     @renderFeed()
     view = new Gandalf.Views.Calendar.Index(
       type: @options.period
-      collection: @collection
+      events: @options.events
       startDate: @options.startDate
     )
+
     $(".content-calendar").append(view.el)
     return this
 
@@ -105,7 +106,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     color = object.color
     eId = model.get("eventId")
     if model.get("id") isnt eId
-      model = @collection.get(eId)
+      model = @options.events.get(eId)
     $(".cal-popover").html(@popoverTemplate(e: model, color: color))
     $(".cal-popover,.global-overlay").fadeIn("fast")
     $(".cal-popover .close").click( ->

@@ -3,15 +3,16 @@ Gandalf.Views.Calendar ||= {}
 class Gandalf.Views.Calendar.Index extends Backbone.View
 
   initialize: ->
-    split = true#(@options.type is "month")
+    split = true #(@options.type is "week")
+    @collection = @options.events
     @collection.splitMultiDay(split)       # Adjust multi-day events
     @days = @collection.group()
     # Class variables
     @startDate = @options.startDate
     @maxOverlaps = 4                  # Maximum allowed event overlaps
     # Listening for global events
-    Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
-    Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
+    # Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
+    # Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
     @render()
 
   className: "calendar"
@@ -24,10 +25,12 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
       @$el.append(@renderWeek().el)
       # @renderWeekMultiday()
       @adjustOverlappingEvents()
-    t = this
-    setInterval( ->
-      t.resetEventPositions()
-    , 20000)
+    # t = this
+    # setInterval( ->
+    #   t.resetEventPositions()
+    # , 20000)
+    return this
+
 
   renderWeek: ->
     view = new Gandalf.Views.Calendar.Week.Index(

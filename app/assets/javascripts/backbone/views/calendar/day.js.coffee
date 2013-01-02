@@ -6,6 +6,8 @@ class Gandalf.Views.Calendar.Day extends Backbone.View
     switch @options.type
       when "week" then @template = JST["backbone/templates/calendar/week/day"]
       when "month" then @template = JST["backbone/templates/calendar/month/day"]
+    @date = @options.date
+    @hourHeight = Gandalf.calendarHeight / 24.0
     @render()
 
   tagName: "td"
@@ -24,6 +26,21 @@ class Gandalf.Views.Calendar.Day extends Backbone.View
       Gandalf.dispatcher.trigger("calEvents:ready")
 
   render: () ->
-    $(@el).html(@template(date: @options.date)) # Add the calendar day
+    @$el.html(@template(date: @date)) # Add the calendar day
+    if @date.date() is moment().date() and @date.month() is moment().month() and @date.year() is moment().year()
+      @$el.addClass "today"
+      @$el.append("<div id='time-marker'><img id='time-marker-img' src='/assets/y_logo_200.png' /></div>")
+      @nowMarker()
+      setInterval @nowMarker, 15*60*1000
     @addEvents()
     return this
+
+  nowMarker: ->
+    top = @getNowPosition()
+    console.log top
+    @$el.find("#time-marker").css(top: "#{top}px")
+
+  getNowPosition: ->
+    t = moment()
+    hours = t.hours() + t.minutes()/60
+    return Math.floor(hours*@hourHeight)

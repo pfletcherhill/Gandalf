@@ -6,7 +6,12 @@
   <table>
     <tr>
       <td>Held by</td>
-      <td><%= e.get("organization") %></td>
+
+      <td>
+        <a href="#organizations/<%= e.get("organization_id") %>">
+          <%= e.get("organization") %>
+        </a>
+      </td>
     </tr>
     <tr>
       <% startAt = moment(e.get("start_at")); %>

@@ -23,6 +23,7 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
       date: date,
       dayNum: dayNum
     )
+
     @$(".cal-day-container").append(view.el)
   
   render: () ->

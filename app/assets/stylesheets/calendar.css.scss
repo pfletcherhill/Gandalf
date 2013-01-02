@@ -12,11 +12,7 @@ $hour-height: 4.1667%;
 }
 .cal {
   width: 100%;
-  height: 90%;
-}
-.cal-nav {
-  width: 100%;
-  height: 10%;
+  height: 100%;
 }
 
 /* ==== CALENDAR HEADER ==== */
@@ -71,6 +67,9 @@ $hour-height: 4.1667%;
 .cal-day {
   position: relative;
   border-right: 1pt solid #ddd;
+  &.today {
+    background-color: rgba($blue, 0.2);
+  }
 }
 
 .cal-month .cal-body .cal-day {
@@ -91,6 +90,32 @@ $hour-height: 4.1667%;
   &:nth-child(odd) {
     border-bottom: 1pt solid #ebebeb;
   }
+}
+
+.hour-label {
+  position: relative;
+  top: -4px;
+  left: 2px;
+  z-index: -4;
+  font-size: 8px;
+  color: rgba(darken($blue, 30%), 0.6);
+  text-shadow: 0 1px 1px rgba(white, 0.3);
+}
+
+#time-marker {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 0;
+  color: rgba(darken($blue, 20%), 0.8);
+  border-bottom: 1pt solid rgba(darken($blue, 20%), 0.8);
+}
+#time-marker-img {
+  $marker-img-height: 15px;
+  position: relative;
+  top: -2*$marker-img-height/3;
+  height: $marker-img-height;
+  left: 0;
 }
 
 .day-tag {
