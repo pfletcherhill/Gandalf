@@ -8,7 +8,6 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @eventId = @model.get("eventId")
     @dayNum = @options.dayNum 
     @hourHeight = Gandalf.calendarHeight / 24.0
-    console.log "event", @hourHeight
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
