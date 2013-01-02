@@ -3,10 +3,10 @@
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 12px;
-$min_width: 960px;
+$min-width: 960px;
 $width: 960px;
-$header_height: 50px;
-$side_padding: 15px;
+$header-height: 50px;
+$side-padding: 15px;
 $calendar-height: 400px;
 $background-color: #fafafa;
 
@@ -55,13 +55,13 @@ button {
 }
 
 .wrapper {
-  min-width: $min_width;
+  min-width: $min-width;
 }
 
 /* ================== HEADER =============== */
 
 .header {
-  height: $header_height;
+  height: $header-height;
   background: white;
   @include box-shadow(0 1px 1px rgba(black, 0.2));
   position: fixed;
@@ -80,12 +80,12 @@ button {
 .link {
   a {
     display: block;
-    line-height: $header_height;
+    line-height: $header-height;
     color: #333;
     font-size: 13px;
     @include HN-Bold;
     @include transition(color 0.1s);
-    padding: 0px $side_padding;
+    padding: 0px $side-padding;
   }
   border-right: 1pt solid lightblue;
 }
@@ -119,8 +119,8 @@ button {
 
 #menu {
   float: right;
-  line-height: $header_height;
-  padding: 0px $side_padding;
+  line-height: $header-height;
+  padding: 0px $side-padding;
 }
 
 /* ================== LAYOUT =============== */
@@ -129,7 +129,7 @@ button {
 #content {
   position: absolute;
   width: 100%;
-  min-width: $min_width;
+  min-width: $min-width;
   min-height: 500px;
   top: 53px;
 }
@@ -139,6 +139,7 @@ button {
   top: $header-height + 3px;
   left: 0;
   width: 100%;
+  min-width: $min-width;
   height: $calendar-height;
   overflow-y: hidden;
   background-color: #eee;

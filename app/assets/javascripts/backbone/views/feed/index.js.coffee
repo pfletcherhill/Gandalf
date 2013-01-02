@@ -61,7 +61,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     Gandalf.calendarHeight = $(".content-calendar").height()
     # @renderFeed()
     view = new Gandalf.Views.Calendar.Index(
-      type: @period
+      type: @options.period
       collection: @collection
       startDate: @options.startDate
     )
