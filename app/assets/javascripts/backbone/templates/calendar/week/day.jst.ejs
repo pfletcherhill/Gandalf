@@ -1,6 +1,9 @@
 <div class="cal-events"></div>
+<div class="day-tag">
+  <p class='tag-day'><%= date.format("dddd") %>, <%= date.format("MMM") %>.</p>
+  <p class='tag-date'><%= date.format("D") %></p>
+</div>
 <% for(i=0; i<24;i++) { %>
   <div class="hour hour-day">
-    <div class="hour-half"></div>
   </div>
 <% } %>
