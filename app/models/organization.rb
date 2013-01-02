@@ -10,6 +10,7 @@ class Organization < ActiveRecord::Base
   # Validations
   validates_uniqueness_of :name, :case_sensitive => false
   
+  
   #pg_search
   include PgSearch
   multisearchable :against => [:name, :bio]
@@ -19,7 +20,7 @@ class Organization < ActiveRecord::Base
                   
   #Image Uploader
   mount_uploader :image, ImageUploader
-  
+      
   #Events, can have start and end
   def events_with_period(*times)
     start_at = times[0]
