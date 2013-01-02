@@ -190,25 +190,29 @@ $test-color: lighten(#0f91ec, 20%);
 
 /* ======== POPOVER ========= */
 
-.overlay {
+.global-overlay {
   position: fixed;
   width: 100%; height: 100%;
-  background-color: rgba(black, 0.5);
-  // display: none;
-
+  top: 0; left: 0;
+  z-index: 100;
+  background-color: rgba(black, 0.8);
+  display: none;
 }
-$cal-popover-padding: 10px;
 
+$cal-popover-padding: 10px;
 $cal-popover-head-color: lightblue;
-$cal-popover-body-color: #eee;
+$cal-popover-body-color: #fafafa;
+$cal-popover-width: 500px;
 .cal-popover {
-  top: $cal_head_height + 30;
-  width: 300px;
-  z-index: 30;
-  position: absolute;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  width: $cal-popover-width;
+  margin-left: -$cal-popover-width/2;
+  z-index: 110;
   display: none;
   background-color: rgba(#eee, 0.9);
-  @include box-shadow(0 0px 5px 0 #444);
+  @include box-shadow(0 0px 10px 0 black);
 
   .close {
     position: absolute;

@@ -5,10 +5,8 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
     @days = @options.days
     @startDate = @options.startDate
     @render()
-    Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
 
   template: JST["backbone/templates/calendar/month/index"]
-  headerTemplate: JST["backbone/templates/calendar/month/header"]
   
   tagName: "div"
   className: "cal cal-month"
@@ -36,6 +34,3 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
     @$el.append(@template(startDate: moment(@startDate)))
     @addWeeks()
     return this
-
-  hidePopovers: () ->
-    $("[rel='event-popover']").popover("hide")

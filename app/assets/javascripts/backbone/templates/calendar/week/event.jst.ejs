@@ -4,7 +4,4 @@
 <p class="event-time">
   <%= startAt.format("h:mm a") %>
 </p>
-<a href="#organizations/<%= event.get("organization_id") %>">
-  <p><%= event.get("organization") %></p>
-</a>
-<p><%= event.get("location") %> (ID: <%= event.get("eventId") %>)</p>
+<p>(ID: <%= event.get("eventId") %>)</p>

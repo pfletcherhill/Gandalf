@@ -12,10 +12,10 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     # Listening for global events
     Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
-    Gandalf.dispatcher.on("event:click", @eventClick, this)
     @render()
 
   className: "calendar"
+  popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   render: ->
     if @options.type is "month"
@@ -24,6 +24,10 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
       @$el.append(@renderWeek().el)
       # @renderWeekMultiday()
       @adjustOverlappingEvents()
+    t = this
+    setInterval( ->
+      t.resetEventPositions()
+    , 20000)
 
   renderWeek: ->
     view = new Gandalf.Views.Calendar.Week.Index(
@@ -58,11 +62,9 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     @catVisChange(cats)
 
   resetEventPositions: () ->
-    $(".cal-week-event").css({ width: "96%" }) # For window resizing
+    @$el.find(".cal-week-event").css({ width: "96%" }) # For window resizing
     @makeCSSAdjustments()
 
-  eventClick: (e) ->
-    @showPopover(e.model, e.color)
 
   # Helpers
 
@@ -98,49 +100,6 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
             left: "#{width*num}%"
             zIndex: calZ - num
           )
-
-  showPopover: (model, color) ->
-    popover = $(".cal-popover")
-    calDayWidth = $(".cal-body .cal-day").width()
-    mDay = moment(model.get("calStart")).day()
-
-    left = right = "auto"
-    # Comment this if else block and uncomment the next to see moving popups
-    if mDay < 3
-      right = "10px"
-    else
-      left = "10px"
-    # if mDay < 3
-    #   left = (mDay+1) * calDayWidth + 60
-    # else
-    #   right = ((7-mDay) * calDayWidth) + 20
-
-    eId = model.get("eventId")
-    if model.get("id") isnt eId
-      model = @collection.get(eId)
-    $(popover)
-      .css(
-        left: left
-        right: right
-      ).html(@popoverTemplate(e: model, color: color))
-      .fadeIn("fast")
-    $(".cal-popover .close").click(() ->
-      $(this).parents(".cal-popover").fadeOut("fast")
-    )
-    @makeGMap(model)
-
-  makeGMap: (model) ->
-    myPos = new google.maps.LatLng(model.get("lat"), model.get("lon"))
-    options = 
-      center: myPos
-      zoom: 15
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    map = new google.maps.Map(document.getElementById("map-canvas"), options)
-    marker = new google.maps.Marker(
-      position: myPos
-      map: map
-      title: "Here it is!"
-    )
 
   orgVisChange: (hiddenOrgs) ->
     $(".js-event").removeClass("event-hidden-org")

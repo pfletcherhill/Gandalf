@@ -13,11 +13,16 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     # Render AJAX info
     Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
     Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
+    Gandalf.dispatcher.on("event:click", @showPopover, this)
+    Gandalf.dispatcher.on("popover:hide", @hidePopover, this)
 
   template: JST["backbone/templates/feed/index"]
   popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   el: "#content"
+
+  events:
+    "click .global-overlay" : "hidePopover"
 
   # Rendering functions
 
@@ -61,8 +66,33 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       startDate: @options.startDate
     )
     $(".content-calendar").append(view.el)
-    t = this
-    setInterval( ->
-      t.resetEventPositions()
-    , 20000)
     return this
+
+  showPopover: (object) ->
+    model = object.model
+    color = object.color
+    eId = model.get("eventId")
+    if model.get("id") isnt eId
+      model = @collection.get(eId)
+    $(".cal-popover").html(@popoverTemplate(e: model, color: color))
+    $(".cal-popover,.global-overlay").fadeIn("fast")
+    $(".cal-popover .close").click( ->
+      Gandalf.dispatcher.trigger("popover:hide")
+    )
+    @makeGMap(model)
+
+  makeGMap: (model) ->
+    myPos = new google.maps.LatLng(model.get("lat"), model.get("lon"))
+    options = 
+      center: myPos
+      zoom: 15
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map(document.getElementById("map-canvas"), options)
+    marker = new google.maps.Marker(
+      position: myPos
+      map: map
+      title: "Here it is!"
+    )
+
+  hidePopover: ->
+    $(".cal-popover,.global-overlay").fadeOut("fast")
