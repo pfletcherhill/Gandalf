@@ -141,7 +141,7 @@ button {
   width: 100%;
   height: $calendar-height;
   overflow-y: hidden;
-  
+  background-color: #eee;
 }
 
 .content-body {
@@ -158,21 +158,8 @@ button {
   margin: 0 auto;
 }
 
-
-/* ========== CALENDAR / FEED LAYOUT ========= */
-
-
-
 $sidebar_width: 180px;
 $feed_width: 250px;
-
-.sidebar, .feed, .calendar {
-  position: absolute;
-  top: 0;
-  height:100%;
-  overflow-y: scroll;
-  overflow-x: auto;
-}
 
 /* ============= ALL OTHER LAYOUT ============= */
 
