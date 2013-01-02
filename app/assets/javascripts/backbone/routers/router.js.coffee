@@ -89,7 +89,7 @@ class Gandalf.Router extends Backbone.Router
     @organization.url = "/organizations/" + id + "/edit"
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization, type: type)
+        view = new Gandalf.Views.Dashboard.Index(organizations: @organizations, organization: organization, type: type)
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"
