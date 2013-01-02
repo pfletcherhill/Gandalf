@@ -58,22 +58,6 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
   onClick: () ->
     Gandalf.dispatcher.trigger("event:click", 
       { model: @model, color: @lightColor })
-    # @scroll()
-    # @popover()
-
-  scroll:() ->
-    tHeight = 300 # popover height
-    maxHeight = 500
-    padTop = 25   # space above popover when scrolling to
-    container = @$el.parents(".cal-body")
-    if @height > maxHeight
-      console.log @height - maxHeight
-      scrolltop = @top + (@height - maxHeight) - padTop
-    else if @height > tHeight
-      scrolltop = @top - padTop
-    else
-      scrolltop = @top + (@height-tHeight) / 2 - padTop
-    $(container).animate scrollTop: (scrolltop), 300
 
   feedClick: (id) ->
     if @eventId is id
