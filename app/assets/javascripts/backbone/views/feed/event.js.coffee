@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Feed ||= {}
 
-class Gandalf.Views.Events.FeedEvent extends Backbone.View
+class Gandalf.Views.Feed.Event extends Backbone.View
   
   initialize: ->
     @eventId = @model.get("eventId")
@@ -13,7 +13,7 @@ class Gandalf.Views.Events.FeedEvent extends Backbone.View
     "mouseleave" : "mouseleave"
     "click" : "click"
 
-  template: JST["backbone/templates/events/feed_event"]
+  template: JST["backbone/templates/feed/event"]
 
   className: "js-event feed-event"
   

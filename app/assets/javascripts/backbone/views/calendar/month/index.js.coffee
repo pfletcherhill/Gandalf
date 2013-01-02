@@ -1,14 +1,14 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Calendar.Month ||= {}
 
-class Gandalf.Views.Events.CalendarMonth extends Backbone.View
+class Gandalf.Views.Calendar.Month.Index extends Backbone.View
   initialize: ()->
     @days = @options.days
     @startDate = @options.startDate
     @render()
     Gandalf.dispatcher.on("popovers:hide", @hidePopovers)
 
-  template: JST["backbone/templates/calendar/calendar_month"]
-  headerTemplate: JST["backbone/templates/calendar/calendar_month_header"]
+  template: JST["backbone/templates/calendar/month/index"]
+  headerTemplate: JST["backbone/templates/calendar/month/header"]
   
   tagName: "div"
   className: "cal cal-month"
@@ -26,7 +26,7 @@ class Gandalf.Views.Events.CalendarMonth extends Backbone.View
       dayCount++
 
   addDay: (events, date) ->
-    view = new Gandalf.Views.Events.CalendarDay(
+    view = new Gandalf.Views.Calendar.Day(
       model: events, type: "month", date: date
     )
     @$(".cal-day-container:last").append(view.el)

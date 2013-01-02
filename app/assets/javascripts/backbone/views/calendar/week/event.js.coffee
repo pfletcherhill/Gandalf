@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Calendar.Week ||= {}
 
-class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
+class Gandalf.Views.Calendar.Week.Event extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
@@ -17,7 +17,7 @@ class Gandalf.Views.Events.CalendarWeekEvent extends Backbone.View
 
     @render()
 
-  template: JST["backbone/templates/calendar/calendar_week_event"]
+  template: JST["backbone/templates/calendar/week/event"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
