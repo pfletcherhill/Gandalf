@@ -48,6 +48,4 @@ gem 'mini_magick'
 gem 'gmaps4rails'
 
 # Search
-gem 'sunspot_rails'
-gem 'sunspot_solr'
 gem 'pg_search'
