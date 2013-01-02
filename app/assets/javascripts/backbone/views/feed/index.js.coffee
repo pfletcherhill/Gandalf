@@ -26,6 +26,36 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   # Rendering functions
 
+  renderMenu: (period, startDate) ->
+    if period == 'month'
+      thisMonth = moment(startDate).day(6).date(1)
+      prevMonth = moment(thisMonth).subtract('M', 1).format(Gandalf.displayFormat)
+      nextMonth = moment(thisMonth).add('M', 1).format(Gandalf.displayFormat)
+      if moment().month() == thisMonth.month()
+        weekDate = 'today'
+      else
+        weekDate = moment(startDate).format(Gandalf.displayFormat)
+      # Add to html
+      @$(".cal-nav span").html thisMonth.format("MMMM YYYY")
+      @$(".cal-nav .previous").attr 'href', '#calendar/' + prevMonth + '/month'
+      @$(".cal-nav .next").attr 'href', '#calendar/' + nextMonth + '/month'
+      @$(".cal-nav .week").attr 'href', '#calendar/' + weekDate + '/week'
+      @$(".cal-nav .month").addClass 'disabled'
+    else
+      if moment().day(1).format("DD") == moment(startDate).day(1).format("DD")
+        month = moment().date(1).format(Gandalf.displayFormat)
+      else
+        month = moment(startDate).date(1).format(Gandalf.displayFormat)
+      prevWeek = moment(startDate).subtract('w', 1).format(Gandalf.displayFormat)
+      nextWeek = moment(startDate).add('w', 1).format(Gandalf.displayFormat)
+      endDate = moment(startDate).add('d', 6)
+      # Add to html
+      @$(".cal-nav span").html startDate.format("MMM Do") + " - " + endDate.format("MMM Do") + " " + endDate.format("YYYY")
+      @$(".cal-nav .previous").attr 'href', '#calendar/' + prevWeek + '/week'
+      @$(".cal-nav .next").attr 'href', '#calendar/' + nextWeek + '/week'
+      @$(".cal-nav .week").addClass 'disabled'
+      @$(".cal-nav .month").attr 'href', '#calendar/' + month + '/month'
+      
   renderFeed: () ->
     noEvents = "<div class='feed-day-header'>You have no upcoming events</div>"
     @$("#body-feed").append(noEvents) if _.isEmpty(@days)
@@ -57,9 +87,10 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
 
   render: () ->
-    @$el.html(@template({ user: Gandalf.currentUser }))
+    @$el.html(@template({ user: Gandalf.currentUser, startDate: @options.startDate }))
     Gandalf.calendarHeight = $(".content-calendar").height()
     @days = @collection.group()
+    @renderMenu(@options.period, @options.startDate)
     @renderFeed()
     view = new Gandalf.Views.Calendar.Index(
       type: @options.period
