@@ -2,10 +2,16 @@
 <div class="content-body">
   <div class="content-body-container">
     <div class="cal-nav">
-      <div class="today">Today</div>
-      <div class="next">Next Week</div>
-      <div class="previous">Previous Week</div>
-      <div class="filter">Filter...</div>
+      <a href="#calendar/today/week" class="btn">Today</a>
+      <div class="btn-group" style="margin-right: 30px;">
+        <a class="btn previous">&lt;</a>
+        <span class="btn cal-header-date" style="font-size: 14px;"></span>
+        <a class="btn next">&gt;</a>
+      </div>
+      <div class="btn-group pull-right">
+        <a class="btn week">Week</a>
+        <a class="btn month">Month</a>
+      </div>
     </div>
     <div class="body-feed"></div>
   </div>
