@@ -42,9 +42,9 @@ class Gandalf.Router extends Backbone.Router
     'calendar/:date/:period'          : 'calendar'
     'calendar'                        : 'calendarRedirect'
     'calendar/:date'                  : 'calendarRedirect'
-    'organizations/edit/:id'          : 'organizationsEdit'
-    'organizations/edit/:id/:type'    : 'organizationsEdit'
-    'organizations/edit*'             : 'organizationsEdit'
+    'dashboard'                       : 'dashboard'
+    'dashboard/:id'                   : 'dashboard'
+    'dashboard/:id/:type'             : 'dashboard'
     'organizations/:id'               : 'organizations'
     'organizations*'                  : 'organizations'
     'preferences'                     : 'preferences'
@@ -79,10 +79,10 @@ class Gandalf.Router extends Backbone.Router
       @results = new Gandalf.Collections.Organizations
       @results.url = '/organizations'
     @results.fetch success: (results) ->
-      view = new Gandalf.Views.Events.Browse(results: results, type: type)
+      view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
   
-  organizationsEdit: (id, type) ->
+  dashboard: (id, type) ->
     id = @organizations.first().id unless id
     type = 'info' unless type  == 'events' || type == 'settings' || type == 'users'
     @organization = new Gandalf.Models.Organization
