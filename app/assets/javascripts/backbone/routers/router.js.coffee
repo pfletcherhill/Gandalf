@@ -35,28 +35,51 @@ class Gandalf.Router extends Backbone.Router
     paramsString = "start_at=" + params.start.format(Gandalf.displayFormat) 
     paramsString += "&end_at=" + params.end.format(Gandalf.displayFormat)
     paramsString
-        
+  
+  load: (selector) ->
+    $(selector).html("<div class='loader'></div>")
+          
   routes:
+    # Browse Routes
     'browse/:type'                    : 'browse'          
     'browse*'                         : 'browse'
+    
+    # Calendar Routes
     'calendar/:date/:period'          : 'calendar'
     'calendar'                        : 'calendarRedirect'
     'calendar/:date'                  : 'calendarRedirect'
+    
+    # Dashboard Routes
     'dashboard'                       : 'dashboard'
     'dashboard/:id'                   : 'dashboard'
     'dashboard/:id/:type'             : 'dashboard'
+    
+    #Events Routes
+    'events/:id'                      : 'events'
+    'events*'                         : 'events'
+    
+    # Organization Routes
     'organizations/:id'               : 'organizations'
     'organizations*'                  : 'organizations'
+  
+    # Category Routes
+    'categories/:id'                  : 'categories'
+    'categories*'                     : 'categories'
+    
+    # Preferences Routes
     'preferences'                     : 'preferences'
+    
+    #Static Routes
     'about'                           : 'about'
     '.*'                              : 'calendarRedirect'
   
   calendar: (date, period) ->
+    @load('#content')
     params = @processPeriod date, period
     string = @generateParamsString params
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
     @events.fetch success: (events) ->
-      view = new Gandalf.Views.Index(
+      view = new Gandalf.Views.Feed.Index(
         collection: events
         startDate: params.start
         period: params.period
@@ -66,7 +89,8 @@ class Gandalf.Router extends Backbone.Router
     date = "today" if not date
     @navigate("calendar/#{date}/week", {trigger: true, replace: true});
   
-  browse: (type) ->  
+  browse: (type) ->
+    @load('.content-main')  
     $(".search-list a").removeClass 'active'
     if type == 'categories'
       @results = new Gandalf.Collections.Categories
@@ -94,6 +118,13 @@ class Gandalf.Router extends Backbone.Router
         alert 'You do not have access to this organization.'
         window.location = "#organizations"
   
+  events: (id) ->
+    @event = new Gandalf.Models.Event
+    @event.url = "/events/" + id
+    @event.fetch
+      success: (event) =>
+        view = new Gandalf.Views.Events.Show( model: event )
+    
   organizations: (id) ->
     params = @processPeriod 'today', 'week'
     @string = @generateParamsString params
@@ -101,11 +132,19 @@ class Gandalf.Router extends Backbone.Router
     @organization.url = "/organizations/" + id
     @organization.fetch
       success: (organization) =>
-        console.log @string
         view = new Gandalf.Views.Organizations.Show( model: organization, string: @string )
+  
+  categories: (id) ->
+    params = @processPeriod 'today', 'week'
+    @string = @generateParamsString params
+    @category = new Gandalf.Models.Category
+    @category.url = "/categories/" + id
+    @category.fetch
+      success: (category) =>
+        view = new Gandalf.Views.Categories.Show( model: category, string: @string )
      
   preferences: ->
-    view = new Gandalf.Views.Users.Preferences
+    view = new Gandalf.Views.Preferences.Index
     $("#content").html(view.render().el)
   
   about: ->
