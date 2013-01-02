@@ -29,7 +29,7 @@ class Gandalf.Views.Index extends Backbone.View
     Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
     Gandalf.dispatcher.on("event:click", @eventClick, this)
 
-  template: JST["backbone/templates/events/index"]
+  template: JST["backbone/templates/index"]
   popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   el: "#content"
