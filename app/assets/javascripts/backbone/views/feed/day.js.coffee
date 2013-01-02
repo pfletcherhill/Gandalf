@@ -1,6 +1,7 @@
 Gandalf.Views.Feed ||= {}
 
 class Gandalf.Views.Feed.Day extends Backbone.View
+  
   template: JST["backbone/templates/feed/day"]
   className: "feed-day"
 
@@ -16,7 +17,7 @@ class Gandalf.Views.Feed.Day extends Backbone.View
     # Don't render if this event has already been rendered in a 
     # previous day — this only applies to multi-day events
     return if event.get("eventId") in @options.done
-    view = new Gandalf.Views.Events.FeedEvent(model: event)
+    view = new Gandalf.Views.Feed.Event(model: event)
     @$(".feed-day-events").append(view.el)
     # Add this event to the list of done events
     @numAdded++
