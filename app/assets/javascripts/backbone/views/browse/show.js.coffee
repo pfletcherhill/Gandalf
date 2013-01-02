@@ -1,10 +1,10 @@
 Gandalf.Views.Events ||= {}
 
-class Gandalf.Views.Events.BrowseResult extends Backbone.View
+class Gandalf.Views.Browse.Show extends Backbone.View
   
-  organizationTemplate: JST["backbone/templates/organizations/browse/browse_result"]
-  eventTemplate: JST["backbone/templates/events/browse/browse_result"]
-  categoryTemplate: JST["backbone/templates/categories/browse/browse_result"]
+  organizationTemplate: JST["backbone/templates/browse/organization"]
+  eventTemplate: JST["backbone/templates/browse/event"]
+  categoryTemplate: JST["backbone/templates/browse/category"]
   
   className: "browse-result"
   
