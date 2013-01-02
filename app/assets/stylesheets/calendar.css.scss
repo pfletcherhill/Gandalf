@@ -7,12 +7,16 @@ $cal_top_pad: 10px;
 $hour-height: 4.1667%;
 
 // Redundant styling—here just to change bg color
-.content-calendar {
-  background-color: #eee;
+.calendar {
+  width: 100%; height: 100%;
 }
 .cal {
   width: 100%;
-  height: 100%;
+  height: 90%;
+}
+.cal-nav {
+  width: 100%;
+  height: 10%;
 }
 
 /* ==== CALENDAR HEADER ==== */
@@ -35,17 +39,6 @@ $hour-height: 4.1667%;
   }
 }
 
-.cal-header-days {
-  text-align: center;
-  height: 20px;
-  width: 100%;
-  font-size: 8px;
-  line-height: 20px;
-  @include linear-gradient(#fff, #efefef);
-  .cal-day:last-child {
-    border-right: 1pt solid transparent;
-  }
-}
 */
 .cal-multiday {
   position: relative;
@@ -70,20 +63,9 @@ $hour-height: 4.1667%;
   width: 100%;
   height: 100%;
   table-layout: fixed;
-  thead {
-    font-size: 80%;
-    //background-color: #ddd;
-    // border-bottom: 1px solid #ddd;
-    text-align: center;
-  }
   td {
     vertical-align: top;
   }
-}
-
-.cal-week td:first-child {
-  // width: $cal_gap;
-  // background-color: #eeeeff;
 }
 
 .cal-day {
@@ -128,18 +110,7 @@ $hour-height: 4.1667%;
     font-size: 550%;
     line-height: 100%;
     font-weight: bold;
-    
   }
-}
-
-
-.hour-label {
-  position: relative;
-  font-size: 8px;
-  height: $hour-height*2;
-  color: #333;
-  top: -6px;
-  left: 7px;
 }
 
 .month-day-date {
@@ -219,6 +190,13 @@ $test-color: lighten(#0f91ec, 20%);
 
 /* ======== POPOVER ========= */
 
+.overlay {
+  position: fixed;
+  width: 100%; height: 100%;
+  background-color: rgba(black, 0.5);
+  // display: none;
+
+}
 $cal-popover-padding: 10px;
 
 $cal-popover-head-color: lightblue;
