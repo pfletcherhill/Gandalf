@@ -1,8 +1,8 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Browse ||= {}
 
-class Gandalf.Views.Events.Browse extends Backbone.View
+class Gandalf.Views.Browse.Index extends Backbone.View
   
-  template: JST["backbone/templates/events/browse/browse"]
+  template: JST["backbone/templates/browse/index"]
   
   id: "browse"
   
@@ -18,7 +18,7 @@ class Gandalf.Views.Events.Browse extends Backbone.View
       @addResult result
   
   addResult: (result) ->
-    view = new Gandalf.Views.Events.BrowseResult(model: result, type: @type)
+    view = new Gandalf.Views.Browse.Show(model: result, type: @type)
     @$("#browse-list").append(view.render().el)
     
   render: ->

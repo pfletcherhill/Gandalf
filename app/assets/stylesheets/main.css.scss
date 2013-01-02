@@ -16,6 +16,7 @@ body {
   padding: 0px;
   @include HN-Regular;
   font-size: $font;
+  background: $background-color;
 }
 
 li {
