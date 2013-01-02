@@ -2,7 +2,7 @@
   <div class="btn-toolbar">
     <a href="#calendar/today/week" class="btn">Today</a>
     <div class="btn-group" style="margin-right: 30px;">
-      <% month = moment(startDate).date(1).format(Gandalf.displayFormat) %>
+      <% month = moment().date(1).format(Gandalf.displayFormat) %>
       <% prevWeek = moment(startDate).subtract('w', 1).format(Gandalf.displayFormat) %>
       <% nextWeek = moment(startDate).add('w', 1).format(Gandalf.displayFormat) %>
       <% headDisplayFormat = "MMMM Do" %>
@@ -11,8 +11,8 @@
       <a href=<%= "#calendar/"+nextWeek+"/week" %> class="btn">&gt;</a>
     </div>
     <span class="cal-header-date" style="font-size: 14px;">
-      <%= startDate.format(headDisplayFormat) %> - 
-      <%= endDate.format(headDisplayFormat) %> <%= endDate.format("YYYY") %>
+      <%= startDate.format("MMMM Do") %> - 
+      <%= endDate.format("MMMM Do") %> <%= endDate.format("YYYY") %>
     </span>
     <div class="btn-group pull-right">
       <a class="btn disabled">Week</a>
