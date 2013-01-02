@@ -1,9 +1,9 @@
-Gandalf.Views.Organizations ||= {}
+Gandalf.Views.Dashboard ||= {}
 
-class Gandalf.Views.Organizations.Users extends Backbone.View
+class Gandalf.Views.Dashboard.Users extends Backbone.View
   
-  template: JST["backbone/templates/organizations/users/index"]
-  userTemplate: JST["backbone/templates/organizations/users/user"]
+  template: JST["backbone/templates/dashboard/users/index"]
+  userTemplate: JST["backbone/templates/dashboard/users/show"]
   
   id: 'organization'
     

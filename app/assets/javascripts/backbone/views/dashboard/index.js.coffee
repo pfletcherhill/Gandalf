@@ -1,9 +1,9 @@
-Gandalf.Views.Organizations ||= {}
+Gandalf.Views.Dashboard ||= {}
 
-class Gandalf.Views.Organizations.Index extends Backbone.View
+class Gandalf.Views.Dashboard.Index extends Backbone.View
   
-  template: JST["backbone/templates/organizations/index"]
-  menuTemplate: JST["backbone/templates/organizations/menu"]
+  template: JST["backbone/templates/dashboard/index"]
+  menuTemplate: JST["backbone/templates/dashboard/menu"]
   
   el: '#content'
   
@@ -33,12 +33,12 @@ class Gandalf.Views.Organizations.Index extends Backbone.View
     @renderOrganizationsList()
     @renderOrganizationMenu(type)
     if type == 'info'
-      view = new Gandalf.Views.Organizations.Info(model: @organization)
+      view = new Gandalf.Views.Dashboard.Info(model: @organization)
     else if type == 'events'
-      view = new Gandalf.Views.Organizations.Events(model: @organization)
+      view = new Gandalf.Views.Dashboard.Events(model: @organization)
     else if type == 'users'
-      view = new Gandalf.Views.Organizations.Users(model: @organization)
+      view = new Gandalf.Views.Dashboard.Users(model: @organization)
     else
-      view = new Gandalf.Views.Organizations.Settings(model: @organization)
+      view = new Gandalf.Views.Dashboard.Settings(model: @organization)
     @$('.content-main .main-content').html(view.el)
     return this

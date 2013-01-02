@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Calendar.Week ||= {}
 
-class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
+class Gandalf.Views.Calendar.Week.Multiday extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
@@ -14,7 +14,7 @@ class Gandalf.Views.Events.CalendarWeekMultiday extends Backbone.View
     Gandalf.dispatcher.on("feedEvent:click", @click, this)
 
 
-  template: JST["backbone/templates/calendar/calendar_week_multiday"]
+  template: JST["backbone/templates/calendar/week/multiday"]
   className: "js-event cal-multiday-event"
 
   events:
