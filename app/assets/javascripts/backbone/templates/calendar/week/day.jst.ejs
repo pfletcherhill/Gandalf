@@ -5,5 +5,12 @@
 </div>
 <% for(i=0; i<24;i++) { %>
   <div class="hour hour-day">
+    <% if(date.day() == 0){ %>
+      <% if(i%4 === 0) { %>
+        <% time = "a.m."; if(i >= 12) time = "p.m."; %>
+        <% hour = i%12; if(hour === 0) hour = 12; %>
+        <div class="hour-label"><%= hour+" "+time %></div>
+      <% } %>
+    <% } %>
   </div>
 <% } %>

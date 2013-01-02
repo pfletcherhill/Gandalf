@@ -54,7 +54,7 @@ class Gandalf.Router extends Backbone.Router
     'dashboard/:id'                   : 'dashboard'
     'dashboard/:id/:type'             : 'dashboard'
     
-    #Events Routes
+    # Events Routes
     'events/:id'                      : 'events'
     'events*'                         : 'events'
     
@@ -69,7 +69,7 @@ class Gandalf.Router extends Backbone.Router
     # Preferences Routes
     'preferences'                     : 'preferences'
     
-    #Static Routes
+    # Static Routes
     'about'                           : 'about'
     '.*'                              : 'calendarRedirect'
   
@@ -80,7 +80,7 @@ class Gandalf.Router extends Backbone.Router
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Feed.Index(
-        collection: events
+        events: events
         startDate: params.start
         period: params.period
       )
@@ -132,7 +132,12 @@ class Gandalf.Router extends Backbone.Router
     @organization.url = "/organizations/" + id
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Organizations.Show( model: organization, string: @string )
+        view = new Gandalf.Views.Organizations.Show(
+          model: organization,
+          string: @string,
+          startDate: params.start,
+          period: params.period
+        )
   
   categories: (id) ->
     params = @processPeriod 'today', 'week'
