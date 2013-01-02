@@ -34,29 +34,26 @@ class Gandalf.Views.Index extends Backbone.View
 
   el: "#content"
 
-  events:
-    "scroll" : "scrolling"
-
   # Rendering functions
 
-  renderWeekCalendar: () ->
+  renderWeekCalendar: (containerSelector) ->
     view = new Gandalf.Views.Calendar.Week.Index(
       startDate: moment(@startDate)
       days: @days
     )
-    @$("#calendar-container").append(view.el)
+    @$(".content-calendar").append(view.el)
     if @first
       @$(".cal-body").animate scrollTop: 550, 300
       @first = false
-    @hideHidden()
+    # @hideHidden()
 
   renderMonthCalendar: () ->
     view = new Gandalf.Views.Calendar.Month.Index(
       startDate: moment(@startDate)
       days: @days
     )
-    @$("#calendar-container").append(view.el)
-    @hideHidden()
+    @$(".content-calendar").append(view.el)
+    # @hideHidden()
 
   renderWeekMultiday: () ->
     evs = @collection.getMultidayEvents()
@@ -104,16 +101,17 @@ class Gandalf.Views.Index extends Backbone.View
       @adjustOverlappingEvents()
 
   render: () ->
-    $(@el).html(@template({ user: Gandalf.currentUser }))
+    @$el.html(@template({ user: Gandalf.currentUser }))
+    Gandalf.calendarHeight = $(".content-calendar").height()
     split = (@period is "month")
     @collection.splitMultiDay(split)       # Adjust multi-day events
     @days = @collection.group()
-    @renderFeed()
+    # @renderFeed()
     @renderCalendar()
-    t = this
-    setInterval( ->
-      t.resetEventPositions()
-    , 20000)
+    # t = this
+    # setInterval( ->
+    #   t.resetEventPositions()
+    # , 20000)
     return this
   
   # Event handlers
@@ -123,10 +121,6 @@ class Gandalf.Views.Index extends Backbone.View
     cats = @collection.getHiddenCats()
     @orgVisChange(orgs)
     @catVisChange(cats)
-
-  scrolling: () ->
-    if("#feed-list").scrollTop() + $(".feed").height() == $("#feed-list").height()
-      console.log 'go!'
 
   resetEventPositions: () ->
     $(".cal-week-event").css({ width: "96%" }) # For window resizing
