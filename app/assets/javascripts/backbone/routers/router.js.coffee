@@ -146,7 +146,12 @@ class Gandalf.Router extends Backbone.Router
     @category.url = "/categories/" + id
     @category.fetch
       success: (category) =>
-        view = new Gandalf.Views.Categories.Show( model: category, string: @string )
+        view = new Gandalf.Views.Categories.Show(
+          model: category,
+          string: @string
+          startDate: params.start,
+          period: params.period
+        )
      
   preferences: ->
     view = new Gandalf.Views.Preferences.Index
