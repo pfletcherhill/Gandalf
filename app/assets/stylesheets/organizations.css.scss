@@ -127,78 +127,7 @@ tr.organization-event {
   }
 }
 
-<<<<<<< HEAD
 //Show
-
-$cal-header-height: 200px;
-$bg-color: #ddd;
-
-.content-calendar {
-  width: 100%;
-  height: 400px;
-  background: $bg-color;
-  table {
-    width: 100%;
-  }
-  td {
-    border-right: 1px solid white;
-    &:last {
-      border-right: none;
-    }
-  }
-}
-
-.org-cal-header {
-  height: $cal-header-height;
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  background: $blue;
-  .org-cal-header-days-week {
-    @include calc(width,100%,50px);
-    position: absolute;
-    top: 0px;
-    left: 50px;
-    background: $bg-color;
-    table {
-      width: 100%;
-      table-layout:fixed; 
-    }
-    td.org-cal-day-week {
-      text-align: center;
-      height: $cal-header-height;
-      vertical-align: middle;
-      @include HN-Light;
-      color: #aaa;
-      font-size: 15px;
-      .org-cal-day-week-num {
-        color: #bbb;
-        font-size: 90px;
-        @include HN-Bold;
-        line-height: 90px;
-      }
-    }
-  }
-}
-
-.org-cal-body {
-  height: 400px;
-  width: 100%;
-  overflow: scroll;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  td.org-cal-day-hours {
-    padding-top: 30px;
-    width: 50px;
-    background: $blue;
-    border-right: none;
-    span {
-      color: white;
-    }
-  }
-}
 
 .body-header {
   border-bottom: 1px solid #dadada;
