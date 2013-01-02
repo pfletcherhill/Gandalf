@@ -3,7 +3,7 @@ Gandalf.Views.Calendar ||= {}
 class Gandalf.Views.Calendar.Index extends Backbone.View
 
   initialize: ->
-    split = (@options.type is "month")
+    split = true#(@options.type is "month")
     @collection.splitMultiDay(split)       # Adjust multi-day events
     @days = @collection.group()
     # Class variables
