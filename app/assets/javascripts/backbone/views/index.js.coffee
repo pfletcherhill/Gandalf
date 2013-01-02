@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views ||= {}
 
-class Gandalf.Views.Events.Index extends Backbone.View
+class Gandalf.Views.Index extends Backbone.View
 
   # options has keys [collection, startDate, period]
   initialize: ()->
@@ -30,7 +30,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     Gandalf.dispatcher.on("event:click", @eventClick, this)
 
   template: JST["backbone/templates/events/index"]
-  popoverTemplate: JST["backbone/templates/calendar/calendar_popover"]
+  popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   el: "#content"
 
@@ -40,7 +40,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   # Rendering functions
 
   renderWeekCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarWeek(
+    view = new Gandalf.Views.Calendar.Week.Index(
       startDate: moment(@startDate)
       days: @days
     )
@@ -51,7 +51,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
     @hideHidden()
 
   renderMonthCalendar: () ->
-    view = new Gandalf.Views.Events.CalendarMonth(
+    view = new Gandalf.Views.Calendar.Month.Index(
       startDate: moment(@startDate)
       days: @days
     )
@@ -61,7 +61,7 @@ class Gandalf.Views.Events.Index extends Backbone.View
   renderWeekMultiday: () ->
     evs = @collection.getMultidayEvents()
     for event in evs
-      view = new Gandalf.Views.Events.CalendarWeekMultiday(
+      view = new Gandalf.Views.Calendar.Week.Multiday(
         { model: event, startDate: moment(@startDate) }
       )
       $(".cal-multiday").append(view.el)
@@ -74,26 +74,26 @@ class Gandalf.Views.Events.Index extends Backbone.View
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Events.FeedDay(day: day, collection: events,done: @doneEvents)
+    view = new Gandalf.Views.Feed.Day(day: day, collection: events,done: @doneEvents)
     @$("#feed-list").append(view.el)
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     hidden = @collection.getHiddenOrgs()
-    for s in subscriptions
-      invisible = false
-      invisible = true if s.id in hidden
-      view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
-      $("#subscribed-organizations-list").append(view.el)
+    # for s in subscriptions
+    #       invisible = false
+    #       invisible = true if s.id in hidden
+    #       view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
+    #       $("#subscribed-organizations-list").append(view.el)
   
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
     hidden = @collection.getHiddenCats()
-    for s in subscriptions
-      invisible = false
-      invisible = true if s.id in hidden
-      view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
-      $("#subscribed-categories-list").append(view.el)
+    # for s in subscriptions
+    #       invisible = false
+    #       invisible = true if s.id in hidden
+    #       view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
+    #       $("#subscribed-categories-list").append(view.el)
 
   renderCalendar: () ->
     if @period == "month"

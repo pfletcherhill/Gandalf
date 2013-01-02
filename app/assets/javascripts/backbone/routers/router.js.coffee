@@ -56,7 +56,7 @@ class Gandalf.Router extends Backbone.Router
     string = @generateParamsString params
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
     @events.fetch success: (events) ->
-      view = new Gandalf.Views.Events.Index(
+      view = new Gandalf.Views.Index(
         collection: events
         startDate: params.start
         period: params.period
@@ -89,7 +89,7 @@ class Gandalf.Router extends Backbone.Router
     @organization.url = "/organizations/" + id + "/edit"
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Organizations.Index(organizations: @organizations, organization: organization, type: type)
+        view = new Gandalf.Views.Dashboard.Index(organizations: @organizations, organization: organization, type: type)
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"

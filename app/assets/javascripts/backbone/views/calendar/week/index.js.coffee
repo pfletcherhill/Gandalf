@@ -1,6 +1,6 @@
-Gandalf.Views.Events ||= {}
+Gandalf.Views.Calendar.Week ||= {}
 
-class Gandalf.Views.Events.CalendarWeek extends Backbone.View
+class Gandalf.Views.Calendar.Week.Index extends Backbone.View
   initialize: ()->
     @days = @options.days
     @startDate = @options.startDate
@@ -10,8 +10,8 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
 
     @render()
 
-  template: JST["backbone/templates/calendar/calendar_week"]
-  headerTemplate: JST["backbone/templates/calendar/calendar_week_header"]
+  template: JST["backbone/templates/calendar/week/index"]
+  headerTemplate: JST["backbone/templates/calendar/week/header"]
   
   tagName: "div"
   className: "cal cal-week"
@@ -20,7 +20,7 @@ class Gandalf.Views.Events.CalendarWeek extends Backbone.View
     "click .hour-day" : "hidePopovers"
 
   addCalDay: (events, dayNum) ->
-    view = new Gandalf.Views.Events.CalendarDay(model: events, type: "week", dayNum: dayNum)
+    view = new Gandalf.Views.Calendar.Day(model: events, type: "week", dayNum: dayNum)
     @$(".cal-day-container").append(view.el)
   
   render: () ->
