@@ -1,3 +1,10 @@
 <p class='event-name'><strong><%= event.get("name") %></strong></p>
-<p>By: <%= event.get("organization") %></p>
-<p>At: <%= event.get("location") %> (ID: <%= event.get("eventId") %>)</p>
+<% startAt = moment(event.get("start_at")); %>
+<% endAt = moment(event.get("end_at")); %>
+<p class="event-time">
+  <%= startAt.format("h:mm a") %>
+</p>
+<a href="#organizations/<%= event.get("organization_id") %>">
+  <p><%= event.get("organization") %></p>
+</a>
+<p><%= event.get("location") %> (ID: <%= event.get("eventId") %>)</p>

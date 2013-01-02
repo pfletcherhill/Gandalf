@@ -1,33 +1,23 @@
 /* ========= CALENDAR ======== */
 
-.calendar {
-  $width: $sidebar_width + $feed_width;
-  left: $width + 2; // For borders
-  width: -moz-calc(100% - 442px);
-  width: -webkit-calc(100% - 442px);
-  width: -o-calc(100% - 442px);
-  width: calc(100% - 442px);
-  overflow-y: hidden;
-}
-
 $week_hour_height: 44px;
 $cal_gap: 40px;
 $cal_head_height: 70px;
 $cal_top_pad: 10px;
+$hour-height: 4.1667%;
+
+// Redundant styling—here just to change bg color
+.content-calendar {
+  background-color: #eee;
+}
 .cal {
-  // position:relative;
-  // top: $cal_head_height;
   width: 100%;
   height: 100%;
 }
 
-.cal table {
-  width: 100%;
-  table-layout: fixed;
-}
-
 /* ==== CALENDAR HEADER ==== */
 
+/*
 .cal-header {
   position: fixed;
   padding-top: $cal_top_pad;
@@ -56,7 +46,7 @@ $cal_top_pad: 10px;
     border-right: 1pt solid transparent;
   }
 }
-
+*/
 .cal-multiday {
   position: relative;
   margin-left: $cal_gap;
@@ -74,23 +64,30 @@ $cal_top_pad: 10px;
   }
 }
 
-/* ===== CALENDAR BODY ===== */
+/* ===== CALENDAR TABLE ===== */
 
-.cal-body {
-  position: absolute;
-  top: $cal_head_height + $cal_top_pad;
+.cal-table {
   width: 100%;
-  height: -moz-calc(100% - 70px);
-  height: -webkit-calc(100% - 70px);
-  height: -o-calc(100% - 70px);
-  height: calc(100% - 70px);
-  overflow-y: scroll;
+  height: 100%;
+  table-layout: fixed;
+  thead {
+    font-size: 80%;
+    //background-color: #ddd;
+    // border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  td {
+    vertical-align: top;
+  }
 }
+
 .cal-week td:first-child {
-  width: $cal_gap;
+  // width: $cal_gap;
+  // background-color: #eeeeff;
 }
 
 .cal-day {
+  position: relative;
   border-right: 1pt solid #ddd;
 }
 
@@ -101,28 +98,45 @@ $cal_top_pad: 10px;
   vertical-align: top;
 }
 
-.hour {
-  position: relative;
-  height: $week_hour_height;
-}
-.hour-label {
-  border-top: 1pt solid transparent;
-}
+
 .hour-day {
-  border-bottom: 1pt solid #eee;
-}
-.hour-half {
-  position: absolute;
-  top: 50%;
-  height: 0;
-  width: 100%;
-  border-bottom: 1pt dashed #eee;
+  height: $hour-height; // 100/24
+  position: relative;
+  z-index: -5;
+  &:nth-child(even) {
+    border-bottom: 1pt solid #ddd;
+  }
+  &:nth-child(odd) {
+    border-bottom: 1pt solid #ebebeb;
+  }
 }
 
-.hour-num {
+.day-tag {
+  position: absolute;
+  width: 100%;
+  top: 25%;
+  left: 0;
+  text-align: center;
+  z-index: -4;
+  color: #ccc; 
+  font-size: 130%;
+  text-shadow: 0px 1px 1px rgba(white, 0.75);
+  > p {
+    margin: 0;
+  }
+  > .tag-date {
+    font-size: 550%;
+    line-height: 100%;
+    font-weight: bold;
+    
+  }
+}
+
+
+.hour-label {
   position: relative;
   font-size: 8px;
-  line-height: 8px;
+  height: $hour-height*2;
   color: #333;
   top: -6px;
   left: 7px;

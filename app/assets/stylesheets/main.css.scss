@@ -1,4 +1,5 @@
 /* ============ VARIABLES ================ */
+
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
 $font: 12px;
@@ -6,7 +7,7 @@ $min_width: 960px;
 $width: 960px;
 $header_height: 50px;
 $side_padding: 15px;
-$calendar-height: 250px;
+$calendar-height: 400px;
 $background-color: #fafafa;
 
 /* =============  GLOBAL STYLES =========== */
@@ -61,7 +62,7 @@ button {
 .header {
   height: $header_height;
   background: white;
-  @include box-shadow(0 1px 2px rgba(0, 0, 0, 0.33));
+  @include box-shadow(0 1px 1px rgba(black, 0.2));
   position: fixed;
   top: 0px;
   left: 0px;
@@ -69,9 +70,9 @@ button {
   z-index: 100;
   border-top: 3px solid $blue;
 }
+
 .header-container {
   width: $width;
-  min-width: $min_width;
   margin: auto;
 }
 
@@ -85,9 +86,11 @@ button {
     @include transition(color 0.1s);
     padding: 0px $side_padding;
   }
+  border-right: 1pt solid lightblue;
 }
 
 #logo {
+  border-right: 1pt solid pink;
   a {
     display: block;
     background-image: url('/assets/y_logo_200.png');
@@ -136,14 +139,17 @@ button {
   left: 0;
   width: 100%;
   height: $calendar-height;
+  overflow-y: hidden;
+  
 }
 
 .content-body {
   position: relative;
-  margin-top: $calendar-height + $header-height + 3px;
+  top: $calendar-height;
   width: 100%;
   background-color: $background-color;
   min-height: 500px;
+  border-top: 1pt solid #dadada;
 }
 
 .content-body-container {
