@@ -87,11 +87,12 @@ button {
     @include transition(color 0.1s);
     padding: 0px $side_padding;
   }
-  border-right: 1pt solid lightblue;
+  border-right: 1px solid #dadada;
 }
 
 #logo {
-  border-right: 1pt solid pink;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
   a {
     display: block;
     background-image: url('/assets/y_logo_200.png');
@@ -121,6 +122,8 @@ button {
   float: right;
   line-height: $header_height;
   padding: 0px $side_padding;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
 }
 
 /* ================== LAYOUT =============== */

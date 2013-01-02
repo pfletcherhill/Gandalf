@@ -65,14 +65,14 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   renderFeed: () ->
     noEvents = "<div class='feed-day-header'>You have no upcoming events</div>"
-    @$("#feed-list").append(noEvents) if _.isEmpty(@days)
+    @$("#body-feed").append(noEvents) if _.isEmpty(@days)
     @doneEvents = []
     for day, events of @days
       @addFeedDay(day, events)
 
   addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Feed.Day(day: day, collection: events,done: @doneEvents)
-    @$("#feed-list").append(view.el)
+    view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
+    @$(".body-feed").append(view.el)
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
@@ -106,7 +106,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     split = (@period is "month")
     @collection.splitMultiDay(split)       # Adjust multi-day events
     @days = @collection.group()
-    # @renderFeed()
+    @renderFeed()
     @renderCalendar()
     # t = this
     # setInterval( ->

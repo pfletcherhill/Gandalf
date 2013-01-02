@@ -1,27 +1,37 @@
-/* ====== FEED ==== */
-.feed {
-  left: $sidebar_width;
-  width: $feed_width;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
+/* ====== NAVIGATION ======= */
+
+.cal-nav {
+  min-height: 50px;
+  border: 1px solid #dadada;
+  background: white;
+  margin-top: 5px;
+  margin-bottom: 30px;
 }
 
+/* ====== FEED ==== */
+
 .feed-day-header {
-  border-top: 1px solid #dadada;
-  border-bottom: 1px solid #dadada;
+  border: 1px solid #dadada;
   background: #EEE;
   padding: 7px 10px;
   font-size: 14px;
+  margin-bottom: 20px;
 }
-$feed_height: 90px;
+
 .feed-event {
   padding: 8px 5px;
   border-bottom: 1px solid #eee;
-  min-height: $feed_height;
+  min-height: 90px;
   font-size: 0;
   cursor: pointer;
+  width: 460px;
+  display: inline-block;
+  margin-bottom: 20px;
+  &:nth-child(odd) {
+    margin-right: 20px;
+  }
   &:last-child {
-    //border-bottom: none;
+    margin-bottom: 30px;
   }
   .time {
     width: 25%;
