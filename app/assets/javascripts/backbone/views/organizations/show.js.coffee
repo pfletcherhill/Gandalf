@@ -28,9 +28,17 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
       @$('.organization-categories').append( cats.join(', ') )
   
   renderEvents: =>
+    events = @model.get("events")
+    console.log "events", events
+    view = new Gandalf.Views.Calendar.Index(
+      type: @options.period
+      events: events
+      startDate: @options.startDate
+    )
+    $(".content-calendar").append(view.el)
             
   render: ->
-    $(@el).html(@template( organization: @model ))
+    @$el.html(@template(organization: @model))
     @renderCategories()
     @renderFollowing()
     @model.fetchEvents(@string).then @renderEvents
