@@ -5,12 +5,12 @@ class Gandalf.Views.Feed.Event extends Backbone.View
   initialize: ->
     @eventId = @model.get("eventId")
     @color = "rgba(#{@model.get("color")},0.08)"
-    @darkColor = "rgba(#{@model.get("color")},0.15)"
+    @darkColor = "rgba(#{@model.get("color")},1)"
     @render()
 
   events: 
-    "mouseenter" : "mouseenter"
-    "mouseleave" : "mouseleave"
+    #"mouseenter" : "mouseenter"
+    #"mouseleave" : "mouseleave"
     "click" : "click"
 
   template: JST["backbone/templates/feed/event"]
@@ -24,13 +24,13 @@ class Gandalf.Views.Feed.Event extends Backbone.View
     e = @model
     startTime = @convertTime e.get('start_at')
     endTime = @convertTime e.get('end_at')
+    console.log 'organization', e.get('organization')
     $(@el).attr(
       "data-event-id": e.get("id")
       "data-organization-id" : e.get("organization_id")
       "data-category-ids" : e.makeCatIdString()
     ).css(
-      backgroundColor: @color
-      borderBottom: "1pt solid #{@darkColor}"
+      borderTop: "5px solid #{@darkColor}"
     ).html(@template({ 
       event: e
       startTime: startTime
