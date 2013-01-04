@@ -15,48 +15,71 @@
 }
 
 .feed-event {
-  padding: 8px 5px;
-  border-bottom: 1px solid #eee;
-  min-height: 90px;
+  background: white;
+  position: relative;
+  @include box-shadow(0 0 3px rgba(black, 0.3));
+  vertical-align: top;
+  min-height: 100px;
   font-size: 0;
   cursor: pointer;
-  width: 460px;
+  width: 470px;
   display: inline-block;
   margin-bottom: 20px;
+  @include transition(0.2s);
   &:nth-child(odd) {
     margin-right: 20px;
   }
   &:last-child {
     margin-bottom: 30px;
   }
-  .time {
-    width: 25%;
+  .event-image {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-right: 1px solid #DADADA;
     height: 100%;
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 13px;
-    line-height: 66px;
-    color: #333;
+    background: #EEE;
+    width: 100px;
+    background-position: center;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
   }
   .details {
-    width: 68%;
-    margin-left: 3%;
+    width: 349px;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-left: 101px;
+    margin-bottom: 10px;
     vertical-align: middle;
     height: 100%;
     display: inline-block;
   }
   .name {
-    font-size: 15px;
+    font-size: 18px;
     color: #333;
-    line-height: 23px;
-    font-weight: bold;
+    line-height: 100%;
+    padding-bottom: 8px;
+    @include HN-Bold;
+    border-bottom: 1px solid #dadada;
   }
-  .location, .organization {
+  .organization {
+    @include HN-Regular;
+    font-size: 15px;
+    border-bottom: 1px solid #dadada;
+    margin-bottom: 5px;
+  }
+  .time, .location {
+    @include HN-Regular;
     font-size: 13px;
-    font-weight: 200;
+    color: #333;
+    line-height: 20px;
+    span {
+      margin-right: 5px;
+      opacity: 0.5;
+    }
   }
   &:hover {
-    background-color: white;
+    @include box-shadow(0 1px 5px rgba(black, 0.3));
   }
   @include transition(background-color 0.2s);
   &.event-hidden-org, &.event-hidden-cat {
