@@ -114,7 +114,7 @@ button {
   width: 100%;
   min-width: $min-width;
   min-height: 500px;
-  top: 53px;
+  top: $header-height + 3px; // 3px for the top blue border
 }
 
 .content-calendar {

@@ -34,6 +34,9 @@
       <% end %>
       <div class="pull-right">
         <% if current_user %>
+          <a href="/mail">
+            <div class="link">Send Mail</div>
+          </a>
           <a href="#preferences">
             <div class="link">
               <%= current_user.name %>
