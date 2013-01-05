@@ -1,8 +1,11 @@
+credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
+gmail = credentials['gmail']
+pass = credentials['gmail_password']
 ActionMailer::Base.smtp_settings = {
   :address              => "smtp.gmail.com",
   :port                 => 587,
-  :user_name            => "faiaz.a.khan@gmail.com", # ENV['GMAIL'],
-  :password             => "qRuP0448", # ENV['GMAIL_PASS'],
+  :user_name            => gmail,
+  :password             => pass,
   :authentication       => "plain",
   :enable_starttls_auto => true
 }
