@@ -109,6 +109,8 @@ $hour-height: 4.1667%;
   height: 0;
   color: rgba(darken($blue, 20%), 0.8);
   border-bottom: 1pt solid rgba(darken($blue, 20%), 0.8);
+  @include box-shadow(0 1px 1px rgba(black, 0.4));
+  z-index: 30;
 }
 #time-marker-img {
   $marker-img-height: 15px;

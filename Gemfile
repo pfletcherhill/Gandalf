@@ -46,6 +46,7 @@ gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
 gem 'gmaps4rails'
+gem 'mail'
 
 # Search
 gem 'pg_search'
