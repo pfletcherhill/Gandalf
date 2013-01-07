@@ -17,40 +17,42 @@ class Gandalf.Views.Dashboard.Info extends Backbone.View
       dataType: "json"
       autoUpload: true
       url: url
+      start: (e, data) =>
+        @$(".image").html('').addClass 'loading'
       done: (e, data) =>
         @model.set data.result
-        @render(@model)
+        @render()
       fail: (e, data) ->
         alert 'Upload failed'
-      start: (e, data) =>
-        @$("#open-image").html('Uploading...')
-        @$(".image").html('').addClass 'loading'
        
   render: ->
-    $(@el).html(@template( @model.toJSON() ))
+    @$el.html(@template(@model.toJSON()))
+    # @modelBinder.bind(@model, @$("#organization-form"))
     $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
-    @$("form#organization-form").backboneLink(@model)
+    # @$("form#organization-form").backboneLink(@model)
     @renderUpload()
     return this
   
   events:
-    "submit form#organization-form" : 'save'
+    "submit #organization-form" : 'save'
     "click button#new-event" : "openModal"
     "click .close" : "closeModal"
-    "click #open-image" : "openImage"
   
   save: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    @$("button").html('Updating...')
+    submit = @$("input[type='submit']")
+    console.log submit
+    $(submit).val('Updating...')
     @model.unset 'events'
     @model.url = "/organizations/" + @model.id
     @model.save(@model,
       success: (organization) =>
-        @$("button").html('Update Organization')
+        console.log organization
+        $(submit).val('Update Organization')
         @model.trigger('updated')
       error: (organization, jqXHR) =>
-        @$("button").html('Update Organization')
+        $(submit).val('Update Organization')
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
   
@@ -59,6 +61,3 @@ class Gandalf.Views.Dashboard.Info extends Backbone.View
   
   closeModal: (event) ->
     @$(".modal").addClass 'hide'
-    
-  openImage: (event) ->
-    $("#new-image").click()
