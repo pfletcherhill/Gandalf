@@ -1,6 +1,5 @@
 class UserMailer < ActionMailer::Base
-  # default :from => "pidgeon@yalego.es"
-  default :from => "faiaz.a.khan@gmail.com"
+  default :from => "The Yale Go Pigeon <pigeon@yalego.es>"
   def daily_bulletin(user)
     mail(
       :to => "#{user.name} <#{user.email}>",
