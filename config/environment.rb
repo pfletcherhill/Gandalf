@@ -23,5 +23,9 @@ unless Rails.env.production?
   credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
   ENV['CAS_NETID'] = credentials['netid']
   ENV['CAS_PASS'] = credentials['password']
+  ENV['GMAIL'] = credentials['gmail']
+  ENV['GMAIL_PASS'] = credentials['gmail_password']
+  ENV['SENDGRID'] = credentials['sendgrid']
+  ENV['SENDGRID_PASS'] = credentials['sendgrid_password']
 end
 

@@ -17,9 +17,8 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
     # "click .global-overlay" : "hidePopover"
 
   addCalDay: (events, dayNum, date) ->
-    view = new Gandalf.Views.Calendar.Day(
-      model: events, 
-      type: "week", 
+    view = new Gandalf.Views.Calendar.Week.Day(
+      model: events,
       date: date,
       dayNum: dayNum
     )

@@ -1,12 +1,1 @@
 #content
-
-:javascript
-  // Setting global event format string
-  Gandalf.currentUser = new Gandalf.Models.User();
-  Gandalf.currentUser.url = '/me';
-  Gandalf.currentUser.fetch({
-    success: function() {
-      window.router = new Gandalf.Router();
-      Backbone.history.start();
-    }
-  });

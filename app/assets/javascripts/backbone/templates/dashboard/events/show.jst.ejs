@@ -3,16 +3,16 @@
     <div class="image loading"></div>
   </td>
   <td>
-    <div class="name"><%= event.name %></div>
-    <div class="time"><%= startTime %></div>
+    <div class="name"><%= event.get('name') %></div>
+    <div class="time"><%= moment(event.get('start_at')).format("h:mm a") %></div>
     <div class="location"><%= event.location %></div>
   </td>
   <td>
     <div class="description"><%= event.description %></div>
   <td>
-    <button>Edit</button>
+    <div class='btn'>Edit</div>
   </td>
   <td>
-    <button>Delete</button>
+    <div class='btn'>Delete</div>
   </td>
 </tr>
