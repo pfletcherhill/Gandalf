@@ -6,6 +6,8 @@
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
+//= require backbone.modelbinder
 //= require backbone/gandalf
 //= require bootstrap
+//= require backbone-forms-rails
 //= require_tree .

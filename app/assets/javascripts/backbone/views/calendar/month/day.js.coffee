@@ -14,8 +14,21 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
     if @model
       container = @$el.children(".cal-events:first")
       for e in @model
-        view = new Gandalf.Views.Calendar.Month.Event(model: e) 
-        $(container).append(view.el)
+        continued = e.get("start_at") isnt e.get("calStart")
+        continues = e.get("end_at") isnt e.get("calEnd")
+        if continues or continued # Multiday event
+          view = new Gandalf.Views.Calendar.Month.Event(
+            model: e
+            continued: continued
+            continues: continues
+          ) 
+          $(container).append(view.el)
+      for e in @model
+        continued = e.get("start_at") isnt e.get("calStart")
+        continues = e.get("end_at") isnt e.get("calEnd")
+        if not (continues or continued) # Not a multiday event
+          view = new Gandalf.Views.Calendar.Month.Event(model: e) 
+          $(container).append(view.el)
       Gandalf.dispatcher.trigger("calEvents:ready")
 
   render: () ->

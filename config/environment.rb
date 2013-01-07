@@ -25,5 +25,7 @@ unless Rails.env.production?
   ENV['CAS_PASS'] = credentials['password']
   ENV['GMAIL'] = credentials['gmail']
   ENV['GMAIL_PASS'] = credentials['gmail_password']
+  ENV['SENDGRID'] = credentials['sendgrid']
+  ENV['SENDGRID_PASS'] = credentials['sendgrid_password']
 end
 

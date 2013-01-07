@@ -83,7 +83,6 @@ button {
   color: #333;
   font-size: 13px;
   font-weight: bold;
-  border-right: 1px solid #dadada;
   @include transition(all 0.1s);
   display: inline-block;
   padding: 0 10px;
@@ -101,8 +100,11 @@ button {
   vertical-align: -15%;
 }
 
+.pull-left .link {
+  border-right: 1px solid #dadada;
+}
+
 .pull-right .link {
-  border-right: none;
   border-left: 1px solid #dadada;
 }
 
