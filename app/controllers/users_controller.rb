@@ -2,6 +2,11 @@ class UsersController < ApplicationController
   
   before_filter :require_login
 
+  def mail
+    UserMailer.daily_bulletin(current_user).deliver
+    redirect_to "/"
+  end
+
   def require_login
     unless logged_in?
       redirect_to '/welcome'

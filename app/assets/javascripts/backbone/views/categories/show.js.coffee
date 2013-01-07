@@ -20,9 +20,17 @@ class Gandalf.Views.Categories.Show extends Backbone.View
       Gandalf.currentUser.fetchSubscribedCategories().then @renderFollowing
   
   renderEvents: =>
+    events = @model.get("events")
+    view = new Gandalf.Views.Calendar.Index(
+      type: @options.period
+      events: events
+      startDate: @options.startDate
+    )
+    $(".content-calendar").append(view.el)
             
   render: ->
-    $(@el).html(@template( category: @model ))
+    @$el.html(@template( category: @model ))
+    Gandalf.calendarHeight = $(".content-calendar").height()
     @renderFollowing()
     @model.fetchEvents(@string).then @renderEvents
     return this

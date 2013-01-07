@@ -5,8 +5,8 @@ class Gandalf.Views.Calendar.Month.Event extends Backbone.View
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
-    @continued = (@model.get("start_at") isnt @model.get("calStart"))
-    @continues = (@model.get("end_at") isnt @model.get("calEnd"))
+    @continued = @options.continued
+    @continues = @options.continues
     @render()
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
@@ -28,13 +28,13 @@ class Gandalf.Views.Calendar.Month.Event extends Backbone.View
 
   render: () ->
     if @continued or @continues
-      $(@el).css(
+      @$el.css(
         color: "#222"
         backgroundColor: @lightColor
         width: "100%"
       )
     else
-      $(@el).css(
+      @$el.css(
         color: @lightColor
       )
 

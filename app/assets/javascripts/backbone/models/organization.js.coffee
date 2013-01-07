@@ -14,10 +14,8 @@ class Gandalf.Models.Organization extends Backbone.Model
       dataType: 'json'
       url: '/organizations/' + @id + '/events' + string
       success: (data) =>
-        console.log "data", data
-        myevents = new Gandalf.Collections.Events data
-        console.log "before", myevents
-        @set events: myevents
+        orgEvents = new Gandalf.Collections.Events data
+        @set events: orgEvents
   
   fetchSubscribedUsers: ->
     $.ajax
