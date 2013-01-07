@@ -26,7 +26,7 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
   
   renderOrganizationMenu: (type) ->
     @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
-    @$('.main-menu a[data-type=' + type + ']').addClass 'selected'
+    @$(".main-menu a[data-type=#{type}]").addClass 'selected'
           
   render: (type) =>
     $(@el).html(@template())

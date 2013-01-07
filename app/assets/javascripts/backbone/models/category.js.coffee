@@ -14,8 +14,8 @@ class Gandalf.Models.Category extends Backbone.Model
       dataType: 'json'
       url: '/categories/' + @id + '/events' + string
       success: (data) =>
-        console.log data
-        @set events: data
+        catEvents = new Gandalf.Collections.Events data
+        @set events: catEvents
 
 class Gandalf.Collections.Categories extends Backbone.Collection
   model: Gandalf.Models.Category
