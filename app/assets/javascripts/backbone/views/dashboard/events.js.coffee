@@ -17,19 +17,18 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
     moment(time).format("h:mm a")
       
   renderEvents: =>
-    for event in @model.get('events')
-      startTime = @convertTime event.start_at
-      @$("#organization-events-list").append( @eventTemplate( event: event, startTime: startTime ))
+    for e in @model.get("events").models
+      @$("#organization-events-list").append( @eventTemplate( event: e))
         
   render: =>
-    $(@el).html(@template( @model.toJSON() ))
+    @$el.html(@template( @model.toJSON() ))
     $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
     return this
   
   events:
-    "click button#new-event" : "openEvent"
-    "click button#close-event" : "closeEvent"
-    "submit form#new-event" : "createEvent"
+    "click #new-event" : "openEvent"
+    "click #close-event" : "closeEvent"
+    # "submit #new-event" : "createEvent"
   
   openEvent: ->
     @$("#event-form").addClass 'open'

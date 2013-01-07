@@ -6,5 +6,5 @@ class Gandalf.Views.Static.About extends Backbone.View
   initialize: ->
     
   render: =>
-    $(@el).html(@template())
+    @$el.html @template()
     return this

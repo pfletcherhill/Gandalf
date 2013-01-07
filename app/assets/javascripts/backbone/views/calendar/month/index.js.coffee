@@ -25,8 +25,8 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
       dayCount++
 
   addDay: (events, date) ->
-    view = new Gandalf.Views.Calendar.Day(
-      model: events, type: "month", date: date
+    view = new Gandalf.Views.Calendar.Month.Day(
+      model: events, date: date
     )
     @$(".cal-day-container:last").append(view.el)
   
