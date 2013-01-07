@@ -27,6 +27,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-fileupload-rails'
 gem 'rails-backbone'
+gem 'backbone-forms-rails'
 
 # Web
 gem 'nokogiri'
@@ -46,8 +47,7 @@ gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
 gem 'gmaps4rails'
+gem 'mail'
 
 # Search
-gem 'sunspot_rails'
-gem 'sunspot_solr'
 gem 'pg_search'
