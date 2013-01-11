@@ -5,7 +5,7 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
   template: JST["backbone/templates/dashboard/settings/index"]
   eventTemplate: JST["backbone/templates/dashboard/events/show"]
   
-  id: 'organization'
+  className: 'dash-org-container'
     
   initialize: =>
     @render()
@@ -26,7 +26,6 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
         alert 'Upload failed'
        
   render: ->
-    console.log @model
     @$el.html @template(@model.toJSON())
     # @modelBinder.bind(@model, @$("#organization-form"))
     $("li[data-id='#{@model.id}']").addClass 'selected'
@@ -35,30 +34,23 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
     return this
   
   events:
-    "submit #organization-form" : 'save'
-    "click button#new-event" : "openModal"
-    "click .close" : "closeModal"
+    "submit #dash-settings-form" : 'save'
   
   save: (event) ->
-    event.preventDefault()
-    event.stopPropagation()
     submit = @$("input[type='submit']")
-    console.log submit
     $(submit).val('Updating...')
     @model.unset 'events'
+    @model.set
+      name: $("input[name='name']").val()
+      bio: $("textarea[name='bio']").val()
     @model.url = "/organizations/" + @model.id
     @model.save(@model,
       success: (organization) =>
-        console.log organization
         $(submit).val('Update Organization')
         @model.trigger('updated')
       error: (organization, jqXHR) =>
         $(submit).val('Update Organization')
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
-  
-  openModal: (event) ->
-    @$(".modal").removeClass 'hide'
-  
-  closeModal: (event) ->
-    @$(".modal").addClass 'hide'
+    # Instead of stopPropogation and preventDefault, just return false!
+    return false

@@ -1,9 +1,4 @@
-#organization {
-  border-right: 1px solid #dadada;
-  border-bottom: 1px solid #dadada;
-}
-
-ul.main-menu {
+ul.dash-menu {
   width: $main-width;
   height: 57px;
   border-bottom: 1px solid #dadada;
@@ -31,9 +26,20 @@ ul.main-menu {
   }
 }
 
-.main-content {
+.dash-org-container {
+  padding: 30px;
+  border: 1pt solid #dadada;
+  border-top: none;
+}
+
+.dash-content {
   background: white;
-  border-left: 1px solid #dadada;
+}
+
+/* Events panel */
+
+.dash-events-list {
+  width: 100%;
 }
 
 #organization-events {
@@ -45,7 +51,10 @@ ul.main-menu {
   }
 }
 
-#organization-form {
+
+/* Settings panel */
+
+#dash-settings-form {
   padding: 15px;
   img {
     height: 60px;
@@ -58,10 +67,6 @@ ul.main-menu {
   textarea {
     height: 100px;
   }
-}
-
-table#organization-events-list {
-  width: $main-width;
 }
 
 tr.organization-event {

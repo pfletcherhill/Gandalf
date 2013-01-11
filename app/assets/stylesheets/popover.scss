@@ -44,15 +44,8 @@ $gandalf-popover-width: 500px;
 .gandalf-popover-body {
   padding: $gandalf-popover-padding;
   background-color: $gandalf-popover-body-color;
-  tr {
-    padding: 3px 0;
-  }
-  td:first-child {
-    width: 25%;
-    font-weight: bold;
-    padding-bottom: 3px;
-  }
 }
+
 .gandalf-popover-description {
   font-size: 10px;
   line-height: 16px;
@@ -65,3 +58,35 @@ $gandalf-popover-width: 500px;
 }
 #map-canvas label { width: auto; display:inline; }
 #map-canvas img { max-width: none; max-height: none; }
+
+/* Specific to views */
+
+.gandalf-popover-body {
+  &.new-event {
+    table {
+      width: 80%;
+    }
+    td {
+      &:first-child {
+        padding-right: 20px;
+        text-align: right;
+      }
+    }
+    input, textarea {
+      width: 100%;
+    }
+  }
+  &.show-event {
+    table {
+    width: 100%;
+    }
+    tr {
+      padding: 3px 0;
+    }
+    td:first-child {
+      width: 25%;
+      font-weight: bold;
+      padding-bottom: 3px;
+    }
+  }
+}

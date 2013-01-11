@@ -25,8 +25,8 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
       @$(".left-list").append("<a href='#dashboard/#{organization.id}'><li data-id=#{organization.id}>#{organization.get('name')}</li></a>")
   
   renderOrganizationMenu: (type) ->
-    @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
-    @$(".main-menu li[data-type=#{type}]").addClass 'selected'
+    @$('.dash-menu').html( @menuTemplate( @organization.toJSON()) )
+    @$(".dash-menu li[data-type=#{type}]").addClass 'selected'
           
   render: (type) =>
     @$el.html @template()
@@ -41,5 +41,5 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     else # Should never happen
       view = new Gandalf.Views.Dashboard.Events(model: @organization)
       
-    @$('.content-main .main-content').html view.el
+    @$('.content-main .dash-content').html view.el
     return this

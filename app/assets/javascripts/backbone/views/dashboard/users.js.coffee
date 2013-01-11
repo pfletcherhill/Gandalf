@@ -5,7 +5,7 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
   template: JST["backbone/templates/dashboard/users/index"]
   userTemplate: JST["backbone/templates/dashboard/users/show"]
   
-  id: 'organization'
+  className: 'dash-org-container'
     
   initialize: =>
     @render()
