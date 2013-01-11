@@ -9,25 +9,25 @@
       <tr>
         <td>Name</td>
         <td>
-          <input type="text" name="name" maxlength="30" placeholder="1 hour of awesomeness" value=<%= event.get("name") %>/>
+          <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" value="<%= event.get("name") %>" />
         </td>
       </tr>
       <tr>
         <td>at</td>
         <td>
-          <input type="text" name="location" maxlength="30" placeholder="Camp awesome" value=<%= event.get("location") %>/>
+          <input type="text" name="location" maxlength="50" placeholder="Camp awesome" value="<%= event.get("location") %>" />
         </td>
       </tr>
       <tr>
         <td>from </td>
         <td>
-          <input type="datetime" name='start_at' placeholder='now' value=<%= event.get("start_at") %>/>
+          <input type="datetime" name='start_at' placeholder='now' value="<%= event.get("start_at") %>" />
         </td>
       </tr>
       <tr>
         <td>to</td>
         <td>
-          <input type="datetime" name='end_at' placeholder='forever' value=<%= event.get("end_at") %>/>
+          <input type="datetime" name='end_at' placeholder='forever' value="<%= event.get("end_at") %>" />
         </td>
       </tr>
       <tr>
