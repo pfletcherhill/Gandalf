@@ -20,6 +20,10 @@ body {
   background: $background-color;
 }
 
+ul {
+  margin: 0;
+}
+
 li {
   list-style: none;
 }
@@ -40,22 +44,13 @@ h3 {
   border-bottom: 2px solid #dadada;
 }
 
-button {
-  display: inline-block;
-  border: 1px solid #777;
-  border-radius: 5px;
-  padding: 5px 20px;
-  font-size: 12px;
-  text-align: center;
-  @include linear-gradient(#fafafa, #eee);
-  cursor: pointer;
-  &:hover {
-    @include linear-gradient(#fafafa, #fafafa);
-  }
-}
-
 .wrapper {
   min-width: $min-width;
+}
+
+.container {
+  width: $width;
+  margin: 0 auto;
 }
 
 /* ================== HEADER =============== */
@@ -117,6 +112,7 @@ button {
   min-width: $min-width;
   min-height: 500px;
   top: $header-height + 3px; // 3px for the top blue border
+  background: #fafafa;
 }
 
 .content-calendar {
@@ -139,42 +135,53 @@ button {
   border-top: 1pt solid #dadada;
 }
 
-.content-body-container {
-  width: $width;
-  margin: 0 auto;
+// Paul's superfluous container for dashboard and browse pages
+.content-container {
+  position: relative;
+  margin-top: 20px;
+  padding-bottom: 50px;
 }
 
-$sidebar_width: 180px;
-$feed_width: 250px;
+$left-width: 240px;
+$left-margin: 10px;
+$main-width: 750px;
+$dashboard-blue: #3399FF;
 
-/* ============= ALL OTHER LAYOUT ============= */
-
-$left_width: 300px;
-
-.content-left, .main {
+.content-left {
+  width: $left-width;
+  background: white;
   position: absolute;
   top: 0;
-  //height: 100%; 
-}
-.content-left {
   left: 0;
-  width: $left_width;
+  margin-right: $left-margin;
+  border: 1px solid #DADADA;
+  border-bottom: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  .left-header {
+    padding: 10px 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  ul.left-list {
+    li.selected {
+      margin-right: -1px;
+      border-right: 5px solid $dashboard-blue;
+    }
+    a:hover {
+      background: #fafafa;
+    }
+  }
 }
 
-.content-header {
-  width: $width;
-  margin: auto;
-  margin-top: 20px;
+.content-main {
+  width: $main-width;
+  margin-left: $left-width + $left-margin;
 }
 
 .left-list {
-  list-style: none;
   margin: 0px;
   border-top: 1px solid #dadada;
-}
-
-.main {
-  left: $left_width;
 }
 
 .loader {

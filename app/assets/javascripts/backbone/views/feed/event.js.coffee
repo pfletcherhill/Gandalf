@@ -18,7 +18,7 @@ class Gandalf.Views.Feed.Event extends Backbone.View
   className: "js-event feed-event"
   
   convertTime: (time) ->
-    moment(time).format("h:mm a")
+    moment(time).format "h:mm a"
     
   render: ->
     e = @model

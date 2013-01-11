@@ -1,34 +1,28 @@
-/* ========== LAYOUT ========= */
-
 .left-search input {
   width: 210px;
   padding: 15px;
-  border: 0px;
+  border: none;
   border-top: 1px solid #dadada;
-  @include HN-Regular;
-  
 }
 
-li {
-  border-bottom: 1px solid #dadada;
-  a {
-    display: block;
-    padding: 15px;
-    @include HN-Bold;
-    font-size: 15px;
+ul.left-list {
+  a:hover {
+    text-decoration: none;
+  }
+  li {
+    border-bottom: 1px solid #dadada;
     color: black;
-    outline: none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
     @include transition(0.2s);
     &:hover {
-      text-decoration: none;
-      color: black;
       @include linear-gradient(#efefef, #fafafa);
-    }
-    &.active {
-      @include linear-gradient(#efefef, #efefef);
     }
   }
 }
+
 
 #browse-list {
   padding-left: 10px;
@@ -64,7 +58,7 @@ li {
       background: white;
       border: 1px solid #DADADA;
       padding: 10px;
-      @include HN-Regular;
+      font-weight: normal;
       top: -36px;
       border-bottom: 0px;
       padding-bottom: 5px;
@@ -78,7 +72,7 @@ li {
       }
     }
     .name {
-      @include HN-Bold;
+      font-weight: bold;
       font-size: 20px;
       border-bottom: 1px solid #dadada;
       padding-bottom: 8px;
@@ -88,7 +82,7 @@ li {
       }
     }
     .location {
-      @include HN-Bold;
+      font-weight: bold;
     }
     .description {
       margin-top: 5px;

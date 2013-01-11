@@ -1,74 +1,18 @@
 /* ========== LAYOUT ========= */
 
-$left-width: 240px;
-$main-width: 750px;
-$blue: #3399FF;
-
-#content {
-  background: #fafafa;
-}
-
-.content-container {
-  width: $width;
-  margin: 0 auto;
-  position: relative;
-  margin-top: 20px;
-  padding-bottom: 50px;
-}
-
 #organization {
   border-right: 1px solid #dadada;
   border-bottom: 1px solid #dadada;
 }
 
-.content-left {
-  width: $left-width;
-  background: white;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  margin-right: 10px;
-  border: 1px solid #DADADA;
-  border-bottom: 0px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  .left-header {
-    padding: 10px 15px;
-    @include HN-Regular;
-    background: #FAFAFA;
-    color: $blue;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-  }
-  ul.left-list {
-    li.selected a {
-      margin-right: -1px;
-      border-right: 5px solid $blue;
-    }
-    a:hover {
-      background: #fafafa;
-    }
-  }
-}
-
-.content-main {
-  width: $main-width;
-  margin-left: 250px;
-}
-
 ul.main-menu {
-  margin: 0px;
-  padding: 0px;
   width: $main-width;
   height: 57px;
   border-bottom: 1px solid #dadada;
   border-left: 1px solid #dadada;
   li {
     border: 0px;
-    float: left;    
-  }
-  a {
-    display: block;
+    float: left;
     padding: 18px 20px;
     background: #fafafa;
     border-right: 1px solid #dadada;
@@ -76,15 +20,15 @@ ul.main-menu {
     color: #333;
     @include transition(border 0);
     @include transition(background 0.2s);
+    &:hover {
+      background: #F1F1F1;
+    }
     &.selected {
       background: white;
       border-bottom: 1px solid white;
       &:hover {
         background: white;
       }
-    }
-    &:hover {
-      background: #F1F1F1;
     }
   }
 }
@@ -105,6 +49,17 @@ ul.main-menu {
 
 #organization-form {
   padding: 15px;
+  img {
+    height: 60px;
+    width: 50px;
+  }
+  input[type='file'] {
+    margin-top: 10px;
+    line-height: normal;
+  }
+  textarea {
+    height: 100px;
+  }
 }
 
 table#organization-events-list {
@@ -144,7 +99,7 @@ button.follow {
     content: "Follow";
   }
   &.following {
-    @include linear-gradient($blue, #4B80FC);
+    @include linear-gradient($dashboard-blue, #4B80FC);
     color: white;
     border: 1px solid blue;
     &:after {

@@ -17,25 +17,6 @@ $hour-height: 4.1667%;
 
 /* ==== CALENDAR HEADER ==== */
 
-/*
-.cal-header {
-  position: fixed;
-  padding-top: $cal_top_pad;
-  height: $cal_head_height;
-  z-index: 20;
-  width: -moz-calc(100% - 442px);
-  width: -webkit-calc(100% - 442px);
-  width: -o-calc(100% - 442px);
-  width: calc(100% - 442px);
-  min-width: $min-width - 442px;
-  background-color: white;
-  @include box-shadow(0 5px 5px -5px #444);
-  .btn-toolbar {
-    padding: 0 10px;
-  }
-}
-
-*/
 .cal-multiday {
   position: relative;
   margin-left: $cal_gap;
@@ -226,73 +207,4 @@ $test-color: lighten(#0f91ec, 20%);
     display: none;
   }
 }
-
-/* ======== POPOVER ========= */
-
-.global-overlay {
-  position: fixed;
-  width: 100%; height: 100%;
-  top: 0; left: 0;
-  z-index: 100;
-  background-color: rgba(black, 0.6);
-  display: none;
-}
-
-$cal-popover-padding: 10px;
-$cal-popover-head-color: lightblue;
-$cal-popover-body-color: #fafafa;
-$cal-popover-width: 500px;
-.cal-popover {
-  position: fixed;
-  top: 100px;
-  left: 50%;
-  width: $cal-popover-width;
-  margin-left: -$cal-popover-width/2;
-  z-index: 110;
-  display: none;
-  background-color: rgba(#eee, 0.9);
-  @include box-shadow(0 0px 10px 0 black);
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    line-height: 15px;
-    opacity: 0.4;
-  }
-}
-
-
-.cal-popover-head {
-  font-size: 16px;
-  line-height: 20px;
-  background-color: $cal-popover-head-color;
-  padding: $cal-popover-padding;
-  padding-right: $cal-popover-padding + 15;
-}
-.cal-popover-body {
-  padding: $cal-popover-padding;
-  background-color: $cal-popover-body-color;
-  tr {
-    padding: 3px 0;
-  }
-  td:first-child {
-    width: 25%;
-    font-weight: bold;
-    padding-bottom: 3px;
-  }
-}
-.cal-popover-description {
-  font-size: 10px;
-  line-height: 16px;
-}
-
-#map-canvas {
-  margin-top: 10px;
-  height: 170px;
-  width: 100%;
-}
-#map-canvas label { width: auto; display:inline; }
-#map-canvas img { max-width: none; max-height: none; }
-
 

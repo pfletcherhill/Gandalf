@@ -28,7 +28,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     return this
   
   changeActive: (type) ->
-    @$("a[data-type=#{type}]").addClass 'active'
+    @$("li[data-type=#{type}]").addClass 'selected'
   
   stringToUrl: (string) ->
     string = string.replace(' ','%20')
