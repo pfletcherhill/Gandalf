@@ -11,5 +11,5 @@ class Gandalf.Views.Events.Show extends Backbone.View
   
             
   render: ->
-    $(@el).html(@template( event: @model ))
+    @$el.html @template(event: @model)
     return this

@@ -4,6 +4,8 @@ class Gandalf.Router extends Backbone.Router
     @events = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations
     @organizations.add Gandalf.currentUser.get('organizations')
+    view = new Gandalf.Views.Popover
+    $(".wrapper").append view.el
   
   # Process period takes the date and period 
   # (either week or month, from the URL) and finds the start and end of the period
@@ -36,7 +38,7 @@ class Gandalf.Router extends Backbone.Router
     paramsString += "&end_at=" + params.end.format(Gandalf.displayFormat)
     paramsString
   
-  load: (selector) ->
+  showLoader: (selector) ->
     $(selector).html("<div class='loader'></div>")
           
   routes:
@@ -74,7 +76,7 @@ class Gandalf.Router extends Backbone.Router
     '.*'                              : 'calendarRedirect'
   
   calendar: (date, period) ->
-    @load('#content')
+    @showLoader('#content')
     params = @processPeriod date, period
     string = @generateParamsString params
     @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
@@ -90,7 +92,7 @@ class Gandalf.Router extends Backbone.Router
     @navigate("calendar/#{date}/week", {trigger: true, replace: true});
   
   browse: (type) ->
-    @load('.content-main')  
+    @showLoader('.content-main')  
     $(".search-list a").removeClass 'active'
     if type == 'categories'
       @results = new Gandalf.Collections.Categories
@@ -108,12 +110,16 @@ class Gandalf.Router extends Backbone.Router
   
   dashboard: (id, type) ->
     id = @organizations.first().id unless id
-    type = 'info' unless type  == 'events' || type == 'settings' || type == 'users'
+    type = 'events' unless type is 'settings' or type is 'users'
     @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/" + id + "/edit"
+    @organization.url = "/organizations/#{id}/edit"
     @organization.fetch
       success: (organization) =>
-        view = new Gandalf.Views.Dashboard.Index(organizations: @organizations, organization: organization, type: type)
+        view = new Gandalf.Views.Dashboard.Index(
+          organizations: @organizations
+          organization: organization
+          type: type
+        )
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"
