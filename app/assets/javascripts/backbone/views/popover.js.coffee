@@ -6,6 +6,7 @@ class Gandalf.Views.Popover extends Backbone.View
     # All popover event handlers
     Gandalf.dispatcher.on("event:click", @showEvent, this)
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
+    Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("popover:hide", @hide, this)
     @render()
 
@@ -13,6 +14,7 @@ class Gandalf.Views.Popover extends Backbone.View
   template: JST["backbone/templates/popover/index"]
   showEventTemplate: JST["backbone/templates/popover/events/show"]
   newEventTemplate: JST["backbone/templates/popover/events/new"]
+  editEventTemplate: JST["backbone/templates/popover/events/edit"]
 
   events:
     "submit #new-event-form": "validateNewEvent"
@@ -41,8 +43,16 @@ class Gandalf.Views.Popover extends Backbone.View
     e = new Gandalf.Models.Event
     e.set organization_id: organization.get("id")
     $(".gandalf-popover").html @newEventTemplate(
-      org: organization
+      org: organization.id
       color: "rgba(#{organization.get("color")}, 0.7)"
+    )
+    @show()
+
+  editEvent: (e) ->
+    console.log "event", e
+    $(".gandalf-popover").html @editEventTemplate(
+      event: e
+      color: "rgba(#{e.get("color")}, 0.7)"
     )
     @show()
 

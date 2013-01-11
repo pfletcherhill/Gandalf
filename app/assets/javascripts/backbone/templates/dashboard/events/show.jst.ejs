@@ -1,18 +1,16 @@
-<tr class='organization-event' data-id=<%= event.id %>>
-  <td>
-    <div class="image loading"></div>
-  </td>
-  <td>
-    <div class="name"><%= event.get('name') %></div>
-    <div class="time"><%= moment(event.get('start_at')).format("h:mm a") %></div>
-    <div class="location"><%= event.location %></div>
-  </td>
-  <td>
-    <div class="description"><%= event.description %></div>
-  <td>
-    <div class='btn'>Edit</div>
-  </td>
-  <td>
-    <div class='btn'>Delete</div>
-  </td>
-</tr>
+<td>
+  <div class="image loading"></div>
+</td>
+<td>
+  <div class="name"><%= event.get('name') %></div>
+  <div class="time"><%= moment(event.get('start_at')).format("h:mm a") %></div>
+  <div class="location"><%= event.location %></div>
+</td>
+<td>
+  <div class="description"><%= event.description %></div>
+<td>
+  <div class='btn btn-mini edit'>Edit</div>
+</td>
+<td>
+  <div class='btn btn-mini delete'>Delete</div>
+</td>
