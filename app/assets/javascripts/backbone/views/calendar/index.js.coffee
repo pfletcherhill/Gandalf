@@ -4,12 +4,12 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
 
   initialize: ->
     split = true #(@options.type is "week")
-    @collection = @options.events
-    @collection.splitMultiDay(split)       # Adjust multi-day events
-    @days = @collection.group()
+    @calEvents = @options.events           # DO NOT CALL THIS EVENTS
+    @calEvents.splitMultiDay(split)        # Adjust multi-day events
+    @days = @calEvents.group()
     # Class variables
     @startDate = @options.startDate
-    @maxOverlaps = 4                  # Maximum allowed event overlaps
+    @maxOverlaps = 4                        # Maximum allowed event overlaps
     # Listening for global events
     # Gandalf.dispatcher.bind("eventVisibility:change", @hideHidden, this)
     # Gandalf.dispatcher.bind("window:resize", @resetEventPositions, this)
@@ -36,6 +36,7 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     view = new Gandalf.Views.Calendar.Week.Index(
       startDate: moment(@startDate)
       days: @days
+      calEvents: @calEvents
     )
     return view
 
@@ -43,13 +44,14 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     view = new Gandalf.Views.Calendar.Month.Index(
       startDate: moment(@startDate)
       days: @days
+      calEvents: @calEvents
     )
     return view
     # @hideHidden()
 
   # So far unused...
   renderWeekMultiday: () ->
-    evs = @collection.getMultidayEvents()
+    evs = @calEvents.getMultidayEvents()
     for event in evs
       view = new Gandalf.Views.Calendar.Week.Multiday(
         { model: event, startDate: moment(@startDate) }
@@ -59,8 +61,8 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
   # Event handlers
 
   hideHidden: () ->
-    orgs = @collection.getHiddenOrgs()
-    cats = @collection.getHiddenCats()
+    orgs = @calEvents.getHiddenOrgs()
+    cats = @calEvents.getHiddenCats()
     @orgVisChange(orgs)
     @catVisChange(cats)
 
@@ -73,7 +75,7 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
 
   adjustOverlappingEvents: () ->
     # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
-    overlaps = @collection.findOverlaps()
+    overlaps = @calEvents.findOverlaps()
     @$el.find(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4 hide")
     for myId, ids of overlaps
       num = ids.length + 1

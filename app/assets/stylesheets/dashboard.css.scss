@@ -1,0 +1,114 @@
+ul.dash-menu {
+  width: $main-width;
+  height: 57px;
+  border-bottom: 1px solid #dadada;
+  border-left: 1px solid #dadada;
+  li {
+    border: 0px;
+    float: left;
+    padding: 18px 20px;
+    background: #fafafa;
+    border-right: 1px solid #dadada;
+    border-top: 1px solid #dadada;
+    color: #333;
+    font-weight: bold;
+    @include transition(background 0.2s, border 0.2s);
+    &:hover {
+      background: #F1F1F1;
+    }
+    &.selected {
+      background: white;
+      border-bottom: 1px solid white;
+      &:hover {
+        background: white;
+      }
+    }
+  }
+}
+
+.dash-org-container {
+  padding: 30px;
+  border: 1pt solid #dadada;
+  border-top: none;
+}
+
+.dash-content {
+  background: white;
+}
+
+/* Events panel */
+
+.dash-events-list {
+  width: 100%;
+}
+
+tr.organization-event {
+  border-bottom: 1px solid #dadada;
+  td {
+    padding: 10px 0px;
+  }
+  .image {
+    width: 50px;
+    height: 60px;
+    border: 1px solid #dadada;
+  }
+  .description {
+    width: 300px;
+  }
+  &:last-child {
+    border: none;
+  }
+}
+
+
+/* Settings panel */
+
+#dash-settings-form {
+  padding: 15px;
+  img {
+    height: 60px;
+    width: 50px;
+  }
+  input[type='file'] {
+    margin-top: 10px;
+    line-height: normal;
+  }
+  textarea {
+    height: 100px;
+  }
+}
+
+//Show
+
+.body-header {
+  border-bottom: 1px solid #dadada;
+  position: relative;
+  button {
+    position: absolute;
+    top: 5px;
+    right: 0px;
+  }
+}
+
+button.follow {
+  width: 100px;
+  &:after {
+    content: "Follow";
+  }
+  &.following {
+    @include linear-gradient($blue, #4B80FC);
+    color: white;
+    border: 1px solid blue;
+    &:after {
+      content: "Following";
+    }
+  }
+  &.following:hover {
+    background: #e60000;
+    color: white;
+    border: 1px solid #cc0000;
+    &:after {
+      content: "Unfollow";
+    }
+  }
+}

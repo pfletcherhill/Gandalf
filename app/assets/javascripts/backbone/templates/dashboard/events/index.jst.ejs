@@ -1,15 +1,5 @@
 <div id="organization-events">
-  <div id="event-form">
-    <button id="close-event">Close</button>
-    <form id="new-event">
-      <input type='text' name="name" placeholder="Event Name"/>
-      <input type='text' name="start_at" placeholder="Start At"/>
-      <input type='text' name="end_at" placeholder="End At"/>
-      <input type='text' name="location" placeholder="Location"/>
-      <textarea name="description" placeholder="Description"></textarea>
-      <button type="submit">Save Event</button>
-    </form>
-  </div>
-  <div id="new-event" class="btn">New Event</div>
-  <table id='organization-events-list'></table>
+  <h4 class='pull-left' style='margin: 0 0 30px;'>Upcoming events for <%= name %></h4>
+  <div id="new-event-btn" class="btn btn-small btn-primary pull-right">Add an event</div>
+  <table class='dash-events-list'></table>
 </div>

@@ -32,6 +32,14 @@ class EventsController < ApplicationController
     params[:event][:location] = nil
     @event = Event.new(params[:event])
     @event.location = location
+    # For some reason, these weren't working...
+    @event[:start_at] = params[:event][:start_at]
+    @event.end_at = params[:event][:end_at]
+    puts "PARAMS:"
+    puts location
+    p params[:event][:start_at]
+    p params[:event][:end_at]
+    p @event
     if @event.save
       render json: @event.as_json
     else
