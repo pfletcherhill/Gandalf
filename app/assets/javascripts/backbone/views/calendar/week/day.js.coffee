@@ -12,11 +12,15 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
   template: JST["backbone/templates/calendar/week/day"]
 
   addEvents: () ->
-    if @model
+    if @model     # If there are events
       container = @$el.children(".cal-events:first")
       for e in @model
         if not e.get("multiday")
-          view = new Gandalf.Views.Calendar.Week.Event(model: e, dayNum: @options.dayNum) 
+          view = new Gandalf.Views.Calendar.Week.Event(
+            model: e
+            dayNum: @options.dayNum
+            calEvents: @options.calEvents
+          ) 
         $(container).append(view.el)
       Gandalf.dispatcher.trigger("calEvents:ready")
 

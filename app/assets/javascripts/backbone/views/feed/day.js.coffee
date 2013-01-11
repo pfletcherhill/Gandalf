@@ -11,7 +11,7 @@ class Gandalf.Views.Feed.Day extends Backbone.View
   addAll: () ->
     @numAdded = 0
     for event in @collection
-      @addOne(event)
+      @addOne event
   
   addOne: (event) ->
     # Don't render if this event has already been rendered in a 
@@ -30,8 +30,8 @@ class Gandalf.Views.Feed.Day extends Backbone.View
   render: () ->
     day = @convertDate @options.day
 
-    $(@el).html(@template(day: day))
+    @$el.html @template(day: day)
     @addAll()
-    @$el.html("") if @numAdded is 0 # Don't render the day header unnecessarily
+    @$el.html "" if @numAdded is 0 # Don't render the day header unnecessarily
     return this
     

@@ -21,7 +21,7 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
       @$("#organization-events-list").append( @eventTemplate( event: e))
         
   render: =>
-    @$el.html(@template( @model.toJSON() ))
+    @$el.html @template(org: @model)
     $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
     return this
   

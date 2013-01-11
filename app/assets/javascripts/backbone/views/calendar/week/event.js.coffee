@@ -14,7 +14,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @css.zIndex = @$el.css("zIndex")
     Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
     Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
-    Gandalf.dispatcher.on("feedEvent:click", @feedClick, this)
+    Gandalf.dispatcher.on("feedEvent:click", @click, this)
     @render()
 
   template: JST["backbone/templates/calendar/week/event"]
@@ -28,7 +28,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
   popoverChild: ".event-name:first"
 
   events:
-    "click": "onClick"
+    "click": "click"
     "mouseenter" : "mouseenter"
     "mouseleave" : "mouseleave"
 
@@ -55,13 +55,15 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @$el.addClass("day-#{@dayNum}")
     return this
 
-  onClick: () ->
-    Gandalf.dispatcher.trigger("event:click", 
-      { model: @model, color: @lightColor })
+  click: () ->
+    return if typeof id is "number" and @eventId isnt id
+    m = @model
+    eId = m.get("eventId")
+    if m.get("id") isnt eId
+      m = @options.calEvents.get(eId)
 
-  feedClick: (id) ->
-    if @eventId is id
-      @$el.click()
+    Gandalf.dispatcher.trigger("event:click", 
+      { model: m, color: @lightColor })
 
   mouseenter: (id) ->
     return if typeof id is "number" and @eventId isnt id

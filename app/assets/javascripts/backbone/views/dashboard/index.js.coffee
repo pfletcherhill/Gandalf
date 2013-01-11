@@ -26,19 +26,20 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
   
   renderOrganizationMenu: (type) ->
     @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
-    @$(".main-menu a[data-type=#{type}]").addClass 'selected'
+    @$(".main-menu li[data-type=#{type}]").addClass 'selected'
           
   render: (type) =>
-    $(@el).html(@template())
+    @$el.html @template()
     @renderOrganizationsList()
     @renderOrganizationMenu(type)
-    if type == 'info'
-      view = new Gandalf.Views.Dashboard.Info(model: @organization)
-    else if type == 'events'
+    if type is 'events'
       view = new Gandalf.Views.Dashboard.Events(model: @organization)
-    else if type == 'users'
+    else if type is'users'
       view = new Gandalf.Views.Dashboard.Users(model: @organization)
-    else
+    else if type is 'settings'
       view = new Gandalf.Views.Dashboard.Settings(model: @organization)
-    @$('.content-main .main-content').html(view.el)
+    else # Should never happen
+      view = new Gandalf.Views.Dashboard.Events(model: @organization)
+      
+    @$('.content-main .main-content').html view.el
     return this
