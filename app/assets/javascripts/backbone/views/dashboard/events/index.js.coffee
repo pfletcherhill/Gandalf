@@ -3,7 +3,6 @@ Gandalf.Views.Dashboard ||= {}
 class Gandalf.Views.Dashboard.Events extends Backbone.View
   
   template: JST["backbone/templates/dashboard/events/index"]
-  eventTemplate: JST["backbone/templates/dashboard/events/show"]
   
   className: 'dash-org-container'
     
@@ -19,7 +18,8 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
       
   renderEvents: =>
     for e in @model.get("events").models
-      @$(".dash-events-list").append( @eventTemplate( event: e))
+      view = new Gandalf.Views.Dashboard.Event model: e
+      @$(".dash-events-list").append view.el
         
   render: =>
     @$el.html @template(@model.toJSON())

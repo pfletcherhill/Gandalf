@@ -42,12 +42,21 @@ ul.dash-menu {
   width: 100%;
 }
 
-#organization-events {
-  #event-form {
-    display: none;
-    &.open {
-      display: block;
-    }
+tr.organization-event {
+  border-bottom: 1px solid #dadada;
+  td {
+    padding: 10px 0px;
+  }
+  .image {
+    width: 50px;
+    height: 60px;
+    border: 1px solid #dadada;
+  }
+  .description {
+    width: 300px;
+  }
+  &:last-child {
+    border: none;
   }
 }
 
@@ -66,21 +75,6 @@ ul.dash-menu {
   }
   textarea {
     height: 100px;
-  }
-}
-
-tr.organization-event {
-  border-bottom: 1px solid #dadada;
-  td {
-    padding: 10px 0px;
-  }
-  .image {
-    width: 80px;
-    height: 100px;
-    border: 3px solid #dadada;
-  }
-  .description {
-    width: 300px;
   }
 }
 
