@@ -29,7 +29,6 @@ class Gandalf.Views.Feed.Day extends Backbone.View
           
   render: () ->
     day = @convertDate @options.day
-
     @$el.html @template(day: day)
     @addAll()
     @$el.html "" if @numAdded is 0 # Don't render the day header unnecessarily
