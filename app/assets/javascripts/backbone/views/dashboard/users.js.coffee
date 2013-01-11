@@ -17,6 +17,6 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
       @$("#organization-users-list").append( @userTemplate( user: user ))
         
   render: ->
-    $(@el).html(@template( @model.toJSON() ))
-    $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
+    @$el.html @template(@model.toJSON())
+    $("li[data-id='#{@model.id}']").addClass 'selected'
     return this

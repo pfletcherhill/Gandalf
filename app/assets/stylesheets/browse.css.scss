@@ -5,24 +5,6 @@
   border-top: 1px solid #dadada;
 }
 
-ul.left-list {
-  a:hover {
-    text-decoration: none;
-  }
-  li {
-    border-bottom: 1px solid #dadada;
-    color: black;
-    padding: 15px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    @include transition(0.2s);
-    &:hover {
-      @include linear-gradient(#efefef, #fafafa);
-    }
-  }
-}
-
 #browse-list {
   padding-left: 10px;
 }

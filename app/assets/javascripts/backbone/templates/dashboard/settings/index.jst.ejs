@@ -1,11 +1,10 @@
 <form id='organization-form' accept-charset='UTF-8' action='/organizations' enctype='multipart/form-data' method='post' data-remote='true'>
   <label>Name:</label>
-  <input type='text' name='name' value='<%= org.get('name') %>'/>
+  <input type='text' name='name' value='<%= name %>'/>
   <label>Description:</label>
-  <textarea name='bio' placeholder='What is <%= org.get('name') %>..?' value='<%= org.get('bio') %>' maxlength="300"></textarea>
+  <textarea name='bio' placeholder='What is <%= name %>..?' value='<%= bio %>' maxlength="300"></textarea>
   <label>Logo:</label>
-  <% image = org.get("image")  %>
-  <div class='image loading'><img height="60px" width="50px" src='<%= image ? image.thumbnail.url : '' %>' alt="No image for <%= org.get("name") %>."/></div>
+  <div class='image loading'><img height="60px" width="50px" src='<%= image ? image.thumbnail.url : '' %>' alt="No image for <%= name %>."/></div>
   <input id='organization-image' name='image' type='file' accept="image/*"/>
   <br/>
   <input type='submit' class='btn btn-info' value='Update Organization' />
