@@ -29,6 +29,7 @@ ul, li {
 }
 
 a {
+  color: darken($blue, 80%);
   text-decoration: none;
 }
 
@@ -138,7 +139,7 @@ h3 {
 // Paul's superfluous container for dashboard and browse pages
 .content-container {
   position: relative;
-  margin-top: 20px;
+  top: $header-height;
   padding-bottom: 50px;
 }
 
@@ -157,13 +158,32 @@ $main-width: 750px;
   border-bottom: 0px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  .left-header {
-    padding: 10px 15px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+}
+
+.left-header {
+  padding: 10px 15px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.left-list {
+  margin: 0px;
+  border-top: 1px solid #dadada;
+  a:hover {
+    text-decoration: none;
   }
-  ul.left-list {
-    li.selected {
+  li {
+    border-bottom: 1px solid #dadada;
+    color: black;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    @include transition(0.2s);
+    &:hover {
+      @include linear-gradient(#efefef, #fafafa);
+    }
+    &.selected {
       margin-right: -1px;
       border-right: 5px solid $blue;
       background: #fafafa;
@@ -174,11 +194,6 @@ $main-width: 750px;
 .content-main {
   width: $main-width;
   margin-left: $left-width + $left-margin;
-}
-
-.left-list {
-  margin: 0px;
-  border-top: 1px solid #dadada;
 }
 
 .loader {

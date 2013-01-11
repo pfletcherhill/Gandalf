@@ -27,9 +27,9 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
        
   render: ->
     console.log @model
-    @$el.html @template(org: @model)
+    @$el.html @template(@model.toJSON())
     # @modelBinder.bind(@model, @$("#organization-form"))
-    $("li a[data-id='#{@model.id}']").parent().addClass 'selected'
+    $("li[data-id='#{@model.id}']").addClass 'selected'
     # @$("form#organization-form").backboneLink(@model)
     @renderUpload()
     return this

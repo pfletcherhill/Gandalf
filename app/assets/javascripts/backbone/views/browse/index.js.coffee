@@ -22,7 +22,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     @$("#browse-list").append(view.render().el)
     
   render: ->
-    $(@el).html(@template(type: @type))
+    @$el.html(@template(type: @type))
     @renderResults @results
     @changeActive(@type)
     return this

@@ -22,7 +22,7 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
   renderOrganizationsList: =>
     @$(".left-list").html('')
     for organization in @organizations.models
-      @$(".left-list").append("<li><a data-id=#{organization.id} href='#dashboard/#{organization.id}'>#{organization.get('name')}</a></li>")
+      @$(".left-list").append("<a href='#dashboard/#{organization.id}'><li data-id=#{organization.id}>#{organization.get('name')}</li></a>")
   
   renderOrganizationMenu: (type) ->
     @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
