@@ -43,7 +43,7 @@ class Gandalf.Views.Popover extends Backbone.View
     e = new Gandalf.Models.Event
     e.set organization_id: organization.get("id")
     $(".gandalf-popover").html @newEventTemplate(
-      org: organization.id
+      org: organization
       color: "rgba(#{organization.get("color")}, 0.7)"
     )
     @show()
