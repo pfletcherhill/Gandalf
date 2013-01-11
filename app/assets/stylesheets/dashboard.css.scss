@@ -99,7 +99,7 @@ button.follow {
     content: "Follow";
   }
   &.following {
-    @include linear-gradient($dashboard-blue, #4B80FC);
+    @include linear-gradient($blue, #4B80FC);
     color: white;
     border: 1px solid blue;
     &:after {

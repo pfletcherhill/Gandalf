@@ -24,7 +24,7 @@ ul {
   margin: 0;
 }
 
-li {
+ul, li {
   list-style: none;
 }
 
@@ -145,7 +145,6 @@ h3 {
 $left-width: 240px;
 $left-margin: 10px;
 $main-width: 750px;
-$dashboard-blue: #3399FF;
 
 .content-left {
   width: $left-width;
@@ -166,9 +165,7 @@ $dashboard-blue: #3399FF;
   ul.left-list {
     li.selected {
       margin-right: -1px;
-      border-right: 5px solid $dashboard-blue;
-    }
-    a:hover {
+      border-right: 5px solid $blue;
       background: #fafafa;
     }
   }
