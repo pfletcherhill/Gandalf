@@ -22,13 +22,13 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     @$("#browse-list").append(view.render().el)
     
   render: ->
-    $(@el).html(@template(type: @type))
+    @$el.html(@template(type: @type))
     @renderResults @results
     @changeActive(@type)
     return this
   
   changeActive: (type) ->
-    @$("a[data-type=#{type}]").addClass 'active'
+    @$("li[data-type=#{type}]").addClass 'selected'
   
   stringToUrl: (string) ->
     string = string.replace(' ','%20')

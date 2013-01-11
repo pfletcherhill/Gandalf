@@ -21,6 +21,7 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
             model: e
             continued: continued
             continues: continues
+            calEvents: @options.calEvents
           ) 
           $(container).append(view.el)
       for e in @model

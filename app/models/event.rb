@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :organization_id
   validates_presence_of :start_at
+  validates_presence_of :end_at
   
   #pg_search
   include PgSearch
