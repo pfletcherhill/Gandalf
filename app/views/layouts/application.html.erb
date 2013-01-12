@@ -22,34 +22,54 @@
         </div></a>
         <% if current_user %>
           <a href="#browse">
-            <div class="link">Browse</div>
+            <div class="link">
+              <i class="icon-zoom-in"></i>
+              Browse
+            </div>
           </a>
           <a href="#calendar">
-            <div class="link">Calendar</div>
+            <div class="link">
+              <i class="icon-th-list"></i>
+              Feed
+            </div>
           </a>
           <a href="#dashboard">
-            <div class="link">Dashboard</div>
+            <div class="link">
+              <i class="icon-road"></i>
+              Dashboard
+            </div>
           </a>
           <a href="#about">
-            <div class="link">About</div>
+            <div class="link">
+              <i class="icon-question-sign"></i>
+              About
+            </div>
           </a>
         <% end %>
       </div>
       <div class="pull-right">
         <% if current_user %>
           <a href="/mail">
-            <div class="link">Send Mail</div>
+            <div class="link">
+              <i class="icon-envelope"></i>
+              Send Mail
+            </div>
           </a>
           <a href="#preferences">
             <div class="link">
-              <%= current_user.name %>
+              <i class="icon-flag"></i>
+              <%= current_user.nickname %>
             </div>
           </a>
           <a href="/logout">
-            <div class="link">Logout</div>
+            <div class="link">
+              <i class="icon-thumbs-down"></i>
+              Logout
+            </div>
           </a>
         <% else %>
           <a href="/login">
+            <i class="icon-thumbs-up"></i>
             <div class="link">Login</div>
           </a>
         <% end %>
