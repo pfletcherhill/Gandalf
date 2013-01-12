@@ -38,28 +38,40 @@ ul.dash-menu {
 
 /* Events panel */
 
-.dash-events-list {
+.dash-list {
   width: 100%;
 }
 
-tr.organization-event {
-  border-bottom: 1px solid #dadada;
+tr.dash-row {
   td {
-    padding: 10px 0px;
+    vertical-align: top;
   }
-  .image {
-    width: 50px;
-    height: 60px;
-    border: 1px solid #dadada;
-  }
-  .description {
-    width: 300px;
-  }
-  &:last-child {
+  &.event {
+    border-bottom: 1px solid #dadada;
+    td {
+      padding: 10px 10px 10px 0;
+    }
+    .image {
+      width: 50px;
+      height: 60px;
+      border: 1px solid #dadada;
+    }
+    .description {
+      width: 300px;
+    }
+    &:last-child {
     border: none;
   }
+  }
+  &.user {
+    td {
+      padding: 2px 10px;
+    }
+    td:first-child {
+      width: 25%;
+    }
+  }
 }
-
 
 /* Settings panel */
 
@@ -78,7 +90,7 @@ tr.organization-event {
   }
 }
 
-//Show
+// Show
 
 .body-header {
   border-bottom: 1px solid #dadada;

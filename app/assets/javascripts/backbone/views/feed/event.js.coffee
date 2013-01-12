@@ -40,9 +40,9 @@ class Gandalf.Views.Feed.Event extends Backbone.View
   
   mouseenter: () ->
     @$el.css({ backgroundColor: @darkColor })
-    Gandalf.dispatcher.trigger("feedEvent:mouseenter", @eventId)
+    Gandalf.dispatcher.trigger("feed:event:mouseenter", @eventId)
   mouseleave: () ->
     @$el.css({ backgroundColor: @color })
-    Gandalf.dispatcher.trigger("feedEvent:mouseleave", @eventId)
+    Gandalf.dispatcher.trigger("feed:event:mouseleave", @eventId)
   click: () ->
-    Gandalf.dispatcher.trigger("feedEvent:click", @eventId)
+    Gandalf.dispatcher.trigger("feed:event:click", @eventId)

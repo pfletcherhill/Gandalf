@@ -8,6 +8,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       "renderSubscribedOrganizations",
       "renderSubscribedCategories"
     )
+    @multidayVisible = true
     @render()
 
     # Render AJAX info
@@ -17,6 +18,9 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   template: JST["backbone/templates/feed/index"]
 
   el: "#content"
+
+  events:
+    "click .toggle-multiday" : "toggleMultiday"
 
   # Rendering functions
 
@@ -44,7 +48,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     nextWeek = moment(startDate).add('w', 1).format(Gandalf.displayFormat)
     endDate = moment(startDate).add('d', 6)
     # Add to html
-    @$(".cal-nav span").html startDate.format("MMM Do") + " - " + endDate.format("MMM Do") + " " + endDate.format("YYYY")
+    @$(".cal-nav span").html startDate.format("MMM D") + " - " + endDate.format("MMM D") + ", " + endDate.format("YYYY")
     @$(".cal-nav .previous").attr 'href', '#calendar/' + prevWeek + '/week'
     @$(".cal-nav .next").attr 'href', '#calendar/' + nextWeek + '/week'
     @$(".cal-nav .week").addClass 'disabled'
@@ -89,12 +93,24 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     else
       @renderWeekMenu(@options.period, @options.startDate)
     @renderFeed()
+    $("[rel=tooltip]").tooltip()
     view = new Gandalf.Views.Calendar.Index(
       type: @options.period
       events: @options.events
       startDate: @options.startDate
     )
-
-
     $(".content-calendar").html(view.el)
     return this
+
+  # Event handlers
+
+  toggleMultiday: ->
+    @$(".toggle-multiday > i")
+      .toggleClass("icon-eye-close")
+      .toggleClass("icon-eye-open")
+    if @multidayVisible
+      Gandalf.dispatcher.trigger("multiday:hide")
+    else
+      Gandalf.dispatcher.trigger("multiday:show")
+    @multidayVisible = not @multidayVisible
+    console.log "hi"

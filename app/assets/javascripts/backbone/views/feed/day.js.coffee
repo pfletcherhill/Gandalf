@@ -24,7 +24,7 @@ class Gandalf.Views.Feed.Day extends Backbone.View
     @options.done.push event.get("eventId")
   
   convertDate: (day) ->
-    date = moment(day).format("dddd, MMMM Do YYYY")
+    date = moment(day).format("dddd, MMMM Do")
     date
           
   render: () ->
