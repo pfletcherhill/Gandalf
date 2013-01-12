@@ -19,8 +19,7 @@ class Gandalf.Views.Popover extends Backbone.View
   events:
     "submit #new-event-form": "validateNewEvent"
     "click input,textarea" : "removeErrorClass"
-    "click .global-overlay" : "hide"
-    "click .close" : "hide"
+    "click .global-overlay,.close" : "hide"
 
   render: ->
     @$el.html @template()
@@ -72,7 +71,8 @@ class Gandalf.Views.Popover extends Backbone.View
         success = false
       else
         values[name] = value
-    return false if not success
+    return false unless success
+    # Description field is not required
     values["description"] = @$("textarea[name='description']").val()
     @makeEvent(values)
 
@@ -91,9 +91,6 @@ class Gandalf.Views.Popover extends Backbone.View
         console.log "new event error", organization, jqXHR
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
-
-    
-
     return false
 
     # name: null
@@ -103,19 +100,6 @@ class Gandalf.Views.Popover extends Backbone.View
     # end_at: null
     # organization_id: null
     # description: null
-
-
-  #   event.stopPropagation()
-  #   @$("form#new-event button").html('Saving...')
-  #   @newEvent.url = "/events/create"
-  #   @newEvent.save(@newEvent,
-  #     success: (event) =>
-  #       @render()
-  #       @model.fetchEvents().then @renderEvents
-  #     error: (event, jqXHR) =>
-  #       @$("form#new-event button").html('Save Event...')
-  #       @newEvent.set({errors: $.parseJSON(jqXHR.responseText)})
-  #   )
 
   removeErrorClass: (e) ->
     $(e.target).removeClass "error"

@@ -72,16 +72,16 @@ class Gandalf.Collections.Events extends Backbone.Collection
     events 
 
   # Don't save in this method -- these changes should only be client side
-  # If splitMultidayEvents is true, then split them up (as in, for week view)
-  splitMultiDay: (splitMultidayEvents) ->
+  # If splitMultidayEvents is true, then split them up (as in, for month view)
+  splitMultiday: (splitMultidayEvents) ->
     for event in @models
       start = event.get("start_at")
       end = event.get("end_at")
       diffDay = moment(end).diff(moment(start), 'days')
       diffHour = moment(end).diff(moment(start), 'hours')
       continue if diffDay is 0                        # Normal event
-      if diffDay >= 7 # At least one whole cycle
-        # event.set({ multiday: true }) 
+      if diffHour >= 4 # At least one whole cycle
+        event.set({ multiday: true }) 
         continue if not splitMultidayEvents
 
       event.set({ calEnd: moment(start).eod().format() })

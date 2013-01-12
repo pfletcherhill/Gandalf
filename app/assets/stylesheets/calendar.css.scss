@@ -1,10 +1,11 @@
 /* ========= CALENDAR ======== */
 
-$week_hour_height: 44px;
-$cal_gap: 40px;
-$cal_head_height: 70px;
-$cal_top_pad: 10px;
+$cal-gap: 40px;
+$cal-head-height: 70px;
+$cal-top-pad: 10px;
 $hour-height: 4.1667%;
+$hour-height-floored: 4%;
+$cal-z: 10;
 
 // Redundant styling—here just to change bg color
 .calendar {
@@ -15,28 +16,10 @@ $hour-height: 4.1667%;
   height: 100%;
 }
 
-/* ==== CALENDAR HEADER ==== */
-
-.cal-multiday {
-  position: relative;
-  margin-left: $cal_gap;
-}
-
-.cal-multiday-event {
-  height: $week_hour_height / 2;
-  overflow: hidden;
-  cursor: pointer;
-  &:first-child {
-    margin-top: 2px;
-  }
-  &:last-child {
-    margin-bottom: 2px;
-  }
-}
-
 /* ===== CALENDAR TABLE ===== */
 
 .cal-table {
+  position: relative;
   width: 100%;
   height: 100%;
   table-layout: fixed;
@@ -54,6 +37,13 @@ $hour-height: 4.1667%;
 
 .cal-week .cal-day {
   border-right: 1pt solid #ddd;
+}
+
+.cal-multiday {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top:0; left: 0;
 }
 
 .cal-month {
@@ -153,7 +143,7 @@ $hour-height: 4.1667%;
   left: 0;
   overflow: hidden;
 }
-$cal_z: 10;
+
 .cal-month-event {
   overflow: hidden;
   font-size: 10px;
@@ -169,7 +159,7 @@ $test-color: lighten(#0f91ec, 20%);
 .cal-week-event {
   position: absolute;
   left: 0;
-  z-index: $cal_z;
+  z-index: $cal-z;
   border: 1pt solid transparent;
   background-color: rgba($test-color,0.7);
   @include transition(all 0.2s, opacity 0.5s);
@@ -205,6 +195,24 @@ $test-color: lighten(#0f91ec, 20%);
 .cal-multiday {
   .event-hidden-org, .event-hidden-cat {
     display: none;
+  }
+}
+
+.cal-multiday-event {
+  position: absolute;
+  height: $hour-height;
+  padding-left: 2px;
+  font-size: 10px;
+  line-height: 150%;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: $cal-z + 5;
+  @include transition(opacity 0.2s);
+  $multiday-border: 1px solid #aaa;
+  border: $multiday-border;
+  border-top: none;
+  &:first-child {
+    border-top: $multiday-border;
   }
 }
 

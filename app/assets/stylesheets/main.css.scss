@@ -2,6 +2,7 @@
 
 $yellow: rgba(255,203,5,1);
 $blue: #4BA6FF;
+$green: #058412;
 $font: 12px;
 $min-width: 960px;
 $width: 960px;
@@ -52,6 +53,10 @@ h3 {
 .container {
   width: $width;
   margin: 0 auto;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 /* ================== HEADER =============== */
@@ -139,16 +144,21 @@ h3 {
 // Paul's superfluous container for dashboard and browse pages
 .content-container {
   position: relative;
-  top: $header-height;
   padding-bottom: 50px;
 }
+.content-header {
+  > h1 {
+    margin: 20px 0 30px;
+    color: darken($blue, 30%);
+  }
+}
 
-$left-width: 240px;
+$left-width: 200px;
 $left-margin: 10px;
-$main-width: 750px;
+$main-width: $width - $left-width - $left-margin;
 
 .content-left {
-  width: $left-width;
+  width: $left-width - 2px; // -2 for borders
   background: white;
   position: absolute;
   top: 0;

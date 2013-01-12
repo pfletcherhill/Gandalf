@@ -1,20 +1,22 @@
 Gandalf.Views.Calendar.Week ||= {}
 
-class Gandalf.Views.Calendar.Week.Multiday extends Backbone.View
+class Gandalf.Views.Calendar.Week.MultidayEvent extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
+    @hourHeight = Gandalf.calendarHeight / 24.0
     @eventId = @model.get("eventId")
     @startDate = @options.startDate.sod() 
+    @num = @options.eventNum
     @render()
 
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
-    Gandalf.dispatcher.on("feedEvent:click", @click, this)
+    Gandalf.dispatcher.on("feed:event:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feed:event:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feed:event:click", @click, this)
 
 
-  template: JST["backbone/templates/calendar/week/multiday"]
+  template: JST["backbone/templates/calendar/week/multiday_event"]
   className: "js-event cal-multiday-event"
 
   events:
@@ -25,28 +27,33 @@ class Gandalf.Views.Calendar.Week.Multiday extends Backbone.View
   render: () ->
     start = @model.get("start_at")
     end = @model.get("end_at")
+    continued = continues = false
     if moment(start) < @startDate
       startDay = 0
       start = @startDate
-      @model.set calStart: start.format()    # So popover renders correctly
+      continued = true
+      # @model.set calStart: start.format()    # So popover renders correctly
     else
       startDay = moment(start).day()
-    @left = startDay* 14.2857
+    @left = startDay * 14.28
 
     diff = moment(end).diff(moment(start), 'days')
     if startDay + diff > 6
       endDay = 6
+      continues = true
     else
       endDay = moment(end).day()
-    @width = Math.floor((endDay - startDay + 1) * 14.2)
+
+    @width = Math.floor((endDay - startDay + 1) * 14.2857)
 
     @$el
-      .html(@template(e: @model))
+      .html(@template(e: @model, continued: continued, continues: continues))
       .css(
         backgroundColor: @lightColor
-        border: "1pt solid #{@color}"
+        # border: "1pt solid #{@color}"
         width: @width+"%"
-        marginLeft: @left+"%"
+        left: @left+"%"
+        top: "#{(@num+3)*@hourHeight}px"
       ).attr(
         "data-event-id": @model.get("id")
         "data-organization-id" : @model.get("organization_id")
@@ -63,12 +70,10 @@ class Gandalf.Views.Calendar.Week.Multiday extends Backbone.View
     return if typeof id is "number" and @eventId isnt id
     @$el.css(
       backgroundColor: @color
-      border: "1pt solid #333"
     )
 
   mouseleave: (id) ->
     return if typeof id is "number" and @eventId isnt id
     @$el.css(
       backgroundColor: @lightColor
-      border: "1pt solid #{@color}"
     )

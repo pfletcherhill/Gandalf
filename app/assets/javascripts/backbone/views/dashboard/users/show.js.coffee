@@ -1,23 +1,20 @@
 Gandalf.Views.Dashboard ||= {}
 
-class Gandalf.Views.Dashboard.Event extends Backbone.View
+class Gandalf.Views.Dashboard.User extends Backbone.View
 
   initialize: ->
     @render()
 
   tagName: "tr"
-  className: "dash-row event"
+  className: "dash-row user"
 
-  template: JST["backbone/templates/dashboard/events/show"]
-
-  events:
-    "click .edit" : "edit"
-    "click .delete" : "deleteEvent"
+  template: JST["backbone/templates/dashboard/users/show"]
 
   render: ->
+    console.log @model
     @$el
       .attr("data-id", @model.id)
-      .html @template(event: @model)
+      .html @template(user: @model, index: @options.index)
     $("[rel=tooltip]").tooltip(
       placement: 'right'
     )
