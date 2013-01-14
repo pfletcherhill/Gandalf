@@ -1,12 +1,17 @@
-<tr class='organization-user'>
-  <td>
-    <div class="image loading"></div>
-  </td>
-  <td>
-    <div class="name"><%= user.name %></div>
-    <div class="email"><%= user.email %></div>
-  </td>
-  <td>
-    <div class='btn'>Edit</div>
-  </td>
-</tr>
+<td>
+  <div class="name"><%= user.name %></div>
+</td>
+<td>
+  <div class="email"><%= user.email %></div>
+</td>
+<td>
+  <% text = user.college ? user.college : "None" %>
+  <div class="college"><%= text %></div>
+</td>
+<td>
+  <% text = user.year ? user.year : "N/A" %>
+  <div class="year"><%= text %></div>
+</td>
+<td>
+  <input type="checkbox" checked="checked" data-index="<%= index %>"/>
+</td>

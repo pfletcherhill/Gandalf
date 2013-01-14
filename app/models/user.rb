@@ -21,7 +21,8 @@ class User < ActiveRecord::Base
     if start_at && end_at
       start_at = Date.strptime(start_at, '%m-%d-%Y')
       end_at = Date.strptime(end_at, '%m-%d-%Y')
-      query = "start_at BETWEEN :start AND :end OR end_at BETWEEN :start AND :end"
+      # query = "start_at BETWEEN :start AND :end OR end_at BETWEEN :start AND :end"
+      query = "start_at < :end AND end_at > :start"
       organization_events = self.organization_events.where(query,
         { :start => start_at, :end => end_at }).includes(:location, :organization, :categories)
       category_events = self.category_events.where(query,
@@ -42,6 +43,8 @@ class User < ActiveRecord::Base
       "name" => name,
       "email" => email,
       "nickname" => nickname,
+      "college" => college,
+      "year" => year,
       "organizations" => organizations
     }
   end

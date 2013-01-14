@@ -12,8 +12,9 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
     # @model.fetchEvents().then @renderEvents
   
   renderUpload: =>
-    url = '/organizations/#{@model.get("id")}/add_image'
-    @$("#new-image").fileupload
+    url = "/organizations/#{@model.get("id")}/add_image"
+    console.log url
+    @$("#organization-image").fileupload
       dataType: "json"
       autoUpload: true
       url: url
@@ -23,18 +24,20 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
         @model.set data.result
         @render()
       fail: (e, data) ->
-        alert 'Upload failed'
+        alert 'Upload failed, please try again later.'
        
   render: ->
     @$el.html @template(@model.toJSON())
     # @modelBinder.bind(@model, @$("#organization-form"))
     $("li[data-id='#{@model.id}']").addClass 'selected'
+    @$(".image").removeClass 'loading'
     # @$("form#organization-form").backboneLink(@model)
     @renderUpload()
     return this
   
   events:
     "submit #dash-settings-form" : 'save'
+    'click #open-image' : 'openImage'
   
   save: (event) ->
     submit = @$("input[type='submit']")
@@ -54,3 +57,6 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
     )
     # Instead of stopPropogation and preventDefault, just return false!
     return false
+
+  openImage: ->
+    @$("#organization-image").click()

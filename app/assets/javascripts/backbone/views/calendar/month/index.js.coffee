@@ -2,7 +2,9 @@ Gandalf.Views.Calendar.Month ||= {}
 
 class Gandalf.Views.Calendar.Month.Index extends Backbone.View
   initialize: ()->
-    @days = @options.days
+    @calEvents = @options.calEvents
+    @calEvents.splitMultiday(true)        # Adjust multi-day events
+    @days = @calEvents.group()
     @startDate = @options.startDate
     @render()
 
@@ -28,12 +30,11 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
     view = new Gandalf.Views.Calendar.Month.Day(
       model: events
       date: date
-      calEvents: @options.calEvents # Passing in event collection
+      calEvents: @calEvents # Passing in event collection
     )
     @$(".cal-day-container:last").append(view.el)
   
   render: () ->
-    # @$el.html(@headerTemplate(startDate: moment(@startDate)))
-    @$el.append(@template(startDate: moment(@startDate)))
+    @$el.html(@template(startDate: moment(@startDate)))
     @addWeeks()
     return this

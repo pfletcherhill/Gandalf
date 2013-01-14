@@ -1,4 +1,20 @@
 <div id="organization-users">
-  <h5>Subscribers</h5>
-  <table id='organization-users-list'></table>
+  <h4 class='pull-left' style='margin: 0 0 30px;'>Subscribers</h4>
+  <a id="email-subscribers-btn" class="btn btn-mini btn-primary pull-right" href='#' target='_blank'>
+    Email selected subscribers
+  </a>
+  <table class='dash-list tablesorter'>
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>College</td>
+        <td>Year</td>
+        <td>
+          <a href="#" class='deselect-all'>Deselect all</a>
+        </td>
+      </tr>
+    </thead>
+    <tbody class='dash-list-body'></tbody>
+  </table>
 </div>
