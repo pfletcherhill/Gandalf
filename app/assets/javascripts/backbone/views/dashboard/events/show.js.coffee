@@ -6,18 +6,21 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
     @render()
 
   tagName: "tr"
-  className: "organization-event"
+  className: "dash-row event"
 
   template: JST["backbone/templates/dashboard/events/show"]
 
   events:
-    "click .btn.edit" : "edit"
-    "click .btn.delete" : "deleteEvent"
+    "click .edit" : "edit"
+    "click .delete" : "deleteEvent"
 
   render: ->
     @$el
-      .attr("data-id", event.id)
+      .attr("data-id", @model.id)
       .html @template(event: @model)
+    $("[rel=tooltip]").tooltip(
+      placement: 'right'
+    )
     return this
 
   # Event handlers
@@ -26,5 +29,7 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
     Gandalf.dispatcher.trigger("event:edit", @model)
 
   deleteEvent: ->
-    Gandalf.dispatcher.trigger("event:delete", @model)
+    confirm("Are you sure you want to delete #{@model.get('name')}?")
+    # Gandalf.dispatcher.trigger("event:delete", @model)
+    # Delete it
 

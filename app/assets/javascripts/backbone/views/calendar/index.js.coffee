@@ -3,11 +3,8 @@ Gandalf.Views.Calendar ||= {}
 class Gandalf.Views.Calendar.Index extends Backbone.View
 
   initialize: ->
-    split = true #(@options.type is "week")
-    @calEvents = @options.events           # DO NOT CALL THIS EVENTS
-    @calEvents.splitMultiDay(split)        # Adjust multi-day events
-    @days = @calEvents.group()
     # Class variables
+    @calEvents = @options.events
     @startDate = @options.startDate
     @maxOverlaps = 4                        # Maximum allowed event overlaps
     # Listening for global events
@@ -16,26 +13,23 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     @render()
 
   className: "calendar"
-  popoverTemplate: JST["backbone/templates/calendar/popover"]
 
   render: ->
     if @options.type is "month"
       @$el.append(@renderMonth().el)
     else 
       @$el.append(@renderWeek().el)
-      # @renderWeekMultiday()
       @adjustOverlappingEvents()
-    # t = this
-    # setInterval( ->
-    #   t.resetEventPositions()
-    # , 20000)
+    t = this
+    setInterval( ->
+      t.resetEventPositions()
+    , 20000)
     return this
 
 
   renderWeek: ->
     view = new Gandalf.Views.Calendar.Week.Index(
       startDate: moment(@startDate)
-      days: @days
       calEvents: @calEvents
     )
     return view
@@ -43,20 +37,10 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
   renderMonth: () ->
     view = new Gandalf.Views.Calendar.Month.Index(
       startDate: moment(@startDate)
-      days: @days
       calEvents: @calEvents
     )
     return view
     # @hideHidden()
-
-  # So far unused...
-  renderWeekMultiday: () ->
-    evs = @calEvents.getMultidayEvents()
-    for event in evs
-      view = new Gandalf.Views.Calendar.Week.Multiday(
-        { model: event, startDate: moment(@startDate) }
-      )
-      $(".cal-multiday").append(view.el)
 
   # Event handlers
 

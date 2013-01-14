@@ -2,10 +2,13 @@ Gandalf.Views.Calendar.Week ||= {}
 
 class Gandalf.Views.Calendar.Week.Index extends Backbone.View
   initialize: ()->
-    @days = @options.days
+    @calEvents = @options.calEvents
+    @calEvents.splitMultiday(false)        # Adjust multi-day events
+    @days = @calEvents.group()
     @startDate = @options.startDate
-    # Gandalf.dispatcher.on("weekEvent:multiday", @multiday, this)
     @render()
+    Gandalf.dispatcher.on("multiday:show", @showMultiday, this)
+    Gandalf.dispatcher.on("multiday:hide", @hideMultiday, this)
 
   template: JST["backbone/templates/calendar/week/index"]
   headerTemplate: JST["backbone/templates/calendar/week/header"]
@@ -15,17 +18,16 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
 
   addDay: (events, dayNum, date) ->
     view = new Gandalf.Views.Calendar.Week.Day(
-      model: events,
-      date: date,
+      model: events
+      date: date
       dayNum: dayNum
-      calEvents: @options.calEvents # Passing in event collection
+      calEvents: @calEvents # Passing in event collection
     )
     @$(".cal-day-container").append(view.el)
     return view
   
   render: () ->
-    # @$el.html(@headerTemplate(startDate: moment(@startDate)))
-    @$el.append(@template(startDate: moment(@startDate)))
+    @$el.html(@template(startDate: moment(@startDate)))
     tempDate = moment(@startDate)
     dayCount = 0
     while dayCount < 7
@@ -34,7 +36,27 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
       @addDay(@days[d], dayCount, moment(tempDate))
       tempDate.add('d', 1)
       dayCount++
+    @renderMultidayEvents()
     return this
+
+  renderMultidayEvents: ->
+    events = @calEvents.getMultidayEvents()
+    console.log "multiday", events
+    eNum = 0
+    for e in events
+      view = new Gandalf.Views.Calendar.Week.MultidayEvent(
+        model: e
+        startDate: moment(@startDate)
+        eventNum: eNum
+      )
+      @$(".cal-multiday").append(view.el)
+      eNum++
+
+  showMultiday: ->
+    $(".cal-multiday").removeClass "hidden"
+
+  hideMultiday: ->
+    $(".cal-multiday").addClass "hidden"
 
 
 

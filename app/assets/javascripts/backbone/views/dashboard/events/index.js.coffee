@@ -19,7 +19,7 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
   renderEvents: =>
     for e in @model.get("events").models
       view = new Gandalf.Views.Dashboard.Event model: e
-      @$(".dash-events-list").append view.el
+      @$(".dash-list").append view.el
         
   render: =>
     @$el.html @template(@model.toJSON())

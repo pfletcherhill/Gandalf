@@ -2,15 +2,25 @@
   <div class="image loading"></div>
 </td>
 <td>
-  <div class="name"><%= event.get('name') %></div>
-  <div class="time"><%= moment(event.get('start_at')).format("h:mm a") %></div>
-  <div class="location"><%= event.location %></div>
+  <div class="name"><b><%= event.get('name') %></b></div>
+  <% startAt = moment(event.get("start_at")); %>
+  <% endAt = moment(event.get("end_at")); %>
+  <% format = "MMM DD h:mm a" %>
+  <div class="time">
+    <% if(startAt.format("YYYY-MM-DD") == endAt.format("YYYY-MM-DD")) { %> 
+      <%= startAt.format("MMM Do") %>
+      <%= startAt.format("h:mm a") %> - <%= endAt.format("h:mm a") %>
+    <% } else { %>
+      <%= startAt.format(format) %><br/>-
+      <%= endAt.format(format) %>
+    <% } %>
+  </div>
+  <div class="location"><%= event.get('location') %></div>
 </td>
 <td>
-  <div class="description"><%= event.description %></div>
+  <div class="description"><%= event.get('description') %></div>
 <td>
-  <div class='btn btn-mini edit'>Edit</div>
-</td>
-<td>
-  <div class='btn btn-mini delete'>Delete</div>
+  <i class='icon-pencil edit' rel='tooltip' title='Edit'></i>
+  <br/>
+  <i class='icon-remove delete' rel='tooltip' title='Delete'></i>
 </td>
