@@ -38,36 +38,48 @@ ul.dash-menu {
 
 /* Events panel */
 
-.dash-events-list {
+.dash-list {
   width: 100%;
 }
 
-tr.organization-event {
-  border-bottom: 1px solid #dadada;
+tr.dash-row {
   td {
-    padding: 10px 0px;
+    vertical-align: top;
   }
-  .image {
-    width: 50px;
-    height: 60px;
-    border: 1px solid #dadada;
-  }
-  .description {
-    width: 300px;
-  }
-  &:last-child {
+  &.event {
+    border-bottom: 1px solid #dadada;
+    td {
+      padding: 10px 10px 10px 0;
+    }
+    .image {
+      width: 50px;
+      height: 60px;
+      border: 1px solid #dadada;
+    }
+    .description {
+      width: 300px;
+    }
+    &:last-child {
     border: none;
   }
+  }
+  &.user {
+    td {
+      padding: 2px 10px;
+    }
+    td:first-child {
+      width: 25%;
+    }
+  }
 }
-
 
 /* Settings panel */
 
 #dash-settings-form {
   padding: 15px;
   img {
-    height: 60px;
-    width: 50px;
+    height: 100%;
+    width: 100%;
   }
   input[type='file'] {
     margin-top: 10px;
@@ -76,9 +88,14 @@ tr.organization-event {
   textarea {
     height: 100px;
   }
+  .image {
+    width: 100px;
+    height: 100px;
+    border: 1pt solid #dadada;
+  }
 }
 
-//Show
+// Show
 
 .body-header {
   border-bottom: 1px solid #dadada;

@@ -9,9 +9,9 @@ class Gandalf.Views.Calendar.Month.Event extends Backbone.View
     @continues = @options.continues
     @eventId = @model.get("eventId")
     @render()
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
-    Gandalf.dispatcher.on("feedEvent:click", @click, this)
+    Gandalf.dispatcher.on("feed:event:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feed:event:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feed:event:click", @click, this)
 
   template: JST["backbone/templates/calendar/month/event"]
   popoverTemplate: JST["backbone/templates/calendar/popover"]

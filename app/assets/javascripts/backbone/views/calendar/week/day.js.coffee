@@ -21,8 +21,7 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
             dayNum: @options.dayNum
             calEvents: @options.calEvents
           ) 
-        $(container).append(view.el)
-      Gandalf.dispatcher.trigger("calEvents:ready")
+          $(container).append(view.el)
 
   render: () ->
     @$el.html(@template(date: @date)) # Add the calendar day
@@ -36,6 +35,13 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
       , 15*60*1000)
     @addEvents()
     return this
+
+  # Event handlers
+
+  showMultiday: ->
+
+
+  # Helpers
 
   nowMarker: ->
     top = @getNowPosition()

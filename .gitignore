@@ -19,3 +19,4 @@ pickle-email-*.html
 /config/credentials.yml
 
 *.DS_Store
+*/tablesorter.js

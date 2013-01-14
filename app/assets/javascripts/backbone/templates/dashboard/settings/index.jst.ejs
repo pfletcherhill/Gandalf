@@ -5,7 +5,8 @@
   <textarea name='bio' placeholder='What is <%= name %>..?'maxlength="300"><%= bio %></textarea>
   <label>Logo:</label>
   <div class='image loading'><img src='<%= image ? image.thumbnail.url : '' %>' alt="No image for <%= name %>."/></div>
-  <input id='organization-image' name='image' type='file' accept="image/*"/>
+  <div class='btn btn-danger btn-small' id="open-image">Add an image</div>
+  <input id='organization-image' name='image' type='file' class='hidden' accept="image/*"/>
   <br/>
   <input type='submit' class='btn btn-info' id="org-update" value='Update Organization' />
 </form>
