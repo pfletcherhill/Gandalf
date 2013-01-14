@@ -29,5 +29,7 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
     Gandalf.dispatcher.trigger("event:edit", @model)
 
   deleteEvent: ->
-    Gandalf.dispatcher.trigger("event:delete", @model)
+    confirm("Are you sure you want to delete #{@model.get('name')}?")
+    # Gandalf.dispatcher.trigger("event:delete", @model)
+    # Delete it
 
