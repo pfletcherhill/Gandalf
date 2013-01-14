@@ -206,6 +206,12 @@ $main-width: $width - $left-width - $left-margin;
   margin-left: $left-width + $left-margin;
 }
 
+.loading {
+  background-image: url('/assets/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .loader {
   width: 100%;
   height: 100%;

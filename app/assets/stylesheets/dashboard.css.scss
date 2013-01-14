@@ -78,8 +78,8 @@ tr.dash-row {
 #dash-settings-form {
   padding: 15px;
   img {
-    height: 60px;
-    width: 50px;
+    height: 100%;
+    width: 100%;
   }
   input[type='file'] {
     margin-top: 10px;
@@ -87,6 +87,11 @@ tr.dash-row {
   }
   textarea {
     height: 100px;
+  }
+  .image {
+    width: 100px;
+    height: 100px;
+    border: 1pt solid #dadada;
   }
 }
 
