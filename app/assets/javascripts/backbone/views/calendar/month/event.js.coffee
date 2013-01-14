@@ -7,10 +7,11 @@ class Gandalf.Views.Calendar.Month.Event extends Backbone.View
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @continued = @options.continued
     @continues = @options.continues
+    @eventId = @model.get("eventId")
     @render()
-    Gandalf.dispatcher.on("feedEvent:mouseenter", @mouseenter, this)
-    Gandalf.dispatcher.on("feedEvent:mouseleave", @mouseleave, this)
-    Gandalf.dispatcher.on("feedEvent:click", @click, this)
+    Gandalf.dispatcher.on("feed:event:mouseenter", @mouseenter, this)
+    Gandalf.dispatcher.on("feed:event:mouseleave", @mouseleave, this)
+    Gandalf.dispatcher.on("feed:event:click", @click, this)
 
   template: JST["backbone/templates/calendar/month/event"]
   popoverTemplate: JST["backbone/templates/calendar/popover"]
@@ -46,24 +47,28 @@ class Gandalf.Views.Calendar.Month.Event extends Backbone.View
     return this
 
   click: (id) ->
-    return if typeof id is "number" and @model.get("id") isnt id
+    return if typeof id is "number" and @eventId isnt id
+    m = @model
+    eId = m.get("eventId")
+    if m.get("id") isnt eId
+      m = @options.calEvents.get(eId)
     Gandalf.dispatcher.trigger("event:click", 
       { model: @model, color: @lightColor })
 
   mouseenter: (id) ->
-    return if typeof id is "number" and @model.get("eventId") isnt id
+    return if typeof id is "number" and @eventId isnt id
     if @continues or @continued
       @$el.css({ backgroundColor: @color })
     else
       @$el.css({ color: @color })
 
   mouseleave: (id) ->
-    return if typeof id is "number" and @model.get("eventId") isnt id
+    return if typeof id is "number" and @eventId isnt id
     if @continues or @continued
       @$el.css({ backgroundColor: @lightColor })
     else
       @$el.css({ color: @lightColor })
 
-  feedClick:(id) ->
-    if not id or @model.get("id") is id
-      @$el.click()
+  # feedClick:(id) ->
+  #   if not id or @model.get("id") is id
+  #     @$el.click()

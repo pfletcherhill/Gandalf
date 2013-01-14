@@ -22,23 +22,24 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
   renderOrganizationsList: =>
     @$(".left-list").html('')
     for organization in @organizations.models
-      @$(".left-list").append("<li><a data-id=#{organization.id} href='#dashboard/#{organization.id}'>#{organization.get('name')}</a></li>")
+      @$(".left-list").append("<a href='#dashboard/#{organization.id}'><li data-id=#{organization.id}>#{organization.get('name')}</li></a>")
   
   renderOrganizationMenu: (type) ->
-    @$('.main-menu').html( @menuTemplate( @organization.toJSON()) )
-    @$(".main-menu a[data-type=#{type}]").addClass 'selected'
+    @$('.dash-menu').html( @menuTemplate( @organization.toJSON()) )
+    @$(".dash-menu li[data-type=#{type}]").addClass 'selected'
           
   render: (type) =>
-    $(@el).html(@template())
+    @$el.html @template()
     @renderOrganizationsList()
     @renderOrganizationMenu(type)
-    if type == 'info'
-      view = new Gandalf.Views.Dashboard.Info(model: @organization)
-    else if type == 'events'
+    if type is 'events'
       view = new Gandalf.Views.Dashboard.Events(model: @organization)
-    else if type == 'users'
+    else if type is'users'
       view = new Gandalf.Views.Dashboard.Users(model: @organization)
-    else
+    else if type is 'settings'
       view = new Gandalf.Views.Dashboard.Settings(model: @organization)
-    @$('.content-main .main-content').html(view.el)
+    else # Should never happen
+      view = new Gandalf.Views.Dashboard.Events(model: @organization)
+      
+    @$('.content-main .dash-content').html view.el
     return this

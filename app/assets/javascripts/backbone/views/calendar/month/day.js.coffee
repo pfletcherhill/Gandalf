@@ -21,6 +21,7 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
             model: e
             continued: continued
             continues: continues
+            calEvents: @options.calEvents
           ) 
           $(container).append(view.el)
       for e in @model
@@ -29,7 +30,6 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
         if not (continues or continued) # Not a multiday event
           view = new Gandalf.Views.Calendar.Month.Event(model: e) 
           $(container).append(view.el)
-      Gandalf.dispatcher.trigger("calEvents:ready")
 
   render: () ->
     @$el.html(@template(date: @date)) # Add the calendar day
