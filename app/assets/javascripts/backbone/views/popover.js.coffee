@@ -38,13 +38,14 @@ class Gandalf.Views.Popover extends Backbone.View
     @makeGMap(model)
 
   newEvent: (organization) ->
-    console.log organization
     e = new Gandalf.Models.Event
     e.set organization_id: organization.get("id")
     $(".gandalf-popover").html @newEventTemplate(
       org: organization
       color: "rgba(#{organization.get("color")}, 0.7)"
     )
+    console.log $("[type=datetime]")
+    $("[type=datetime]").datepicker()
     @show()
 
   editEvent: (e) ->
@@ -56,10 +57,16 @@ class Gandalf.Views.Popover extends Backbone.View
     @show()
 
   validateNewEvent: (e) ->
-    e.stopPropagation()
-    e.preventDefault()
     # These strings are Ruby style bc we do e.set in @makeEvent()
-    names = ['name', 'location', 'start_at', 'end_at', 'organization_id']
+    names = [
+      'name', 
+      'location', 
+      'start_at_date', 
+      'start_at_time', 
+      'end_at_date', 
+      'end_at_time', 
+      'organization_id'
+    ]
     values = {}
     success = true
     for name in names
@@ -69,11 +76,17 @@ class Gandalf.Views.Popover extends Backbone.View
         $(input).addClass "error"
         $(input).attr "placeholder", "This is required!"
         success = false
+        values[name] = "None"
       else
         values[name] = value
-    return false unless success
+    # return false unless success
+    start = moment(values["start_at_time"]+" "+values["start_at_date"], "HH:mm MM/DD/YYYY")
+    end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
+    values["start_at"] = start.format()
+    values["end_at"] = end.format()
     # Description field is not required
     values["description"] = @$("textarea[name='description']").val()
+    # Handle times here
     @makeEvent(values)
 
   makeEvent: (values) ->

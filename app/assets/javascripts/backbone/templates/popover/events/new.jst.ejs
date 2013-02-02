@@ -1,50 +1,26 @@
 <div class='gandalf-popover-head' style='background-color: <%= color %>;'>
-  <strong>New <%= org.get("name") %> event</strong>
+  New <%= org.get("name") %> event
   <span class="close">×</span>
 </div>
 <div class="gandalf-popover-body new-event">
   <form id='new-event-form' action="#">
     <!-- Names are Ruby-style strings intentionally! Don't change! -->
     <input type="hidden" name='organization_id' value=<%= org.get("id") %> />
-    <table>
-      <tr>
-        <td>Name</td>
-        <td>
-          <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" />
-        </td>
-      </tr>
-      <tr>
-        <td>at</td>
-        <td>
-          <input type="text" name="location" maxlength="50" placeholder="Camp awesome" />
-        </td>
-      </tr>
-      <tr>
-        <td>from </td>
-        <td>
-          <input type="datetime" name='start_at' placeholder='now' />
-        </td>
-      </tr>
-      <tr>
-        <td>to</td>
-        <td>
-          <input type="datetime" name='end_at' placeholder='forever' />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Description
-        </td>
-        <td>
-          <textarea name="description" id="" cols="30" rows="10" placeholder="This will be awesome TO THE MAX."></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <input type="submit" value='Go!' class='btn btn-primary' />
-        </td>
-      </tr>
-    </table>
+    <p>Name</p>
+    <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" />
+    <p>Place</p>
+    <input type="text" name="location" maxlength="50" placeholder="Camp awesome" />
+    <p>From</p>
+    <input type="datetime" name='start_at_date' placeholder='now' />
+    <div class="at">at</div>
+    <input type="time" name='start_at_time' placeholder='12:01 a.m.'/>
+    <p>To</p>
+    <input type="datetime" name='end_at_date' placeholder='forever' />
+    <div class="at">at</div>
+    <input type="time" name='end_at_time' placeholder='12:01 a.m.'/>
+    <p>Description</p>
+    <textarea name="description" id="" cols="30" rows="10" placeholder="This will be awesome TO THE MAX."></textarea>
+    <br/>
+    <input type="submit" value='Go!' class='btn btn-primary' />
   </form>
 </div>
