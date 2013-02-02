@@ -15,7 +15,6 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
     @render()
     @model.fetchEvents().then @renderEvents
     @model.fetchSubscribedUsers().then @renderUsers
-    $(".dash-list").tablesorter()
       
   renderUsers: =>
     for user, index in @model.get('users')

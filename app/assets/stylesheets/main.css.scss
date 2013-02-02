@@ -18,7 +18,7 @@ body {
   padding: 0px;
   @include HN-Regular;
   font-size: $font;
-  background: $background-color;
+  // background: $background-color;
 }
 
 ul {
@@ -30,7 +30,7 @@ ul, li {
 }
 
 a {
-  color: darken($blue, 80%);
+  color: darken($blue, 50%);
   text-decoration: none;
 }
 
@@ -118,7 +118,7 @@ h3 {
   min-width: $min-width;
   min-height: 500px;
   top: $header-height + 3px; // 3px for the top blue border
-  background: #fafafa;
+  // background: #fafafa;
 }
 
 .content-calendar {
@@ -129,7 +129,6 @@ h3 {
   min-width: $min-width;
   height: $calendar-height;
   overflow-y: hidden;
-  background-color: #eee;
 }
 
 .content-body {
@@ -210,6 +209,7 @@ $main-width: $width - $left-width - $left-margin;
   background-image: url('/assets/ajax-loader.gif');
   background-repeat: no-repeat;
   background-position: center;
+  background-size: 60%;
 }
 
 .loader {

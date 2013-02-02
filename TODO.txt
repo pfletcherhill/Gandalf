@@ -1,2 +1,6 @@
-Dashboard (organization management) styling
-Mailer!
+Daily email
+Category, organization calendar navigation
+Working add, edit, delete events
+Typeahead on event location
+Improve feed interface
+Style month
