@@ -1,4 +1,4 @@
-netids = %w(prf8 fak23 rcl6)
+netids = %w(prf8 fak23 alb64)
 
 netids.each do |id|
   User.create_from_directory id
@@ -7,6 +7,7 @@ end
 o1 = Organization.create(:name => "TEDxYale", :color => "255,66,51")
 o2 = Organization.create(:name => "HackYale", :color => "107,189,246")
 o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
+o4 = Organization.create(:name => "STC", :color => "34,121,71")
 print "organizations created...\n"
 c1 = Category.create(:name => "Tech")
 c2 = Category.create(:name => "TED Talks")
@@ -113,12 +114,26 @@ e.categories << c2
 e.categories << c3
 e.save
 
+e = Event.new(
+  :name => "STC group meeting",
+  :organization_id => o4.id,
+  :start_at => Time.now + 1.day + 10.hour,
+  :end_at => Time.now + 1.day + 14.hour,
+  :location_id => l1.id,
+  :description => "We're getting together to do cool stuff!"
+)
+
+e.categories << c2
+e.categories << c3
+e.save
+
 print "events created...\n"
 u1 = User.find_by_netid('prf8')
 u2 = User.find_by_netid('fak23')
-u3 = User.find_by_netid('rcl6')
+u3 = User.find_by_netid('alb64')
 u1.organizations << o1
 u2.organizations << o2
+u3.organizations << o4
 print "access controls created...\n"
 u1.subscribed_organizations << o1
 u1.subscribed_organizations << o2
@@ -128,6 +143,8 @@ u2.subscribed_organizations << o2
 u2.subscribed_organizations << o3
 u3.subscribed_organizations << o1
 u3.subscribed_organizations << o2
+u3.subscribed_organizations << o3
+u3.subscribed_organizations << o4
 u1.subscribed_categories << c1
 u1.subscribed_categories << c2
 u2.subscribed_categories << c2

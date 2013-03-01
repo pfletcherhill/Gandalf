@@ -6,12 +6,14 @@ class Gandalf.Views.Dashboard.User extends Backbone.View
     @render()
 
   tagName: "tr"
-  className: "dash-row user"
+  className: "dash-row user striped"
 
   template: JST["backbone/templates/dashboard/users/show"]
 
+  events:
+    "click [type=checkbox]" : "broadcastSelect"
+
   render: ->
-    console.log @model
     @$el
       .attr("data-id", @model.id)
       .html @template(user: @model, index: @options.index)
@@ -27,4 +29,7 @@ class Gandalf.Views.Dashboard.User extends Backbone.View
 
   deleteEvent: ->
     Gandalf.dispatcher.trigger("event:delete", @model)
+
+  broadcastSelect: ->
+    Gandalf.dispatcher.trigger("dashboard:user:checkbox")
 
