@@ -34,8 +34,10 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @renderOrganizationMenu(type)
     if type is 'events'
       view = new Gandalf.Views.Dashboard.Events(model: @organization)
-    else if type is'users'
+    else if type is 'users'
       view = new Gandalf.Views.Dashboard.Users(model: @organization)
+    else if type is 'admins'
+      view = new Gandalf.Views.Dashboard.Admins(model: @organization)
     else if type is 'settings'
       view = new Gandalf.Views.Dashboard.Settings(model: @organization)
     else # Should never happen
