@@ -1,7 +1,23 @@
-<div class="container">
+<div class="content-header container">
+  <h1>User Preferences</h1>
+</div>
+<div class="content-container container">
   <div class="content-left">
+    <div class="left-header">Settings:</div>
+    <ul class="left-list">
+      <a href="#preferences"><li data-type='subscriptions'>Subscriptions</li></a>
+      <a href="#preferences"><li data-type='account'>Account Info</li></a>
+    </ul>
   </div>
-  <div class="middle">
-    <h5>These are your preferences. You can handle subscription options here.</h5>
+  <div class="content-main" id="preferences-list">
+    <table id="subscriptions-table">
+      <tbody>
+        <tr class="header-row">
+          <th>Subscription Name</th>
+          <th>Type</th>
+          <th></th>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

@@ -69,7 +69,8 @@ class Gandalf.Router extends Backbone.Router
     'categories*'                     : 'categories'
     
     # Preferences Routes
-    'preferences'                     : 'preferences'
+    'preferences/:type'               : 'preferences'
+    'preferences*'                    : 'preferences'
     
     # Static Routes
     'about'                           : 'about'
@@ -158,11 +159,23 @@ class Gandalf.Router extends Backbone.Router
           startDate: params.start,
           period: params.period
         )
-     
-  preferences: ->
-    view = new Gandalf.Views.Preferences.Index
-    $("#content").html(view.render().el)
+
+  # preferences tab with subscriptions and account info
+  preferences: (type) ->
+    @showLoader('.content-main')  
+    $(".left-list a").removeClass 'active'
+    if type == 'account'
+      view = new Gandalf.Views.Preferences.Index(type: type)
+      $("#content").html(view.el)
+    else
+      type = "subscriptions"
+      @subscriptions = new Gandalf.Collections.Subscriptions
+      @subscriptions.url = '/users/' + Gandalf.currentUser.id + '/subscriptions'
+      @subscriptions.fetch success: (subscriptions) =>
+        view = new Gandalf.Views.Preferences.Index(type: type, subscriptions: subscriptions)
+        $("#content").html(view.el)
   
+  # about page
   about: ->
     view = new Gandalf.Views.Static.About
     $("#content").html(view.render().el)

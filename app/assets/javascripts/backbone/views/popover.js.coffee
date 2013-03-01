@@ -49,7 +49,6 @@ class Gandalf.Views.Popover extends Backbone.View
     @show()
 
   editEvent: (e) ->
-    console.log "event", e
     $(".gandalf-popover").html @editEventTemplate(
       event: e
       color: "rgba(#{e.get("color")}, 0.7)"

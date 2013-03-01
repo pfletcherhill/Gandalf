@@ -3,6 +3,7 @@
 //= require jquery.ui.all
 //= require jquery.effects.all
 //= require jquery-fileupload/basic
+//= require moment
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync
