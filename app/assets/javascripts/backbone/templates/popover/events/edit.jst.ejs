@@ -3,47 +3,25 @@
   <span class="close">×</span>
 </div>
 <div class="gandalf-popover-body new-event">
-  <form id='new-event-form' action="#">
+  <form id='edit-event-form' class='event-form' action="#">
     <!-- Names are Ruby-style strings intentionally! Don't change! -->
-    <table>
-      <tr>
-        <td>Name</td>
-        <td>
-          <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" value="<%= event.get("name") %>" />
-        </td>
-      </tr>
-      <tr>
-        <td>at</td>
-        <td>
-          <input type="text" name="location" maxlength="50" placeholder="Camp awesome" value="<%= event.get("location") %>" />
-        </td>
-      </tr>
-      <tr>
-        <td>from </td>
-        <td>
-          <input type="datetime" name='start_at' placeholder='now' value="<%= event.get("start_at") %>" />
-        </td>
-      </tr>
-      <tr>
-        <td>to</td>
-        <td>
-          <input type="datetime" name='end_at' placeholder='forever' value="<%= event.get("end_at") %>" />
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Description
-        </td>
-        <td>
-          <textarea name="description" id="" cols="30" rows="10" placeholder="This will be awesome TO THE MAX."><%= event.get("description") %></textarea>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <input type="submit" value='Update!' class='btn btn-primary' />
-        </td>
-      </tr>
-    </table>
+    <input type="hidden" name='organization_id' value=<%= event.get("organization_id") %> />
+    <input type="hidden" name='event_id' value=<%= event.get("id") %> />
+    <p>Name</p>
+    <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" value='<%= event.get("name") %>' />
+    <p>Place</p>
+    <input type="text" name="location" maxlength="50" placeholder="Camp awesome" value='<%= event.get("location") %>' />
+    <p>From</p>
+    <input type="datetime" name='start_at_date' placeholder='now' value=<%= moment(event.get("start_at")).format('MM/DD/YYYY') %> />
+    <div class="at">at</div>
+    <input type="time" name='start_at_time' placeholder='12:01 a.m.' value=<%= moment(event.get("start_at")).format('HH:mm') %> />
+    <p>To</p>
+    <input type="datetime" name='end_at_date' placeholder='forever' value=<%= moment(event.get("end_at")).format('MM/DD/YYYY') %> />
+    <div class="at">at</div>
+    <input type="time" name='end_at_time' placeholder='12:01 a.m.' value=<%= moment(event.get("end_at")).format('HH:mm') %> />
+    <p>Description</p>
+    <textarea name="description" id="" cols="30" rows="10" placeholder="This will be awesome TO THE MAX."><%= event.get("description") %></textarea>
+    <br/>
+    <input type="submit" value='Update!' class='btn btn-primary' />
   </form>
 </div>

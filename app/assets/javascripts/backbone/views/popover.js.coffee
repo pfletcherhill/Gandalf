@@ -17,7 +17,8 @@ class Gandalf.Views.Popover extends Backbone.View
   editEventTemplate: JST["backbone/templates/popover/events/edit"]
 
   events:
-    "submit #new-event-form": "validateNewEvent"
+    "submit #new-event-form": "createEvent"
+    "submit #edit-event-form": "updateEvent"
     "click input,textarea" : "removeErrorClass"
     "click .global-overlay,.close" : "hide"
 
@@ -44,7 +45,6 @@ class Gandalf.Views.Popover extends Backbone.View
       org: organization
       color: "rgba(#{organization.get("color")}, 0.7)"
     )
-    console.log $("[type=datetime]")
     $("[type=datetime]").datepicker()
     @show()
 
@@ -55,7 +55,30 @@ class Gandalf.Views.Popover extends Backbone.View
     )
     @show()
 
-  validateNewEvent: (e) ->
+  createEvent: () ->
+    values = @validateEvent();
+    @$("[type='submit']").val('Saving...')
+    newEvent = new Gandalf.Models.Event 
+    newEvent.set values
+    console.log newEvent
+    newEvent.url = "/events/create"
+    newEvent.save(newEvent, 
+      success: (e) =>
+        @hide()
+        Gandalf.dispatcher.trigger("event:new:success")
+      error: (organization, jqXHR) =>
+        console.log "new event error", organization, jqXHR
+        @model.set({errors: $.parseJSON(jqXHR.responseText)})
+    )
+    # So the browser doesn't submit the event
+    return false
+
+  updateEvent: () ->
+    values = @validateEvent()
+    @$("[type='submit']").val('Updating...')
+
+
+  validateEvent: () ->
     # These strings are Ruby style bc we do e.set in @makeEvent()
     names = [
       'name', 
@@ -78,7 +101,7 @@ class Gandalf.Views.Popover extends Backbone.View
         values[name] = "None"
       else
         values[name] = value
-    # return false unless success
+    # Consolidate time and date into datetime
     start = moment(values["start_at_time"]+" "+values["start_at_date"], "HH:mm MM/DD/YYYY")
     end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
     values["start_at"] = start.format()
@@ -90,36 +113,21 @@ class Gandalf.Views.Popover extends Backbone.View
     delete values["start_at_date"]
     delete values["end_at_time"]
     delete values["end_at_date"]
+    return values
     # Handle times here
-    @makeEvent(values)
+    # @makeEvent(values)
 
-  makeEvent: (values) ->
-    @$("[type='submit']").val('Saving...')
-    newEvent = new Gandalf.Models.Event 
-    newEvent.set values
-    console.log newEvent
-    newEvent.url = "/events/create"
-    t = this
-    newEvent.save(newEvent, 
-      success: (e) =>
-        @hide()
-        Gandalf.dispatcher.trigger("event:new:success")
-      error: (organization, jqXHR) =>
-        console.log "new event error", organization, jqXHR
-        @model.set({errors: $.parseJSON(jqXHR.responseText)})
-    )
-    return false
-
-  removeErrorClass: (e) ->
-    $(e.target).removeClass "error"
-
-  hide: ->
-    $(".gandalf-popover,.global-overlay").fadeOut("fast")
 
   # Helpers
 
   show: ->
     $(".gandalf-popover,.global-overlay").fadeIn "fast"
+
+  hide: ->
+    $(".gandalf-popover,.global-overlay").fadeOut("fast")
+
+  removeErrorClass: (e) ->
+    $(e.target).removeClass "error"
 
   makeGMap: (model) ->
     myPos = new google.maps.LatLng(model.get("lat"), model.get("lon"))
