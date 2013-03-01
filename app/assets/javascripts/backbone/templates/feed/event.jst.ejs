@@ -1,7 +1,8 @@
-<div class="time"><%= startTime %></div>
+<div class="event-image" style="background-image: url('/assets/image.jpeg')" >
+</div>
 <div class="details">
-  <div class="feed-left"></div>
-  <div class="organization"><%= event.get("organization") %></div>
   <div class="name"><%= event.get("name") %></div>
-  <div class="location"><%= event.get("location") %></div>
+  <div class="organization"><%= event.get("organization") %></div>
+  <div class="time"><span class="icon-time"></span><%= startTime %></div>
+  <div class="location"><span class="icon-map-marker"></span><%= event.get("location") %></div>
 </div>

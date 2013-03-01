@@ -55,8 +55,8 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     @$(".cal-nav .month").attr 'href', '#calendar/' + month + '/month'
       
   renderFeed: () ->
-    noEvents = "<div class='feed-day-header'>You have no upcoming events</div>"
-    @$("#body-feed").append(noEvents) if _.isEmpty(@days)
+    noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period...</div>"
+    @$(".body-feed").append(noEvents) if _.isEmpty(@days)
     @doneEvents = []
     for day, events of @days
       @addFeedDay(day, events)
