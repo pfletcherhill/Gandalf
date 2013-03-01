@@ -22,7 +22,7 @@ class Gandalf.Views.Popover extends Backbone.View
     "submit #new-event-form": "createEvent"
     "submit #edit-event-form": "updateEvent"
     "click input,textarea" : "removeErrorClass"
-    "click .global-overlay,.close" : "hide"
+    "click .global-overlay,.close,a" : "hide"
     "click #send-email": "sendEmail"
 
   render: ->
