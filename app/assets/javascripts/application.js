@@ -1,5 +1,6 @@
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
 //= require jquery.effects.all
 //= require jquery-fileupload/basic
 //= require moment
