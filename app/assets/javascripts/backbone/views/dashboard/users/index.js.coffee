@@ -5,30 +5,30 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
   template: JST["backbone/templates/dashboard/users/index"]
   
   className: 'dash-org-container'
-
-  events:
-    "click .select-all" : "selectAll"
-    "click .deselect-all" : "deselectAll"
-    "click #email-subscribers-btn" : "email"
     
   initialize: =>
     @render()
-    @model.fetchEvents().then @renderEvents
     @model.fetchSubscribedUsers().then @renderUsers
     Gandalf.dispatcher.bind("dashboard:user:checkbox", @updateSelect, this)
-      
+  
+  # Add users to table   
   renderUsers: => 
     for user, index in @model.get('users')
+      # Create view for each user
       view = new Gandalf.Views.Dashboard.User(model: user, index: index)
       @$(".dash-list-body").append view.el
     @updateSelect()
         
   render: ->
-    @$el.html @template(@model.toJSON())
+    @$el.html @template(typeName: "Subscribers")
     $("li[data-id='#{@model.id}']").addClass 'selected'
     return this
 
   # Event handlers
+  events:
+    "click .select-all" : "selectAll"
+    "click .deselect-all" : "deselectAll"
+    "click #email-subscribers-btn" : "email"
 
   updateSelect: ->
     checked = $(":checked").length
@@ -62,15 +62,15 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
     false
 
   email: ->
-    emails = []
+    ids = []
     inputs = $("[checked='checked']")
     return false if inputs.length is 0
     for input in inputs
       index = $(input).attr "data-index"
       user = @model.get('users')[index]
-      emails.push user.email
-
-    to = "mailto:#{emails.join(",")}"
-    $("#email-subscribers-btn").attr "href", to
-    true
-
+      ids.push user.id
+    # 
+    # to = "mailto:#{emails.join(",")}"
+    # $("#email-subscribers-btn").attr "href", to
+    # true
+    Gandalf.dispatcher.trigger( "dashboard:email", {emails: ids, organization: @model} )

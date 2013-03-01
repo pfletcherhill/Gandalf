@@ -48,13 +48,33 @@ class OrganizationsController < ApplicationController
   def subscribed_users
     @organization = Organization.find(params[:id])
     @users = @organization.subscribers
+    @admins = @organization.admins
+    @users = @users - @admins
     render json: @users.as_json
+  end
+  
+  def admins
+    @organization = Organization.find(params[:id])
+    @admins = @organization.admins
+    render json: @admins.as_json
   end
   
   def search
     query = params[:query]
     organizations = Organization.fulltext_search(query)
     render json: organizations.to_json(:include => [:categories])
+  end
+  
+  def subscriber_email
+    organization = Organization.find(params[:id])
+    user_ids = params[:user_ids]
+    body = params[:body]
+    subject = params[:subject]
+    user_ids.each do |id|
+      user = User.find(id)
+      UserMailer.subscriber_email(user.email, body, subject).deliver
+    end
+    render json: organization
   end
   
 end
