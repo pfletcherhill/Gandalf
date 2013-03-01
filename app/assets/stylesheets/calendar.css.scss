@@ -36,6 +36,8 @@ $cal-z: 10;
 }
 
 .cal-week .cal-day {
+  // background-color: #fdfdfd;
+  z-index: -5;
   border-right: 1pt solid #ddd;
 }
 
