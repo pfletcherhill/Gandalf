@@ -42,6 +42,13 @@ ul.dash-menu {
   width: 100%;
 }
 
+.header-row {
+  border-bottom: 1px solid black;
+  th {
+    text-align: left;
+  }
+}
+
 tr.dash-row {
   td {
     vertical-align: top;
@@ -60,15 +67,20 @@ tr.dash-row {
       width: 300px;
     }
     &:last-child {
-    border: none;
-  }
+      border: none;
+    }
   }
   &.user {
     td {
-      padding: 2px 10px;
+      padding: 5px 0;
     }
     td:first-child {
       width: 25%;
+    }
+  }
+  &.striped {
+    &:nth-child(even) {
+      background: #eee;
     }
   }
 }

@@ -26,6 +26,8 @@ Gandalf::Application.routes.draw do
   match '/organizations/:id/add_image' => 'organizations#add_image'
   match '/organizations/:id/events' => 'organizations#events'
   match '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
+  match '/organizations/:id/admins' => 'organizations#admins'
+  match '/organizations/:id/email' => 'organizations#subscriber_email'
   
   match '/categories' => 'categories#all'
   match '/categories/:id/events' => 'categories#events'

@@ -6,7 +6,7 @@ class Gandalf.Views.Dashboard.User extends Backbone.View
     @render()
 
   tagName: "tr"
-  className: "dash-row user"
+  className: "dash-row user striped"
 
   template: JST["backbone/templates/dashboard/users/show"]
 

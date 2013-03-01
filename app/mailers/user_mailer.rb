@@ -6,4 +6,12 @@ class UserMailer < ActionMailer::Base
       :subject => "Your Daily Bulletin from Yale Go!"
     )
   end
+  
+  def subscriber_email(email, body, subject)
+    @body = body
+    mail(
+      :to => email,
+      :subject => subject
+    )
+  end
 end
