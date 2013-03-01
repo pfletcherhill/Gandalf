@@ -115,7 +115,7 @@ class Gandalf.Router extends Backbone.Router
   
   dashboard: (id, type) ->
     id = @organizations.first().id unless id
-    type = 'events' unless type is 'settings' or type is 'users'
+    type = 'events' unless type is 'settings' or type is 'users' or type is 'admins'
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/#{id}/edit"
     @organization.fetch

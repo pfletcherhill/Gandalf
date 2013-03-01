@@ -8,6 +8,7 @@ class Gandalf.Views.Popover extends Backbone.View
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("popover:hide", @hide, this)
+    Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
     @render()
 
   id: "popover-container"
@@ -15,19 +16,47 @@ class Gandalf.Views.Popover extends Backbone.View
   showEventTemplate: JST["backbone/templates/popover/events/show"]
   newEventTemplate: JST["backbone/templates/popover/events/new"]
   editEventTemplate: JST["backbone/templates/popover/events/edit"]
+  showEmailTemplate: JST["backbone/templates/popover/email"]
 
   events:
     "submit #new-event-form": "createEvent"
     "submit #edit-event-form": "updateEvent"
     "click input,textarea" : "removeErrorClass"
-    "click .global-overlay,.close,a" : "hide"
+    "click .global-overlay,.close" : "hide"
+    "click #send-email": "sendEmail"
 
   render: ->
     @$el.html @template()
     return this
+  
+  # Email event handlers
+  showEmail: (object) ->
+    console.log object
+    @emails = object.emails
+    @organization = object.organization
+    color = "rgba(#{@organization.get("color")}, 0.7)"
+    $(".gandalf-popover").html @showEmailTemplate(organization: @organization, emailCount: @emails.length, color: color)
+    @show()
 
-  # Event handlers
-
+  sendEmail: ->
+    emails = @emails
+    orgId = @organization.id
+    body = @$(".email-compose").val()
+    subject = @$(".email-subject").val()
+    $.post(
+      '/organizations/' + orgId + '/email',
+      { user_ids: emails, body: body, subject: subject },
+      (data) ->
+        alert("Response: " + data)
+    )
+    # $.ajax
+    #       type: 'POST'
+    #       dataType: 'json'
+    #       url: '/organizations/' + orgId + '/email', { user_ids: emails, body: body, subject: subject }
+    #       success: (data) =>
+    #         console.log data
+      
+  # Events event handlers 
   showEvent: (object) ->
     model = object.model
     color = object.color
@@ -99,7 +128,6 @@ class Gandalf.Views.Popover extends Backbone.View
     )
 
     return false
-
 
   validateEvent: () ->
     # These strings are Ruby style bc we do e.set in @makeEvent()
