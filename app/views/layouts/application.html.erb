@@ -18,61 +18,59 @@
     <div class="header-container">
       <div class="pull-left">
         <a href="/">
-          <div class="link">
+          <div class="link logo-link">
             <img id="logo" src="/assets/y_logo_200.png" alt="Yale Go" />
           </div>
         </a>
         <% if current_user %>
           <a href="#browse">
             <div class="link">
-              <i class="icon-zoom-in"></i>
               Browse
             </div>
           </a>
           <a href="#calendar">
             <div class="link">
-              <i class="icon-th-list"></i>
               Feed
             </div>
           </a>
           <a href="#dashboard">
             <div class="link">
-              <i class="icon-road"></i>
               Dashboard
             </div>
           </a>
         <% end %>
         <a href="#about">
           <div class="link">
-            <i class="icon-question-sign"></i>
             About
           </div>
         </a>
       </div>
       <div class="pull-right">
         <% if current_user %>
-          <a href="/mail">
+          <div id="user-dropdown">
             <div class="link">
-              <i class="icon-envelope"></i>
-              Send Mail
+              <%= current_user.name %>
             </div>
-          </a>
-          <a href="#preferences">
-            <div class="link">
-              <i class="icon-flag"></i>
-              <%= current_user.nickname %>
-            </div>
-          </a>
-          <a href="/logout">
-            <div class="link">
-              <i class="icon-thumbs-down"></i>
-              Logout
-            </div>
-          </a>
+            <ul>
+              <li>
+                <a href="#preferences">
+                  <div class="link dropdown-link">
+                    User Preferences
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="/logout">
+                  <div class="link dropdown-link">
+                    Logout
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
         <% else %>
           <a href="/login">
             <div class="link">
-              <i class="icon-thumbs-up"></i>
               Login
             </div>
           </a>
