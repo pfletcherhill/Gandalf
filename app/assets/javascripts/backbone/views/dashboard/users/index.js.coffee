@@ -15,12 +15,13 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
     @render()
     @model.fetchEvents().then @renderEvents
     @model.fetchSubscribedUsers().then @renderUsers
-    $(".dash-list").tablesorter()
+    Gandalf.dispatcher.bind("dashboard:user:checkbox", @updateSelect, this)
       
-  renderUsers: =>
+  renderUsers: => 
     for user, index in @model.get('users')
       view = new Gandalf.Views.Dashboard.User(model: user, index: index)
       @$(".dash-list-body").append view.el
+    @updateSelect()
         
   render: ->
     @$el.html @template(@model.toJSON())
@@ -29,6 +30,21 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
 
   # Event handlers
 
+  updateSelect: ->
+    checked = $(":checked").length
+    numUsers = @model.get('users').length
+    $(".dash-list-count").text("Selected #{checked} of #{numUsers} users")
+    if(checked < numUsers)
+      $(".deselect-all")
+        .text("Select all")
+        .removeClass("deselect-all")
+        .addClass("select-all")
+    else
+      $(".select-all")
+        .text("Deselect all")
+        .removeClass("select-all")
+        .addClass("deselect-all")
+        
   selectAll: ->
     $("[type='checkbox']").attr "checked", "checked"
     $(".select-all")
