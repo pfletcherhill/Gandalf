@@ -16,7 +16,6 @@ class Gandalf.Views.Preferences.Index extends Backbone.View
     return this
   
   changeActive: (type) ->
-    alert type
     @$("li[data-type=#{type}]").addClass 'selected'
       
   renderSubscriptions: =>
