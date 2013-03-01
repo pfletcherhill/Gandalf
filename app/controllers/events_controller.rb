@@ -30,6 +30,7 @@ class EventsController < ApplicationController
     location = Location.where(:name => name).first
     location = Location.create(:name => name, :gmaps => true) unless location
     params[:event][:location] = nil
+    p params
     @event = Event.new(params[:event])
     @event.location = location
     # For some reason, these weren't working...

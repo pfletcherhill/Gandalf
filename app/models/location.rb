@@ -24,7 +24,8 @@ class Location < ActiveRecord::Base
     unless self.address
       key = "AIzaSyDxC7qcloU94l5dvOEdAoQTZ7AijIX65gw"
       search = name.gsub(" ","+")
-      map_results = JSON.parse(open("https://maps.googleapis.com/maps/api/place/textsearch/json?location=41.310362,-72.928914&radius=500&key=#{key}&query=#{search}&sensor=true").read)
+      map_results = JSON.parse(open(
+        "https://maps.googleapis.com/maps/api/place/textsearch/json?location=41.310362,-72.928914&radius=500&key=#{key}&query=#{search}&sensor=true").read)
       loc = map_results['results'].first
       if loc
         address = loc["formatted_address"]
@@ -38,5 +39,4 @@ class Location < ActiveRecord::Base
       self.attributes = {:address => address, :latitude => lat, :longitude => lng}
     end
   end
-  
 end

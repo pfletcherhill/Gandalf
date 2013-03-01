@@ -9,16 +9,16 @@
   display: none;
 }
 
-$gandalf-popover-padding: 10px;
-$gandalf-popover-head-color: lightblue;
-$gandalf-popover-body-color: #fafafa;
-$gandalf-popover-width: 500px;
+$popover-padding: 10px;
+$popover-head-color: lightblue;
+$popover-body-color: #fafafa;
+$popover-width: 500px;
 .gandalf-popover {
   position: fixed;
   top: 100px;
   left: 50%;
-  width: $gandalf-popover-width;
-  margin-left: -$gandalf-popover-width/2;
+  width: $popover-width;
+  margin-left: -$popover-width/2;
   z-index: 101;
   display: none;
   background-color: rgba(#eee, 0.9);
@@ -37,13 +37,13 @@ $gandalf-popover-width: 500px;
 .gandalf-popover-head {
   font-size: 16px;
   line-height: 20px;
-  background-color: $gandalf-popover-head-color;
-  padding: $gandalf-popover-padding;
-  padding-right: $gandalf-popover-padding + 15;
+  background-color: $popover-head-color;
+  padding: $popover-padding;
+  padding-right: $popover-padding + 15;
 }
 .gandalf-popover-body {
-  padding: $gandalf-popover-padding;
-  background-color: $gandalf-popover-body-color;
+  padding: $popover-padding;
+  background-color: $popover-body-color;
 }
 
 .gandalf-popover-description {
@@ -61,24 +61,33 @@ $gandalf-popover-width: 500px;
 
 /* Specific to views */
 
-.gandalf-popover-body {
-  &.new-event {
-    table {
-      width: 80%;
-    }
-    td {
-      &:first-child {
-        padding-right: 20px;
-        text-align: right;
-      }
-    }
-    input, textarea {
-      width: 100%;
-    }
+.event-form {
+  width: 80%;
+  margin: 0 auto;
+  p {
+    margin-bottom: 2px;
   }
+  input, textarea {
+    width: 90%;
+  }
+  input[type='datetime'] {
+    width: 55%;
+  }
+
+  input[type='time'] {
+    width: 25%;
+  }
+  .at {
+    display: inline-block;
+    width: 5%;
+    text-align: center;
+  }
+}
+
+.gandalf-popover-body {
   &.show-event {
     table {
-    width: 100%;
+      width: 100%;
     }
     tr {
       padding: 3px 0;
@@ -89,4 +98,10 @@ $gandalf-popover-width: 500px;
       padding-bottom: 3px;
     }
   }
+}
+
+/* Email */
+.email-compose {
+  width: 97%;
+  height: 250px;
 }
