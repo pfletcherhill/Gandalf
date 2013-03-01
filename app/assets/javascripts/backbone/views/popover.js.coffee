@@ -86,17 +86,20 @@ class Gandalf.Views.Popover extends Backbone.View
 
   createEvent: () ->
     values = @validateEvent();
+    return false if not values
+    console.log "values", values
+    console.log $("input[name=organization_id]")
     @$("[type='submit']").val('Saving...')
     newEvent = new Gandalf.Models.Event 
     newEvent.set values
-    console.log newEvent
-    newEvent.url = "/events/create"
+    newEvent.url = "/events"
     newEvent.save(newEvent, 
       success: (e) =>
         @hide()
-        Gandalf.dispatcher.trigger("event:new:success")
+        Gandalf.dispatcher.trigger("event:change")
+        Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} created!")
       error: (organization, jqXHR) =>
-        console.log "new event error", organization, jqXHR
+        Gandalf.dispatcher.trigger("flash:error", {org: organization, xhr: jqXHR})
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
     # So the browser doesn't submit the event
@@ -104,7 +107,27 @@ class Gandalf.Views.Popover extends Backbone.View
 
   updateEvent: () ->
     values = @validateEvent()
+    return false if not values
+    t = this
     @$("[type='submit']").val('Updating...')
+    eventId = $("[name=event_id]").val()
+    e = new Gandalf.Models.Event
+    e.url = "/events/#{eventId}"
+    e.fetch(
+      success: =>
+        e.set values
+        e.save(values,
+          success: (e) =>
+            @hide()
+            Gandalf.dispatcher.trigger("event:change")
+            Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} updated.")
+          error: (organization, jqXHR) =>
+            Gandalf.dispatcher.trigger("flash:error", {org: organization, xhr: jqXHR})
+            e.set({errors: $.parseJSON(jqXHR.responseText)})
+        )
+    )
+
+    return false
 
   validateEvent: () ->
     # These strings are Ruby style bc we do e.set in @makeEvent()
@@ -129,22 +152,23 @@ class Gandalf.Views.Popover extends Backbone.View
         values[name] = "None"
       else
         values[name] = value
+    # If validation failed return null
+    return null if not success
+    
     # Consolidate time and date into datetime
     start = moment(values["start_at_time"]+" "+values["start_at_date"], "HH:mm MM/DD/YYYY")
     end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
     values["start_at"] = start.format()
     values["end_at"] = end.format()
-    # Description field is not required
+    # Description field is not required, so not in validation process
     values["description"] = @$("textarea[name='description']").val()
     # Remove keys not associated with event
     delete values["start_at_time"]
     delete values["start_at_date"]
     delete values["end_at_time"]
     delete values["end_at_date"]
-    return values
-    # Handle times here
-    # @makeEvent(values)
 
+    return values 
 
   # Helpers
 
