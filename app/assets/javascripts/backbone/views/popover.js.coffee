@@ -86,6 +86,11 @@ class Gandalf.Views.Popover extends Backbone.View
     values["end_at"] = end.format()
     # Description field is not required
     values["description"] = @$("textarea[name='description']").val()
+    # Remove keys not associated with event
+    delete values["start_at_time"]
+    delete values["start_at_date"]
+    delete values["end_at_time"]
+    delete values["end_at_date"]
     # Handle times here
     @makeEvent(values)
 
@@ -98,21 +103,13 @@ class Gandalf.Views.Popover extends Backbone.View
     t = this
     newEvent.save(newEvent, 
       success: (e) =>
-        console.log "new event success", e
         @hide()
+        Gandalf.dispatcher.trigger("event:new:success")
       error: (organization, jqXHR) =>
         console.log "new event error", organization, jqXHR
         @model.set({errors: $.parseJSON(jqXHR.responseText)})
     )
     return false
-
-    # name: null
-    # location
-    # address
-    # start_at: null
-    # end_at: null
-    # organization_id: null
-    # description: null
 
   removeErrorClass: (e) ->
     $(e.target).removeClass "error"
