@@ -1,21 +1,20 @@
 <div id="organization-users">
-  <h4 class='pull-left' style='margin: 0 0 20px;'>Subscribers</h4>
-  <a id="email-subscribers-btn" class="btn btn-mini btn-primary pull-right" href='#' target='_blank'>
+  <h4 class='pull-left' style='margin: 0 0 20px;'><%= typeName %></h4>
+  <button id="email-subscribers-btn" class="btn btn-mini btn-primary pull-right" target='_blank'>
     Email selected subscribers
-  </a>
+  </button>
   <br>
   <br>
-  <b class='dash-list-count pull-left'></b>
-  <table class='dash-list tablesorter'>
+  <table class='dash-list'>
     <thead>
-      <tr>
-        <td>Name</td>
-        <td>Email</td>
-        <td>College</td>
-        <td>Year</td>
-        <td>
+      <tr class='header-row'>
+        <th>Name</th>
+        <th>Email</th>
+        <th>College</th>
+        <th>Year</th>
+        <th>
           <a href="#" class='deselect-all'>Deselect all</a>
-        </td>
+        </th>
       </tr>
     </thead>
     <tbody class='dash-list-body'></tbody>
