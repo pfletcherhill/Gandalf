@@ -26,6 +26,17 @@ class Gandalf.Models.Event extends Backbone.Model
       string += (c.id + ",")
     string
 
+  toJSON: () ->
+    {
+      id: this.get("eventId")
+      organization_id: this.get("organization_id")
+      name: this.get("name")
+      location: this.get("location")
+      start_at: this.get("start_at")
+      end_at: this.get("end_at")
+      description: this.get("description")
+    }
+
 class Gandalf.Collections.Events extends Backbone.Collection
   model: Gandalf.Models.Event
   url: '/events'

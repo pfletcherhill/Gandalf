@@ -2,7 +2,24 @@ Daily email
 Category, organization calendar navigation
 Working add, edit, delete events
 Typeahead on event location
-Improve feed interface
+Improve feed interface / add pictures
+Seed database with events
 Style month
 
 FIX TIME ZONE ISSUE (-5:00)
+
+
+Paul:
+
+Email subscribers
+Feed interface
+Browse/org/cat images
+Seed database
+Follow button
+
+Rafi
+Delete events Done! 
+Category, organization calendar navigation
+Daily email
+Typeahead
+Hide popover on link click Done! 

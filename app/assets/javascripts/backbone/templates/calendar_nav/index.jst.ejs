@@ -1,0 +1,15 @@
+<a href="<%= today %>" class="btn btn-small">Today</a>
+<div class="btn-group">
+  <a class="btn btn-small previous" href="<%= prevLink %>">&lt;</a>
+  <span class="btn btn-small cal-header-date" style="font-size: 14px;">
+    <%= thisT %>
+  </span>
+  <a class="btn btn-small next" href="<%= nextLink %>">&gt;</a>
+</div>
+<div class="btn btn-small toggle-multiday" rel='tooltip' title='Toggle multiday event visibility'>
+  <i class='icon-eye-close'></i>
+</div>
+<div class="btn-group pull-right">
+  <a class="btn btn-small week" href="<%= otherLink %>">Week</a>
+  <a class="btn btn-small month" href="<%= otherLink %>">Month</a>
+</div>

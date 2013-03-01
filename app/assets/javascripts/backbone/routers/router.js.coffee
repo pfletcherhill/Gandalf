@@ -4,8 +4,10 @@ class Gandalf.Router extends Backbone.Router
     @events = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations
     @organizations.add Gandalf.currentUser.get('organizations')
-    view = new Gandalf.Views.Popover
-    $(".wrapper").append view.el
+    popover = new Gandalf.Views.Popover
+    flash = new Gandalf.Views.Flash
+    $(".wrapper").append popover.el
+    $(".wrapper").append flash.el
   
   # Process period takes the date and period 
   # (either week or month, from the URL) and finds the start and end of the period
@@ -62,6 +64,7 @@ class Gandalf.Router extends Backbone.Router
     
     # Organization Routes
     'organizations/:id'               : 'organizations'
+    'organizations/:id/:date/:period' : 'organizations'
     'organizations*'                  : 'organizations'
   
     # Category Routes
@@ -132,8 +135,10 @@ class Gandalf.Router extends Backbone.Router
       success: (event) =>
         view = new Gandalf.Views.Events.Show( model: event )
     
-  organizations: (id) ->
-    params = @processPeriod 'today', 'week'
+  organizations: (id, date, period) ->
+    if not period or not date
+      @navigate("organizations/#{id}/today/week", {trigger: true, replace: true});
+    params = @processPeriod date, period
     @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/" + id

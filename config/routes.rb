@@ -1,6 +1,6 @@
 Gandalf::Application.routes.draw do
   
-  root :to => "events#index"
+  root :to => "events#root"
   
   match '/login' => "main#login"
   match '/logout' => "main#logout"
@@ -18,9 +18,7 @@ Gandalf::Application.routes.draw do
   match '/users/:id/follow/category/:category_id' => 'users#follow_category'
   match '/users/:id/unfollow/category/:category_id' => 'users#unfollow_category'
   
-  match '/events' => 'events#all'
-  match '/events/create' => 'events#create'
-  match '/events/:id' => 'events#show'
+  resources :events
   
   resources :organizations
   match '/organizations/:id/add_image' => 'organizations#add_image'
