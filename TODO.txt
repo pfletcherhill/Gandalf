@@ -4,3 +4,5 @@ Working add, edit, delete events
 Typeahead on event location
 Improve feed interface
 Style month
+
+FIX TIME ZONE ISSUE (-5:00)

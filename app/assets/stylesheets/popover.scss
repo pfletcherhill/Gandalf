@@ -61,24 +61,12 @@ $popover-width: 500px;
 
 /* Specific to views */
 
-#new-event-form {
+.event-form {
   width: 80%;
   margin: 0 auto;
   p {
     margin-bottom: 2px;
   }
-  /*
-  td {
-    &.text {
-      width: 10%;
-      padding-right: 5%;
-      text-align: right;
-    }
-    &.small {
-      width: 35%;
-    }
-  }
-  */
   input, textarea {
     width: 90%;
   }
