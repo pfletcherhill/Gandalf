@@ -33,6 +33,12 @@ class UsersController < ApplicationController
     render json: organizations
   end
   
+  def subscriptions
+    user = User.find(params[:id])
+    subscriptions = user.subscriptions
+    render json: subscriptions.to_json(:include => :subscribeable)
+  end
+    
   def subscribed_organizations
     user = User.find(params[:id])
     organizations = user.subscribed_organizations
