@@ -69,6 +69,7 @@ class Gandalf.Router extends Backbone.Router
   
     # Category Routes
     'categories/:id'                  : 'categories'
+    'categories/:id/:date/:period'    : 'categories'
     'categories*'                     : 'categories'
     
     # Preferences Routes
@@ -151,8 +152,10 @@ class Gandalf.Router extends Backbone.Router
           period: params.period
         )
   
-  categories: (id) ->
-    params = @processPeriod 'today', 'week'
+  categories: (id, date, period) ->
+    if not period or not date
+      @navigate("categories/#{id}/today/week", {trigger: true, replace: true});
+    params = @processPeriod date, period
     @string = @generateParamsString params
     @category = new Gandalf.Models.Category
     @category.url = "/categories/" + id

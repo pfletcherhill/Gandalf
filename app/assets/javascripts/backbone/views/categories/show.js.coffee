@@ -31,6 +31,12 @@ class Gandalf.Views.Categories.Show extends Backbone.View
   render: ->
     @$el.html(@template( category: @model ))
     Gandalf.calendarHeight = $(".content-calendar").height()
+    calNav = new Gandalf.Views.CalendarNav(
+      period: @options.period
+      startDate: @options.startDate
+      root: "categories/#{@model.get('id')}"
+    )
+    @$(".content-cal-nav").html(calNav.el)
     @renderFollowing()
     @model.fetchEvents(@string).then @renderEvents
     return this

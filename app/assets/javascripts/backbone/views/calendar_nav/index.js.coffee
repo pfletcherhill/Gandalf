@@ -25,11 +25,11 @@ class Gandalf.Views.CalendarNav extends Backbone.View
       otherT = moment(@startDate).format(Gandalf.displayFormat)
     # Add to html
     @$el.html @template(
-      today: "#/#{@root}/today/month"
+      today: "##{@root}/today/month"
       thisT: thisT
-      prevLink: "#/#{@root}/#{prevT}/month"
-      nextLink: "#/#{@root}/#{nextT}/month"
-      otherLink: "#/#{@root}/#{otherT}/week"
+      prevLink: "##{@root}/#{prevT}/month"
+      nextLink: "##{@root}/#{nextT}/month"
+      otherLink: "##{@root}/#{otherT}/week"
     )
     @$(".month").addClass "disabled"
 
@@ -46,11 +46,11 @@ class Gandalf.Views.CalendarNav extends Backbone.View
       otherT = moment(startDate).date(1).format(Gandalf.displayFormat)
 
     @$el.html @template(
-      today: "#/#{@root}/today/week"
+      today: "##{@root}/today/week"
       thisT: thisT
-      prevLink: "#/#{@root}/#{prevT}/week"
-      nextLink: "#/#{@root}/#{nextT}/week"
-      otherLink: "#/#{@root}/#{otherT}/month"
+      prevLink: "##{@root}/#{prevT}/week"
+      nextLink: "##{@root}/#{nextT}/week"
+      otherLink: "##{@root}/#{otherT}/month"
     )
     @$(".week").addClass 'disabled'
 
