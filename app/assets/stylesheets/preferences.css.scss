@@ -1,0 +1,28 @@
+/* ============ VARIABLES ================ */
+
+$background-color: #fafafa;
+
+/* =============  PREFERENCES STYLES =========== */
+
+#subscriptions-table {
+  
+  width: 100%;
+  
+  tr:nth-child(odd) {
+    background: #eee;
+  }
+  
+  td {
+    padding: 8px 0;
+  }
+  
+  td.unfollow {
+    width: 100px;
+  }
+  
+  tr.header-row {
+    background: $background-color;
+    text-align: left;
+    border-bottom: 1px solid black;
+  }
+}
