@@ -12,10 +12,10 @@ class EventsController < ApplicationController
     !!current_user
   end
 
-  def index
+  def root
   end
   
-  def all
+  def index
     events = Event.all
     render json: events.as_json
   end
@@ -29,19 +29,37 @@ class EventsController < ApplicationController
     name = params[:event][:location]
     location = Location.where(:name => name).first
     location = Location.create(:name => name, :gmaps => true) unless location
+
     params[:event][:location] = nil
-    p params
     @event = Event.new(params[:event])
     @event.location = location
-    # For some reason, these weren't working...
-    @event[:start_at] = params[:event][:start_at]
+    @event.start_at = params[:event][:start_at]
     @event.end_at = params[:event][:end_at]
-    puts "PARAMS:"
-    puts location
-    p params[:event][:start_at]
-    p params[:event][:end_at]
-    p @event
     if @event.save
+      render json: @event.as_json
+    else
+      render json: @event.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    location_name = params[:event][:location]
+    location = Location.where(:name => location_name).first
+    location = Location.create(:name => location_name, :gmaps => true) unless location
+    params[:event][:location] = location
+    p params
+
+    @event = Event.find(params[:event][:id])
+    if @event.update_attributes(params[:event])
+      render json: @event.as_json
+    else
+      render json: @event.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @event = Event.find(params[:id])
+    if @event.destroy
       render json: @event.as_json
     else
       render json: @event.errors, status: :unprocessable_entity

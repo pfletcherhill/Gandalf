@@ -24,12 +24,12 @@ class User < ActiveRecord::Base
       query = "start_at < :end AND end_at > :start"
       organization_events = 
         self.organization_events
-          .includes(:location, :organization, :categories)
           .where(query,{ :start => start_at, :end => end_at })
+          .includes(:location, :organization, :categories)
       category_events = 
         self.category_events
-          .includes(:location, :organization, :categories)
           .where(query, { :start => start_at, :end => end_at })
+          .includes(:location, :organization, :categories)
     else
       organization_events = self.organization_events
       category_events = self.category_events
