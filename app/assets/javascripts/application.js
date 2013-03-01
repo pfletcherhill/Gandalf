@@ -10,4 +10,5 @@
 //= require backbone/gandalf
 //= require bootstrap
 //= require backbone-forms-rails
+//= require moment
 //= require_tree .
