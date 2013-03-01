@@ -5,29 +5,29 @@ class Gandalf.Views.Dashboard.Users extends Backbone.View
   template: JST["backbone/templates/dashboard/users/index"]
   
   className: 'dash-org-container'
-
-  events:
-    "click .select-all" : "selectAll"
-    "click .deselect-all" : "deselectAll"
-    "click #email-subscribers-btn" : "email"
     
   initialize: =>
     @render()
-    @model.fetchEvents().then @renderEvents
     @model.fetchSubscribedUsers().then @renderUsers
-    $(".dash-list").tablesorter()
-      
+  
+  # Add users to table   
   renderUsers: =>
     for user, index in @model.get('users')
+      # Create view for each user
       view = new Gandalf.Views.Dashboard.User(model: user, index: index)
       @$(".dash-list-body").append view.el
-        
+  
+  # Render function      
   render: ->
     @$el.html @template(@model.toJSON())
     $("li[data-id='#{@model.id}']").addClass 'selected'
     return this
 
   # Event handlers
+  events:
+    "click .select-all" : "selectAll"
+    "click .deselect-all" : "deselectAll"
+    "click #email-subscribers-btn" : "email"
 
   selectAll: ->
     $("[type='checkbox']").attr "checked", "checked"
