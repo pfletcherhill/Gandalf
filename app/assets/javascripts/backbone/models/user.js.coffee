@@ -14,7 +14,7 @@ class Gandalf.Models.User extends Backbone.Model
         organizations = new Gandalf.Collections.Organizations
         organizations.add data
         @set subscribed_organizations: organizations
-  
+
   fetchSubscribedCategories: ->
     $.ajax
       type: 'GET'
@@ -24,7 +24,7 @@ class Gandalf.Models.User extends Backbone.Model
         categories = new Gandalf.Collections.Categories
         categories.add data
         @set subscribed_categories: categories
-  
+
   isFollowing: (model, collection) ->
     collection = 'subscribed_organizations' unless collection
     subscribed = []
@@ -34,25 +34,25 @@ class Gandalf.Models.User extends Backbone.Model
       true
     else
       false
-  
-  follow: (object) ->
-    type = object.constructor.name.toLowerCase()
+
+  follow: (o) ->
+    type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/' + type + '/' + object.id
+      url: '/users/' + @id + '/follow/' + type + '/' + o.id
       success: (data) =>
         if type == 'organization'
           this.get('subscribed_organizations').add data
         else if type == 'category'
           this.get('subscribed_categories').add data
-  
-  unfollow: (object) ->
-    type = object.constructor.name.toLowerCase()
+
+  unfollow: (o) ->
+    type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/' + type + '/' + object.id
+      url: '/users/' + @id + '/unfollow/' + type + '/' + o.id
       success: (data) =>
         if type == 'organization'
           this.get('subscribed_organizations').remove data
