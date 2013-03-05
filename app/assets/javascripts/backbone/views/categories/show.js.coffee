@@ -1,24 +1,24 @@
 Gandalf.Views.Categories ||= {}
 
 class Gandalf.Views.Categories.Show extends Backbone.View
-  
+
   template: JST["backbone/templates/categories/show"]
-  
+
   el: '#content'
-  
+
   initialize: ->
     @string = @options.string
     @render()
-  
+
   renderFollowing: =>
     if Gandalf.currentUser.get('subscribed_categories')
       if Gandalf.currentUser.isFollowing(@model, 'subscribed_categories')
-        $("button.follow").addClass 'following'
+        $(".follow-button").addClass 'following btn-success'
       else
-        $("button.follow").attr 'class','follow'
+        $(".follow-button").removeClass 'following btn-success'
     else
       Gandalf.currentUser.fetchSubscribedCategories().then @renderFollowing
-  
+
   renderEvents: =>
     events = @model.get("events")
     view = new Gandalf.Views.Calendar.Index(
@@ -27,7 +27,7 @@ class Gandalf.Views.Categories.Show extends Backbone.View
       startDate: @options.startDate
     )
     $(".content-calendar").append(view.el)
-            
+
   render: ->
     @$el.html(@template( category: @model ))
     Gandalf.calendarHeight = $(".content-calendar").height()
@@ -40,12 +40,12 @@ class Gandalf.Views.Categories.Show extends Backbone.View
     @renderFollowing()
     @model.fetchEvents(@string).then @renderEvents
     return this
-  
+
   events:
-    "click .follow" : "follow"
-  
+    "click .follow-button" : "follow"
+
   follow: (event) ->
     if $(event.target).hasClass 'following'
-      Gandalf.currentUser.unfollow(@model).then @renderFollowing
+      Gandalf.currentUser.unfollowCat(@model).then @renderFollowing
     else
-      Gandalf.currentUser.follow(@model).then @renderFollowing
+      Gandalf.currentUser.followCat(@model).then @renderFollowing
