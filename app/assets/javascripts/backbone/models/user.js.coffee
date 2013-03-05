@@ -36,6 +36,7 @@ class Gandalf.Models.User extends Backbone.Model
       false
 
   follow: (o) ->
+    console.log o
     type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
@@ -48,6 +49,7 @@ class Gandalf.Models.User extends Backbone.Model
           this.get('subscribed_categories').add data
 
   unfollow: (o) ->
+    console.log o
     type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
