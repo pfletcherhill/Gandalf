@@ -55,6 +55,6 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
 
   follow: (event) ->
     if $(event.target).hasClass 'following'
-      Gandalf.currentUser.unfollowOrg(@model).then @renderFollowing
+      Gandalf.currentUser.unfollowOrg(@model.id).then @renderFollowing
     else
-      Gandalf.currentUser.followOrg(@model).then @renderFollowing
+      Gandalf.currentUser.followOrg(@model.id).then @renderFollowing

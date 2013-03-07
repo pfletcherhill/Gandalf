@@ -46,6 +46,6 @@ class Gandalf.Views.Categories.Show extends Backbone.View
 
   follow: (event) ->
     if $(event.target).hasClass 'following'
-      Gandalf.currentUser.unfollowCat(@model).then @renderFollowing
+      Gandalf.currentUser.unfollowCat(@model.id).then @renderFollowing
     else
-      Gandalf.currentUser.followCat(@model).then @renderFollowing
+      Gandalf.currentUser.followCat(@model.id).then @renderFollowing

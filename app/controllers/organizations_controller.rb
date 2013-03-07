@@ -1,15 +1,15 @@
 class OrganizationsController < ApplicationController
-  
+
   def index
     @organizations = Organization.all
     render json: @organizations.to_json(:include => [:categories])
   end
-  
+
   def show
-    @organization = Organization.find(params[:id])
+    @organization = Organization.find(params[:id]).includes(:category)
     render json: @organization.to_json(:include => [:categories])
   end
-  
+
   def edit
     @organization = Organization.find(params[:id])
     if current_user.has_authorization_to(@organization)
@@ -18,7 +18,7 @@ class OrganizationsController < ApplicationController
       render json: "User does not have access", status: 403
     end
   end
-  
+
   def update
     @organization = Organization.find(params[:id])
     if @organization.update_attributes(params[:organization])
@@ -27,14 +27,14 @@ class OrganizationsController < ApplicationController
       render json: @organization.errors, status: :unprocessable_entity
     end
   end
-  
+
   def add_image
     @organization = Organization.find(params[:id])
     @organization.image = params[:image]
     @organization.save
     render json: @organization
   end
-  
+
   def events
     @organization = Organization.find(params[:id])
     if params[:start_at] && params[:end_at]
@@ -46,7 +46,7 @@ class OrganizationsController < ApplicationController
     end
     render json: @events.as_json
   end
-  
+
   def subscribed_users
     @organization = Organization.find(params[:id])
     @users = @organization.subscribers
@@ -54,19 +54,19 @@ class OrganizationsController < ApplicationController
     @users = @users - @admins
     render json: @users.as_json
   end
-  
+
   def admins
     @organization = Organization.find(params[:id])
     @admins = @organization.admins
     render json: @admins.as_json
   end
-  
+
   def search
     query = params[:query]
-    organizations = Organization.fulltext_search(query)
+    organizations = Organization.fulltext_search(query).includes(:category)
     render json: organizations.to_json(:include => [:categories])
   end
-  
+
   def subscriber_email
     organization = Organization.find(params[:id])
     user_ids = params[:user_ids]
@@ -78,5 +78,5 @@ class OrganizationsController < ApplicationController
     end
     render json: organization
   end
-  
+
 end
