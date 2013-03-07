@@ -16,9 +16,10 @@ group :test, :development do
 end
 
 group :production do
-  gem 'thin'
+
 end
 
+gem 'thin'
 gem 'pg'
 gem 'haml'
 

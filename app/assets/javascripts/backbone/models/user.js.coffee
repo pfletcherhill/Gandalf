@@ -27,37 +27,34 @@ class Gandalf.Models.User extends Backbone.Model
 
   isFollowing: (model, collection) ->
     collection = 'subscribed_organizations' unless collection
-    subscribed = []
     for mod in this.get(collection).models
-      subscribed.push(mod.id)
-    if _.contains(subscribed, model.id)
-      true
-    else
-      false
+      return true if mod.id is model.id     # Found the model!
+    return false
 
-  followOrg: (o) ->
-    console.log o
-    # We cannot use this because when assets are compiled, all model names are assigned
-    # to a random letter (in our case, 'r'). That's why we were getting the URL as
-    # /users/2/follow/r/1 or something like that. NASTY BUG!!!
+  followOrg: (oid) ->
+    # We cannot use the constructor because when assets are compiled,
+    # all model names are assigned to a random letter (in our case, 'r').
+    # That's why we were getting the URL as /users/2/follow/r/1 or
+    # something like that. NASTY BUG!!!
     # type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/organization/' + o.id
+      url: '/users/' + @id + '/follow/organization/' + oid
       success: (data) =>
         this.get('subscribed_organizations').add data
 
-  unfollowOrg: (o) ->
+  unfollowOrg: (oid) ->
     # type = o.constructor.name.toLowerCase()
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/organization/' + o.id
+      url: '/users/' + @id + '/unfollow/organization/' + oid
       success: (data) =>
+        console.log this
         this.get('subscribed_organizations').remove data
 
-  followCat: (o) ->
+  followCat: (cid) ->
     # We cannot use this because when assets are compiled, all model names are assigned
     # to a random letter (in our case, 'r'). That's why we were getting the URL as
     # /users/2/follow/r/1 or something. NASTY BUG!!!
@@ -65,16 +62,17 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/category/' + o.id
+      url: '/users/' + @id + '/follow/category/' + cid
       success: (data) =>
         this.get('subscribed_categories').add data
 
-  unfollowCat: (o) ->
+  unfollowCat: (cid) ->
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/category/' + o.id
+      url: '/users/' + @id + '/unfollow/category/' + cid
       success: (data) =>
+        console.log this
         this.get('subscribed_categories').remove data
 
 class Gandalf.Collections.Users extends Backbone.Collection

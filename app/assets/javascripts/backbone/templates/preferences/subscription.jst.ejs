@@ -1,5 +1,9 @@
 <tr>
   <td class="name"><a href="<%= url %>"><%= sub.subscribeable.name %></a></td>
   <td class="type"><%= sub.subscribeable_type %></td>
-  <td class="unfollow"><button class="unfollow">Unfollow</button></td>
+  <td>
+    <button data-id=<%= sub.subscribeable.id %> data-type=<%= sub.subscribeable_type %> class="btn btn-mini btn-danger unfollow">
+      Unfollow
+    </button>
+  </td>
 </tr>
