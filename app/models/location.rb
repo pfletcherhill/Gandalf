@@ -1,15 +1,15 @@
 class Location < ActiveRecord::Base
-  
+
   before_save :generate_address
-  
+
   has_many :events
-  
+
   validates_presence_of :name
-  
+
   acts_as_gmappable
-  
+
   def short_address
-    ad = address.sub(/,? New Haven,? /,"")
+    ad = address.gsub(/(,? New Haven,? |CT,|United States)/,"")
     ad = ad.sub(/\w\w \d\d\d\d\d/, "")
     ad.strip
   end
@@ -17,7 +17,7 @@ class Location < ActiveRecord::Base
   def gmaps4rails_address
     self.address
   end
-  
+
   # Generates address, longitude, and latitude from google maps
   def generate_address
     name = self.name

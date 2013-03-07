@@ -27,6 +27,11 @@ class Gandalf.Views.Categories.Show extends Backbone.View
       startDate: @options.startDate
     )
     $(".content-calendar").append(view.el)
+    eventList = new Gandalf.Views.EventList (
+      events: events
+    )
+    @$(".body-feed").html(eventList.el)
+    Gandalf.dispatcher.trigger("popover:eventsReady", events)
 
   render: ->
     @$el.html(@template( category: @model ))

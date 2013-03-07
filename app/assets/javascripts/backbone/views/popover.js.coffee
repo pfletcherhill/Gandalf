@@ -4,11 +4,13 @@ class Gandalf.Views.Popover extends Backbone.View
 
   initialize: ->
     # All popover event handlers
+    @myEvents = @options.events
     Gandalf.dispatcher.on("event:click", @showEvent, this)
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("popover:hide", @hide, this)
     Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
+    Gandalf.dispatcher.on("popover:eventsReady", @setEvents, this)
     @render()
 
   id: "popover-container"
@@ -28,7 +30,7 @@ class Gandalf.Views.Popover extends Backbone.View
   render: ->
     @$el.html @template()
     return this
-  
+
   # Email event handlers
   showEmail: (object) ->
     console.log object
@@ -55,14 +57,14 @@ class Gandalf.Views.Popover extends Backbone.View
     #       url: '/organizations/' + orgId + '/email', { user_ids: emails, body: body, subject: subject }
     #       success: (data) =>
     #         console.log data
-      
-  # Events event handlers 
+
+  # Events event handlers
   showEvent: (object) ->
     model = object.model
     color = object.color
     eId = model.get("eventId")
     if model.get("id") isnt eId
-      model = @options.events.get(eId)
+      model = @myEvents.get(eId)
     $(".gandalf-popover").html @showEventTemplate(e: model, color: color)
     @show()
     @makeGMap(model)
@@ -90,10 +92,10 @@ class Gandalf.Views.Popover extends Backbone.View
     console.log "values", values
     console.log $("input[name=organization_id]")
     @$("[type='submit']").val('Saving...')
-    newEvent = new Gandalf.Models.Event 
+    newEvent = new Gandalf.Models.Event
     newEvent.set values
     newEvent.url = "/events"
-    newEvent.save(newEvent, 
+    newEvent.save(newEvent,
       success: (e) =>
         @hide()
         Gandalf.dispatcher.trigger("event:change")
@@ -132,12 +134,12 @@ class Gandalf.Views.Popover extends Backbone.View
   validateEvent: () ->
     # These strings are Ruby style bc we do e.set in @makeEvent()
     names = [
-      'name', 
-      'location', 
-      'start_at_date', 
-      'start_at_time', 
-      'end_at_date', 
-      'end_at_time', 
+      'name',
+      'location',
+      'start_at_date',
+      'start_at_time',
+      'end_at_date',
+      'end_at_time',
       'organization_id'
     ]
     values = {}
@@ -154,7 +156,7 @@ class Gandalf.Views.Popover extends Backbone.View
         values[name] = value
     # If validation failed return null
     return null if not success
-    
+
     # Consolidate time and date into datetime
     start = moment(values["start_at_time"]+" "+values["start_at_date"], "HH:mm MM/DD/YYYY")
     end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
@@ -168,7 +170,11 @@ class Gandalf.Views.Popover extends Backbone.View
     delete values["end_at_time"]
     delete values["end_at_date"]
 
-    return values 
+    return values
+
+  setEvents: (evs) ->
+    console.log evs
+    @myEvents = evs
 
   # Helpers
 
@@ -183,7 +189,7 @@ class Gandalf.Views.Popover extends Backbone.View
 
   makeGMap: (model) ->
     myPos = new google.maps.LatLng(model.get("lat"), model.get("lon"))
-    options = 
+    options =
       center: myPos
       zoom: 15
       mapTypeId: google.maps.MapTypeId.ROADMAP

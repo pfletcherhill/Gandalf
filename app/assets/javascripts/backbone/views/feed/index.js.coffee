@@ -8,19 +8,11 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       "renderSubscribedOrganizations",
       "renderSubscribedCategories"
     )
-    @multidayVisible = true
     @render()
-
-    # Render AJAX info
-    Gandalf.currentUser.fetchSubscribedOrganizations().then @renderSubscribedOrganizations
-    Gandalf.currentUser.fetchSubscribedCategories().then @renderSubscribedCategories
 
   template: JST["backbone/templates/feed/index"]
 
   el: "#content"
-
-  events:
-    "click .toggle-multiday" : "toggleMultiday"
 
   # Rendering functions
 
@@ -58,33 +50,23 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   render: () ->
     @$el.html(@template({ user: Gandalf.currentUser, startDate: @options.startDate }))
     Gandalf.calendarHeight = $(".content-calendar").height()
-    @days = @options.events.group()
-    view = new Gandalf.Views.CalendarNav(
-      period: @options.period
-      startDate: @options.startDate
-      root: "calendar"
+    # @days = @options.events.group()
+    # @renderFeed()
+    eventList = new Gandalf.Views.EventList (
+      events: @options.events
     )
-    @$(".content-cal-nav").html(view.el)
-
-    @renderFeed()
-    $("[rel=tooltip]").tooltip()
+    @$(".body-feed").html(eventList.el)
     view = new Gandalf.Views.Calendar.Index(
       type: @options.period
       events: @options.events
       startDate: @options.startDate
     )
     $(".content-calendar").html(view.el)
+    nav = new Gandalf.Views.CalendarNav(
+      period: @options.period
+      startDate: @options.startDate
+      root: "calendar"
+    )
+    @$(".content-cal-nav").html(nav.el)
+    $("[rel=tooltip]").tooltip()
     return this
-
-  # Event handlers
-
-  toggleMultiday: ->
-    @$(".toggle-multiday > i")
-      .toggleClass("icon-eye-close")
-      .toggleClass("icon-eye-open")
-    if @multidayVisible
-      Gandalf.dispatcher.trigger("multiday:hide")
-    else
-      Gandalf.dispatcher.trigger("multiday:show")
-    @multidayVisible = not @multidayVisible
-    console.log "hi"
