@@ -4,10 +4,10 @@ class Gandalf.Router extends Backbone.Router
     @events = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations
     @organizations.add Gandalf.currentUser.get('organizations')
-    popover = new Gandalf.Views.Popover
-    flash = new Gandalf.Views.Flash
-    $(".wrapper").append popover.el
-    $(".wrapper").append flash.el
+    @popover = new Gandalf.Views.Popover
+    @flash = new Gandalf.Views.Flash
+    $(".wrapper").append @popover.el
+    $(".wrapper").append @flash.el
 
     # Load user data
     Gandalf.currentUser.fetchSubscribedOrganizations()
@@ -95,6 +95,7 @@ class Gandalf.Router extends Backbone.Router
         startDate: params.start
         period: params.period
       )
+      Gandalf.dispatcher.trigger("popover:eventsReady", events)
 
   calendarRedirect: (date) ->
     date = "today" if not date

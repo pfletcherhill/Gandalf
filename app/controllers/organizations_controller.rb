@@ -6,7 +6,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @organization = Organization.find(params[:id]).includes(:category)
+    @organization = Organization.find(params[:id])
     render json: @organization.to_json(:include => [:categories])
   end
 
