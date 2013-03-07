@@ -43,6 +43,8 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
 
   render: ->
     @$el.html(@template(organization: @model))
+    @model.fetchEvents(@string).then @renderEvents
+    # Make calendar nav (don't need events)
     Gandalf.calendarHeight = $(".content-calendar").height()
     calNav = new Gandalf.Views.CalendarNav(
       period: @options.period
@@ -50,9 +52,10 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
       root: "organizations/#{@model.get('id')}"
     )
     @$(".content-cal-nav").html(calNav.el)
+    $("[rel=tooltip]").tooltip()
     @renderCategories()
     @renderFollowing()
-    @model.fetchEvents(@string).then @renderEvents
+
     return this
 
   events:

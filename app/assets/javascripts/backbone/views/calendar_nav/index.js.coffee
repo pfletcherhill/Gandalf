@@ -10,6 +10,7 @@ class Gandalf.Views.CalendarNav extends Backbone.View
       @renderMonthMenu()
     else
       @renderWeekMenu()
+
     return this
 
   template: JST["backbone/templates/calendar_nav/index"]
