@@ -40,9 +40,7 @@ class OrganizationsController < ApplicationController
     if params[:start_at] && params[:end_at]
       @events = @organization.events_with_period(params[:start_at], params[:end_at])
     else
-      @events = @organization.events
-        .includes(:location, :organization, :categories)
-        .order("start_at")
+      @events = @organization.complete_events
     end
     render json: @events.as_json
   end

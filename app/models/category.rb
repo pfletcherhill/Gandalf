@@ -13,22 +13,21 @@ class Category < ActiveRecord::Base
                   :using => { :tsearch => {:prefix => true} }
 
   #Events, can have start and end
+
+  def complete_events
+    self.events
+      .includes(:location, :organization, :categories)
+      .order("start_at")
+  end
   def events_with_period(*times)
     start_at = times[0]
     end_at = times[1]
-    if start_at && end_at
-      start_at = Date.strptime(start_at, '%m-%d-%Y')
-      end_at = Date.strptime(end_at, '%m-%d-%Y')
-      query = "start_at BETWEEN :start AND :end OR end_at BETWEEN :start AND :end"
-      query = "start_at < :end AND end_at > :start"
-      @events = self.events
-        .where(query,{ :start => start_at, :end => end_at })
-        .order("start_at")
-    else
-      @events = self.events
-        .order("start_at")
-    end
-    @events
+    start_at = Date.strptime(start_at, '%m-%d-%Y')
+    end_at = Date.strptime(end_at, '%m-%d-%Y')
+    query = "start_at < :end AND end_at > :start"
+    events = self.complete_events
+      .where(query,{ :start => start_at, :end => end_at })
+    events
   end
 
 end

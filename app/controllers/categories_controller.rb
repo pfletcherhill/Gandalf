@@ -21,8 +21,7 @@ class CategoriesController < ApplicationController
     if params[:start_at] && params[:end_at]
       @events = @category.events_with_period(params[:start_at], params[:end_at])
     else
-      @events = @category.events
-        .order("start_at")
+      @events = @category.complete_events
     end
     render json: @events.as_json
   end
