@@ -4,17 +4,17 @@ class Event < ActiveRecord::Base
   belongs_to :organization
   has_and_belongs_to_many :categories
   belongs_to :location
-  
+
   validates_presence_of :name
   validates_presence_of :organization_id
   validates_presence_of :start_at
   validates_presence_of :end_at
-  
+
   #pg_search
   include PgSearch
   multisearchable :against => [:name, :description]
-  pg_search_scope :fulltext_search, 
-                  :against => [:name, :description], 
+  pg_search_scope :fulltext_search,
+                  :against => [:name, :description],
                   :associated_against => {
                     :organization => [:name],
                     :location => [:name]
@@ -22,12 +22,12 @@ class Event < ActiveRecord::Base
                   :using => { :tsearch => {:prefix => true} }
 
   # todo: before save convert to UTC and check that before < after
-  
+
   def date
     date = self.start_at.strftime("%Y-%m-%d")
     date
   end
-  
+
   def as_json
     # If no location, then create a dummy location so function returns
     location = self.location || Location.new(
@@ -46,12 +46,12 @@ class Event < ActiveRecord::Base
       "organization_id" => organization.id,
       "color" => organization.color,
       "categories" => categories,
-      # Data for rendering calendar (hence the camel case)
+      # Data for rendering calendar with Backbone (hence the camel case)
       "calStart" => start_at,
       "calEnd" => end_at,
       "multiday" => false,
       "eventId" => id
     }
   end
-  
+
 end
