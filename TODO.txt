@@ -5,21 +5,17 @@ Typeahead on event location
 Improve feed interface / add pictures
 Seed database with events
 Style month
-
 FIX TIME ZONE ISSUE (-5:00)
+Showing, adding, removing categories to events
 
+Import list of all student organizations and their leaders 
 
-Paul:
-
-Email subscribers
-Feed interface
-Browse/org/cat images
-Seed database
-Follow button
-
-Rafi
-Delete events Done! 
-Category, organization calendar navigation
-Daily email
-Typeahead
-Hide popover on link click Done! 
+Facebook integration. Organizations should link to their own Facebook pages, and we can pull events from there.
+Pre-populate organization events from current Yale events calendar
+Eli Apps integration. Organizations should be Google groups, and Yale Go's events should be reflected in their GCal.
+We need some way to sync our database with each group's Google calendar (this is a tricky issue -- more on that later)
+Populate database with meaningful categories, and have some way of assigning categories to organizations and events
+Emails: daily bulletin, with preferences for each user
+Improve feed interface
+Fix follow button
+Typeahead for location selection (needs to be ROBUST)
