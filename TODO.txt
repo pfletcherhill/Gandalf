@@ -1,21 +1,18 @@
-Daily email
-Category, organization calendar navigation
-Working add, edit, delete events
-Typeahead on event location
-Improve feed interface / add pictures
-Seed database with events
-Style month
-FIX TIME ZONE ISSUE (-5:00)
-Showing, adding, removing categories to events
+Import list of all student organizations and their leaders. (Paul)
+FIX TIME ZONE ISSUE (-5:00) -- date doesn’t carry over if time zone crosses date boundary (scheduling events at 7 p.m or after) (Paul)
+Daily email (user subscription and email preferences) (Rafi)
+Showing, adding, removing categories to events. On popups in the calendar and in add/edit events in the dashboard (Paul with Chosen)
+Facebook integration. Organizations should link to their own Facebook pages, and we can pull events from there. (Rafi)
+Create events as page: https://developers.facebook.com/docs/reference/api/page/#events
+Populate database with meaningful categories, and have some way of assigning categories to organizations and events (Rafi)
+**Seed database with events from current Events calendar (Paul - save for later)
+Typeahead for location selection (needs to be ROBUST) (Rafi)
+Formatted email to subscribers (Paul, last priority)
+General style updates (Paul)
 
-Import list of all student organizations and their leaders 
 
-Facebook integration. Organizations should link to their own Facebook pages, and we can pull events from there.
-Pre-populate organization events from current Yale events calendar
 Eli Apps integration. Organizations should be Google groups, and Yale Go's events should be reflected in their GCal.
 We need some way to sync our database with each group's Google calendar (this is a tricky issue -- more on that later)
-Populate database with meaningful categories, and have some way of assigning categories to organizations and events
-Emails: daily bulletin, with preferences for each user
+Style month
 Improve feed interface
-Fix follow button
-Typeahead for location selection (needs to be ROBUST)
+Add image attachment to events, organizations, and categories
