@@ -23,7 +23,7 @@ class CategoriesController < ApplicationController
     else
       @events = @category.complete_events
     end
-    render json: @events.as_json
+    render json: @events
   end
 
 end

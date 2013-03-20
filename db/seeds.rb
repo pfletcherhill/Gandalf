@@ -152,6 +152,7 @@ u2.subscribed_categories << c3
 u3.subscribed_categories << c1
 u3.subscribed_categories << c2
 u3.subscribed_categories << c3
+u2.bulletin_preference = "weekly"
 print "subscriptions created...\n"
 
 

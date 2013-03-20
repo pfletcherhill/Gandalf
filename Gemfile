@@ -49,6 +49,8 @@ gem 'fog'
 gem 'mini_magick'
 gem 'gmaps4rails'
 gem 'mail'
+gem 'rack-mini-profiler'
+gem 'whenever', require: false
 
 # Search
 gem 'pg_search'

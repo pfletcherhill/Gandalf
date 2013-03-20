@@ -8,6 +8,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :college
       t.string :year
       t.string :division
+
+      t.string :bulletin_preference, :default => "daily"
       
       t.timestamps
     end

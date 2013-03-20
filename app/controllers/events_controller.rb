@@ -17,12 +17,12 @@ class EventsController < ApplicationController
 
   def index
     events = Event.includes(:categories, :organization, :location)
-    render json: events.as_json
+    render json: events
   end
 
   def show
     event = Event.find(params[:id])
-    render json: event.as_json
+    render json: event
   end
 
   def create
@@ -36,7 +36,7 @@ class EventsController < ApplicationController
     @event.start_at = params[:event][:start_at]
     @event.end_at = params[:event][:end_at]
     if @event.save
-      render json: @event.as_json
+      render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -46,12 +46,12 @@ class EventsController < ApplicationController
     location_name = params[:event][:location]
     location = Location.where(:name => location_name).first
     location = Location.create(:name => location_name, :gmaps => true) unless location
+    # Set the location id for update_attributes
     params[:event][:location_id] = location.id
-    p params
 
     @event = Event.find(params[:event][:id])
-    if @event.update_attributes(params[:event])
-      render json: @event.as_json
+    if @event.update_attributes(params[:event].except(:location))
+      render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -60,7 +60,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     if @event.destroy
-      render json: @event.as_json
+      render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
     end
@@ -69,7 +69,7 @@ class EventsController < ApplicationController
   def search
     query = params[:query]
     events = Event.fulltext_search(query)
-    render json: events.as_json
+    render json: events
   end
 
 end

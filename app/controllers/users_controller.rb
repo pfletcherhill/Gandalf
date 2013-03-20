@@ -19,13 +19,13 @@ class UsersController < ApplicationController
   end
 
   def me
-    render json: current_user.as_json
+    render json: current_user
   end
 
   def events
     user = User.find(params[:id])
     events = user.events(params[:start_at], params[:end_at])
-    render json: events.as_json
+    render json: events
   end
 
   def organizations
@@ -62,7 +62,11 @@ class UsersController < ApplicationController
 
   def unfollow_organization
     organization = Organization.find(params[:organization_id])
-    subscription = Subscription.where(:subscribeable_type => "Organization", :subscribeable_id => organization.id, :user_id => params[:id]).first
+    subscription = Subscription.where(
+      :subscribeable_type => "Organization", 
+      :subscribeable_id => organization.id, 
+      :user_id => params[:id]
+    ).first
     subscription.destroy
     render json: organization
   end
@@ -76,9 +80,31 @@ class UsersController < ApplicationController
 
   def unfollow_category
     category = Category.find(params[:category_id])
-    subscription = Subscription.where(:subscribeable_type => "Category", :subscribeable_id => category.id, :user_id => params[:id]).first
+    subscription = Subscription.where(
+      :subscribeable_type => "Category", 
+      :subscribeable_id => category.id, 
+      :user_id => params[:id]
+    ).first
     subscription.destroy
     render json: category
+  end
+
+  def bulletin_preference
+    user = User.find(params[:id])
+    val = params[:value] 
+    if val == "daily" or val == "weekly" or val == "never"
+      user.bulletin_preference = val
+      user.save
+      render json: user
+    else
+      render json: "bad option", status: :unprocessable_entity
+    end
+  end
+
+  def bulletin
+    User.send_daily_bulletin
+    User.send_weekly_bulletin
+    render json: {}
   end
 
 end

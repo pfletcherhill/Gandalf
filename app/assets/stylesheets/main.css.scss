@@ -10,6 +10,7 @@ $header-height: 50px;
 $side-padding: 15px;
 $calendar-height: 400px;
 $background-color: #fafafa;
+$header-z: 100;
 
 /* =============  GLOBAL STYLES =========== */
 
@@ -69,7 +70,7 @@ h3 {
   top: 0px;
   left: 0px;
   width: 100%;
-  z-index: 100;
+  z-index: $header-z;
   border-top: 3px solid $blue;
 }
 
@@ -241,4 +242,42 @@ $main-width: $width - $left-width - $left-margin;
   background-image: url('/assets/ajax-loader.gif');
   background-repeat: no-repeat;
   background-position: center;
+}
+
+/*============== FLASH =================*/
+
+$flash-height: 30px;
+$flash-success: #468847;
+$flash-error: #b94a48;
+$flash-notice: #3a87ad;
+
+#flash {
+  display: none;
+  position: relative;
+  top: 45px;
+  margin: 0 auto;
+  width: $min-width * 0.56;
+  max-height: 2*$flash-height;
+  overflow: hidden;
+  padding: 0 $min-width * 0.02;
+  line-height: $flash-height;
+  font-size: $flash-height/2.5;
+  text-align: center;
+  z-index: $header-z + 1;
+  @include box-shadow(0 1px 2px rgba(black, 0.3));
+  &.success {
+    background-color: lighten($flash-success, 40%);
+    border: 1pt solid lighten($flash-success, 20%);
+    color: $flash-success;
+  }
+  &.error {
+    background-color: lighten($flash-error, 40%);
+    border: 1pt solid lighten($flash-error, 20%);
+    color: $flash-error;
+  }
+  &.notice {
+    background-color: lighten($flash-notice, 40%);
+    border: 1pt solid lighten($flash-notice, 20%);
+    color: $flash-notice;
+  }
 }

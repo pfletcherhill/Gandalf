@@ -8,10 +8,17 @@ class Gandalf.Router extends Backbone.Router
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @popover.el
     $(".wrapper").append @flash.el
+    console.log @popover
+    console.log @flash
 
     # Load user data
     Gandalf.currentUser.fetchSubscribedOrganizations()
     Gandalf.currentUser.fetchSubscribedCategories()
+
+    # Set global AJAX error
+    $(document).ajaxError ->
+      Gandalf.dispatcher.trigger("flash:error", 
+        "Oh no! Looks like we got an error. Please try again later :-/")
 
   # Process period takes the date and period
   # (either week or month, from the URL) and finds the start and end of the period
@@ -119,8 +126,8 @@ class Gandalf.Router extends Backbone.Router
       $("#content").html(view.el)
 
   dashboard: (id, type) ->
-    id = @organizations.first().id unless id
-    type = 'events' unless type is 'settings' or type is 'users' or type is 'admins'
+    id ||= @organizations.first().id
+    type ||= 'events'
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/#{id}/edit"
     @organization.fetch
@@ -177,16 +184,17 @@ class Gandalf.Router extends Backbone.Router
   preferences: (type) ->
     @showLoader('.content-main')
     $(".left-list a").removeClass 'active'
-    if type == 'account'
-      view = new Gandalf.Views.Preferences.Index(type: type)
-      $("#content").html(view.el)
-    else
-      type = "subscriptions"
-      @subscriptions = new Gandalf.Collections.Subscriptions
-      @subscriptions.url = '/users/' + Gandalf.currentUser.id + '/subscriptions'
-      @subscriptions.fetch success: (subscriptions) =>
-        view = new Gandalf.Views.Preferences.Index(type: type, subscriptions: subscriptions)
-        $("#content").html(view.el)
+    # if type == 'account'
+    type ||= "subscriptions"
+    view = new Gandalf.Views.Preferences.Index(type: type)
+    $("#content").html(view.el)
+    # else
+    #   type = "subscriptions"
+    #   @subscriptions = new Gandalf.Collections.Subscriptions
+    #   @subscriptions.url = '/users/' + Gandalf.currentUser.id + '/subscriptions'
+    #   @subscriptions.fetch success: (subscriptions) =>
+    #     view = new Gandalf.Views.Preferences.Index(type: type, subscriptions: subscriptions)
+    #     $("#content").html(view.el)
 
   # about page
   about: ->

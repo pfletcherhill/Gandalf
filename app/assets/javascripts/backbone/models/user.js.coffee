@@ -40,7 +40,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/organization/' + oid
+      url: "/users/#{@id}/follow/organization/#{oid}"
       success: (data) =>
         this.get('subscribed_organizations').add data
 
@@ -49,7 +49,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/organization/' + oid
+      url: "/users/#{@id}/unfollow/organization/#{oid}"
       success: (data) =>
         console.log this
         this.get('subscribed_organizations').remove data
@@ -62,7 +62,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/follow/category/' + cid
+      url: "/users/#{@id}/follow/category/#{cid}"
       success: (data) =>
         this.get('subscribed_categories').add data
 
@@ -70,10 +70,22 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: '/users/' + @id + '/unfollow/category/' + cid
+      url: "/users/#{@id}/unfollow/category/#{cid}"
       success: (data) =>
         console.log this
         this.get('subscribed_categories').remove data
+
+  updateBulletinPreference: (value) ->
+    @set(bulletin_preference: value)
+    $.ajax
+      type: 'POST'
+      dataType: 'json'
+      url: "users/#{@id}/bulletin_preference"
+      data: 
+        value: value
+      success: (data) =>
+        Gandalf.dispatcher.trigger("flash:success", 
+          "You'll now get bulletin updates #{value}.")
 
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User

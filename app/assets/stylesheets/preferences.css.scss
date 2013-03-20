@@ -4,25 +4,45 @@ $background-color: #fafafa;
 
 /* =============  PREFERENCES STYLES =========== */
 
+.pref-header {
+  margin-top: 0;
+}
+
+.pref-caption {
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+// Can't select by class because Bootstrap will override
+input[name=pref-email] {
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
 #subscriptions-table {
   
   width: 100%;
   
-  tr:nth-child(odd) {
-    background: #eee;
+  tr {
+    padding-left: 20px;
+    &.category {
+      background-color: rgba(blue, 0.03);
+    }
+    &.organization {
+      background-color: rgba(red, 0.03);
+    }
   }
   
   td {
     padding: 8px 0;
-  }
-  
-  td.unfollow {
-    width: 100px;
-  }
-  
-  tr.header-row {
-    background: $background-color;
-    text-align: left;
-    border-bottom: 1px solid black;
+    &.unfollow {
+      // Does nothing...
+      width: 100px;
+    }
+    &.header-row {
+      background: $background-color;
+      text-align: left;
+      border-bottom: 1px solid black;
+    }
   }
 }
