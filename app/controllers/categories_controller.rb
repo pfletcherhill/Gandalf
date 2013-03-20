@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   def all
-    categories = Category.all
+    categories = Category.all.sort_by { |c| c.name }
     render json: categories
   end
 

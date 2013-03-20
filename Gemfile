@@ -29,6 +29,7 @@ gem 'jquery-ui-rails'
 gem 'jquery-fileupload-rails'
 gem 'rails-backbone'
 gem 'backbone-forms-rails'
+gem 'chosen-rails'
 
 # Web
 gem 'nokogiri'

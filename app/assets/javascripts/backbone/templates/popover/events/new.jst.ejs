@@ -18,6 +18,12 @@
     <input type="datetime" name='end_at_date' placeholder='forever' value=<%= moment().add('h',1).format('MM/DD/YYYY') %> />
     <div class="at">at</div>
     <input type="time" name='end_at_time' placeholder='12:01 a.m.' value=<%= moment().add('h',1).format('HH:mm') %> />
+    <p>Categories</p>
+    <select name="category-select" id="category-select" class="chzn-select" multiple data-placeholder="Choose some categories!">
+        <% _.forEach(categories, function(c) { %>
+          <option value="<%= c.id %>"><%= c.get("name") %></option>
+        <% }); %>
+    </select>
     <p>Description</p>
     <textarea name="description" id="" cols="30" rows="10" placeholder="This will be awesome TO THE MAX."></textarea>
     <br/>

@@ -8,12 +8,15 @@ class Gandalf.Router extends Backbone.Router
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @popover.el
     $(".wrapper").append @flash.el
-    console.log @popover
-    console.log @flash
 
     # Load user data
     Gandalf.currentUser.fetchSubscribedOrganizations()
     Gandalf.currentUser.fetchSubscribedCategories()
+
+    # Constants
+    Gandalf.constants ||= {}
+    Gandalf.constants.allCategories = new Gandalf.Collections.Categories
+    Gandalf.constants.allCategories.fetch()
 
     # Set global AJAX error
     $(document).ajaxError ->

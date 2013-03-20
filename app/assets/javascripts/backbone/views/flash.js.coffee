@@ -6,7 +6,7 @@ class Gandalf.Views.Flash extends Backbone.View
     Gandalf.dispatcher.on("flash:success", @success, this)
     Gandalf.dispatcher.on("flash:error", @error, this)
     Gandalf.dispatcher.on("flash:notice", @notice, this)
-    @displayLength = 10*1000 # 10 seconds
+    @displayLength = 5*1000 # 10 seconds
     @render()
 
   events:

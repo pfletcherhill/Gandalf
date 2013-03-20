@@ -33,8 +33,10 @@ class EventsController < ApplicationController
     params[:event][:location] = nil
     @event = Event.new(params[:event])
     @event.location = location
+    # I know we do this for some particular reason but I forgot why...
     @event.start_at = params[:event][:start_at]
     @event.end_at = params[:event][:end_at]
+    @event.set_categories params[:event][:category_ids]
     if @event.save
       render json: @event
     else
@@ -50,7 +52,8 @@ class EventsController < ApplicationController
     params[:event][:location_id] = location.id
 
     @event = Event.find(params[:event][:id])
-    if @event.update_attributes(params[:event].except(:location))
+    @event.set_categories params[:event][:category_ids]
+    if @event.update_attributes(params[:event].except(:location, :category_ids))
       render json: @event
     else
       render json: @event.errors, status: :unprocessable_entity
