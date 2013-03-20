@@ -1,0 +1,26 @@
+%h1= "Good morning #{@user.name}!"
+- period = @time == "daily" ? "today" : "this week"
+%p
+  = "This is your #{@time} email from the Yale Go Pigeon; that is, the upcoming events you subscribed to on "
+  %a{:href=>"http://yalego.es"} Yale Go
+  \.
+- if @events.empty?
+  %p 
+    Unfortunately, you're not subscribed to any events in the near future. But you can easily change that! Just go to 
+    %a{:href => "http://yalego.es/#browse"} the Yale Go discovery page
+    and start following categories and organizations you're interested in. We'll populate your calendar automatically, and your bulletin will instantly get much more exciting!
+- else
+  - @events.each do |event|
+    %div{:style => "margin-top: 10px; border-top: 1pt solid #ddd; padding-top: 10px;"}
+      %p
+        %b= event.name
+      %p= "Organized by #{event.organization.name}"
+      - end_format = event.start_at.day == event.end_at.day ? "%r" : "%D, %r"
+      %p= "#{event.start_at.strftime("%D, %r")} - #{event.end_at.strftime(end_format)}"
+      %p= event.location.name
+      %p= event.location.short_address
+      %p{:style => "font-style: italic; font-size: 90%;"}= event.description
+
+
+
+

@@ -15,7 +15,7 @@ $popover-body-color: #fafafa;
 $popover-width: 500px;
 .gandalf-popover {
   position: fixed;
-  top: 100px;
+  top: 50px;
   left: 50%;
   width: $popover-width;
   margin-left: -$popover-width/2;
@@ -65,7 +65,7 @@ $popover-width: 500px;
   width: 80%;
   margin: 0 auto;
   p {
-    margin-bottom: 2px;
+    margin: 0;
   }
   input, textarea {
     width: 90%;
@@ -76,6 +76,9 @@ $popover-width: 500px;
 
   input[type='time'] {
     width: 25%;
+  }
+  textarea {
+    max-height: 100px;
   }
   .at {
     display: inline-block;

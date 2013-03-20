@@ -42,7 +42,7 @@ class OrganizationsController < ApplicationController
     else
       @events = @organization.complete_events
     end
-    render json: @events.as_json
+    render json: @events
   end
 
   def subscribed_users
@@ -50,13 +50,13 @@ class OrganizationsController < ApplicationController
     @users = @organization.subscribers
     @admins = @organization.admins
     @users = @users - @admins
-    render json: @users.as_json
+    render json: @users
   end
 
   def admins
     @organization = Organization.find(params[:id])
     @admins = @organization.admins
-    render json: @admins.as_json
+    render json: @admins
   end
 
   def search

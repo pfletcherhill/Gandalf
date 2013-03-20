@@ -24,7 +24,6 @@ class Gandalf.Views.Feed.Event extends Backbone.View
     e = @model
     startTime = @convertTime e.get('start_at')
     endTime = @convertTime e.get('end_at')
-    console.log 'organization', e.get('organization')
     @$el.attr(
       "data-event-id": e.get("id")
       "data-organization-id" : e.get("organization_id")

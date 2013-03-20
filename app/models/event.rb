@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
     date
   end
 
-  def as_json
+  def as_json(options)
     # If no location, then create a dummy location so function returns
     location = self.location || Location.new(
       name: "Unavailable", address: "Unavailable")

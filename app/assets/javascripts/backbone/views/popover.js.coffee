@@ -9,6 +9,7 @@ class Gandalf.Views.Popover extends Backbone.View
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("popover:hide", @hide, this)
+    Gandalf.dispatcher.on("route", @hide, this)
     Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
     Gandalf.dispatcher.on("popover:eventsReady", @setEvents, this)
     @render()

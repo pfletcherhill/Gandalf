@@ -17,6 +17,10 @@ Gandalf::Application.routes.draw do
   match '/users/:id/unfollow/organization/:organization_id' => 'users#unfollow_organization'
   match '/users/:id/follow/category/:category_id' => 'users#follow_category'
   match '/users/:id/unfollow/category/:category_id' => 'users#unfollow_category'
+  match '/users/:id/bulletin_preference' => "users#bulletin_preference"
+
+  # For testing
+  match '/bulletin' => "users#bulletins"
   
   resources :events
   

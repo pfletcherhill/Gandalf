@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130108010727) do
+ActiveRecord::Schema.define(:version => 20121223131504) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -89,8 +89,9 @@ ActiveRecord::Schema.define(:version => 20130108010727) do
     t.string   "college"
     t.string   "year"
     t.string   "division"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "bulletin_preference", :default => "daily"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
 end

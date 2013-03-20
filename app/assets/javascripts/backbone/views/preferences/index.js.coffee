@@ -6,30 +6,35 @@ class Gandalf.Views.Preferences.Index extends Backbone.View
 
   initialize: ->
     @type = @options.type
-    @subscriptions = @options.subscriptions
+    @pref = Gandalf.currentUser.get("bulletin_preference") 
     @render()
 
   events:
     "click .unfollow": "unfollow"
     "click .follow": "follow"
+    "click .pref-email": "bulletinPreference"
 
   render: =>
-    $(@el).html(@template())
-    @renderSubscriptions()
-    @changeActive(@type)
+    @$el.html @template(pref: @pref)
+    @getSubscriptions() if @type is "subscriptions"
+    @changeActive @type
     return this
 
   changeActive: (type) ->
     @$("li[data-type=#{type}]").addClass 'selected'
 
-  renderSubscriptions: =>
-    console.log @subscriptions, @subscriptions.models[0].toJSON()
-    for subscription in @subscriptions.models
-      if subscription.get('subscribeable_type') == 'Category'
-        url = "#categories/" + subscription.get('subscribeable_id')
-      else
-        url = "#organizations/" + subscription.get('subscribeable_id')
-      @$("tbody").append(@subscriptionTemplate(url: url, sub: subscription.toJSON()))
+  getSubscriptions: =>
+    @subscriptions = new Gandalf.Collections.Subscriptions
+    @subscriptions.url = '/users/' + Gandalf.currentUser.id + '/subscriptions'
+    @subscriptions.fetch success: (subscriptions) =>
+      @subscriptions = subscriptions
+      for subscription in @subscriptions.models
+        if subscription.get('subscribeable_type') is 'Category'
+          url = "#categories/" + subscription.get('subscribeable_id')
+        else
+          url = "#organizations/" + subscription.get('subscribeable_id')
+        @$("#pref-subscriptions-tbody")
+          .append(@subscriptionTemplate(url: url, sub: subscription.toJSON()))
 
   unfollow: (e) ->
     id = $(e.target).attr "data-id"
@@ -50,3 +55,6 @@ class Gandalf.Views.Preferences.Index extends Backbone.View
       Gandalf.currentUser.followCat(id)
 
     $(e.target).text("Unfollow").addClass("unfollow").removeClass("follow")
+
+  bulletinPreference: (e) ->
+    Gandalf.currentUser.updateBulletinPreference $(e.target).val()

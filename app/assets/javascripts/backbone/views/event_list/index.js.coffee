@@ -3,7 +3,6 @@ Gandalf.Views.EventList ||= {}
 class Gandalf.Views.EventList extends Backbone.View
 
   initialize: ->
-    console.log "eventlist options", @options
     @days = @options.events.group()
     @render()
 
