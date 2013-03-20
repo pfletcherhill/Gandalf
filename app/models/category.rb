@@ -5,6 +5,9 @@ class Category < ActiveRecord::Base
   has_many :subscriptions, :as => :subscribeable
   has_many :subscribers, :through => :subscriptions, :source => :user
 
+  # Callbacks
+  before_create :make_slug
+
   #pg_search
   include PgSearch
   multisearchable :against => [:name, :description]
@@ -19,6 +22,7 @@ class Category < ActiveRecord::Base
       .includes(:location, :organization, :categories)
       .order("start_at")
   end
+
   def events_with_period(*times)
     start_at = times[0]
     end_at = times[1]
@@ -28,6 +32,14 @@ class Category < ActiveRecord::Base
     events = self.complete_events
       .where(query,{ :start => start_at, :end => end_at })
     events
+  end
+
+  private
+
+  def make_slug
+    if not self.slug and self.name
+      self.slug = Subscription.make_slug self.name
+    end
   end
 
 end

@@ -1,6 +1,6 @@
 Import list of all student organizations and their leaders. (Paul)
 FIX TIME ZONE ISSUE (-5:00) -- date doesn’t carry over if time zone crosses date boundary (scheduling events at 7 p.m or after) (Paul)
-Daily email (user subscription and email preferences) (Rafi)
+
 Showing, adding, removing categories to events. On popups in the calendar and in add/edit events in the dashboard (Paul with Chosen)
 Facebook integration. Organizations should link to their own Facebook pages, and we can pull events from there. (Rafi)
 Create events as page: https://developers.facebook.com/docs/reference/api/page/#events
@@ -16,3 +16,7 @@ We need some way to sync our database with each group's Google calendar (this is
 Style month
 Improve feed interface
 Add image attachment to events, organizations, and categories
+
+Completed!
+
+Daily email (user subscription and email preferences) (Rafi)
