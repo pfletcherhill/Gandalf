@@ -20,7 +20,7 @@ Gandalf::Application.routes.draw do
   match '/users/:id/bulletin_preference' => "users#bulletin_preference"
 
   # For testing
-  match '/bulletin' => "users#bulletins"
+  match '/bulletin' => "users#bulletin"
   
   resources :events
   
