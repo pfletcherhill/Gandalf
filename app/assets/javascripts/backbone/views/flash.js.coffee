@@ -20,26 +20,26 @@ class Gandalf.Views.Flash extends Backbone.View
   template: JST["backbone/templates/flash/index"]
 
   success: (msg) ->
+    @hide()
     @$el.html(msg).addClass "success"
     @flash()
     console.log "flash success:",  msg
 
   error: (msg) ->
+    @hide()
     @$el.html(msg).addClass "error"
     @flash()
     console.log "flash error:",  msg
 
   notice: (msg) ->
+    @hide()
     @$el.html(msg).addClass "notice"
     @flash()
     console.log "flash notice:",  msg
 
   flash: ->
-    @$el.fadeIn().delay(@displayLength).fadeOut("normal", =>
-      @$el.removeClass("success error notice")
-    )
+    @$el.fadeIn().delay(@displayLength).fadeOut()
 
   hide: ->
-    @$el.fadeOut("normal", =>
-      @$el.removeClass("success error notice")
-    )
+    @$el.hide()
+    @$el.removeClass("success error notice")

@@ -42,7 +42,10 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: "/users/#{@id}/follow/organization/#{oid}"
       success: (data) =>
+        console.log data
         this.get('subscribed_organizations').add data
+        Gandalf.dispatcher.trigger("flash:success", 
+          "Now following #{data.name}!")
 
   unfollowOrg: (oid) ->
     # type = o.constructor.name.toLowerCase()
@@ -51,8 +54,10 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: "/users/#{@id}/unfollow/organization/#{oid}"
       success: (data) =>
-        console.log this
+        console.log data
         this.get('subscribed_organizations').remove data
+        Gandalf.dispatcher.trigger("flash:notice", 
+          "No longer following #{data.name}")
 
   followCat: (cid) ->
     # We cannot use this because when assets are compiled, all model names are assigned
@@ -65,6 +70,8 @@ class Gandalf.Models.User extends Backbone.Model
       url: "/users/#{@id}/follow/category/#{cid}"
       success: (data) =>
         this.get('subscribed_categories').add data
+        Gandalf.dispatcher.trigger("flash:success", 
+          "Now following #{data.name}!")
 
   unfollowCat: (cid) ->
     $.ajax
@@ -72,8 +79,9 @@ class Gandalf.Models.User extends Backbone.Model
       dataType: 'json'
       url: "/users/#{@id}/unfollow/category/#{cid}"
       success: (data) =>
-        console.log this
         this.get('subscribed_categories').remove data
+        Gandalf.dispatcher.trigger("flash:notice", 
+          "No longer following #{data.name}")
 
   updateBulletinPreference: (value) ->
     @set(bulletin_preference: value)
