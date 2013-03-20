@@ -35,6 +35,7 @@ class Gandalf.Models.Event extends Backbone.Model
       start_at: this.get("start_at")
       end_at: this.get("end_at")
       description: this.get("description")
+      category_ids: this.get("category_ids")
     }
 
 class Gandalf.Collections.Events extends Backbone.Collection

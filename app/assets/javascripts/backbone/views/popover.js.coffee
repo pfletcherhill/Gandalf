@@ -76,25 +76,28 @@ class Gandalf.Views.Popover extends Backbone.View
     $(".gandalf-popover").html @newEventTemplate(
       org: organization
       color: "rgba(#{organization.get("color")}, 0.7)"
+      categories: Gandalf.constants.allCategories.models
     )
     $("[type=datetime]").datepicker()
+    @makeChosen()
     @show()
 
   editEvent: (e) ->
     $(".gandalf-popover").html @editEventTemplate(
       event: e
       color: "rgba(#{e.get("color")}, 0.7)"
+      categories: Gandalf.constants.allCategories.models
     )
+    @makeChosen(_.pluck(e.get("categories"), "id"))
     @show()
 
   createEvent: () ->
     values = @validateEvent();
     return false if not values
-    console.log "values", values
-    console.log $("input[name=organization_id]")
     @$("[type='submit']").val('Saving...')
     newEvent = new Gandalf.Models.Event
     newEvent.set values
+    console.log newEvent
     newEvent.url = "/events"
     newEvent.save(newEvent,
       success: (e) =>
@@ -163,8 +166,10 @@ class Gandalf.Views.Popover extends Backbone.View
     end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
     values["start_at"] = start.format()
     values["end_at"] = end.format()
-    # Description field is not required, so not in validation process
-    values["description"] = @$("textarea[name='description']").val()
+    # Description, category_ids fields not required,
+    # so not in validation process
+    values["description"] = $("textarea[name='description']").val()
+    values["category_ids"] = $("#category-select").val()
     # Remove keys not associated with event
     delete values["start_at_time"]
     delete values["start_at_date"]
@@ -200,3 +205,13 @@ class Gandalf.Views.Popover extends Backbone.View
       map: map
       title: "Here it is!"
     )
+
+  makeChosen: (ids) ->
+    $("#category-select").chosen()
+    if not _.isEmpty ids
+      $('#category-select').val(ids).trigger('liszt:updated') 
+    $("#category_select_chzn").css(
+      width: "90%"
+      marginBottom: "10px"
+    )
+    $(".chzn-drop").css(width: "90%")

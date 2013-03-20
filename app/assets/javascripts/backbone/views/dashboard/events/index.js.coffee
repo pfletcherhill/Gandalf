@@ -11,8 +11,8 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
     
   initialize: =>
     @render()
-    @newEvent = new Gandalf.Models.Event
-    @newEvent.set organization_id: @model.id
+    # @newEvent = new Gandalf.Models.Event
+    # @newEvent.set organization_id: @model.id
     @model.fetchEvents().then @renderEvents
     Gandalf.dispatcher.on("event:change", @eventChanged, this)
   
@@ -21,7 +21,9 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
       
   renderEvents: =>
     for e in @model.get("events").models
-      view = new Gandalf.Views.Dashboard.Event model: e
+      view = new Gandalf.Views.Dashboard.Event 
+        model: e
+        collection: @model.get("events")
       @$(".dash-list").append view.el
         
   render: =>

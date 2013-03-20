@@ -28,6 +28,14 @@ class Event < ActiveRecord::Base
     date
   end
 
+  # Takes an array of category ids and makes them the associated categories
+  def set_categories(ids)
+    self.categories = []
+    ids.each do |id|
+      self.categories << Category.find(id)
+    end
+  end
+
   def as_json(options)
     # If no location, then create a dummy location so function returns
     location = self.location || Location.new(
