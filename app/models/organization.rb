@@ -9,6 +9,7 @@ class Organization < ActiveRecord::Base
 
   # Validations
   validates_uniqueness_of :name, :case_sensitive => false
+  before_create :make_slug
 
 
   #pg_search
@@ -26,6 +27,7 @@ class Organization < ActiveRecord::Base
       .includes(:location, :organization, :categories)
       .order("start_at")
   end
+  
   #Events, can have start and end
   def events_with_period(*times)
     start_at = times[0]
@@ -38,11 +40,19 @@ class Organization < ActiveRecord::Base
     @events
   end
 
-  #Categories, sorted by most frequent
+  # Categories, sorted by most frequent
   def categories
     events = self.events.includes(:categories)
     categories = events.map{|event| event.categories}.flatten
     categories.uniq.sort_by{ |c| categories.grep(c).size }.reverse
+  end
+
+  private
+
+  def make_slug
+    if not self.slug and self.name
+      self.slug = Subscription.make_slug self.name
+    end
   end
 
 end
