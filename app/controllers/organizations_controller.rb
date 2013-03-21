@@ -61,7 +61,7 @@ class OrganizationsController < ApplicationController
 
   def search
     query = params[:query]
-    organizations = Organization.fulltext_search(query).includes(:category)
+    organizations = Organization.fulltext_search(query)
     render json: organizations.to_json(:include => [:categories])
   end
 

@@ -9,8 +9,10 @@
     <input type="hidden" name='event_id' value=<%= event.get("id") %> />
     <p>Name</p>
     <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" value='<%= event.get("name") %>' />
-    <p>Place</p>
+    <p>Location</p>
     <input type="text" name="location" maxlength="50" placeholder="Camp awesome" value='<%= event.get("location") %>' />
+    <div class="room">room</div>
+    <input type="text" name="room_number" placeholder="777" value='<%= event.get('room_number') %>' />
     <p>From</p>
     <input type="datetime" name='start_at_date' placeholder='now' value=<%= moment(event.get("start_at")).format('MM/DD/YYYY') %> />
     <div class="at">at</div>

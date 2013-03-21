@@ -1,5 +1,5 @@
 Gandalf::Application.routes.draw do
-  
+
   root :to => "events#root"
   
   match '/login' => "main#login"
@@ -39,6 +39,7 @@ Gandalf::Application.routes.draw do
   match '/search/organizations/:query' => 'organizations#search'
   match '/search/events/:query' => 'events#search'
   match '/search/categories/:query' => 'categories#search'
+  match '/search/location/:query' => 'location#search'
   match '/search/all/:query' => 'main#search_all'
   
 end

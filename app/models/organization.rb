@@ -16,8 +16,12 @@ class Organization < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:name, :bio]
   pg_search_scope :fulltext_search,
-                  :against => [:name, :bio],
-                  :using => { :tsearch => {:prefix => true} }
+    against: [:name, :bio],
+    using: { tsearch:  {
+      prefix: true, 
+      dictionary: "english",
+      any_word: true
+    } }
 
   #Image Uploader
   mount_uploader :image, ImageUploader

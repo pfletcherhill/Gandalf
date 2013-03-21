@@ -1,8 +1,8 @@
-set :output, "#{path}/log/cron.log"
+set :output, "  log/cron.log"
 
 time_to_send = "6:00 am"
 
-every 1.days, at: time_to_send do 
+every 1.day, at: "4:11 pm" do 
   runner "User.send_daily_bulletin"
 end
 

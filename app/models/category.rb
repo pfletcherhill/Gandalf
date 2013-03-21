@@ -12,8 +12,12 @@ class Category < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:name, :description]
   pg_search_scope :fulltext_search,
-                  :against => [:name, :description],
-                  :using => { :tsearch => {:prefix => true} }
+    against: [:name, :description],
+    using: { tsearch:  {
+      prefix: true, 
+      dictionary: "english",
+      any_word: true
+    } }
 
   #Events, can have start and end
 

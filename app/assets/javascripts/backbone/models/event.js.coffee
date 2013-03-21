@@ -34,6 +34,7 @@ class Gandalf.Models.Event extends Backbone.Model
       location: this.get("location")
       start_at: this.get("start_at")
       end_at: this.get("end_at")
+      room_number: this.get("room_number")
       description: this.get("description")
       category_ids: this.get("category_ids")
     }
