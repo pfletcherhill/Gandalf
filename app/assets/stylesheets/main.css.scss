@@ -8,9 +8,10 @@ $min-width: 960px;
 $width: 960px;
 $header-height: 50px;
 $side-padding: 15px;
-$calendar-height: 400px;
+$calendar-height: 600px;
 $background-color: #fafafa;
 $header-z: 100;
+$cal-z: 10;
 
 /* =============  GLOBAL STYLES =========== */
 
@@ -161,6 +162,7 @@ h3 {
   background-color: $background-color;
   min-height: 500px;
   border-top: 1pt solid #dadada;
+  z-index: $cal-z + 10;
 }
 
 // Paul's superfluous container for dashboard and browse pages
