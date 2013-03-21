@@ -59,16 +59,18 @@ $hour-height: $calendar-height / 24 - 1px; // For the border
 }
 
 .cal-month {
-  tr {
-    height: 20%;
+  .cal-day-container {
     overflow: hidden;
   }
   .cal-day {
-    position: relative;
+    // position: relative;
     overflow: hidden;
     background-color: white;
-    border-right: 1px solid #eee;
+    // border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
+  }
+  .cal-day-inner {
+    height: $calendar-height / 5;
   }
   /*
   tr:nth-child(odd) .cal-day:nth-child(odd), tr:nth-child(even) .cal-day:nth-child(even) {
@@ -155,7 +157,6 @@ $hour-height: $calendar-height / 24 - 1px; // For the border
   position: relative;
 }
 .cal-month .cal-events {
-  position: relative;
   top: 0;
   left: 0;
   overflow: hidden;

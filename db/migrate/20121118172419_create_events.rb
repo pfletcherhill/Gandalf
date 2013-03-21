@@ -5,7 +5,7 @@ class CreateEvents < ActiveRecord::Migration
       t.text :description
       t.datetime :start_at
       t.datetime :end_at
-      t.string :room_number, default: "none"
+      t.string :room_number
 
       t.integer :organization_id
       t.integer :location_id

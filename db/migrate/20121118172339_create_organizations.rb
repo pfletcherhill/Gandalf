@@ -5,7 +5,7 @@ class CreateOrganizations < ActiveRecord::Migration
       t.text :bio
       t.string :slug
       t.string :image
-      t.string :color, :default => "220,220,220" # format r,g,b
+      t.string :color, :default => "150,150,150" # format r,g,b
 
       t.timestamps
     end

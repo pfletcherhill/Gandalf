@@ -70,6 +70,6 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     $(".content-calendar").html(cal.el)
     
     $("[rel=tooltip]").tooltip(
-      position: 'right'
+      placement: 'right'
     )
     return this
