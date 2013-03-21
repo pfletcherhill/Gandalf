@@ -11,10 +11,8 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
     
   initialize: =>
     @render()
-    # @newEvent = new Gandalf.Models.Event
-    # @newEvent.set organization_id: @model.id
     @model.fetchEvents().then @renderEvents
-    Gandalf.dispatcher.on("event:change", @eventChanged, this)
+    # Gandalf.dispatcher.on("event:change", @eventChanged, this)
   
   convertTime: (time) ->
     moment(time).format("h:mm a")

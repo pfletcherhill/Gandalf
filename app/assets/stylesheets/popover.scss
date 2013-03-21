@@ -40,6 +40,7 @@ $popover-width: 500px;
     position: absolute;
     top: 11px;
     right: 30px;
+    cursor: pointer;
   }
 }
 
@@ -97,7 +98,7 @@ $popover-input-width: $popover-form-width - 2*$input-padding - 2px;
     width: 0.2 * $popover-input-width;
   }
   textarea {
-    max-height: 100px;
+    max-height: 50px;
   }
   .at {
     display: inline-block;

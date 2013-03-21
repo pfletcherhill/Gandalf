@@ -4,7 +4,6 @@ Facebook integration. Organizations should link to their own Facebook pages, and
 Create events as page: https://developers.facebook.com/docs/reference/api/page/#events
 
 **Seed database with events from current Events calendar (Paul - save for later)
-Typeahead for location selection (needs to be ROBUST) (Rafi)
 Formatted email to subscribers (Paul, last priority)
 General style updates (Paul)
 
@@ -22,3 +21,4 @@ Completed:
 Daily email (user subscription and email preferences) (Rafi)
 Showing, adding, removing categories to events. On popups in the calendar and in add/edit events in the dashboard (Paul with Chosen -- but Rafi did it)
 Populate database with meaningful categories, and have some way of assigning categories to organizations and events (Rafi)
+Typeahead for location selection (needs to be ROBUST) (Rafi)
