@@ -56,17 +56,20 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       events: @options.events
     )
     @$(".body-feed").html(eventList.el)
-    view = new Gandalf.Views.Calendar.Index(
-      type: @options.period
-      events: @options.events
-      startDate: @options.startDate
-    )
-    $(".content-calendar").html(view.el)
     nav = new Gandalf.Views.CalendarNav(
       period: @options.period
       startDate: @options.startDate
       root: "calendar"
     )
-    @$(".content-cal-nav").html(nav.el)
-    $("[rel=tooltip]").tooltip()
+    @$(".content-calendar-nav > .container").html(nav.el)
+    cal = new Gandalf.Views.Calendar.Index(
+      type: @options.period
+      events: @options.events
+      startDate: @options.startDate
+    )
+    $(".content-calendar").html(cal.el)
+    
+    $("[rel=tooltip]").tooltip(
+      position: 'right'
+    )
     return this

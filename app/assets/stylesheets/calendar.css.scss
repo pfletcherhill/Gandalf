@@ -3,8 +3,7 @@
 $cal-gap: 40px;
 $cal-head-height: 70px;
 $cal-top-pad: 10px;
-$hour-height: 4.1667%;
-$hour-height-floored: 4%;
+$hour-height: $calendar-height / 24 - 1px; // For the border
 
 // Redundant styling—here just to change bg color
 .calendar {
@@ -13,6 +12,13 @@ $hour-height-floored: 4%;
 .cal {
   width: 100%;
   height: 100%;
+}
+
+/* ====== NAVIGATION ======= */
+
+.cal-nav {
+  margin-top: 13px;
+  z-index: $header-z - 1;
 }
 
 /* ===== CALENDAR TABLE ===== */
@@ -72,7 +78,7 @@ $hour-height-floored: 4%;
 }
 
 .hour-day {
-  height: $hour-height; // 100/24
+  height: $hour-height;
   position: relative;
   z-index: -5;
   &:nth-child(even) {
@@ -103,6 +109,7 @@ $hour-height-floored: 4%;
   @include box-shadow(0 1px 1px rgba(black, 0.4));
   z-index: 30;
 }
+
 #time-marker-img {
   $marker-img-height: 15px;
   position: relative;

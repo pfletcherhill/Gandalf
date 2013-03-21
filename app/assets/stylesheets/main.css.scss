@@ -6,12 +6,8 @@ $green: #058412;
 $font: 12px;
 $min-width: 960px;
 $width: 960px;
-$header-height: 50px;
 $side-padding: 15px;
-$calendar-height: 600px;
 $background-color: #fafafa;
-$header-z: 100;
-$cal-z: 10;
 
 /* =============  GLOBAL STYLES =========== */
 
@@ -62,6 +58,9 @@ h3 {
 }
 
 /* ================== HEADER =============== */
+
+$header-height: 50px;
+$header-z: 100;
 
 .header {
   height: $header-height;
@@ -135,6 +134,12 @@ h3 {
 
 /* ================== LAYOUT =============== */
 
+$cal-nav-height: 55px;
+$calendar-height: 700px;
+$calendar-top: $header-height + 3px;
+$calendar-bottom: $cal-nav-height + $calendar-height;
+$cal-z: 10;
+
 // #content is the Backbone anchor onto the document
 #content {
   position: absolute;
@@ -145,9 +150,22 @@ h3 {
   // background: #fafafa;
 }
 
-.content-calendar {
+.content-calendar-nav {
   position: fixed;
-  top: $header-height + 3px;
+  left: 0;
+  top: $calendar-top; 
+  height: $cal-nav-height - 1px; // For the border
+  width: 100%;
+  min-width: $min-width;
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+  z-index: $header-z - 1;
+}
+
+.content-calendar {
+  position: absolute;
+  top: $cal-nav-height;
+  // top: $calendar-top + $cal-nav-height + 1px;
   left: 0;
   width: 100%;
   min-width: $min-width;
@@ -157,7 +175,8 @@ h3 {
 
 .content-body {
   position: relative;
-  top: $calendar-height;
+  top: $calendar-bottom;
+  // top: $calendar-height;
   width: 100%;
   background-color: $background-color;
   min-height: 500px;
