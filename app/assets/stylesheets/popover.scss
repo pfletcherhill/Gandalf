@@ -4,7 +4,7 @@
   position: fixed;
   width: 100%; height: 100%;
   top: 0; left: 0;
-  z-index: 100;
+  z-index: 104;
   background-color: rgba(black, 0.6);
   display: none;
 }
@@ -15,14 +15,18 @@ $popover-body-color: #fafafa;
 $popover-width: 500px;
 .gandalf-popover {
   position: fixed;
-  top: 100px;
+  top: 50px;
   left: 50%;
   width: $popover-width;
   margin-left: -$popover-width/2;
-  z-index: 101;
+  z-index: 105;
   display: none;
   background-color: rgba(#eee, 0.9);
   @include box-shadow(0 0px 10px 0 black);
+
+  a {
+    color: rgb(14, 99, 207);
+  }
 
   .close {
     position: absolute;
@@ -30,6 +34,13 @@ $popover-width: 500px;
     right: 10px;
     line-height: 15px;
     opacity: 0.4;
+  }
+
+  .why {
+    position: absolute;
+    top: 11px;
+    right: 30px;
+    cursor: pointer;
   }
 }
 
@@ -61,25 +72,42 @@ $popover-width: 500px;
 
 /* Specific to views */
 
+$popover-form-width: 0.9*($popover-width - 2*$popover-padding);
+$input-padding: 6px; // From Bootstrap
+$popover-input-width: $popover-form-width - 2*$input-padding - 2px;
 .event-form {
-  width: 80%;
+  width: 450px;   // 0.9 * $popover-width
   margin: 0 auto;
   p {
-    margin-bottom: 2px;
+    margin: 0;
   }
   input, textarea {
-    width: 90%;
+    width: $popover-input-width;
   }
-  input[type='datetime'] {
-    width: 55%;
+  input[name=location] {
+    width: 0.65 * $popover-input-width ;
   }
-
-  input[type='time'] {
-    width: 25%;
+  input[name=room_number] {
+    width: 0.2 * $popover-input-width;
+    text-align: right;
+  }
+  input[type=datetime] {
+    width: 0.7 * $popover-input-width;
+  }
+  input[type=time] {
+    width: 0.2 * $popover-input-width;
+  }
+  textarea {
+    max-height: 50px;
   }
   .at {
     display: inline-block;
-    width: 5%;
+    width: 0.05 * $popover-input-width;
+    text-align: center;
+  }
+  .room {
+    display: inline-block;
+    width: 0.1 * $popover-input-width;
     text-align: center;
   }
 }

@@ -1,28 +1,42 @@
 class Location < ActiveRecord::Base
-  
+
   before_save :generate_address
-  
+
   has_many :events
-  
-  validates_presence_of :name
-  
+  has_many :location_aliases
+
+  validates_presence_of :name, :address
+  validates_uniqueness_of :name
+  validates_uniqueness_of :address
+
   acts_as_gmappable
-  
+
+  include PgSearch
+  multisearchable :against => [:name]
+  pg_search_scope :name_search, 
+    against: [:name, :address],
+    associated_against: { location_aliases: :value },
+    using: { tsearch: { 
+      prefix: true, 
+      any_word: true
+   } }
+
   def short_address
-    ad = address.sub(/,? New Haven,? /,"")
-    ad = ad.sub(/\w\w \d\d\d\d\d/, "")
+    # Remove state and zipcode
+    ad = address.sub(/\w\w \d\d\d\d\d/, "")
+    ad = ad.gsub(/(,? New Haven,? |CT,?|United States)/,"")
     ad.strip
   end
 
   def gmaps4rails_address
     self.address
   end
-  
+
   # Generates address, longitude, and latitude from google maps
   def generate_address
     name = self.name
     unless self.address
-      key = "AIzaSyDxC7qcloU94l5dvOEdAoQTZ7AijIX65gw"
+      key = ENV['GMAPS_KEY']
       search = name.gsub(" ","+")
       map_results = JSON.parse(open(
         "https://maps.googleapis.com/maps/api/place/textsearch/json?location=41.310362,-72.928914&radius=500&key=#{key}&query=#{search}&sensor=true").read)

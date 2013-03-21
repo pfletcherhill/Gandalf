@@ -1,5 +1,5 @@
 Gandalf::Application.routes.draw do
-  
+
   root :to => "events#root"
   
   match '/login' => "main#login"
@@ -17,6 +17,10 @@ Gandalf::Application.routes.draw do
   match '/users/:id/unfollow/organization/:organization_id' => 'users#unfollow_organization'
   match '/users/:id/follow/category/:category_id' => 'users#follow_category'
   match '/users/:id/unfollow/category/:category_id' => 'users#unfollow_category'
+  match '/users/:id/bulletin_preference' => "users#bulletin_preference"
+
+  # For testing
+  match '/bulletin' => "users#bulletin"
   
   resources :events
   
@@ -35,6 +39,7 @@ Gandalf::Application.routes.draw do
   match '/search/organizations/:query' => 'organizations#search'
   match '/search/events/:query' => 'events#search'
   match '/search/categories/:query' => 'categories#search'
+  match '/search/location/:query' => 'location#search'
   match '/search/all/:query' => 'main#search_all'
   
 end

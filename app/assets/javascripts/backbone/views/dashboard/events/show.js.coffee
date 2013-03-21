@@ -4,6 +4,7 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
 
   initialize: ->
     @render()
+    @model.on("change", @render)
 
   tagName: "tr"
   className: "dash-row event"
@@ -14,7 +15,7 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
     "click .edit" : "edit"
     "click .delete" : "deleteEvent"
 
-  render: ->
+  render: () =>
     @$el
       .attr("data-id", @model.id)
       .html @template(event: @model)
@@ -26,15 +27,15 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
   # Event handlers
 
   edit: ->
-    Gandalf.dispatcher.trigger("event:edit", @model)
+    Gandalf.dispatcher.trigger("event:edit"
+      event: @model
+      collection: @collection
+    )
 
   deleteEvent: ->
     name = @model.get("name")
     if confirm("Are you sure you want to delete #{@model.get('name')}?")
-      @model.destroy(success: ->
-        Gandalf.dispatcher.trigger("event:change")
+      @model.destroy(success: =>
         Gandalf.dispatcher.trigger("flash:success", "#{name} deleted!")
       )
-    # Gandalf.dispatcher.trigger("event:delete", @model)
-    # Delete it
 

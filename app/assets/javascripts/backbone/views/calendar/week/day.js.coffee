@@ -13,7 +13,7 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
 
   addEvents: () ->
     if @model     # If there are events
-      container = @$el.children(".cal-events:first")
+      container = @$(".cal-events:first")
       for e in @model
         if not e.get("multiday")
           view = new Gandalf.Views.Calendar.Week.Event(
@@ -25,9 +25,12 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
 
   render: () ->
     @$el.html(@template(date: @date)) # Add the calendar day
-    if @date.date() is moment().date() and @date.month() is moment().month() and @date.year() is moment().year()
-      @$el.addClass "today"
-      @$el.append("<div id='time-marker'><img id='time-marker-img' src='/assets/y_logo_200.png' /></div>")
+    if @date.date()  is moment().date()  and 
+       @date.month() is moment().month() and 
+       @date.year()  is moment().year()
+      @$(".cal-day-inner")
+        .addClass("today")
+        .append("<div id='time-marker'><img id='time-marker-img' src='/assets/y_logo_200.png' /></div>")
       @nowMarker()
       t = this
       setInterval( ->
