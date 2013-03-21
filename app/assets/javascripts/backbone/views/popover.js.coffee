@@ -85,6 +85,7 @@ class Gandalf.Views.Popover extends Backbone.View
     )
     $("[type=datetime]").datepicker()
     @makeChosen()
+    @makeAutoComplete()
     @show()
 
   editEvent: (e) ->
@@ -94,6 +95,7 @@ class Gandalf.Views.Popover extends Backbone.View
       categories: Gandalf.constants.allCategories.models
     )
     @makeChosen(_.pluck(e.get("categories"), "id"))
+    @makeAutoComplete()
     @show()
 
   createEvent: () ->
@@ -211,12 +213,23 @@ class Gandalf.Views.Popover extends Backbone.View
       title: "Here it is!"
     )
 
+  makeAutoComplete: ->
+    $("input[name=location]").autocomplete(
+      source: (request, response) ->
+        $.ajax "/search/location/#{request.term}", 
+          dataType: 'json'
+          success: (data) ->
+            response(data)
+          error: ->
+            response([])
+    )
+
   makeChosen: (ids) ->
     $("#category-select").chosen()
     if not _.isEmpty ids
       $('#category-select').val(ids).trigger('liszt:updated') 
     $("#category_select_chzn").css(
-      width: "90%"
+      width: "431px"
       marginBottom: "10px"
     )
     $(".chzn-drop").css(width: "90%")

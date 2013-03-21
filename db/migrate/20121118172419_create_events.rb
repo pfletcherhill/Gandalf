@@ -2,11 +2,14 @@ class CreateEvents < ActiveRecord::Migration
   def change
     create_table :events do |t|
       t.string :name
-      t.integer :organization_id
+      t.text :description
       t.datetime :start_at
       t.datetime :end_at
+      t.string :room_number, default: "none"
+
+      t.integer :organization_id
       t.integer :location_id
-      t.text :description
+
       t.timestamps
     end
     create_table :categories_events do |t|

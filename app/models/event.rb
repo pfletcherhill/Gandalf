@@ -14,12 +14,17 @@ class Event < ActiveRecord::Base
   include PgSearch
   multisearchable :against => [:name, :description]
   pg_search_scope :fulltext_search,
-                  :against => [:name, :description],
-                  :associated_against => {
-                    :organization => [:name],
-                    :location => [:name]
-                  },
-                  :using => { :tsearch => {:prefix => true} }
+    against: [:name, :description],
+    associated_against: {
+      organization: [:name],
+      location: [:name]
+    },
+    using: { tsearch: {
+      prefix: true, 
+      dictionary: "english",
+      any_word: true
+    }
+  }
 
   # todo: before save convert to UTC and check that before < after
 
@@ -50,6 +55,7 @@ class Event < ActiveRecord::Base
       "lon" => location.longitude,
       "start_at" => start_at,
       "end_at" => end_at,
+      "room_number" => room_number, 
       "organization" => organization.name,
       "organization_id" => organization.id,
       "color" => organization.color,

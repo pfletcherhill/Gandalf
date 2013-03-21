@@ -8,8 +8,10 @@
     <input type="hidden" name='organization_id' value=<%= org.get("id") %> />
     <p>Name</p>
     <input type="text" name="name" maxlength="50" placeholder="1 hour of awesomeness" />
-    <p>Place</p>
-    <input type="text" name="location" maxlength="50" placeholder="Camp awesome" data-provide="typeahead" autocomplete="off" />
+    <p>Location</p>
+    <input type="text" name="location" maxlength="50" placeholder="Camp awesome" />
+    <div class="room">room</div>
+    <input type="text" name="room_number" placeholder="777" />
     <p>From</p>
     <input type="datetime" name='start_at_date' placeholder='now' value=<%= moment().format('MM/DD/YYYY') %> />
     <div class="at">at</div>

@@ -77,10 +77,15 @@ art_gallery = Location.create(
   :name => "Yale University Art Gallery Auditorium", 
   :address => "1111 Chapel Street, New Haven, CT 06511"
 )
+LocationAlias.create( value: "YUAG", location: art_gallery )
+
 ceid = Location.create(
   :name => "Center for Engineering, Innovation and Design", 
   :address => "15 Prospect St., New Haven, CT 06511"
 )
+LocationAlias.create( value: "CEID", location: ceid )
+LocationAlias.create( value: "C.E.I.D.", location: ceid )
+
 shubert = Location.create(
   :name => "Shubert Theater", 
   :address => "247 College Street, New Haven, CT 06511"
@@ -89,10 +94,13 @@ pwg = Location.create(
   name: "Payne Whitney Gym",
   address: "70 Tower Parkway, New Haven, CT 06520",
 )
+LocationAlias.create(value: "PWG", location: pwg)
+
 wlh = Location.create(
   name: "William L. Harkness Hall",
   address: "100 Wall Street, New Haven, CT"
 )
+LocationAlias.create(value: "WLH", location: wlh)
 
 print "#{Location.count} locations created...\n"
 
@@ -102,6 +110,7 @@ e = Event.new(
   :start_at => Time.now + 20.hour,
   :end_at => Time.now + 26.hour,
   :location => shubert,
+  :room_number => "Main Theater",
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << arts
@@ -127,6 +136,7 @@ e = Event.new(
   :start_at => Time.now + 29.hour,
   :end_at => Time.now + 30.hour,
   :location => wlh,
+  :room_number => "114",
   :description => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at elit semper tortor varius tincidunt. In aliquet malesuada luctus. Etiam curs"
 )
 e.categories << tech
