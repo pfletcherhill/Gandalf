@@ -38,6 +38,4 @@ class Gandalf.Views.Dashboard.Event extends Backbone.View
       @model.destroy(success: =>
         Gandalf.dispatcher.trigger("flash:success", "#{name} deleted!")
       )
-    # Gandalf.dispatcher.trigger("event:delete", @model)
-    # Delete it
 
