@@ -2,7 +2,7 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
 
   initialize: ->
     Gandalf.dispatcher.on("event:click", @showEvent, this)
-    @render()
+    super()
 
   showEventTemplate: JST["backbone/templates/popover/events/show"]
 

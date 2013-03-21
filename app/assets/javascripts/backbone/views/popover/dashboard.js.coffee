@@ -8,21 +8,23 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
-    # Use Popover's render
-    @render()
+    # Initialize Gandalf.Views.Popover, which calls its render
+    super()
 
   newEventTemplate: JST["backbone/templates/popover/events/new"]
   editEventTemplate: JST["backbone/templates/popover/events/edit"]
   showEmailTemplate: JST["backbone/templates/popover/email"]
 
-  events:
+  events: 
     "click .global-overlay,.close,a" : "hide"
     "click input,textarea" : "removeErrorClass"
     "submit #new-event-form": "createEvent"
     "submit #edit-event-form": "updateEvent"
     "click #send-email": "sendEmail"
 
-  newEvent: (organization) ->
+  newEvent: (obj) ->
+    @collection = obj.collection
+    organization = obj.organization
     e = new Gandalf.Models.Event
     e.set organization_id: organization.get("id")
     $(".gandalf-popover").html @newEventTemplate(
@@ -35,7 +37,9 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     @makeChosen()
     @makeAutoComplete()
 
-  editEvent: (e) ->
+  editEvent: (obj) ->
+    @collection = obj.collection
+    e = obj.event
     $(".gandalf-popover").html @editEventTemplate(
       event: e
       color: "rgba(#{e.get("color")}, 0.7)"
@@ -57,7 +61,9 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     newEvent.save(newEvent,
       success: (e) =>
         @hide()
-        Gandalf.dispatcher.trigger("event:change")
+        @collection.add e
+        console.log @collection
+        # Gandalf.dispatcher.trigger("event:change", e)
         Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} created!")
       error: (organization, jqXHR) =>
         Gandalf.dispatcher.trigger("flash:error", "Couldn't create event.")
@@ -73,21 +79,17 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     t = this
     @$("[type='submit']").val('Updating...')
     eventId = $("[name=event_id]").val()
-    e = new Gandalf.Models.Event
-    e.url = "/events/#{eventId}"
-    e.fetch(
-      success: =>
-        e.set values
-        e.save(values,
-          success: (e) =>
-            @hide()
-            Gandalf.dispatcher.trigger("event:change")
-            Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} updated.")
-          error: (organization, jqXHR) =>
-            Gandalf.dispatcher.trigger("flash:error", "Couldn't update event.")
-            e.set({errors: $.parseJSON(jqXHR.responseText)})
-            console.log $.parseJSON(jqXHR.responseText)
-        )
+    e = @collection.get(eventId)
+    e.set values
+    e.save(values,
+      success: (e) =>
+        @hide()
+        Gandalf.dispatcher.trigger("event:change", e)
+        Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} updated.")
+      error: (organization, jqXHR) =>
+        Gandalf.dispatcher.trigger("flash:error", "Couldn't update event.")
+        e.set({errors: $.parseJSON(jqXHR.responseText)})
+        console.log $.parseJSON(jqXHR.responseText)
     )
 
     return false
