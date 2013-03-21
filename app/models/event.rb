@@ -36,8 +36,10 @@ class Event < ActiveRecord::Base
   # Takes an array of category ids and makes them the associated categories
   def set_categories(ids)
     self.categories = []
-    ids.each do |id|
-      self.categories << Category.find(id)
+    if ids
+      ids.each do |id|
+        self.categories << Category.find(id)
+      end
     end
   end
 

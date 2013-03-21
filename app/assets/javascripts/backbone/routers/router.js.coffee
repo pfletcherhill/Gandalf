@@ -4,9 +4,8 @@ class Gandalf.Router extends Backbone.Router
     @events = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations
     @organizations.add Gandalf.currentUser.get('organizations')
-    @popover = new Gandalf.Views.Popover
+    # @popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
-    $(".wrapper").append @popover.el
     $(".wrapper").append @flash.el
 
     # Load user data
@@ -106,6 +105,8 @@ class Gandalf.Router extends Backbone.Router
         period: params.period
       )
       Gandalf.dispatcher.trigger("popover:eventsReady", events)
+    @popover = new Gandalf.Views.CalendarPopover
+    $("#popover").html @popover.el
 
   calendarRedirect: (date) ->
     date = "today" if not date
@@ -143,6 +144,8 @@ class Gandalf.Router extends Backbone.Router
       error: ->
         alert 'You do not have access to this organization.'
         window.location = "#organizations"
+    @popover = new Gandalf.Views.DashboardPopover
+    $("#popover").html @popover.el
 
   events: (id) ->
     @event = new Gandalf.Models.Event

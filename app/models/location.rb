@@ -22,8 +22,9 @@ class Location < ActiveRecord::Base
    } }
 
   def short_address
-    ad = address.gsub(/(,? New Haven,? |CT,?|United States)/,"")
-    ad = ad.sub(/\w\w \d\d\d\d\d/, "")
+    # Remove state and zipcode
+    ad = address.sub(/\w\w \d\d\d\d\d/, "")
+    ad = ad.gsub(/(,? New Haven,? |CT,?|United States)/,"")
     ad.strip
   end
 
