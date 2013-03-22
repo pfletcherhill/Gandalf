@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130108010727) do
+ActiveRecord::Schema.define(:version => 20130321013423) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -36,13 +36,21 @@ ActiveRecord::Schema.define(:version => 20130108010727) do
 
   create_table "events", :force => true do |t|
     t.string   "name"
-    t.integer  "organization_id"
+    t.text     "description"
     t.datetime "start_at"
     t.datetime "end_at"
+    t.string   "room_number",     :default => "none"
+    t.integer  "organization_id"
     t.integer  "location_id"
-    t.text     "description"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  create_table "location_aliases", :force => true do |t|
+    t.string   "value"
+    t.integer  "location_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "locations", :force => true do |t|
@@ -89,8 +97,9 @@ ActiveRecord::Schema.define(:version => 20130108010727) do
     t.string   "college"
     t.string   "year"
     t.string   "division"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "bulletin_preference", :default => "daily"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
 end

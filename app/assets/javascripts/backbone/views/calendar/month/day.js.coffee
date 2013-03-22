@@ -12,7 +12,7 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
 
   addEvents: () ->
     if @model
-      container = @$el.children(".cal-events:first")
+      container = @$(".cal-events:first")
       for e in @model
         continued = e.get("start_at") isnt e.get("calStart")
         continues = e.get("end_at") isnt e.get("calEnd")

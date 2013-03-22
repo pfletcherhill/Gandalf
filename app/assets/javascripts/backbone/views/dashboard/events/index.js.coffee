@@ -11,30 +11,29 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
     
   initialize: =>
     @render()
-    @newEvent = new Gandalf.Models.Event
-    @newEvent.set organization_id: @model.id
-    @model.fetchEvents().then @renderEvents
-    Gandalf.dispatcher.on("event:change", @eventChanged, this)
   
   convertTime: (time) ->
     moment(time).format("h:mm a")
       
   renderEvents: =>
-    for e in @model.get("events").models
-      view = new Gandalf.Views.Dashboard.Event model: e
+    @collection = @model.get("events")
+    @collection.on("add remove", @render)
+    for e in @collection.models
+      view = new Gandalf.Views.Dashboard.Event 
+        model: e
+        collection: @collection
       @$(".dash-list").append view.el
         
   render: =>
     @$el.html @template(@model.toJSON())
+    @model.fetchEvents().then @renderEvents
+
     $("li[data-id='#{@model.id}']").addClass 'selected'
     return this
   
   createEvent: ->
-    Gandalf.dispatcher.trigger("event:new:start", @model)
-
-  # Event handlers
-
-  eventChanged: ->
-    @render()
-    @model.fetchEvents().then @renderEvents
+    Gandalf.dispatcher.trigger("event:new:start",
+      organization: @model
+      collection: @collection
+    )
     

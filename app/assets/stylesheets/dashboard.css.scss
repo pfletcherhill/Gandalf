@@ -119,25 +119,33 @@ tr.dash-row {
   }
 }
 
-button.follow {
-  width: 100px;
+button.follow-button {
+  width: 107px;
+  font-size: 90%;
   &:after {
-    content: "Follow";
+    content: "Not following";
+  }
+  &:hover:after {
+    content: "Follow!";
   }
   &.following {
+    /*
     @include linear-gradient($blue, #4B80FC);
     color: white;
     border: 1px solid blue;
+    */
     &:after {
       content: "Following";
     }
+    &:hover:after {
+      content: "Unfollow...";
+    }
   }
-  &.following:hover {
+  &.following:hover:after {
+    /*
     background: #e60000;
     color: white;
     border: 1px solid #cc0000;
-    &:after {
-      content: "Unfollow";
-    }
+    */
   }
 }

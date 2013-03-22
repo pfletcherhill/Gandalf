@@ -10,13 +10,35 @@
     </ul>
   </div>
   <div class="content-main" id="preferences-list">
-    <table id="subscriptions-table">
-      <tbody>
-        <tr class="header-row">
+    <h3 class="pref-header">The Bulletin</h3>
+    <p class="pref-caption">Set how often you want to receive emails from the "Yale Go Pigeon"—a bulletin update for your upcoming events</p>
+    <% if(pref === "daily") { %>
+      <input type="radio" name="pref-email" class="pref-email" value="daily" checked="checked">Daily<br>
+      <input type="radio" name="pref-email" class="pref-email" value="weekly">Weekly<br>
+      <input type="radio" name="pref-email" class="pref-email" value="never">Never<br>
+    <% } else if (pref === "weekly") { %>
+      <input type="radio" name="pref-email" class="pref-email" value="daily">Daily<br>
+      <input type="radio" name="pref-email" class="pref-email" value="weekly" checked="checked">Weekly<br>
+      <input type="radio" name="pref-email" class="pref-email" value="never">Never<br>
+    <% } else { %>
+      <input type="radio" name="pref-email" class="pref-email" value="daily">Daily<br>
+      <input type="radio" name="pref-email" class="pref-email" value="weekly">Weekly<br>
+      <input type="radio" name="pref-email" class="pref-email" value="never" checked="checked">Never<br>
+    <% } %>
+
+    <br>
+    <br>
+    <h3 class="pref-header">Subscriptions</h3>
+    <p class="pref-caption">Easily unfollow organizations and categories here</p>
+    <table id="subscriptions-table" class="table">
+      <thead>
+        <tr>
           <th>Subscription Name</th>
           <th>Type</th>
           <th></th>
         </tr>
+      </thead>
+      <tbody id="pref-subscriptions-tbody">
       </tbody>
     </table>
   </div>

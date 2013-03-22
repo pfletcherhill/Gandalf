@@ -3,9 +3,7 @@
 $cal-gap: 40px;
 $cal-head-height: 70px;
 $cal-top-pad: 10px;
-$hour-height: 4.1667%;
-$hour-height-floored: 4%;
-$cal-z: 10;
+$hour-height: $calendar-height / 24 - 1px; // For the border
 
 // Redundant styling—here just to change bg color
 .calendar {
@@ -14,6 +12,13 @@ $cal-z: 10;
 .cal {
   width: 100%;
   height: 100%;
+}
+
+/* ====== NAVIGATION ======= */
+
+.cal-nav {
+  margin-top: 13px;
+  z-index: $header-z - 1;
 }
 
 /* ===== CALENDAR TABLE ===== */
@@ -29,13 +34,20 @@ $cal-z: 10;
 }
 
 .cal-day {
-  position: relative;
   &.today {
     background-color: rgba($blue, 0.2);
   }
 }
 
+.cal-day-inner {
+  position: relative;
+  width: 100%;
+  height: $calendar-height;
+}
+
 .cal-week .cal-day {
+  // background-color: #fdfdfd;
+  // z-index: -5;
   border-right: 1pt solid #ddd;
 }
 
@@ -47,16 +59,18 @@ $cal-z: 10;
 }
 
 .cal-month {
-  tr {
-    height: 20%;
+  .cal-day-container {
     overflow: hidden;
   }
   .cal-day {
-    position: relative;
+    // position: relative;
     overflow: hidden;
     background-color: white;
-    border-right: 1px solid #eee;
+    // border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
+  }
+  .cal-day-inner {
+    height: $calendar-height / 5;
   }
   /*
   tr:nth-child(odd) .cal-day:nth-child(odd), tr:nth-child(even) .cal-day:nth-child(even) {
@@ -66,7 +80,7 @@ $cal-z: 10;
 }
 
 .hour-day {
-  height: $hour-height; // 100/24
+  height: $hour-height;
   position: relative;
   z-index: -5;
   &:nth-child(even) {
@@ -97,6 +111,7 @@ $cal-z: 10;
   @include box-shadow(0 1px 1px rgba(black, 0.4));
   z-index: 30;
 }
+
 #time-marker-img {
   $marker-img-height: 15px;
   position: relative;
@@ -142,7 +157,6 @@ $cal-z: 10;
   position: relative;
 }
 .cal-month .cal-events {
-  position: relative;
   top: 0;
   left: 0;
   overflow: hidden;
@@ -166,7 +180,7 @@ $test-color: lighten(#0f91ec, 20%);
   z-index: $cal-z;
   border: 1pt solid transparent;
   background-color: rgba($test-color,0.7);
-  @include transition(all 0.2s, opacity 0.5s);
+  @include transition(all 0.2s);
   cursor: pointer;
   font-size: 8px;
   line-height: 12px;
@@ -210,7 +224,7 @@ $test-color: lighten(#0f91ec, 20%);
   line-height: 150%;
   overflow: hidden;
   cursor: pointer;
-  z-index: $cal-z + 5;
+  z-index: $cal-z + 5;              // At most 4 calendar events in a row
   @include transition(opacity 0.2s);
   $multiday-border: 1px solid #aaa;
   border: $multiday-border;
