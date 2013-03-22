@@ -1,13 +1,33 @@
 class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
 
   initialize: ->
-    Gandalf.dispatcher.on("event:click", @showEvent, this)
     super()
 
+    Gandalf.dispatcher.on("event:click", @showEvent, this)
+    Gandalf.dispatcher.on("facebook:login", @showFacebookLogin, this)
+
   showEventTemplate: JST["backbone/templates/popover/events/show"]
+  facebookTemplate: JST["backbone/templates/popover/facebook"]
 
   events:
     "click .global-overlay,.close,a" : "hide"
+    "click .facebook" : "facebookLogin"
+
+  showFacebookLogin: ->
+    $(".gandalf-popover").html @facebookTemplate()
+    console.log "prompting facebook login...", $(".gandalf-popover")
+    @show()
+
+  facebookLogin: ->
+    FB.login (response) ->
+      if response.authResponse
+        Gandalf.facebookStatus = 'connected';
+        Gandalf.facebookResponse = response.authResponse;
+        console.log "Connected! saving..."
+        Gandalf.currentUser.updateFacebook(
+          response.authResponse.userID, response.authResponse.accessToken)
+      else
+        Gandalf.facebookStatus = 'not_connected';
 
   # Events event handlers
   showEvent: (object) ->

@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
   helper_method :current_user
+  helper_method :require_login
   
   private
   
@@ -16,6 +17,14 @@ class ApplicationController < ActionController::Base
         end
       end
       @current_user
+    else
+      nil
+    end
+  end
+
+  def require_login
+    unless !!session[:cas_user]
+      redirect_to '/welcome' # halts request cycle
     end
   end
   

@@ -1,28 +1,12 @@
 class EventsController < ApplicationController
-
-  before_filter :require_login
-
-  def require_login
-    unless logged_in?
-      redirect_to '/welcome' # halts request cycle
-    end
-  end
-
-  def logged_in?
-    !!current_user
-  end
-
-  def root
-  end
+  respond_to :json
 
   def index
-    events = Event.includes(:categories, :organization, :location)
-    render json: events
+    respond_with Event.includes(:categories, :organization, :location)
   end
 
   def show
-    event = Event.find(params[:id])
-    render json: event
+    respond_with Event.find(params[:id])
   end
 
   def create
@@ -38,41 +22,30 @@ class EventsController < ApplicationController
     @event.end_at = params[:event][:end_at]
     @event.set_categories params[:event][:category_ids]
     if @event.save
-      render json: @event
+      respond_with @event
     else
-      render json: @event.errors, status: :unprocessable_entity
+      respond_with @event.errors, status: :unprocessable_entity
     end
   end
 
   def update
     location_name = params[:event][:location]
-    location = Location.where(:name => location_name).first
+    location = Location.name_search(Location.sanitize(location_name)).first
     location = Location.create(:name => location_name, :gmaps => true) unless location
     # Set the location id for update_attributes
     params[:event][:location_id] = location.id
 
-    @event = Event.find(params[:event][:id])
-    @event.set_categories params[:event][:category_ids]
-    if @event.update_attributes(params[:event].except(:location, :category_ids))
-      render json: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
+    event = Event.find(params[:event][:id])
+    event.set_categories params[:event][:category_ids]
+    respond_with event.update_attributes(params[:event].except(:location, :category_ids))
   end
 
   def destroy
-    @event = Event.find(params[:id])
-    if @event.destroy
-      render json: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
+    respond_with Event.find(params[:id]).destroy
   end
 
   def search
-    query = params[:query]
-    events = Event.fulltext_search(query)
-    render json: events
+    respond_with Event.fulltext_search(params[:query])
   end
 
 end

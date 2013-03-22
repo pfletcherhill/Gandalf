@@ -80,7 +80,7 @@ art_gallery = Location.create(
 LocationAlias.create( value: "YUAG", location: art_gallery )
 
 ceid = Location.create(
-  :name => "Center for Engineering, Innovation and Design", 
+  :name => "Center for Engineering Innovation and Design", 
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 LocationAlias.create( value: "CEID", location: ceid )
@@ -97,7 +97,7 @@ pwg = Location.create(
 LocationAlias.create(value: "PWG", location: pwg)
 
 wlh = Location.create(
-  name: "William L. Harkness Hall",
+  name: "William L Harkness Hall",
   address: "100 Wall Street, New Haven, CT"
 )
 LocationAlias.create(value: "WLH", location: wlh)

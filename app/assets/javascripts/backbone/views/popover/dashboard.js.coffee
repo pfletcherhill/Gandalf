@@ -4,12 +4,13 @@
 class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
 
   initialize: ->
+    # Initialize Gandalf.Views.Popover, which calls its render
+    super()
+
     # Event handlers
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
-    # Initialize Gandalf.Views.Popover, which calls its render
-    super()
 
   newEventTemplate: JST["backbone/templates/popover/events/new"]
   editEventTemplate: JST["backbone/templates/popover/events/edit"]
