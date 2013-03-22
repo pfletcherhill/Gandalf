@@ -15,6 +15,15 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .btn-toolbar > a {
   vertical-align: top;
 }
+
+.btn-group {
+  vertical-align: top;
+}
+
+.popover {
+  border-radius: 0;
+  font-size: 12px;
+}
 /*
 .btn {
   border-radius: 0;

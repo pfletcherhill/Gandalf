@@ -13,12 +13,14 @@ end
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem 'fabrication'
+  gem 'rack-mini-profiler'
 end
 
 group :production do
-  gem 'thin'
+
 end
 
+gem 'thin'
 gem 'pg'
 gem 'haml'
 
@@ -28,6 +30,7 @@ gem 'jquery-ui-rails'
 gem 'jquery-fileupload-rails'
 gem 'rails-backbone'
 gem 'backbone-forms-rails'
+gem 'chosen-rails'
 
 # Web
 gem 'nokogiri'
@@ -48,6 +51,7 @@ gem 'fog'
 gem 'mini_magick'
 gem 'gmaps4rails'
 gem 'mail'
+gem 'whenever', require: false
 
 # Search
 gem 'pg_search'

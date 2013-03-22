@@ -5,14 +5,19 @@ class Gandalf.Views.CalendarNav extends Backbone.View
   initialize: ->
     @startDate = @options.startDate || moment()
     @root = @options.root || "calendar"
+    @multidayVisible = true
     if @options.period == "month"
       @renderMonthMenu()
     else
       @renderWeekMenu()
+
     return this
 
   template: JST["backbone/templates/calendar_nav/index"]
   className: "cal-nav"
+
+  events:
+    "click .toggle-multiday" : "toggleMultiday"
 
   renderMonthMenu: () ->
     thisMonth = moment(@startDate).day(6).date(1)
@@ -36,7 +41,7 @@ class Gandalf.Views.CalendarNav extends Backbone.View
   renderWeekMenu: () ->
     startDate = @startDate
     endDate = moment(startDate).add('d', 6)
-    thisT =  startDate.format("MMM D") + " - " + endDate.format("MMM D") 
+    thisT =  startDate.format("MMM D") + " - " + endDate.format("MMM D")
     thisT += ", " + endDate.format("YYYY")
     prevT = moment(startDate).subtract('w', 1).format(Gandalf.displayFormat)
     nextT = moment(startDate).add('w', 1).format(Gandalf.displayFormat)
@@ -54,4 +59,16 @@ class Gandalf.Views.CalendarNav extends Backbone.View
     )
     @$(".week").addClass 'disabled'
 
-  
+
+  # Event handlers
+
+  toggleMultiday: ->
+    @$(".toggle-multiday > i")
+      .toggleClass("icon-eye-close")
+      .toggleClass("icon-eye-open")
+    if @multidayVisible
+      Gandalf.dispatcher.trigger("multiday:hide")
+    else
+      Gandalf.dispatcher.trigger("multiday:show")
+    @multidayVisible = not @multidayVisible
+

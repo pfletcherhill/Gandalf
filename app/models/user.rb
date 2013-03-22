@@ -39,8 +39,26 @@ class User < ActiveRecord::Base
     events
   end
 
+  def upcoming_events(start=Time.now, limit=10)
+    o_events = 
+      self.organization_events
+        .where("start_at > ?", start)
+        .includes(:location, :organization, :categories)
+        .order("start_at")
+        .limit(limit)
+    c_events = 
+      self.category_events
+        .where("start_at > ?", start)
+        .includes(:location, :organization, :categories)
+        .order("start_at")
+        .limit(limit)
+
+    events = (o_events + c_events).uniq.sort_by { |e| e.start_at }
+    events.take(limit)
+  end
+
   # TODO: on_create: if admin of an org, add as subscriber as well
-  def as_json
+  def as_json(options)
     {
       "id" => id,
       "name" => name,
@@ -48,7 +66,8 @@ class User < ActiveRecord::Base
       "nickname" => nickname,
       "college" => college,
       "year" => year,
-      "organizations" => organizations
+      "organizations" => organizations,
+      "bulletin_preference" => bulletin_preference
     }
   end
   
@@ -58,6 +77,20 @@ class User < ActiveRecord::Base
       return true
     else
       return false
+    end
+  end
+
+  # Class methods
+
+  def User.send_daily_bulletin
+    User.where(bulletin_preference: "daily").find_each do |user|
+      UserMailer.bulletin(user, "daily").deliver
+    end
+  end
+
+  def User.send_weekly_bulletin
+    User.where(bulletin_preference: "weekly").find_each do |user|
+      UserMailer.bulletin(user, "weekly").deliver
     end
   end
   
