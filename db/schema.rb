@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.text     "description"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.string   "room_number",     :default => "none"
+    t.string   "room_number"
     t.integer  "organization_id"
     t.integer  "location_id"
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "location_aliases", :force => true do |t|
@@ -68,9 +68,11 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.text     "bio"
     t.string   "slug"
     t.string   "image"
-    t.string   "color",      :default => "220,220,220"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
+    t.string   "color",         :default => "150,150,150"
+    t.string   "fb_id"
+    t.string   "fb_access_key"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
   end
 
   create_table "pg_search_documents", :force => true do |t|
@@ -98,6 +100,8 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.string   "year"
     t.string   "division"
     t.string   "bulletin_preference", :default => "daily"
+    t.string   "fb_id"
+    t.string   "fb_access_token"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end

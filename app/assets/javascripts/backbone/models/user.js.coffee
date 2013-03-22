@@ -94,6 +94,16 @@ class Gandalf.Models.User extends Backbone.Model
       success: (data) =>
         Gandalf.dispatcher.trigger("flash:success", 
           "You'll now get bulletin updates #{value}.")
+  updateFacebook: (id, token) ->
+    console.log "updating facebook with", id, token
+    $.post('/me/facebook', {
+        fb_id: id
+        fb_access_token: token
+      }, (user) ->
+        Gandalf.currentUser = user
+        console.log user
+        Gandalf.dispatcher.trigger("flash:success", "Successfully logged into Facebook!")
+    )
 
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User
