@@ -10,7 +10,7 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
   initialize: ->
     @user = Gandalf.currentUser
     @render()
-    @model.on("change", @render, this)
+    # @model.on("change", @render, this)
 
   events:
     "click .associate": "associate"
@@ -36,6 +36,7 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
         @$("#dash-facebook-orgs").append(@showTemplate(org: org))
 
   associate: (e) ->
+    console.log "associate"
     o_id = $(e.target).data("id")
     FB.api("/#{o_id}", (data) =>
       @model.url = "/organizations/#{@model.get('id')}"
@@ -44,4 +45,5 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
         fb_name: data.name
         fb_link: data.link
       )
+      @render()
     )

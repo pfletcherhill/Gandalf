@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.string   "color",         :default => "150,150,150"
     t.string   "fb_id"
     t.string   "fb_access_key"
+    t.string   "fb_name"
+    t.string   "fb_link"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end
@@ -102,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.string   "bulletin_preference", :default => "daily"
     t.string   "fb_id"
     t.string   "fb_access_token"
+    t.string   "fb_accounts"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end
