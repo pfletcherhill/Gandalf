@@ -1,0 +1,13 @@
+<h2>Hook up <%= name %> to a Facebook group or page</h2>
+<% if(fb_name) { %>
+<p>
+  <%= name %> is associated with 
+  <% if(fb_link) { %> 
+    <a href="<%= fb_link %>"><%= fb_name %></a>
+  <% } else { %>
+    <b><%= fb_name %></b>
+  <% } %>
+  on Facebook.
+</p>
+<% } %>
+<table class="table" id="dash-facebook-orgs"></table>

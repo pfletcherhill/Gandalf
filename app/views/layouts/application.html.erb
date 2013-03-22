@@ -29,12 +29,7 @@ window.fbAsyncInit = function() {
       Gandalf.facebookStatus = 'connected';
       Gandalf.facebookResponse = response.authResponse;
       Gandalf.currentUser.updateFacebook(
-          response.authResponse.userID, response.authResponse.accessToken);
-      FB.api('/me', function(response) {
-        console.log("Facebook succeeded, "+response.name);
-        console.log(response);
-      });
-
+        response.authResponse.userID, response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
       Gandalf.facebookStatus = 'not_authorized';
       Gandalf.dispatcher.trigger("facebook:login");
@@ -77,7 +72,7 @@ window.fbAsyncInit = function() {
             </div>
           </a>
           <a href="#dashboard">
-            <div class="link">
+            <div class="link" name='fb_logout'>
               Dashboard
             </div>
           </a>

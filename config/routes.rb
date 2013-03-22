@@ -6,8 +6,8 @@ Gandalf::Application.routes.draw do
   match '/logout' => "main#logout"
   match '/welcome' => "main#welcome"
   
-  match '/me' => "users#me"
-  match '/me/facebook' => "users#facebook"
+  match '/me' => "users#me", via: [:get]
+  match '/me' => "users#update", via: [:put]
   match '/mail' => "users#mail"
   match '/users/:id/events' => 'users#events'
   match '/users/:id/organizations' => 'users#organizations'

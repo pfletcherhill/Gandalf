@@ -9,6 +9,8 @@ class CreateOrganizations < ActiveRecord::Migration
 
       t.string :fb_id
       t.string :fb_access_key
+      t.string :fb_name
+      t.string :fb_link
 
       t.timestamps
     end

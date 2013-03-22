@@ -35,6 +35,8 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     view = switch type
       when 'events' 
         new Gandalf.Views.Dashboard.Events(model: @organization)
+      when 'facebook'
+        new Gandalf.Views.Dashboard.Facebook(model: @organization)
       when 'users' 
         new Gandalf.Views.Dashboard.Users(model: @organization)
       when 'admins' 

@@ -94,15 +94,27 @@ class Gandalf.Models.User extends Backbone.Model
       success: (data) =>
         Gandalf.dispatcher.trigger("flash:success", 
           "You'll now get bulletin updates #{value}.")
+
   updateFacebook: (id, token) ->
-    console.log "updating facebook with", id, token
-    $.post('/me/facebook', {
-        fb_id: id
-        fb_access_token: token
-      }, (user) ->
-        Gandalf.currentUser = user
-        console.log user
-        Gandalf.dispatcher.trigger("flash:success", "Successfully logged into Facebook!")
+    Gandalf.currentUser.url = "/me"
+    Gandalf.currentUser.save
+      fb_id: id
+      fb_access_token: token
+    , success: (user) ->
+        console.log "the current user", user
+        # Gandalf.dispatcher.trigger("flash:success", "Successfully logged into Facebook!")
+      error: (user) ->
+        console.log "the error user", user
+        Gandalf.dispatcher.trigger("flash:error", "Mismatching users...")
+
+  fetchFacebookOrganizations: (cb) ->
+    access_token = Gandalf.currentUser.get('fb_access_token')
+    console.log "token: ", access_token
+    FB.api("/me/accounts?access_token=#{access_token}", (data) =>
+      @set('fb_accounts', data.data)
+      @save()
+      console.log "fb_accounts set", this
+      cb() if typeof cb is "function"
     )
 
 class Gandalf.Collections.Users extends Backbone.Collection
