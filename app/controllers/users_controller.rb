@@ -18,9 +18,9 @@ class UsersController < ApplicationController
     if me.id != params[:user][:id]
       render json: {}, status: :unprocessable_entity
     end
-    me.fb_id = params[:fb_id] if params[:fb_id]
-    me.fb_access_token = params[:fb_access_token] if params[:fb_access_token]
-    me.nickname ||= params[:nickname]
+    me.fb_id = params[:user][:fb_id] if params[:user][:fb_id]
+    me.fb_access_token = params[:user][:fb_access_token] if params[:user][:fb_access_token]
+    me.nickname ||= params[:user][:nickname]
     if me.save!
       render json: me
     else

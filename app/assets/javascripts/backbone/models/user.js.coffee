@@ -95,17 +95,22 @@ class Gandalf.Models.User extends Backbone.Model
         Gandalf.dispatcher.trigger("flash:success", 
           "You'll now get bulletin updates #{value}.")
 
-  updateFacebook: (id, token) ->
+  updateFacebook: (f_id, f_token) ->
+    console.log "params", f_id, f_token
     Gandalf.currentUser.url = "/me"
-    Gandalf.currentUser.save
-      fb_id: id
-      fb_access_token: token
+    Gandalf.currentUser.set
+      fb_id: f_id 
+      fb_access_token: f_token
+    Gandalf.currentUser.save(
+      fb_id: f_id 
+      fb_access_token: f_token
     , success: (user) ->
         console.log "the current user", user
         # Gandalf.dispatcher.trigger("flash:success", "Successfully logged into Facebook!")
       error: (user) ->
         console.log "the error user", user
         Gandalf.dispatcher.trigger("flash:error", "Mismatching users...")
+    )
 
   fetchFacebookOrganizations: (cb) ->
     access_token = Gandalf.currentUser.get('fb_access_token')
@@ -113,7 +118,6 @@ class Gandalf.Models.User extends Backbone.Model
     FB.api("/me/accounts?access_token=#{access_token}", (data) =>
       @set('fb_accounts', data.data)
       @save()
-      console.log "fb_accounts set", this
       cb() if typeof cb is "function"
     )
 
