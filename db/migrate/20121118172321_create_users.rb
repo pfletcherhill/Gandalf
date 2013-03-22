@@ -13,6 +13,7 @@ class CreateUsers < ActiveRecord::Migration
 
       t.string :fb_id
       t.string :fb_access_token
+      t.string :fb_accounts
       
       t.timestamps
     end

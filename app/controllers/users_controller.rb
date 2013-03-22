@@ -13,8 +13,11 @@ class UsersController < ApplicationController
     respond_with current_user
   end
 
-  def facebook
+  def update
     me = current_user
+    if me.id != params[:user][:id]
+      render json: {}, status: :unprocessable_entity
+    end
     me.fb_id = params[:fb_id] if params[:fb_id]
     me.fb_access_token = params[:fb_access_token] if params[:fb_access_token]
     me.nickname ||= params[:nickname]
@@ -92,7 +95,7 @@ class UsersController < ApplicationController
     if val == "daily" or val == "weekly" or val == "never"
       user.bulletin_preference = val
       if user.save
-        respond_with user
+        render json: user
         return
       end
     end
