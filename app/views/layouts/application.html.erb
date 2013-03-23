@@ -9,6 +9,25 @@
 </head>
 <body>
 <div id="fb-root"></div>
+<div class="wrapper">
+  <%= yield %>
+</div>
+
+<% # Load backbone %>
+<%= javascript_include_tag "application" %>
+<% # Set up backbone %>
+<script type="text/javascript">
+  // Setting global event format string
+  Gandalf.currentUser = new Gandalf.Models.User();
+  Gandalf.currentUser.url = '/me';
+  Gandalf.currentUser.fetch({
+    success: function() {
+      window.router = new Gandalf.Router();
+      Backbone.history.start();
+    }
+  });
+</script>
+<!-- Set up Facebook -->
 <script>
 window.fbAsyncInit = function() {
   FB.init({
@@ -45,24 +64,7 @@ window.fbAsyncInit = function() {
    ref.parentNode.insertBefore(js, ref);
  }(document));
 </script>
-<div class="wrapper">
-  <%= yield %>
-</div>
-<%= javascript_include_tag "application" %>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC09xDhfZSSQwy2-P9x7LAyz7T-TLjNQwo&sensor=false">
-</script>
-<script type="text/javascript">
-  // Setting global event format string
-  Gandalf.currentUser = new Gandalf.Models.User();
-  Gandalf.currentUser.url = '/me';
-  Gandalf.currentUser.fetch({
-    success: function() {
-      window.router = new Gandalf.Router();
-      Backbone.history.start();
-    }
-  });
-</script>
-
+<!-- Load gauges -->
 <script type="text/javascript">
   var _gauges = _gauges || [];
   (function() {
@@ -75,6 +77,9 @@ window.fbAsyncInit = function() {
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(t, s);
   })();
+</script>
+<!-- Google maps -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC09xDhfZSSQwy2-P9x7LAyz7T-TLjNQwo&sensor=false">
 </script>
 </body>
 </html>

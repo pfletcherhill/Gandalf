@@ -14,7 +14,7 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @render(@options.type)
   
   updateOrganizations: =>
-    @organizations.url = "/users/#{Gandalf.currentUser.id}/organizations"
+    @organizations.url = "/users/organizations"
     @organizations.fetch success: (organizations) =>
       @organizations = organizations
       @renderOrganizationsList()
