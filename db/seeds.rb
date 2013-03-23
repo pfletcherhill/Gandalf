@@ -10,7 +10,7 @@ o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
 o4 = Organization.create(:name => "STC", :color => "103, 206, 147")
 o5 = Organization.create(:name => "Pierson College IMs", :color => "236, 243, 66")
 o6 = Organization.create(:name => "The Duke's Men of Yale")
-print "organizations created...\n"
+print "#{Organization.count} organizations created...\n"
 
 categories = [
   # Performances
@@ -72,6 +72,11 @@ free_food = Category.where(name: "Free Food").first
 im = Category.where(name: "Intramurals").first
 
 print "#{Category.count} categories created...\n"
+
+unknown = Location.create(
+  name: "Unknown",
+  address: "Yale University, New Haven, CT"
+)
 
 art_gallery = Location.create(
   :name => "Yale University Art Gallery Auditorium", 

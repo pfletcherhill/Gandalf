@@ -5,4 +5,5 @@
   <div class="location"><%= result.get('location') %></div>
   <div class="time"><%= startAt %></div>
   <div class="description"><%= result.get('description') %></div>
+  <p class="updated-at">Updated <%= moment(result.get('updated_at')).format("M/D H:mm a") %></p>
 </div>

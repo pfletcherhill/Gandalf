@@ -1,5 +1,6 @@
 class Gandalf.Models.Event extends Backbone.Model
   paramRoot: 'event'
+  url: "/events"
 
   defaults:
     name: null
@@ -37,6 +38,7 @@ class Gandalf.Models.Event extends Backbone.Model
       room_number: this.get("room_number")
       description: this.get("description")
       category_ids: this.get("category_ids")
+      fb_id: this.get("fb_id")
     }
 
 class Gandalf.Collections.Events extends Backbone.Collection
