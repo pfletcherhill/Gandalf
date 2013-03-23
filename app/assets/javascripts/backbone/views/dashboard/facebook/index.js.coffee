@@ -14,6 +14,7 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
 
   events:
     "click .associate": "associate"
+    "click .sync-events": "syncEvents"
 
   render: ->
     @$el.html(@template(
@@ -47,3 +48,6 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
       )
       @render()
     )
+
+  syncEvents: (e) ->
+    @model.syncFBEvents()

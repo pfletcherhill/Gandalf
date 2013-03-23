@@ -2,7 +2,9 @@ class EventsController < ApplicationController
   respond_to :json
 
   def index
-    respond_with Event.includes(:categories, :organization, :location)
+    respond_with Event
+      .order("updated_at DESC")
+      .includes(:categories, :organization, :location)
   end
 
   def show
@@ -10,7 +12,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    name = params[:event][:location]
+    name = params[:event][:location] || "Unknown"
     location = Location.name_search(Location.sanitize(name)).first
     location = Location.create!(:name => name, :gmaps => true) unless location
 
@@ -22,9 +24,9 @@ class EventsController < ApplicationController
     @event.end_at = params[:event][:end_at]
     @event.set_categories params[:event][:category_ids]
     if @event.save
-      respond_with @event
+      render json: @event
     else
-      respond_with @event.errors, status: :unprocessable_entity
+      render json: @event.errors, status: :unprocessable_entity
     end
   end
 
@@ -45,7 +47,16 @@ class EventsController < ApplicationController
   end
 
   def search
-    respond_with Event.fulltext_search(params[:query])
+    if params[:query]
+      puts "\n\n\n\n|#{params[:query]}|\n\n\n"
+      respond_with Event
+        .fulltext_search(params[:query])
+        .includes(:categories, :organization, :location)
+    else
+      Event
+        .order("updated_at DESC")
+        .includes(:categories, :organization, :location)
+    end
   end
 
 end

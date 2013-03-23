@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def me
-    respond_with current_user
+    render json: current_user
   end
 
   def update

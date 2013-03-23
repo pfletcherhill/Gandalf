@@ -10,6 +10,8 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :organization_id
       t.integer :location_id
 
+      t.string :fb_id
+
       t.timestamps
     end
     create_table :categories_events do |t|

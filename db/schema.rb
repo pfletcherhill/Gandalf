@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.string   "room_number"
     t.integer  "organization_id"
     t.integer  "location_id"
+    t.string   "fb_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
