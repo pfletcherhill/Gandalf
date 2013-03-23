@@ -29,32 +29,32 @@ class UsersController < ApplicationController
   end
 
   def events
-    user = User.find(params[:id])
+    user = current_user
     events = user.events(params[:start_at], params[:end_at])
     respond_with events
   end
 
   def organizations
-    respond_with User.find(params[:id]).organizations
+    respond_with current_user.organizations
   end
 
   def subscriptions
-    user = User.find(params[:id])
+    user = current_user
     subscriptions = user.subscriptions.includes(:subscribeable)
     # Doing this is incredibly inefficient..but apparently no fix :-/
     render json: subscriptions.to_json(:include => :subscribeable)
   end
 
   def subscribed_organizations
-    respond_with User.find(params[:id]).subscribed_organizations
+    respond_with current_user.subscribed_organizations
   end
 
   def subscribed_categories
-    respond_with User.find(params[:id]).subscribed_categories
+    respond_with current_user.subscribed_categories
   end
 
   def follow_organization
-    user = User.find(params[:id])
+    user = current_user
     organization = Organization.find(params[:organization_id])
     user.subscribed_organizations << organization
     respond_with organization
@@ -65,14 +65,14 @@ class UsersController < ApplicationController
     subscription = Subscription.where(
       :subscribeable_type => "Organization", 
       :subscribeable_id => organization.id, 
-      :user_id => params[:id]
+      :user_id => current_user.id
     ).first
     subscription.destroy
     respond_with organization
   end
 
   def follow_category
-    user = User.find(params[:id])
+    user = current_user
     category = Category.find(params[:category_id])
     user.subscribed_categories << category
     respond_with category
@@ -83,14 +83,14 @@ class UsersController < ApplicationController
     subscription = Subscription.where(
       :subscribeable_type => "Category", 
       :subscribeable_id => category.id, 
-      :user_id => params[:id]
+      :user_id => current_user.id
     ).first
     subscription.destroy
     respond_with category
   end
 
   def bulletin_preference
-    user = User.find(params[:id])
+    user = current_user
     val = params[:value] 
     if val == "daily" or val == "weekly" or val == "never"
       user.bulletin_preference = val

@@ -9,7 +9,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'GET'
       dataType: 'json'
-      url: '/users/' + @id + '/subscribed_organizations'
+      url: '/users/subscribed_organizations'
       success: (data) =>
         organizations = new Gandalf.Collections.Organizations
         organizations.add data
@@ -19,7 +19,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'GET'
       dataType: 'json'
-      url: '/users/' + @id + '/subscribed_categories'
+      url: '/users/subscribed_categories'
       success: (data) =>
         categories = new Gandalf.Collections.Categories
         categories.add data
@@ -40,7 +40,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: "/users/#{@id}/follow/organization/#{oid}"
+      url: "/users/follow/organization/#{oid}"
       success: (data) =>
         console.log data
         this.get('subscribed_organizations').add data
@@ -52,7 +52,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: "/users/#{@id}/unfollow/organization/#{oid}"
+      url: "/users/unfollow/organization/#{oid}"
       success: (data) =>
         console.log data
         this.get('subscribed_organizations').remove data
@@ -67,7 +67,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: "/users/#{@id}/follow/category/#{cid}"
+      url: "/users/follow/category/#{cid}"
       success: (data) =>
         this.get('subscribed_categories').add data
         Gandalf.dispatcher.trigger("flash:success", 
@@ -77,7 +77,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: "/users/#{@id}/unfollow/category/#{cid}"
+      url: "/users/unfollow/category/#{cid}"
       success: (data) =>
         this.get('subscribed_categories').remove data
         Gandalf.dispatcher.trigger("flash:notice", 
@@ -88,7 +88,7 @@ class Gandalf.Models.User extends Backbone.Model
     $.ajax
       type: 'POST'
       dataType: 'json'
-      url: "users/#{@id}/bulletin_preference"
+      url: "users/bulletin_preference"
       data: 
         value: value
       success: (data) =>
