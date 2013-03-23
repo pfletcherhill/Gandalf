@@ -11,6 +11,7 @@ class MainController < ApplicationController
   end
 
   def root
+    @me = current_user
   end
   
   def logout

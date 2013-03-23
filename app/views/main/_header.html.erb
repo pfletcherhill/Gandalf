@@ -1,0 +1,59 @@
+<div class="header">
+  <div class="header-container">
+    <div class="pull-left">
+      <a href="/">
+        <div class="link logo-link">
+          <img id="logo" src="/assets/y_logo_200.png" alt="Yale Go" />
+        </div>
+      </a>
+      <a href="#browse">
+        <div class="link">
+          Discover
+        </div>
+      </a>
+      <a href="#calendar">
+        <div class="link">
+          Feed
+        </div>
+      </a>
+      <a href="#dashboard">
+        <div class="link" name='fb_logout'>
+          Dashboard
+        </div>
+      </a>
+      <a href="#about">
+        <div class="link">
+          About
+        </div>
+      </a>
+      <a href="/bulletin" data-remote="true">
+        <div class="link">
+          Test Bulletin
+        </div>
+      </a>
+    </div>
+    <div class="pull-right">
+      <div id="user-dropdown" style="min-width: 140px;">
+        <div class="link">
+          <%= me.nickname || me.name %>
+        </div>
+        <ul>
+          <li>
+            <a href="#preferences">
+              <div class="link dropdown-link">
+                User Preferences
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/logout">
+              <div class="link dropdown-link">
+                Logout
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
