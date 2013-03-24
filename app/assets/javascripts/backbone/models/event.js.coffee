@@ -1,5 +1,6 @@
 class Gandalf.Models.Event extends Backbone.Model
   paramRoot: 'event'
+  url: "/events"
 
   defaults:
     name: null
@@ -37,6 +38,7 @@ class Gandalf.Models.Event extends Backbone.Model
       room_number: this.get("room_number")
       description: this.get("description")
       category_ids: this.get("category_ids")
+      fb_id: this.get("fb_id")
     }
 
 class Gandalf.Collections.Events extends Backbone.Collection
@@ -90,10 +92,14 @@ class Gandalf.Collections.Events extends Backbone.Collection
     for event in @models
       start = event.get("start_at")
       end = event.get("end_at")
-      diffDay = moment(end).diff(moment(start), 'days')
+      if event.get('id') is 1
+        window.start_at = start
+        window.end_at = end
+        console.log moment(start), moment(end)
+      diffDay = moment(end).day() - moment(start).day()
       diffHour = moment(end).diff(moment(start), 'hours')
       continue if diffDay is 0                        # Normal event
-      if diffHour >= 4 # At least one whole cycle
+      if diffHour >= 24 # At least one whole cycle
         event.set({ multiday: true }) 
         continue if not splitMultidayEvents
 

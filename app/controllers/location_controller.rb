@@ -6,8 +6,4 @@ class LocationController < ApplicationController
       .name_search(Location.sanitize(params[:query]))
       .collect(&:name)
   end
-
-  def Location.sanitize(string)
-    string.gsub(/[\.,]/, "")
-  end
 end

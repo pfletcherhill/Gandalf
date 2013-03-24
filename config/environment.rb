@@ -19,14 +19,16 @@ CASClient::Frameworks::Rails::Filter.configure(
 # 
 # The file is already added to .gitignore, so don't worry about it being pushed  
 
-unless Rails.env.production?
+# Why not in production..?
+# unless Rails.env.production?
   credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
-  ENV['CAS_NETID']      = credentials['netid']
-  ENV['CAS_PASS']       = credentials['password']
-  ENV['GMAIL']          = credentials['gmail']
-  ENV['GMAIL_PASS']     = credentials['gmail_password']
-  ENV['SENDGRID']       = credentials['sendgrid']
-  ENV['SENDGRID_PASS']  = credentials['sendgrid_password']
-  ENV['GMAPS_KEY']      = credentials['gmaps_key']
-end
-
+  ENV['CAS_NETID']            = credentials['netid']
+  ENV['CAS_PASS']             = credentials['password']
+  ENV['GMAIL']                = credentials['gmail']
+  # Loaded in initializers/setup_mail
+  # ENV['SENDGRID']             = credentials['sendgrid']
+  # ENV['SENDGRID_PASS']        = credentials['sendgrid_password']
+  ENV['GMAPS_KEY']            = credentials['gmaps_key']
+  ENV['FACEBOOK_APP_ID']      = credentials['facebook_app_id']
+  ENV['FACEBOOK_APP_SECRET']  = credentials['facebook_app_secret']
+# end

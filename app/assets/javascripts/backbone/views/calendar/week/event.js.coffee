@@ -55,7 +55,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @$el.addClass("day-#{@dayNum}")
     return this
 
-  click: () ->
+  click: (id) ->
     return if typeof id is "number" and @eventId isnt id
     m = @model
     eId = m.get("eventId")

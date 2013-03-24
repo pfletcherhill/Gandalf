@@ -5,9 +5,8 @@ class Location < ActiveRecord::Base
   has_many :events
   has_many :location_aliases
 
-  validates_presence_of :name, :address
+  validates_presence_of :name
   validates_uniqueness_of :name
-  validates_uniqueness_of :address
 
   acts_as_gmappable
 
@@ -52,5 +51,9 @@ class Location < ActiveRecord::Base
       end
       self.attributes = {:address => address, :latitude => lat, :longitude => lng}
     end
+  end
+
+  def Location.sanitize(string)
+    string.gsub(/[\.,]/, "")
   end
 end

@@ -5,6 +5,9 @@ class Gandalf.Views.Browse.Index extends Backbone.View
   template: JST["backbone/templates/browse/index"]
   
   id: "browse"
+
+  events:
+    'keyup input' : 'search'
   
   initialize: =>
     @results = @options.results
@@ -34,9 +37,6 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     string = string.replace(' ','%20')
     string = string.replace('.','%2E')
     string
-    
-  events:
-    'keyup input' : 'search'
   
   search: (event) ->
     query = $(event.target).val()

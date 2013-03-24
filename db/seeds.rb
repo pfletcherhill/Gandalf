@@ -10,7 +10,7 @@ o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
 o4 = Organization.create(:name => "STC", :color => "103, 206, 147")
 o5 = Organization.create(:name => "Pierson College IMs", :color => "236, 243, 66")
 o6 = Organization.create(:name => "The Duke's Men of Yale")
-print "organizations created...\n"
+print "#{Organization.count} organizations created...\n"
 
 categories = [
   # Performances
@@ -73,6 +73,11 @@ im = Category.where(name: "Intramurals").first
 
 print "#{Category.count} categories created...\n"
 
+unknown = Location.create(
+  name: "Unknown",
+  address: "Yale University, New Haven, CT"
+)
+
 art_gallery = Location.create(
   :name => "Yale University Art Gallery Auditorium", 
   :address => "1111 Chapel Street, New Haven, CT 06511"
@@ -80,7 +85,7 @@ art_gallery = Location.create(
 LocationAlias.create( value: "YUAG", location: art_gallery )
 
 ceid = Location.create(
-  :name => "Center for Engineering, Innovation and Design", 
+  :name => "Center for Engineering Innovation and Design", 
   :address => "15 Prospect St., New Haven, CT 06511"
 )
 LocationAlias.create( value: "CEID", location: ceid )
@@ -97,7 +102,7 @@ pwg = Location.create(
 LocationAlias.create(value: "PWG", location: pwg)
 
 wlh = Location.create(
-  name: "William L. Harkness Hall",
+  name: "William L Harkness Hall",
   address: "100 Wall Street, New Haven, CT"
 )
 LocationAlias.create(value: "WLH", location: wlh)

@@ -226,11 +226,22 @@ $test-color: lighten(#0f91ec, 20%);
   cursor: pointer;
   z-index: $cal-z + 5;              // At most 4 calendar events in a row
   @include transition(opacity 0.2s);
+  @include box-shadow(0 1px 1px rgba(black, 0.3));
   $multiday-border: 1px solid #aaa;
-  border: $multiday-border;
-  border-top: none;
+  // border: $multiday-border;
+  // border-top: none;
   &:first-child {
     border-top: $multiday-border;
+  }
+  .icon-arrow-right {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+  }
+  .icon-arrow-left {
+    position: absolute;
+    left: 3px;
+    bottom: 3px; 
   }
 }
 

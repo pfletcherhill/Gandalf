@@ -97,7 +97,7 @@ class Gandalf.Router extends Backbone.Router
     @showLoader('#content')
     params = @processPeriod date, period
     string = @generateParamsString params
-    @events.url = '/users/' + Gandalf.currentUser.id + '/events?' + string
+    @events.url = '/users/events?' + string
     @events.fetch success: (events) ->
       view = new Gandalf.Views.Feed.Index(
         events: events
