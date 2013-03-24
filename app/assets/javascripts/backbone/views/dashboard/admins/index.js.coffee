@@ -21,5 +21,4 @@ class Gandalf.Views.Dashboard.Admins extends Backbone.View
 
   render: ->
     @$el.html @template(typeName: "Administrators")
-    $("li[data-id='#{@model.id}']").addClass 'selected'
     return this

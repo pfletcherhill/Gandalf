@@ -16,7 +16,6 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
   
   renderUpload: =>
     url = "/organizations/#{@model.get("id")}/add_image"
-    console.log url
     @$("#organization-image").fileupload
       dataType: "json"
       autoUpload: true
@@ -32,7 +31,6 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
   render: ->
     @$el.html @template(@model.toJSON())
     # @modelBinder.bind(@model, @$("#organization-form"))
-    $("li[data-id='#{@model.id}']").addClass 'selected'
     @$(".image").removeClass 'loading'
     # @$("form#organization-form").backboneLink(@model)
     @renderUpload()
