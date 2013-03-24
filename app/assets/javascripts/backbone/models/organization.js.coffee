@@ -73,6 +73,7 @@ class Gandalf.Models.Organization extends Backbone.Model
             count--
             alert("We couldn't create event '#{e.name}'. Perhaps it's already synced?")
             Gandalf.dispatcher.trigger("flash:error", "Error creating #{e.name}.")
+            false
         }
 
         

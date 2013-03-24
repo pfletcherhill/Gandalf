@@ -29,6 +29,7 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
       else
         Gandalf.facebookStatus = 'not_connected';
     , scope:'manage_pages'
+    @hide()
 
   # Events event handlers
   showEvent: (object) ->

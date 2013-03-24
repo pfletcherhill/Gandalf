@@ -101,13 +101,14 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
   orgFBSyncShow: (obj) ->
     @organization = obj.organization
     @organizationFBEvents = obj.events
-    $(".gandalf-popover").html(@facebookEventTemplate())
+    $(".gandalf-popover").html(@facebookEventTemplate(
+      orgName: @organization.get('fb_name')))
     for e in @organizationFBEvents
       @$("#org-fbevents-table").append(@facebookShowEventTemplate(
         name: e.name
         start_at: e.start_time
         end_at: e.end_time
-        location: e.location
+        location: e.location || "an unknown location"
       ))
     @show()
 

@@ -1,8 +1,6 @@
-unless Rails.env.production?
-  credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
-  ENV["SENDGRID_USERNAME"] = credentials['sendgrid']
-  ENV["SENDGRID_PASSWORD"] = credentials['sendgrid_password']
-end
+credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
+ENV["SENDGRID_USERNAME"] = credentials['sendgrid']
+ENV["SENDGRID_PASSWORD"] = credentials['sendgrid_password']
 
 ActionMailer::Base.smtp_settings = {
   :address        => 'smtp.sendgrid.net',
