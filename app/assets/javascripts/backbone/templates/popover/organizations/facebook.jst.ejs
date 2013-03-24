@@ -1,6 +1,14 @@
 <div class='gandalf-popover-head' style='background-color: #3b5998; color: white; font-weight: bold;;'>
-  Sync these events?
+  Sync these events from <%= orgName %>?
   <span class="close">×</span>
 </div>
-<table class="table" id="org-fbevents-table"></table>
-<button class="btn btn-primary" id="org-fbevents-go">Go!</button>
+<div class="gandalf-popover-body">
+  <table class="table" id="org-fbevents-table">
+    <thead>
+      <th>Name</th>
+      <th>Time</th>
+      <th>Location</th>
+    </thead>
+  </table>
+  <button class="btn btn-primary" id="org-fbevents-go">Go!</button>
+</div>
