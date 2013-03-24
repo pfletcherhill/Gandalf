@@ -63,6 +63,8 @@ class Event < ActiveRecord::Base
       "room_number" => room_number, 
       "organization" => organization.name,
       "organization_id" => organization.id,
+      "image" => organization.image.url,
+      "thumbnail" => organization.image.thumbnail.url,
       "color" => organization.color,
       "categories" => categories,
       "fb_id" => fb_id,

@@ -34,6 +34,7 @@ class Gandalf.Views.Feed.Event extends Backbone.View
       event: e
       startTime: startTime
       endTime: endTime
+      image: e.get('thumbnail') || "/assets/image.jpeg"
     }))
     return this
 
