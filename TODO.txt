@@ -1,5 +1,4 @@
 Import list of all student organizations and their leaders. (Paul)
-FIX TIME ZONE ISSUE (-5:00) -- date doesn’t carry over if time zone crosses date boundary (scheduling events at 7 p.m or after) (Paul)
 **Seed database with events from current events cal (Paul - save for later)
 Formatted email to subscribers (Paul, last priority)
 General style updates (Paul)
@@ -20,3 +19,4 @@ Showing, adding, removing categories to events. On popups in the calendar and in
 Populate database with meaningful categories, and have some way of assigning categories to organizations and events (Rafi)
 Typeahead for location selection (needs to be ROBUST) (Rafi)
 Facebook integration. Organizations should link to their own Facebook pages, and we can pull events from there. (Rafi)
+FIX TIME ZONE ISSUE (-5:00) -- date doesn’t carry over if time zone crosses date boundary (scheduling events at 7 p.m or after) (Paul -- but Rafi did it)
