@@ -16,7 +16,7 @@ rerun.txt
 pickle-email-*.html
 
 # Credentials (but not in the production branch)
-/config/credentials.yml
+# /config/credentials.yml
 
 *.DS_Store
 */tablesorter.js
