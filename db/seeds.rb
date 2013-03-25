@@ -4,6 +4,61 @@ netids.each do |id|
   User.create_from_directory id
 end
 
+colors = {
+  red: "255,66,51",
+  blue: "107,189,246",
+  purple: "164, 57, 214",
+  green:"103, 206, 147",
+  yellow: "236, 243, 66",
+}
+
+colleges = [
+  "Berkeley",
+  "Branford",
+  "Calhoun",
+  "Davenport",
+  "Jonathan",
+  "Edwards",
+  "Morse",
+  "Pierson",
+  "Ezra",
+  "Stiles",
+  "Silliman",
+  "Timothy",
+  "Dwight",
+  "Trumbull"
+]
+
+# Populating with real data...
+
+ycc = Organization.create(name: "Yale College Council", color: colors[:blue])
+fcc = Organization.create(name: "Freshman College Council", color: colors[:blue])
+scc = Organization.create(name: "Sophomore College Council", color: colors[:blue])
+jcc = Organization.create(name: "Junior College Council", color: colors[:blue])
+
+bkcc = Organization.create(name: "Berkeley College Council", color: colors[:blue])
+bcc = Organization.create(name: "Branford College Council", color: colors[:blue])
+ccc = Organization.create(name: "Calhoun College Council", color: colors[:blue])
+dcc = Organization.create(name: "Davenport College Council", color: colors[:blue])
+jecc = Organization.create(name: "Jonathan Edwards College Council", color: colors[:blue])
+mcc = Organization.create(name: "Morse College Council", color: colors[:blue])
+pcc = Organization.create(name: "Pierson College Council", color: colors[:blue])
+ecc = Organization.create(name: "Ezra Stiles College Council", color: colors[:blue])
+smcc = Organization.create(name: "Silliman College Council", color: colors[:blue])
+tdcc = Organization.create(name: "Timothy Dwight College Council", color: colors[:blue])
+tcc = Organization.create(name: "Trumbull College Council", color: colors[:blue])
+
+ycc_board = [
+  "john.gonzalez@yale.edu",
+  "daniel.avraham@yale.edu",
+  "andrea.villena@yale.edu",
+  "joseph.yagoda@yale.edu",
+  "bryan.epps@yale.edu",
+  "aly.moore@yale.edu"
+]
+
+
+
 o1 = Organization.create(:name => "TEDxYale", :color => "255,66,51")
 o2 = Organization.create(:name => "HackYale", :color => "107,189,246")
 o3 = Organization.create(:name => "Yale University", :color => "27,112,224")
