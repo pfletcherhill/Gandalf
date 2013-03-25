@@ -51,7 +51,7 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
       startDate: @options.startDate
       root: "organizations/#{@model.get('id')}"
     )
-    @$(".content-cal-nav").html(calNav.el)
+    @$(".content-calendar-nav > .container").html(calNav.el)
     $("[rel=tooltip]").tooltip()
     @renderCategories()
     @renderFollowing()
