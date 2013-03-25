@@ -1,0 +1,27 @@
+.header
+  .header-container
+    .pull-left
+      %a( href="/admin" )
+        .link.logo-link
+          %img( id="logo" src="/assets/y_logo_200.png" alt="Yale Go" )
+      %a( href="/admin/events" )
+        .link Events
+      %a( href="/admin/organizations" )
+        .link Organizations
+      %a( href="/admin/users" )
+        .link Users
+      %a( href="/admin/categories" )
+        .link Categories
+    .pull-right
+      #user-dropdown
+        .link= current_user.nickname || current_user.name
+        %ul
+          %li
+            %a( href="/" )
+              .link.dropdown-link Back to Site
+          %li
+            %a( href="/#preferences" )
+              .link.dropdown-link User Preferences
+          %li
+            %a( href="/logout" )
+              .link.dropdown-link Logout

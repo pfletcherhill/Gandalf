@@ -1,6 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      
       t.string :netid
       t.string :name
       t.string :nickname
@@ -8,7 +9,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :college
       t.string :year
       t.string :division
-
+      
+      t.boolean :admin
       t.string :bulletin_preference, :default => "daily"
 
       t.string :fb_id
