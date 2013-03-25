@@ -97,7 +97,8 @@ class User < ActiveRecord::Base
     end
   end
   
-  def User.create_from_directory(netid)
+  def User.create_from_directory(id, type="uid")
+    netid_regex = /^NetID:/
     name_regex = /^\s+Name:/
     known_as_regex = /Known As:/
     email_regex = /Email Address:/
@@ -106,14 +107,16 @@ class User < ActiveRecord::Base
     division_regex = /Division:/
 
     browser = User.make_cas_browser
-    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=uid%3D#{netid}")
+    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}")
 
     u = User.new
-    u.netid = netid
+    # u.netid = netid
     browser.page.search('tr').each do |tr|
       field = tr.at('th').text
       value = tr.at('td').text.strip
       case field
+      when netid_regex
+        u.netid = value
       when name_regex
         u.name = value
       when known_as_regex
