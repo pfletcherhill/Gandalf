@@ -26,7 +26,6 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
     , 20000)
     return this
 
-
   renderWeek: ->
     view = new Gandalf.Views.Calendar.Week.Index(
       startDate: moment(@startDate)
@@ -53,7 +52,6 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
   resetEventPositions: () ->
     @$el.find(".cal-week-event").css({ width: "96%" }) # For window resizing
     @makeCSSAdjustments()
-
 
   # Helpers
 

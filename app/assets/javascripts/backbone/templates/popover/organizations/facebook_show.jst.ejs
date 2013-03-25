@@ -1,0 +1,10 @@
+<tr>
+  <td><%= name %></td>
+  <td>
+    <%= moment(start_at).format("M/D HH:mm a") %>
+    <% if(end_at) { %>
+      - <%= moment(end_at).format("M/D HH:mm a") %>
+    <% } %>
+  </td>
+  <td>at <%= location %></td>
+</tr>

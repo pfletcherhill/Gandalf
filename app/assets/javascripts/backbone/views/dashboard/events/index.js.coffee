@@ -27,8 +27,6 @@ class Gandalf.Views.Dashboard.Events extends Backbone.View
   render: =>
     @$el.html @template(@model.toJSON())
     @model.fetchEvents().then @renderEvents
-
-    $("li[data-id='#{@model.id}']").addClass 'selected'
     return this
   
   createEvent: ->

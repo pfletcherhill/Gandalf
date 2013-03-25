@@ -1,23 +1,24 @@
 Gandalf::Application.routes.draw do
 
-  root :to => "events#root"
+  root :to => "main#root"
   
   match '/login' => "main#login"
   match '/logout' => "main#logout"
   match '/welcome' => "main#welcome"
   
-  match '/me' => "users#me"
+  match '/me' => "users#me", via: [:get, :post]
+  match '/me' => "users#update", via: [:put]
   match '/mail' => "users#mail"
-  match '/users/:id/events' => 'users#events'
-  match '/users/:id/organizations' => 'users#organizations'
-  match '/users/:id/subscribed_organizations' => 'users#subscribed_organizations'
-  match '/users/:id/subscribed_categories' => 'users#subscribed_categories'
-  match '/users/:id/subscriptions' => 'users#subscriptions'
-  match '/users/:id/follow/organization/:organization_id' => 'users#follow_organization'
-  match '/users/:id/unfollow/organization/:organization_id' => 'users#unfollow_organization'
-  match '/users/:id/follow/category/:category_id' => 'users#follow_category'
-  match '/users/:id/unfollow/category/:category_id' => 'users#unfollow_category'
-  match '/users/:id/bulletin_preference' => "users#bulletin_preference"
+  match '/users/events' => 'users#events'
+  match '/users/organizations' => 'users#organizations'
+  match '/users/subscribed_organizations' => 'users#subscribed_organizations'
+  match '/users/subscribed_categories' => 'users#subscribed_categories'
+  match '/users/subscriptions' => 'users#subscriptions'
+  match '/users/follow/organization/:organization_id' => 'users#follow_organization'
+  match '/users/unfollow/organization/:organization_id' => 'users#unfollow_organization'
+  match '/users/follow/category/:category_id' => 'users#follow_category'
+  match '/users/unfollow/category/:category_id' => 'users#unfollow_category'
+  match '/users/bulletin_preference' => "users#bulletin_preference"
 
   # For testing
   match '/bulletin' => "users#bulletin"

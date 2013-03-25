@@ -6,14 +6,16 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
   eventTemplate: JST["backbone/templates/dashboard/events/show"]
   
   className: 'dash-org-container'
+
+  events:
+    "submit #dash-settings-form" : 'save'
+    'click #open-image' : 'openImage'
     
   initialize: =>
     @render()
-    # @model.fetchEvents().then @renderEvents
   
   renderUpload: =>
     url = "/organizations/#{@model.get("id")}/add_image"
-    console.log url
     @$("#organization-image").fileupload
       dataType: "json"
       autoUpload: true
@@ -29,15 +31,13 @@ class Gandalf.Views.Dashboard.Settings extends Backbone.View
   render: ->
     @$el.html @template(@model.toJSON())
     # @modelBinder.bind(@model, @$("#organization-form"))
-    $("li[data-id='#{@model.id}']").addClass 'selected'
     @$(".image").removeClass 'loading'
     # @$("form#organization-form").backboneLink(@model)
     @renderUpload()
+    Gandalf.currentUser.fetchFacebookOrganizations()
     return this
-  
-  events:
-    "submit #dash-settings-form" : 'save'
-    'click #open-image' : 'openImage'
+
+  # Event handlers
   
   save: (event) ->
     submit = @$("input[type='submit']")

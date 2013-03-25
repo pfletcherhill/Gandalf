@@ -10,6 +10,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :start_at
   validates_presence_of :end_at
 
+  validates_uniqueness_of :fb_id, :if => :fb_id?
+
   #pg_search
   include PgSearch
   multisearchable :against => [:name, :description]
@@ -49,6 +51,7 @@ class Event < ActiveRecord::Base
       name: "Unavailable", address: "Unavailable")
     {
       "id" => id,
+      "updated_at" => updated_at,
       "name" => name,
       "description" => description,
       "location" => location.name,
@@ -60,8 +63,11 @@ class Event < ActiveRecord::Base
       "room_number" => room_number, 
       "organization" => organization.name,
       "organization_id" => organization.id,
+      "image" => organization.image.url,
+      "thumbnail" => organization.image.thumbnail.url,
       "color" => organization.color,
       "categories" => categories,
+      "fb_id" => fb_id,
       # Data for rendering calendar with Backbone (hence the camel case)
       "calStart" => start_at,
       "calEnd" => end_at,

@@ -67,7 +67,10 @@ class User < ActiveRecord::Base
       "college" => college,
       "year" => year,
       "organizations" => organizations,
-      "bulletin_preference" => bulletin_preference
+      "bulletin_preference" => bulletin_preference,
+      "fb_id" => self.fb_id,
+      "fb_access_token" => fb_access_token,
+      "fb_accounts" => fb_accounts
     }
   end
   

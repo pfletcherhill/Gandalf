@@ -44,7 +44,7 @@ class Gandalf.Views.Calendar.Week.MultidayEvent extends Backbone.View
     else
       endDay = moment(end).day()
 
-    @width = Math.floor((endDay - startDay + 1) * 14.2857)
+    @width = (endDay - startDay + 1) * 14.2
 
     @$el
       .html(@template(e: @model, continued: continued, continues: continues))

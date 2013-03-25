@@ -1,0 +1,15 @@
+<h4>Hook up <%= name %> to a Facebook group or page</h4>
+<% if(fb_name) { %>
+<p style="font-style: italic;">
+  <%= name %> is currently associated with 
+  <% if(fb_link) { %> 
+    <a href="<%= fb_link %>" style="color: red;"><%= fb_name %></a>
+  <% } else { %>
+    <b><%= fb_name %></b>
+  <% } %>
+  on Facebook.&nbsp; &nbsp; &nbsp; 
+  <button class="sync-events btn btn-primary btn-mini">Sync Events</button>
+</p>
+<% } %>
+
+<table class="table" id="dash-facebook-orgs"></table>
