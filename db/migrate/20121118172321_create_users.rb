@@ -10,6 +10,10 @@ class CreateUsers < ActiveRecord::Migration
       t.string :division
 
       t.string :bulletin_preference, :default => "daily"
+
+      t.string :fb_id
+      t.string :fb_access_token
+      t.string :fb_accounts
       
       t.timestamps
     end

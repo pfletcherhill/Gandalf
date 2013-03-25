@@ -4,16 +4,20 @@
 class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
 
   initialize: ->
+    # Initialize Gandalf.Views.Popover, which calls its render
+    super()
+
     # Event handlers
     Gandalf.dispatcher.on("event:new:start", @newEvent, this)
     Gandalf.dispatcher.on("event:edit", @editEvent, this)
     Gandalf.dispatcher.on("dashboard:email", @showEmail, this)
-    # Initialize Gandalf.Views.Popover, which calls its render
-    super()
+    Gandalf.dispatcher.on("organization:fbSyncEvents", @orgFBSyncShow, this)
 
   newEventTemplate: JST["backbone/templates/popover/events/new"]
   editEventTemplate: JST["backbone/templates/popover/events/edit"]
   showEmailTemplate: JST["backbone/templates/popover/email"]
+  facebookEventTemplate: JST["backbone/templates/popover/organizations/facebook"]
+  facebookShowEventTemplate: JST["backbone/templates/popover/organizations/facebook_show"]
 
   events: 
     "click .global-overlay,.close,a" : "hide"
@@ -21,6 +25,7 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     "submit #new-event-form": "createEvent"
     "submit #edit-event-form": "updateEvent"
     "click #send-email": "sendEmail"
+    "click #org-fbevents-go": "orgFBSync"
 
   newEvent: (obj) ->
     @collection = obj.collection
@@ -91,8 +96,28 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
         e.set({errors: $.parseJSON(jqXHR.responseText)})
         console.log $.parseJSON(jqXHR.responseText)
     )
-
     return false
+
+  orgFBSyncShow: (obj) ->
+    @organization = obj.organization
+    @organizationFBEvents = obj.events
+    $(".gandalf-popover").html(@facebookEventTemplate(
+      orgName: @organization.get('fb_name')))
+    for e in @organizationFBEvents
+      @$("#org-fbevents-table").append(@facebookShowEventTemplate(
+        name: e.name
+        start_at: e.start_time
+        end_at: e.end_time
+        location: e.location || "an unknown location"
+      ))
+    @show()
+
+  orgFBSync: ->
+    console.log "syncing...", @organizationFBEvents, @organization
+    @organization.addFBEvents(@organizationFBEvents)
+    @hide()
+
+
 
   # Helpers
 
@@ -125,6 +150,10 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     # Consolidate time and date into datetime
     start = moment(values["start_at_time"]+" "+values["start_at_date"], "HH:mm MM/DD/YYYY")
     end = moment(values["end_at_time"]+" "+values["end_at_date"], "HH:mm MM/DD/YYYY")
+    if end <= start
+      $("input[type=datetime], input[type=time]").addClass "error"
+      alert("Start time must be before end time")
+      return null
     values["start_at"] = start.format()
     values["end_at"] = end.format()
     # Description, category_ids, room_number fields not required,

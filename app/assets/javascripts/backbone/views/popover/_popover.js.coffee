@@ -5,11 +5,11 @@ class Gandalf.Views.Popover extends Backbone.View
   initialize: ->
     # My events are the events on the currently shown calendar
     @myEvents = @options.events
+    @render()
     # All popover event handlers
     Gandalf.dispatcher.on("popover:hide", @hide, this)
     Gandalf.dispatcher.on("route", @hide, this)
     Gandalf.dispatcher.on("popover:eventsReady", @setEvents, this)
-    @render()
 
   id: "popover-container"
   template: JST["backbone/templates/popover/index"]

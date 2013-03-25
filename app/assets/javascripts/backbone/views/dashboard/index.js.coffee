@@ -14,7 +14,7 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @render(@options.type)
   
   updateOrganizations: =>
-    @organizations.url = "/users/#{Gandalf.currentUser.id}/organizations"
+    @organizations.url = "/users/organizations"
     @organizations.fetch success: (organizations) =>
       @organizations = organizations
       @renderOrganizationsList()
@@ -23,6 +23,7 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @$(".left-list").html('')
     for organization in @organizations.models
       @$(".left-list").append("<a href='#dashboard/#{organization.id}'><li data-id=#{organization.id}>#{organization.get('name')}</li></a>")
+    $("li[data-id='#{@organization.id}']").addClass 'selected'
   
   renderOrganizationMenu: (type) ->
     @$('.dash-menu').html( @menuTemplate( @organization.toJSON()) )
@@ -35,6 +36,8 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     view = switch type
       when 'events' 
         new Gandalf.Views.Dashboard.Events(model: @organization)
+      when 'facebook'
+        new Gandalf.Views.Dashboard.Facebook(model: @organization)
       when 'users' 
         new Gandalf.Views.Dashboard.Users(model: @organization)
       when 'admins' 

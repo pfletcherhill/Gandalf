@@ -1,32 +1,18 @@
 class EventsController < ApplicationController
-
-  before_filter :require_login
-
-  def require_login
-    unless logged_in?
-      redirect_to '/welcome' # halts request cycle
-    end
-  end
-
-  def logged_in?
-    !!current_user
-  end
-
-  def root
-  end
+  respond_to :json
 
   def index
-    events = Event.includes(:categories, :organization, :location)
-    render json: events
+    respond_with Event
+      .order("updated_at DESC")
+      .includes(:categories, :organization, :location)
   end
 
   def show
-    event = Event.find(params[:id])
-    render json: event
+    respond_with Event.find(params[:id])
   end
 
   def create
-    name = params[:event][:location]
+    name = params[:event][:location] || "Unknown"
     location = Location.name_search(Location.sanitize(name)).first
     location = Location.create!(:name => name, :gmaps => true) unless location
 
@@ -46,33 +32,31 @@ class EventsController < ApplicationController
 
   def update
     location_name = params[:event][:location]
-    location = Location.where(:name => location_name).first
+    location = Location.name_search(Location.sanitize(location_name)).first
     location = Location.create(:name => location_name, :gmaps => true) unless location
     # Set the location id for update_attributes
     params[:event][:location_id] = location.id
 
-    @event = Event.find(params[:event][:id])
-    @event.set_categories params[:event][:category_ids]
-    if @event.update_attributes(params[:event].except(:location, :category_ids))
-      render json: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
+    event = Event.find(params[:event][:id])
+    event.set_categories params[:event][:category_ids]
+    respond_with event.update_attributes(params[:event].except(:location, :category_ids))
   end
 
   def destroy
-    @event = Event.find(params[:id])
-    if @event.destroy
-      render json: @event
-    else
-      render json: @event.errors, status: :unprocessable_entity
-    end
+    respond_with Event.find(params[:id]).destroy
   end
 
   def search
-    query = params[:query]
-    events = Event.fulltext_search(query)
-    render json: events
+    if params[:query]
+      puts "\n\n\n\n|#{params[:query]}|\n\n\n"
+      respond_with Event
+        .fulltext_search(params[:query])
+        .includes(:categories, :organization, :location)
+    else
+      Event
+        .order("updated_at DESC")
+        .includes(:categories, :organization, :location)
+    end
   end
 
 end

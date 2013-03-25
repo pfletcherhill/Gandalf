@@ -16,17 +16,6 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   # Rendering functions
 
-  renderFeed: () ->
-    noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period...</div>"
-    @$(".body-feed").append(noEvents) if _.isEmpty(@days)
-    @doneEvents = []
-    for day, events of @days
-      @addFeedDay(day, events)
-
-  addFeedDay: (day, events) ->
-    view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
-    @$(".body-feed").append(view.el)
-
   renderSubscribedOrganizations: ->
     console.log "rendering subscribed Organizations"
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
@@ -73,3 +62,17 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       placement: 'right'
     )
     return this
+
+# DEPRECATED
+#    renderFeed: () ->
+#     noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period. 
+# Check out <a href='#/browse'>the discover page</a> and start following some 
+# organizations and categories!</div>"
+#     @$(".body-feed").append(noEvents) if _.isEmpty(@days)
+#     @doneEvents = []
+#     for day, events of @days
+#       @addFeedDay(day, events)
+
+#   addFeedDay: (day, events) ->
+#     view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
+#     @$(".body-feed").append(view.el)

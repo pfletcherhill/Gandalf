@@ -10,7 +10,7 @@ class Gandalf.Views.Flash extends Backbone.View
     @render()
 
   events:
-    "click #flash" : "hide"
+    "click" : "hide"
 
   render: ->
     @$el.html("")
@@ -38,7 +38,7 @@ class Gandalf.Views.Flash extends Backbone.View
     console.log "flash notice:",  msg
 
   flash: ->
-    @$el.fadeIn().delay(@displayLength).fadeOut()
+    @$el.fadeIn()
 
   hide: ->
     @$el.hide()
