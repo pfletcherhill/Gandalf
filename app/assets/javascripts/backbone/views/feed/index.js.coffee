@@ -56,7 +56,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       events: @options.events
       startDate: @options.startDate
     )
-    $(".content-calendar").html(cal.el)
+    @$(".content-calendar").html(cal.el)
     
     $("[rel=tooltip]").tooltip(
       placement: 'right'

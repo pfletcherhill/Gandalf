@@ -7,6 +7,9 @@ class CreateCategories < ActiveRecord::Migration
       t.string :flyer
       
       t.timestamps
+
+      # Indeces
+      add_index :slug
     end
   end
 end

@@ -22,7 +22,7 @@ class Gandalf.Views.Browse.Show extends Backbone.View
         cats.push "<a href='#categories/#{category.id}'>#{category.name}</a>"
       @$('.categories').append( cats.join(', ') )
     else
-      @$('.categories').append("No associated categories :(")
+      @$('.categories').append("No associated categories")
         
   render: ->
     if @type == 'events'

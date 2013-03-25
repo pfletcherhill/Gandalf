@@ -66,13 +66,13 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
       Gandalf.currentUser.get("subscribed_organizations").pluck "id"
     following_cat_ids = 
       Gandalf.currentUser.get("subscribed_categories").pluck "id"
-    model_org_id  = model.get("organization_id")
+    model_org_slug  = model.get("organization_slug")
     model_cat_ids = _.pluck(model.get("categories"), "id")
     matching_cats = _.intersection(model_cat_ids, following_cat_ids)
     why = "#{model.get('name')} shows on your calendar because you're following "
     if model.get("organization_id") in following_org_ids
       why += "the sponsoring organization "
-      why += "<a href='#/organizations/#{model_org_id}'>#{model.get("organization")}</a>"
+      why += "<a href='#/organizations/#{model_org_slug}'>#{model.get("organization")}</a>"
       why += " and " if not _.isEmpty(matching_cats)
     if not _.isEmpty(matching_cats)
       if matching_cats.length is 1 then why += "the category " 
