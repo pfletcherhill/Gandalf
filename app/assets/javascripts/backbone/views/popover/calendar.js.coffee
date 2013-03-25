@@ -85,7 +85,7 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
         else
           first = false
         cat = Gandalf.currentUser.get("subscribed_categories").get(cat_id)
-        why += "<a href='#/categories/#{cat_id}'>#{cat.get('name')}</a>"
+        why += "<a href='#/categories/#{cat.get('slug')}'>#{cat.get('name')}</a>"
     why += "."
     $(".why").popover
       html: true
