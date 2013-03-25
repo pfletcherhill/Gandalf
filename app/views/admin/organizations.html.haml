@@ -1,0 +1,22 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Organizations
+  %h5 All Organizations
+  %table
+    %tbody
+      %tr
+        %th Name
+        %th Events
+        %th Subscribers
+        %th Categories
+        %th About
+      -@organizations.each do |org|
+        %tr
+          %td= link_to org.name, "/#organizations/#{org.id}"
+          %td= org.events.count
+          %td= org.subscribers.count
+          %td
+            -org.categories.uniq.each do |cat|
+              =link_to cat.name, "/#categories/#{cat.id}"
+          %td= org.bio

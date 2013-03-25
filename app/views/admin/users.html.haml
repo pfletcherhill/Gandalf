@@ -1,0 +1,32 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Users
+  %h5 Upload Data from CSV
+  %p Upload a CSV with organization and organization leader data.
+  =form_tag "/admin/import" do
+    =file_field_tag "data"
+    =submit_tag "Upload CSV"
+  %h5 All Users
+  %table
+    %tbody
+      %tr
+        %th Name
+        %th Email
+        %th Type
+        %th College
+        %th Year
+        %th Organizations
+        %th Subscriptions
+        %th Bulletin Preference
+      -@users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.email
+          %td= user.admin ? "Admin" : "User"
+          %td= user.college
+          %td= user.year
+          %td= user.organizations.count
+          %td= user.subscriptions.count
+          %td= user.bulletin_preference
+          

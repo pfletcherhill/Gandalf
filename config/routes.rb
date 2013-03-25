@@ -6,6 +6,13 @@ Gandalf::Application.routes.draw do
   match '/logout' => "main#logout"
   match '/welcome' => "main#welcome"
   
+  match '/admin' => "admin#index"
+  match '/admin/events' => "admin#events"
+  match '/admin/organizations' => "admin#organizations"
+  match '/admin/users' => "admin#users"
+  match '/admin/categories' => "admin#categories"
+  match '/admin/import' => 'admin#import'
+  
   match '/me' => "users#me", via: [:get, :post]
   match '/me' => "users#update", via: [:put]
   match '/mail' => "users#mail"
