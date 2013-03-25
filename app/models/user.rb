@@ -97,22 +97,30 @@ class User < ActiveRecord::Base
     end
   end
   
-  def User.create_from_directory(id, type="uid")
+  def User.create_from_directory(id, type="uid", search=false)
+    if search
+      u = nil
+      u = case type
+        when "uid" then User.find_by_netid(id)
+        when "email" then User.find_by_email(id)
+      end
+      return u if u
+    end
     netid_regex = /^NetID:/
-    name_regex = /^\s+Name:/
+    name_regex = /^Name:/
     known_as_regex = /Known As:/
     email_regex = /Email Address:/
     college_regex = /Residential College:/
     year_regex = /Class Year:/
     division_regex = /Division:/
 
-    browser = User.make_cas_browser
-    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}")
+    url = "http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}"
+    @@browser.get(url)
 
     u = User.new
     # u.netid = netid
-    browser.page.search('tr').each do |tr|
-      field = tr.at('th').text
+    @@browser.page.search('tr').each do |tr|
+      field = tr.at('th').text.strip
       value = tr.at('td').text.strip
       case field
       when netid_regex
@@ -131,9 +139,26 @@ class User < ActiveRecord::Base
         u.division = value
       end
     end
-    u.nickname = u.name.split(" ").first if not u.nickname
-    u.save!
-    u
+    if u.email # If a user was found
+      u.name ||= User.name_from_email(u.email)  # Make sure of name
+      u.nickname = u.name.split(" ").first      # Set nickname
+      p u                                       # Debug
+      if u.save
+        return u
+      else
+        return nil
+      end
+    else
+      return nil
+    end
+
+  end
+
+  def User.name_from_email(email)
+    e = email.gsub(/@yale.edu/, "")
+    names = e.split(".")
+    names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
+    names.join(" ")
   end
 
   def User.make_cas_browser
@@ -145,5 +170,8 @@ class User < ActiveRecord::Base
     form.submit
     browser
   end
+
+  # Keep a CAS_authenticated browser
+  @@browser = User.make_cas_browser
 
 end
