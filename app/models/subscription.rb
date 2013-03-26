@@ -5,7 +5,7 @@ class Subscription < ActiveRecord::Base
   belongs_to :subscribeable, :polymorphic => true
 
   def Subscription.make_slug(name)
-    name.downcase.gsub(/ /, "-").gsub(/&/, "and").gsub(/[,\.\)\(:]/, "")
+    name.downcase.gsub(/ /, "-").gsub(/&/, "and").gsub(/[,\.\)\(:']/, "")
   end
   
 end

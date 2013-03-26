@@ -4,6 +4,7 @@ class Gandalf.Router extends Backbone.Router
     @events = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations
     @organizations.add Gandalf.currentUser.get('organizations')
+    window.orgs = @organizations
     # @popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @flash.el
@@ -68,21 +69,21 @@ class Gandalf.Router extends Backbone.Router
 
     # Dashboard Routes
     'dashboard'                       : 'dashboard'
-    'dashboard/:id'                   : 'dashboard'
-    'dashboard/:id/:type'             : 'dashboard'
+    'dashboard/:slug'                 : 'dashboard'
+    'dashboard/:slug/:type'           : 'dashboard'
 
     # Events Routes
     'events/:id'                      : 'events'
     'events*'                         : 'events'
 
     # Organization Routes
-    'organizations/:id'               : 'organizations'
-    'organizations/:id/:date/:period' : 'organizations'
+    'organizations/:slug'             : 'organizations'
+    'organizations/:slug/:date/:period' : 'organizations'
     'organizations*'                  : 'organizations'
 
     # Category Routes
-    'categories/:id'                  : 'categories'
-    'categories/:id/:date/:period'    : 'categories'
+    'categories/:slug'                : 'categories'
+    'categories/:slug/:date/:period'  : 'categories'
     'categories*'                     : 'categories'
 
     # Preferences Routes
@@ -129,8 +130,9 @@ class Gandalf.Router extends Backbone.Router
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
 
-  dashboard: (id, type) ->
-    id ||= @organizations.first().id
+  dashboard: (slug, type) ->
+    slug ||= @organizations.first().get('slug')
+    id = @organizations.where(slug: slug)[0].id
     type ||= 'events'
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/#{id}/edit"
@@ -154,13 +156,13 @@ class Gandalf.Router extends Backbone.Router
       success: (event) =>
         view = new Gandalf.Views.Events.Show( model: event )
 
-  organizations: (id, date, period) ->
+  organizations: (slug, date, period) ->
     if not period or not date
-      @navigate("organizations/#{id}/today/week", {trigger: true, replace: true});
+      @navigate("organizations/#{slug}/today/week", {trigger: true, replace: true});
     params = @processPeriod date, period
     @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/" + id
+    @organization.url = "/organizations/slug/" + slug
     @organization.fetch
       success: (organization) =>
         view = new Gandalf.Views.Organizations.Show(
@@ -170,13 +172,13 @@ class Gandalf.Router extends Backbone.Router
           period: params.period
         )
 
-  categories: (id, date, period) ->
+  categories: (slug, date, period) ->
     if not period or not date
-      @navigate("categories/#{id}/today/week", {trigger: true, replace: true});
+      @navigate("categories/#{slug}/today/week", {trigger: true, replace: true});
     params = @processPeriod date, period
     @string = @generateParamsString params
     @category = new Gandalf.Models.Category
-    @category.url = "/categories/" + id
+    @category.url = "/categories/slug/" + slug
     @category.fetch
       success: (category) =>
         view = new Gandalf.Views.Categories.Show(

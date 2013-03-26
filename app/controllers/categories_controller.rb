@@ -10,6 +10,11 @@ class CategoriesController < ApplicationController
     render json: category
   end
 
+  def show_by_slug
+    category = Category.find_by_slug(params[:slug])
+    render json: category
+  end
+
   def search
     query = params[:query]
     categories = Category.fulltext_search(query)

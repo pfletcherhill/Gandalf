@@ -34,6 +34,7 @@ Gandalf::Application.routes.draw do
   resources :events
   
   resources :organizations
+  match '/organizations/slug/:slug' => 'organizations#show_by_slug', via: [:get]
   match '/organizations/:id/add_image' => 'organizations#add_image'
   match '/organizations/:id/events' => 'organizations#events'
   match '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
@@ -42,6 +43,7 @@ Gandalf::Application.routes.draw do
   
   match '/categories' => 'categories#all'
   match '/categories/:id/events' => 'categories#events'
+  match '/categories/slug/:slug' => 'categories#show_by_slug', via: [:get]
   match '/categories/:id' => 'categories#show'
   
   #Search
