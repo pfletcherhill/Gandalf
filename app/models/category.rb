@@ -42,6 +42,29 @@ class Category < ActiveRecord::Base
     events
   end
 
+  # Class methods
+  
+  def Category.find_or_generate_by_name(name)
+    cat = Category.where(:name => name).first
+    unless cat
+      cat = Category.new(:name => name, :description => name)
+      cat.slug = Subscription.make_slug(name)
+      cat.save
+    end
+    cat
+  end
+  
+  def Category.import_categories(file)
+    require 'csv'
+    csv = CSV.open(file, :encoding => 'windows-1251:utf-8')
+    begin
+      csv.each do |row|
+        Category.find_or_generate_by_name(row[0])
+      end
+    rescue
+    end
+  end
+  
   private
 
   def make_slug
