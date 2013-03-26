@@ -1,0 +1,32 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Organizations
+  %h5 Upload Data from CSV
+  %p Upload a CSV with organization and organization leader data. CSV should be formatted with two columns -- student email and organization name. Be patient, this may take a little while!
+  =form_tag "/admin/organizations/import", :class => "form-inline" do
+    =file_field_tag :file
+    =submit_tag "Upload CSV", :class => "btn"
+  %h5 #{@organizations.count} Organizations
+  %table.table
+    %tbody
+      %tr
+        %th Name
+        %th Events
+        %th Subscribers
+        %th Admins
+        %th Categories
+        %th About
+      -@organizations.each do |org|
+        %tr
+          %td= link_to org.name, "/#organizations/#{org.id}"
+          %td= org.events.count
+          %td= org.subscribers.count
+          %td
+            -if org.admins
+              -org.admins.each do |user|
+                = user.name
+          %td
+            -org.categories.uniq.each do |cat|
+              =link_to cat.name, "/#categories/#{cat.id}"
+          %td= org.bio

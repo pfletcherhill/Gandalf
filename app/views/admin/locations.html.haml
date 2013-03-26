@@ -1,0 +1,16 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Locations
+  %h5 #{@locations.count} Locations
+  %table.table
+    %tbody
+      %tr
+        %th Name
+        %th Address
+        %th Events
+      -@locations.each do |loc|
+        %tr
+          %td= loc.name
+          %td= loc.address
+          %td= loc.events.count

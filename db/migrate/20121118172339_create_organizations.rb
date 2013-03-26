@@ -11,11 +11,8 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :fb_access_key
       t.string :fb_name
       t.string :fb_link
-
+      
       t.timestamps
-
-      # Indeces
-      add_index :slug
     end
   end
 end
