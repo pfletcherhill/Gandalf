@@ -121,6 +121,13 @@ class Gandalf.Models.User extends Backbone.Model
       cb() if typeof cb is "function"
     )
 
+  asJSON: =>
+    return _.omit @attributes, [
+      'organizations'
+      'subscribed_categories'
+      'subscribed_organizations'
+    ]
+
 class Gandalf.Collections.Users extends Backbone.Collection
   model: Gandalf.Models.User
   url: '/users'
