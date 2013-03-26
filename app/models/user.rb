@@ -94,6 +94,18 @@ class User < ActiveRecord::Base
     access.destroy
   end
 
+  # Admin methods
+  
+  def promote
+    self.admin = true
+    self.save
+  end
+  
+  def demote
+    self.admin = false
+    self.save
+  end
+  
   # Class methods
 
   def User.send_daily_bulletin

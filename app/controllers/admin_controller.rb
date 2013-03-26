@@ -22,6 +22,10 @@ class AdminController < ApplicationController
     @categories = Category.all
   end
   
+  def locations
+    @locations = Location.all
+  end
+  
   def import_categories
     Category.import_categories(params[:file])
     redirect_to "/admin/categories"
@@ -42,8 +46,7 @@ class AdminController < ApplicationController
       url = "http://calendar.yale.edu/cal/opa/month/#{date}/All/?showDetails=yes"
     end
     if url
-      puts("it has url")
-      Delayed::Job.enqueue ScrapeYaleEvents.new(url), :run_at => 10.seconds.from_now - 4.hours
+      Event.scrape_yale_events(url)
     end
     redirect_to "/admin/events"
   end

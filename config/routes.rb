@@ -11,6 +11,7 @@ Gandalf::Application.routes.draw do
   match '/admin/organizations' => "admin#organizations"
   match '/admin/users' => "admin#users"
   match '/admin/categories' => "admin#categories"
+  match '/admin/locations' => "admin#locations"
   match '/admin/organizations/import' => 'admin#import_organizations'
   match '/admin/categories/import' => 'admin#import_categories'
   match '/admin/events/scrape' => 'admin#scrape'
