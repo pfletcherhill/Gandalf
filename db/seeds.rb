@@ -11,7 +11,7 @@ print("Importing student organizations...")
 unless Rails.env.production?
   Organization.import_student_organizations("lib/data/student_groups.csv")
 else
-  users = { "prf8" => "TEDxYale", "fak23" => "HackYale" }
+  users = { prf8: "TEDxYale", fak23: "HackYale" }
   users.each do |id, org|
     u = User.create_from_directory id
     o = Organization.find_or_create_by_name org
