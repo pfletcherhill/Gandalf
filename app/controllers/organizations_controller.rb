@@ -10,6 +10,11 @@ class OrganizationsController < ApplicationController
     render json: @organization.to_json(:include => [:categories])
   end
 
+  def show_by_slug
+    @organization = Organization.find_by_slug(params[:slug])
+    render json: @organization.to_json(:include => [:categories])
+  end
+
   def edit
     @organization = Organization.find(params[:id])
     if current_user.has_authorization_to(@organization)
