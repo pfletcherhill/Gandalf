@@ -2,6 +2,15 @@
 
 .container.admin
   %h1 Events
+  %h5 Scrape Events from Yale Events Calendar
+  %p
+    Supply a URL from the Yale Events Calendar, and I will bring you back the events. If you don't want to supply a URL, you can automatically
+    %a(href="/admin/events/scrape?period=week") get this week's events
+    or
+    %a(href="/admin/events/scrape?period=month") get this month's events.
+  =form_tag "/admin/events/scrape" do
+    =text_field_tag "url"
+    =submit_tag "Scrape Yale Events Calendar"
   %h5 All Events
   %table
     %tbody

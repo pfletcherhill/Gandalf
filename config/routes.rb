@@ -12,6 +12,7 @@ Gandalf::Application.routes.draw do
   match '/admin/users' => "admin#users"
   match '/admin/categories' => "admin#categories"
   match '/admin/import' => 'admin#import'
+  match '/admin/events/scrape' => 'admin#scrape'
   
   match '/me' => "users#me", via: [:get, :post]
   match '/me' => "users#update", via: [:put]

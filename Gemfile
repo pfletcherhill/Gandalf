@@ -53,5 +53,9 @@ gem 'gmaps4rails'
 gem 'mail'
 gem 'whenever', require: false
 
+# Background Jobs
+gem 'daemons'
+gem 'delayed_job_active_record'
+
 # Search
 gem 'pg_search'
