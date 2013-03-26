@@ -8,11 +8,11 @@
     %a(href="/admin/events/scrape?period=week") get this week's events
     or
     %a(href="/admin/events/scrape?period=month") get this month's events.
-  =form_tag "/admin/events/scrape" do
-    =text_field_tag "url"
-    =submit_tag "Scrape Yale Events Calendar"
+  =form_tag "/admin/events/scrape", :class => "form-inline" do
+    =text_field_tag :url, "", :class => "input-xlarge"
+    =submit_tag "Scrape Yale Events Calendar", :class => "btn"
   %h5 #{@events.count} Events
-  %table
+  %table.table
     %tbody
       %tr
         %th Name
