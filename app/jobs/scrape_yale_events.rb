@@ -1,9 +1,8 @@
-require 'rake'
-namespace :db do
-  desc "scrape Yale's events calendar"
-  task :scrape, [:date] => [:environment] do |t, args|
-    date = args["date"]
-    link = "http://calendar.yale.edu/cal/opa/day/#{date}/All/?showDetails=yes"
+class ScrapeYaleEvents < Struct.new(:url)
+
+  def perform
+    puts("performing job")
+    link = url
     page = Nokogiri::HTML(open(link))
     results = page.xpath("//table[@class='eventList']/tr")
     organization = Organization.where(:name => "Yale University").first
