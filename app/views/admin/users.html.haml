@@ -3,9 +3,9 @@
 .container.admin
   %h1 Users
   %h5 Upload Data from CSV
-  %p Upload a CSV with organization and organization leader data.
+  %p Upload a CSV with organization and organization leader data. Be patient, this may take a little while!
   =form_tag "/admin/import" do
-    =file_field_tag "data"
+    =file_field_tag :file
     =submit_tag "Upload CSV"
   %h5 All Users
   %table
