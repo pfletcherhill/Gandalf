@@ -12,6 +12,13 @@ unless Rails.env.production?
 end
 print("DONE\n")
 
+# Seed this month's events
+print("Scraping this month's events...")
+date = DateTime.now.strftime("%Y%m%d")
+url = "http://calendar.yale.edu/cal/opa/month/#{date}/All/?showDetails=yes"
+Event.scrape_yale_events(url)
+printf("DONE\n")
+
 # Admins
 print("Promoting admins...")
 netids = %w(fak23 prf8)
