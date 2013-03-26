@@ -11,7 +11,7 @@
   =form_tag "/admin/events/scrape" do
     =text_field_tag "url"
     =submit_tag "Scrape Yale Events Calendar"
-  %h5 All Events
+  %h5 #{@events.count} Events
   %table
     %tbody
       %tr

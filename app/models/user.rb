@@ -57,7 +57,6 @@ class User < ActiveRecord::Base
     events.take(limit)
   end
 
-  # TODO: on_create: if admin of an org, add as subscriber as well
   def as_json(options)
     {
       "id" => id,
@@ -74,6 +73,8 @@ class User < ActiveRecord::Base
     }
   end
   
+  # Authorization methods
+  
   def has_authorization_to(organization)
     access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
     if access_control
@@ -81,6 +82,16 @@ class User < ActiveRecord::Base
     else
       return false
     end
+  end
+  
+  def add_authorization_to(organization)
+    self.organizations << organization
+    self.subscribed_organizations << organization
+  end
+  
+  def remove_authorization_to(organization)
+    access = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    access.destroy
   end
 
   # Class methods
@@ -142,7 +153,6 @@ class User < ActiveRecord::Base
     if u.email # If a user was found
       u.name ||= User.name_from_email(u.email)  # Make sure of name
       u.nickname = u.name.split(" ").first      # Set nickname
-      p u                                       # Debug
       if u.save
         return u
       else

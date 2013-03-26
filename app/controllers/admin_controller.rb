@@ -3,7 +3,7 @@ class AdminController < ApplicationController
   before_filter :require_admin
   
   def index
-    redirect_to "/admin/users"
+    redirect_to "/admin/organizations"
   end
   
   def users
@@ -22,17 +22,13 @@ class AdminController < ApplicationController
     @categories = Category.all
   end
   
-  def import
-    require 'csv'
-    csv = CSV.open(params[:file], :encoding => 'windows-1251:utf-8')
-    begin
-      csv.each do |row|
-        organization = Organization.find_or_create_by_name(row[1])
-        user = User.create_from_directory(row[0], "email")
-        user.organizations << organization if user
-      end
-    rescue
-    end
+  def import_categories
+    Category.import_categories(params[:file])
+    redirect_to "/admin/categories"
+  end
+  
+  def import_organizations
+    Organization.import_student_organizations(params[:file])
     redirect_to "/admin/users"
   end
   
