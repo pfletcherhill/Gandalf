@@ -1,0 +1,18 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Categories
+  %h5 #{@categories.count} Categories
+  %table.table
+    %tbody
+      %tr
+        %th Name
+        %th Events
+        %th Subscribers
+        %th About
+      -@categories.each do |cat|
+        %tr
+          %td= link_to cat.name, "/#categories/#{cat.id}"
+          %td= cat.events.count
+          %td= cat.subscribers.count
+          %td= cat.description
