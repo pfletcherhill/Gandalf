@@ -2,12 +2,7 @@
 
 .container.admin
   %h1 Users
-  %h5 Upload Data from CSV
-  %p Upload a CSV with organization and organization leader data. Be patient, this may take a little while!
-  =form_tag "/admin/import" do
-    =file_field_tag :file
-    =submit_tag "Upload CSV"
-  %h5 All Users
+  %h5 #{@users.count} Users
   %table
     %tbody
       %tr
@@ -26,7 +21,10 @@
           %td= user.admin ? "Admin" : "User"
           %td= user.college
           %td= user.year
-          %td= user.organizations.count
+          %td
+            -if user.organizations
+              -user.organizations.each do |org|
+                = link_to org.name, "/#organizations/#{org.id}"
           %td= user.subscriptions.count
           %td= user.bulletin_preference
           

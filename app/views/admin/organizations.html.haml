@@ -2,7 +2,12 @@
 
 .container.admin
   %h1 Organizations
-  %h5 All Organizations
+  %h5 Upload Data from CSV
+  %p Upload a CSV with organization and organization leader data. CSV should be formatted with two columns -- student email and organization name. Be patient, this may take a little while!
+  =form_tag "/admin/organizations/import" do
+    =file_field_tag :file
+    =submit_tag "Upload CSV"
+  %h5 #{@organizations.count} Organizations
   %table
     %tbody
       %tr

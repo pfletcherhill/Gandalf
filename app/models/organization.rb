@@ -52,7 +52,23 @@ class Organization < ActiveRecord::Base
     categories = events.map{|event| event.categories}.flatten
     categories.uniq.sort_by{ |c| categories.grep(c).size }.reverse
   end
-
+  
+  # Class methods
+  
+  def Organization.import_student_organizations(file)
+    require 'csv'
+    csv = CSV.open(file, :encoding => 'windows-1251:utf-8')
+    begin
+      csv.each do |row|
+        organization = Organization.find_or_create_by_name(row[1])
+        user = User.where(:email => row[0]).first
+        user = User.create_from_directory(row[0], "email") unless user
+        user.add_authorization_to organization if user
+      end
+    rescue
+    end
+  end
+  
   private
 
   def make_slug
