@@ -13,6 +13,9 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :fb_link
 
       t.timestamps
+
+      # Indeces
+      add_index :slug
     end
   end
 end

@@ -77,7 +77,7 @@ class UsersController < ApplicationController
     user = current_user
     category = Category.find(params[:category_id])
     user.subscribed_categories << category
-    respond_with category
+    render json: category
   end
 
   def unfollow_category
@@ -88,7 +88,7 @@ class UsersController < ApplicationController
       :user_id => current_user.id
     ).first
     subscription.destroy
-    respond_with category
+    render json: category
   end
 
   def bulletin_preference
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
         return
       end
     end
-    respond_with user, status: :unprocessable_entity
+    render json: user, status: :unprocessable_entity
   end
 
   def bulletin
