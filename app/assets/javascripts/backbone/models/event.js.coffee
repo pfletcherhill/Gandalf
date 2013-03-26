@@ -31,6 +31,7 @@ class Gandalf.Models.Event extends Backbone.Model
     {
       id: this.get("eventId")
       organization_id: this.get("organization_id")
+      organization_slug: this.get("organization_slug")
       name: this.get("name")
       location: this.get("location")
       start_at: this.get("start_at")

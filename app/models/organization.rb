@@ -9,10 +9,12 @@ class Organization < ActiveRecord::Base
 
   # Validations
   validates_uniqueness_of :name, :case_sensitive => false
+  validates_uniqueness_of :slug, :case_sensitive => false
+
+  # Callbacks
   before_create :make_slug
 
-
-  #pg_search
+  # pg_search
   include PgSearch
   multisearchable :against => [:name, :bio]
   pg_search_scope :fulltext_search,
@@ -54,9 +56,7 @@ class Organization < ActiveRecord::Base
   private
 
   def make_slug
-    if not self.slug and self.name
-      self.slug = Subscription.make_slug self.name
-    end
+    self.slug ||= Subscription.make_slug self.name
   end
 
 end
