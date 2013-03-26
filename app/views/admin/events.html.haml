@@ -1,0 +1,37 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Events
+  %h5 Scrape Events from Yale Events Calendar
+  %p
+    Supply a URL from the Yale Events Calendar, and I will bring you back the events. If you don't want to supply a URL, you can automatically
+    %a(href="/admin/events/scrape?period=week") get this week's events
+    or
+    %a(href="/admin/events/scrape?period=month") get this month's events.
+  =form_tag "/admin/events/scrape", :class => "form-inline" do
+    =text_field_tag :url, "", :class => "input-xlarge"
+    =submit_tag "Scrape Yale Events Calendar", :class => "btn"
+  %h5 #{@events.count} Events
+  %table.table
+    %tbody
+      %tr
+        %th Name
+        %th Location
+        %th Room
+        %th Date
+        %th Time
+        %th Organization
+        %th Categories
+        %th Description
+      -@events.each do |event|
+        %tr
+          %td= event.name
+          %td= event.location.name
+          %td= event.room_number
+          %td= event.start_at.strftime("%B %-d, %Y")
+          %td= event.start_at.strftime("%l:%M %p")
+          %td= link_to event.organization.name, "/#organization/#{event.organization.id}"
+          %td
+            -event.categories.each do |cat|
+              =link_to cat.name, "/#categories/#{cat.id}"
+          %td= event.description
