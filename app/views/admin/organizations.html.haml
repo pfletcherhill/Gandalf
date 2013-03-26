@@ -9,6 +9,7 @@
         %th Name
         %th Events
         %th Subscribers
+        %th Admins
         %th Categories
         %th About
       -@organizations.each do |org|
@@ -16,6 +17,10 @@
           %td= link_to org.name, "/#organizations/#{org.id}"
           %td= org.events.count
           %td= org.subscribers.count
+          %td
+            -if org.admins
+              -org.admins.each do |user|
+                = user.name
           %td
             -org.categories.uniq.each do |cat|
               =link_to cat.name, "/#categories/#{cat.id}"

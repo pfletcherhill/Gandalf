@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
       UserMailer.bulletin(user, "weekly").deliver
     end
   end
-  
+      
   def User.create_from_directory(id, type="uid", search=false)
     if search
       u = nil
