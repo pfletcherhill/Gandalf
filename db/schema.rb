@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321013423) do
+ActiveRecord::Schema.define(:version => 20130326023441) do
 
   create_table "access_controls", :force => true do |t|
     t.integer  "organization_id"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  add_index "categories", ["slug"], :name => "index_categories_on_slug"
 
   create_table "categories_events", :force => true do |t|
     t.integer "event_id"
@@ -78,6 +80,8 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.datetime "updated_at",                               :null => false
   end
 
+  add_index "organizations", ["slug"], :name => "index_organizations_on_slug"
+
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
     t.integer  "searchable_id"
@@ -102,6 +106,7 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.string   "college"
     t.string   "year"
     t.string   "division"
+    t.boolean  "admin"
     t.string   "bulletin_preference", :default => "daily"
     t.string   "fb_id"
     t.string   "fb_access_token"
@@ -109,5 +114,8 @@ ActiveRecord::Schema.define(:version => 20130321013423) do
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end
+
+  add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["netid"], :name => "index_users_on_netid"
 
 end

@@ -33,11 +33,20 @@
       </a>
     </div>
     <div class="pull-right">
-      <div id="user-dropdown" style="min-width: 140px;">
+      <div id="user-dropdown">
         <div class="link">
           <%= me.nickname || me.name %>
         </div>
         <ul>
+          <% if me.admin == true %>
+            <li>
+              <a href="/admin">
+                <div class="link dropdown-link">
+                  Admin Panel
+                </div>
+              </a>
+            </li>
+          <% end %>
           <li>
             <a href="#preferences">
               <div class="link dropdown-link">

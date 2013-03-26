@@ -110,6 +110,10 @@ $header-z: 100;
   border-right: 1px solid #dadada;
 }
 
+#user-dropdown {
+  min-width: 140px;
+}
+
 #user-dropdown ul {
   display: none;
 }
