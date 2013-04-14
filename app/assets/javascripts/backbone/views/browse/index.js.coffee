@@ -8,17 +8,22 @@ class Gandalf.Views.Browse.Index extends Backbone.View
 
   events:
     'keyup input' : 'search'
+    # 'scroll #browse-list' : 'scroll'
   
   initialize: =>
     @results = @options.results
     @searchResults = new Backbone.Collection
     @type = @options.type
+    @count = 0
     @render(@results)
   
   renderResults: (results) ->
-    @$("#browse-list").html('')
-    _.each results.models, (result) =>
-      @addResult result
+    for num in [1..12]    # 12 times
+      if @count < results.models.length
+        @addResult results.models[@count]
+        @count++
+      else return false
+    true
   
   addResult: (result) ->
     view = new Gandalf.Views.Browse.Show(model: result, type: @type)
@@ -26,8 +31,13 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     
   render: ->
     @$el.html(@template(type: @type))
-    @renderResults @results
+    @$("#browse-list").html('')
+    @renderResults @results     # Render first 20
     @changeActive(@type)
+    setTimeout(=>               # Render rest a bit later so the user can see something
+      while(@renderResults(@results))
+        ; # Do nothing
+    , 500)
     return this
   
   changeActive: (type) ->

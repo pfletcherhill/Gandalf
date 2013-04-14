@@ -16,6 +16,7 @@ CASClient::Frameworks::Rails::Filter.configure(
 # 
 # netid: <YOUR NETID>
 # password: <YOUR CAS PASSWORD>
+# ...etc.
 # 
 # The file is already added to .gitignore, so don't worry about it being pushed  
 
@@ -31,4 +32,6 @@ CASClient::Frameworks::Rails::Filter.configure(
   ENV['GMAPS_KEY']            = credentials['gmaps_key']
   ENV['FACEBOOK_APP_ID']      = credentials['facebook_app_id']
   ENV['FACEBOOK_APP_SECRET']  = credentials['facebook_app_secret']
+  ENV['GAPPS_EMAIL']  = credentials['gapps_email']
+  ENV['GAPPS_PASS']  = credentials['gapps_password']
 # end
