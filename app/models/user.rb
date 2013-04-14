@@ -129,6 +129,9 @@ class User < ActiveRecord::Base
       end
       return u if u
     end
+
+    User.update_browser
+
     netid_regex = /^NetID:/
     name_regex = /^Name:/
     known_as_regex = /Known As:/
@@ -193,7 +196,15 @@ class User < ActiveRecord::Base
     browser
   end
 
+  # Make sure CAS credentials don't expire by refreshing every hour
+  def User.update_browser
+    if Time.now - @@browser_time > 1.hour
+      @@browser = user.make_cas_browser
+    end
+  end
+
   # Keep a CAS_authenticated browser
   @@browser = User.make_cas_browser
+  @@browser_time = Time.now
 
 end

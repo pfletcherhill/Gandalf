@@ -1,8 +1,8 @@
 class OrganizationsController < ApplicationController
 
   def index
-    @organizations = Organization.all
-    render json: @organizations.to_json(:include => [:categories])
+    @organizations = Organization.all #includes(:events)
+    render json: @organizations.to_json(:include => :categories)
   end
 
   def show
@@ -12,7 +12,7 @@ class OrganizationsController < ApplicationController
 
   def show_by_slug
     @organization = Organization.find_by_slug(params[:slug])
-    render json: @organization.to_json(:include => [:categories])
+    render json: @organization.to_json(:include => :categories)
   end
 
   def edit

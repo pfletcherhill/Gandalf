@@ -13,7 +13,6 @@ end
 group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem 'fabrication'
-  gem 'rack-mini-profiler'
 end
 
 group :production do
@@ -53,6 +52,7 @@ gem 'mini_magick'
 gem 'gmaps4rails'
 gem 'mail'
 gem 'whenever', :require => false
+gem 'rack-mini-profiler'
 
 # Search
 gem 'pg_search'
