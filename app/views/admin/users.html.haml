@@ -1,0 +1,30 @@
+= render :partial => "header"
+
+.container.admin
+  %h1 Users
+  %h5 #{@users.count} Users
+  %table.table
+    %tbody
+      %tr
+        %th Name
+        %th Email
+        %th Type
+        %th College
+        %th Year
+        %th Organizations
+        %th Subscriptions
+        %th Bulletin Preference
+      -@users.each do |user|
+        %tr
+          %td= user.name
+          %td= user.email
+          %td= user.admin ? "Admin" : "User"
+          %td= user.college
+          %td= user.year
+          %td
+            -if user.organizations
+              -user.organizations.each do |org|
+                = link_to org.name, "/#organizations/#{org.id}"
+          %td= user.subscriptions.count
+          %td= user.bulletin_preference
+          
