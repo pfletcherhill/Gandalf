@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
 
+  before_filter :require_admin
+  
   def all
     categories = Category.all.sort_by { |c| c.name }
     render json: categories

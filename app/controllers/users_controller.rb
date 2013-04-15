@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  
+  before_filter :require_admin
+  
   respond_to :json
   before_filter :require_login
 
