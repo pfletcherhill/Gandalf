@@ -32,13 +32,8 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  database: gandalf_development
-  username: gandalf
-  password:
-  # database: d5hr0s9hn7st22
-  # username: jkbgcsndrlnluj
-  # password: dcb8l4Z4PMwPnreRPAUN3F-iFO
-  # host: ec2-107-21-107-3.compute-1.amazonaws.com
-  # port: 5432
-
-  
+  database: d5hs65te5mm38b
+  username: zmvlxykujbhufz
+  password: PD9K9d3nl0_nX0ay0YPhBCcuKB
+  host: ec2-23-21-161-255.compute-1.amazonaws.com
+  port: 5432
