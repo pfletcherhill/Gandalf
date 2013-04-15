@@ -269,6 +269,26 @@ $main-width: $width - $left-width - $left-margin;
   background-position: center;
 }
 
+/*============== MAIN ===============*/
+.welcome-container {
+  padding-top: 80px;
+  width: 75%;
+  h4 {
+    @include HN-Light;
+    font-size: 100px;
+    line-height: 120px;
+  }
+  h5 {
+    @include HN-Regular;
+    font-size: 50px;
+    line-height: 60px;
+  }
+  span {
+    @include HN-Bold;
+    color: $blue;
+  }
+}
+
 /*============== FLASH =================*/
 
 $flash-height: 30px;
