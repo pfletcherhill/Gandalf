@@ -4,6 +4,7 @@
 //= require jquery.ui.autocomplete
 //= require jquery-fileupload/basic
 //= require chosen-jquery
+//= require moment
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync
