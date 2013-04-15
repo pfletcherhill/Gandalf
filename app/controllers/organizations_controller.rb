@@ -1,5 +1,7 @@
 class OrganizationsController < ApplicationController
 
+  before_filter :require_admin
+  
   def index
     @organizations = Organization.all
     render json: @organizations.to_json(:include => [:categories])
