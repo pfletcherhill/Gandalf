@@ -20,13 +20,6 @@ else
 end
 print("DONE\n")
 
-# Scrape this month's events
-print("Scraping this month's events...")
-date = DateTime.now.strftime("%Y%m%d")
-url = "http://calendar.yale.edu/cal/opa/month/#{date}/All/?showDetails=yes"
-Event.scrape_yale_events(url)
-printf("DONE\n")
-
 # Promote admins
 print("Promoting admins...")
 netids = %w(prf8 fak23)
@@ -36,3 +29,10 @@ netids.each do |id|
   u.save
 end
 print("DONE\n")
+
+# Scrape this month's events
+print("Scraping this month's events...")
+date = DateTime.now.strftime("%Y%m%d")
+url = "http://calendar.yale.edu/cal/opa/month/#{date}/All/?showDetails=yes"
+Event.scrape_yale_events(url)
+printf("DONE\n")
