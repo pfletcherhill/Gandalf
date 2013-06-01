@@ -17,7 +17,6 @@ pickle-email-*.html
 
 # Credentials (but not in the production branch)
 /config/credentials.yml
-/config/newrelic.yml
 
 *.DS_Store
 */tablesorter.js
