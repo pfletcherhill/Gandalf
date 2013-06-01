@@ -4,7 +4,7 @@ class OrganizationsController < ApplicationController
   
   def index
     @organizations = Organization.all
-    render json: @organizations.to_json(:include => [:categories])
+    render :json => @organizations.as_json(:methods => [:events_count, :popular_categories])
   end
 
   def show
@@ -69,7 +69,7 @@ class OrganizationsController < ApplicationController
   def search
     query = params[:query]
     organizations = Organization.fulltext_search(query)
-    render json: organizations.to_json(:include => [:categories])
+    render :json => organizations.as_json(:methods => [:events_count, :popular_categories])
   end
 
   def subscriber_email

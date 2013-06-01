@@ -15,7 +15,7 @@ else
   users.each do |id, org|
     u = User.create_from_directory id
     o = Organization.find_or_create_by_name org
-    u.add_authorization_to o
+    u.add_authorization_to o if u
   end
 end
 print("DONE\n")
