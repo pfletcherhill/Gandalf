@@ -13,7 +13,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     @results = @options.results
     @searchResults = new Backbone.Collection
     @type = @options.type
-    @render(@results)
+    @render()
   
   renderResults: (results) ->
     @$("#browse-list").html('')

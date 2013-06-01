@@ -14,7 +14,6 @@ class UsersController < ApplicationController
 
   def me
     me = current_user
-    p me
     render json: me
   end
 

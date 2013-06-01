@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   
   def all
     categories = Category.all.sort_by { |c| c.name }
-    render json: categories
+    render :json => categories.as_json(:methods => :events_count)
   end
 
   def show
@@ -20,7 +20,7 @@ class CategoriesController < ApplicationController
   def search
     query = params[:query]
     categories = Category.fulltext_search(query)
-    render json: categories
+    render :json => categories.as_json(:methods => [:events_count])
   end
 
   def events

@@ -15,7 +15,7 @@ class Gandalf.Views.Browse.Show extends Backbone.View
     moment(time).format("MMMM DD, h:mm a")
 
   renderCategories: ->
-    categories = @model.get('categories')
+    categories = @model.get('popular_categories')
     cats = []
     if categories and categories.length
       for category in categories
@@ -29,8 +29,8 @@ class Gandalf.Views.Browse.Show extends Backbone.View
       start = @convertTime @model.get('start_at')
       $(@el).html(@eventTemplate( result: @model, startAt: start ))
     else if @type == 'organizations'
-      $(@el).html(@organizationTemplate( result: @model )).addClass 'organization'
-      @renderCategories()
+      $(@el).html(@organizationTemplate( result: @model, categories: @model.get('popular_categories') ))
+      #@renderCategories()
     else if @type == 'categories'
       $(@el).html(@categoryTemplate( result: @model ))
     return this

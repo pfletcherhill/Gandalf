@@ -51,7 +51,6 @@ class EventsController < ApplicationController
 
   def search
     if params[:query]
-      puts "\n\n\n\n|#{params[:query]}|\n\n\n"
       respond_with Event
         .fulltext_search(params[:query])
         .includes(:categories, :organization, :location)
