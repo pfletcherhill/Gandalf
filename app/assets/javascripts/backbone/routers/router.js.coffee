@@ -1,11 +1,14 @@
 class Gandalf.Router extends Backbone.Router
 
   initialize: (options) ->
+    # Set Global Gandalf.currentUser
+    Gandalf.currentUser = new Gandalf.Models.User(options.currentUser)
+    
+    #Initialize @events and @organizations
     @events = new Gandalf.Collections.Events
-    @organizations = new Gandalf.Collections.Organizations
-    @organizations.add Gandalf.currentUser.get('organizations')
+    @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('organizations'))
     window.orgs = @organizations
-    # @popover = new Gandalf.Views.Popover
+    #@popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @flash.el
 
