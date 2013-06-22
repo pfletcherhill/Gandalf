@@ -1,0 +1,18 @@
+Dashboard:
+  Nav
+  Day view:
+    "Up next"
+    ~5 events showcased?
+    Event list
+    Day calendar
+  Week view
+    List?
+  Month view
+    List?
+
+Discover
+  Keep largely the same
+
+Preferences
+  Add google account / cal
+  
