@@ -1,5 +1,6 @@
-<div class="cover"></div>
 <div class="content">
   <div class="name"><a href="#categories/<%= result.get('slug') %>"><%= result.get('name') %></a></div>
+  <% count = result.get('events_count'); %>
+  <div class="count"><%= count %> <%= count == 1 ? "Event" : "Events" %></div>
   <div class="description"><%= result.get('description') %></div>
 </div>
