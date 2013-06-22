@@ -1,3 +1,7 @@
+// Browse variables
+$image-width: 100px;
+
+// Style
 .left-search input {
   width: 90%;
   padding: 5%;
@@ -28,7 +32,7 @@
   }
   .cover {
     width: 100%;
-    height: 100px;
+    height: 70px;
     background: $blue;
   }
   .content {
@@ -36,28 +40,54 @@
     padding: 15px;
     position: relative;
     border-top: 1px solid #DADADA;
+    min-height: 100px;
+  }
+  .content-image {
+    float: left;
+    img {
+      height: 100px;
+      width: 100px;
+      background: #dadada;
+    }
+  }
+  .content-inline {
+    @include calc(margin-left, "#{$image-width} + 10px");
+  }
+  .count {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dadada;
+    font-style: italic;
+    color: $blue;
+    &.black {
+      color: #333;
+    }
+  }
+  .cover.organization {
+    background: #eee;
   }
   .organization {
-    position: absolute;
-    background: white;
-    border: 1px solid #DADADA;
-    padding: 10px;
-    font-weight: normal;
-    top: -36px;
-    border-bottom: 0px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid white;
-    span.organization-logo {
-      display: inline-block;
-      height: 10px;
-      width: 10px;
-      background: red;
-      margin-right: 5px;
+    .organization-image {
+      width: 40px;
+      height: 40px;
+      margin: 15px;
+      background: $blue;
+      float: left;
+    }
+    .organization-link {
+      font-size: 18px;
+      color: black;
+      font-size: 20px;
+      display: block;
+      float: left;
+      line-height: 70px;
+      float: left;
+      @include HN-Light;
     }
   }
   .name {
     font-weight: bold;
     font-size: 20px;
+    line-height: 25px;
     border-bottom: 1px solid #dadada;
     padding-bottom: 8px;
     margin-bottom: 5px;
@@ -67,11 +97,6 @@
   }
   .location {
     font-weight: bold;
-  }
-  .description {
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px solid #dadada;
   }
   .updated-at {
     font-style: italic;

@@ -121,7 +121,7 @@ $header-z: 100;
 .dropdown-link {
   line-height: 40px;
   border-top: 1px solid #dadada;
-  @include calc(width, 100%, 30px);
+  @include calc(width, "100% - 30px");
 }
 
 #user-dropdown {
@@ -267,6 +267,26 @@ $main-width: $width - $left-width - $left-margin;
   background-image: url('/assets/ajax-loader.gif');
   background-repeat: no-repeat;
   background-position: center;
+}
+
+/*============== MAIN ===============*/
+.welcome-container {
+  padding-top: 80px;
+  width: 75%;
+  h4 {
+    @include HN-Light;
+    font-size: 100px;
+    line-height: 120px;
+  }
+  h5 {
+    @include HN-Regular;
+    font-size: 50px;
+    line-height: 60px;
+  }
+  span {
+    @include HN-Bold;
+    color: $blue;
+  }
 }
 
 /*============== FLASH =================*/

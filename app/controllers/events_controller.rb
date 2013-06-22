@@ -1,4 +1,7 @@
 class EventsController < ApplicationController
+  
+  before_filter :require_admin
+  
   respond_to :json
 
   def index
@@ -48,7 +51,6 @@ class EventsController < ApplicationController
 
   def search
     if params[:query]
-      puts "\n\n\n\n|#{params[:query]}|\n\n\n"
       respond_with Event
         .fulltext_search(params[:query])
         .includes(:categories, :organization, :location)
