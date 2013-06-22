@@ -102,10 +102,10 @@ class Event < ActiveRecord::Base
           multiday = true
         elsif time.include? "-"
           time = time.split(" - ")
-          start_at = DateTime.parse(date + time[0])
-          end_at = DateTime.parse(date + time[1])
+          start_at = DateTime.parse(date + time[0] + " EST")
+          end_at = DateTime.parse(date + time[1] + " EST")
         else
-          start_at = DateTime.parse(date + time)
+          start_at = DateTime.parse(date + time + " EST")
           end_at = start_at + 1.hour
         end
         # Get title
