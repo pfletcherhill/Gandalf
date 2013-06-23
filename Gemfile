@@ -14,10 +14,12 @@ group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem 'fabrication'
   gem 'rack-mini-profiler'
-end
-
-group :production do
-  gem 'newrelic_rpm'
+  gem "capybara"
+  gem 'spork'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-spork'
+  gem 'jasmine-rails'
 end
 
 gem 'thin'
@@ -25,6 +27,7 @@ gem 'pg'
 gem 'haml'
 
 # jQuery
+gem 'json'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-fileupload-rails'
@@ -51,7 +54,8 @@ gem 'fog'
 gem 'mini_magick'
 gem 'gmaps4rails'
 gem 'mail'
-gem 'whenever', require: false
+gem 'whenever', :require => false
+gem 'rack-mini-profiler'
 
 # Search
 gem 'pg_search'
