@@ -22,7 +22,6 @@ class Gandalf.Views.Popover extends Backbone.View
     return this
 
   setEvents: (evs) ->
-    console.log "popover: setting events...", evs
     @myEvents = evs
 
   # Helpers

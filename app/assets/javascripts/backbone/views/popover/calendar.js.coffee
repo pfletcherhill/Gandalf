@@ -15,7 +15,6 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
 
   showFacebookLogin: ->
     $(".gandalf-popover").html @facebookTemplate()
-    console.log "prompting facebook login...", $(".gandalf-popover")
     @show()
 
   facebookLogin: ->
@@ -23,7 +22,6 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
       if response.authResponse
         Gandalf.facebookStatus = 'connected';
         Gandalf.facebookResponse = response.authResponse;
-        console.log "Connected! saving..."
         Gandalf.currentUser.updateFacebook(
           response.authResponse.userID, response.authResponse.accessToken)
       else
@@ -93,8 +91,3 @@ class Gandalf.Views.CalendarPopover extends Gandalf.Views.Popover
       trigger: "click"
       title: "Why is this on my calendar?"
       content: why
-
-    # console.log "SHOW:", model.get("organization_id")
-    # console.log _.pluck(model.get("categories"), "id")
-    # console.log Gandalf.currentUser.get("subscribed_organizations").pluck "id"
-    # console.log Gandalf.currentUser.get("subscribed_categories").pluck "id"

@@ -1,5 +1,4 @@
 # Backbone's representation of an Event.
-# Author: Rafi
 
 class Gandalf.Models.Event extends Backbone.Model
   paramRoot: 'event'

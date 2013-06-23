@@ -21,7 +21,6 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
 
   renderCategories: ->
     categories = @model.get('categories')
-    console.log categories
     cats = []
     if categories
       for category in categories

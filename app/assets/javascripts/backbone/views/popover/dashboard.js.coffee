@@ -67,13 +67,11 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
       success: (e) =>
         @hide()
         @collection.add e
-        console.log @collection
         # Gandalf.dispatcher.trigger("event:change", e)
         Gandalf.dispatcher.trigger("flash:success", "#{e.get('name')} created!")
       error: (organization, jqXHR) =>
         Gandalf.dispatcher.trigger("flash:error", "Couldn't create event.")
         newEvent.set({errors: $.parseJSON(jqXHR.responseText)})
-        console.log $.parseJSON(jqXHR.responseText)
     )
     # So the browser doesn't submit the event
     return false
@@ -86,7 +84,6 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     eventId = $("[name=event_id]").val()
     e = @collection.get(eventId)
     e.set values
-    console.log 'saving event', e
     e.save(values,
       success: (e) =>
         @hide()
@@ -95,7 +92,6 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
       error: (organization, jqXHR) =>
         Gandalf.dispatcher.trigger("flash:error", "Couldn't update event.")
         e.set({errors: $.parseJSON(jqXHR.responseText)})
-        console.log $.parseJSON(jqXHR.responseText)
     )
     return false
 
@@ -114,7 +110,7 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     @show()
 
   orgFBSync: ->
-    console.log "syncing...", @organizationFBEvents, @organization
+    # console.log "syncing...", @organizationFBEvents, @organization
     @organization.addFBEvents(@organizationFBEvents)
     @hide()
 
@@ -197,7 +193,6 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
 
   # Temporary mail event handlers
   showEmail: (object) ->
-    console.log object
     @emails = object.emails
     @organization = object.organization
     color = "rgba(#{@organization.get("color")}, 0.7)"

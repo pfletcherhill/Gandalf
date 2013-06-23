@@ -1,5 +1,4 @@
 # JSON API for events.
-# Authors: Rafi, Paul
 
 class EventsController < ApplicationController
   before_filter :require_admin
