@@ -151,7 +151,6 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.5.2)
     netrc (0.7.7)
-    newrelic_rpm (3.6.0.78)
     nokogiri (1.5.5)
     ntlm-http (0.1.1)
     pg (0.14.1)
@@ -291,7 +290,6 @@ DEPENDENCIES
   mechanize
   mini_magick
   net-ldap
-  newrelic_rpm
   nokogiri
   pg
   pg_search
