@@ -107,8 +107,10 @@ class UsersController < ApplicationController
   end
 
   def bulletin
-    User.send_daily_bulletin
-    User.send_weekly_bulletin
+    unless Rails.env.production?
+      User.send_daily_bulletin
+      User.send_weekly_bulletin
+    end
     render json: {}
   end
 

@@ -41,7 +41,6 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
 
   renderMultidayEvents: ->
     events = @calEvents.getMultidayEvents()
-    console.log "rendering multiday...", events
     eNum = 0
     for e in events
       view = new Gandalf.Views.Calendar.Week.MultidayEvent(

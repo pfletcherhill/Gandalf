@@ -24,7 +24,7 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
     cats = []
     if categories
       for category in categories
-        cats.push "<a href='#categories/#{category.get('slug')}'>#{category.name}</a>"
+        cats.push "<a href='#categories/#{category.slug}'>#{category.name}</a>"
       @$('.organization-categories').append( cats.join(', ') )
 
   renderEvents: =>
@@ -49,7 +49,7 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
     calNav = new Gandalf.Views.CalendarNav(
       period: @options.period
       startDate: @options.startDate
-      root: "organizations/#{@model.get('id')}"
+      root: "organizations/#{@model.get('slug')}"
     )
     @$(".content-calendar-nav > .container").html(calNav.el)
     $("[rel=tooltip]").tooltip()
