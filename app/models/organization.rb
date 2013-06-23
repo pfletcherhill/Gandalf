@@ -1,4 +1,5 @@
 class Organization < ActiveRecord::Base
+  require 'gappsprovisioning/provisioningapi'
 
   # Associations
   has_many :events
@@ -30,7 +31,7 @@ class Organization < ActiveRecord::Base
       }
     }
 
-  #Image Uploader
+  # Image Uploader
   mount_uploader :image, ImageUploader
 
   def complete_events

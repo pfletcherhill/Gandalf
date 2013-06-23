@@ -30,7 +30,7 @@ window.fbAsyncInit = function() {
       Gandalf.currentUser.updateFacebook(
         response.authResponse.userID, response.authResponse.accessToken);
       // For development only
-      Gandalf.dispatcher.trigger("facebook:login");
+      // Gandalf.dispatcher.trigger("facebook:login");
     } else if (response.status === 'not_authorized') {
       Gandalf.facebookStatus = 'not_authorized';
       Gandalf.dispatcher.trigger("facebook:login");

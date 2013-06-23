@@ -25,7 +25,7 @@ class Gandalf.Views.Preferences.Index extends Backbone.View
 
   getSubscriptions: =>
     @subscriptions = new Gandalf.Collections.Subscriptions
-    @subscriptions.url = '/users/' + Gandalf.currentUser.id + '/subscriptions'
+    @subscriptions.url = '/users/subscriptions'
     @subscriptions.fetch success: (subscriptions) =>
       @subscriptions = subscriptions
       for subscription in @subscriptions.models
