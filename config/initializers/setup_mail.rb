@@ -13,6 +13,5 @@ ActionMailer::Base.smtp_settings = {
 ActionMailer::Base.delivery_method = :smtp
 
 ActionMailer::Base.default_url_options[:host] = "yalego.es"
-if Rails.env.development? or Rails.env.production? or Rails.env.test?
-  ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor)
-end
+# Intercept mail!
+ActionMailer::Base.register_interceptor(DevelopmentMailInterceptor) # if Rails.env.development?

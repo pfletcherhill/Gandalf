@@ -18,13 +18,18 @@ class Organization < ActiveRecord::Base
   # pg_search
   include PgSearch
   multisearchable :against => [:name, :bio]
-  pg_search_scope :fulltext_search,
-    against: [:name, :bio],
-    using: { tsearch:  {
-      prefix: true, 
-      dictionary: "english",
-      any_word: true
-    } }
+  pg_search_scope :fulltext_search, 
+    :against => {
+      :name => "A", 
+      :bio => "B"
+    }, 
+    :using => {
+      :tsearch => {
+        :prefix => true,
+        :dictionary => "english",
+        :any_word => true
+      }
+    }
 
   # Image Uploader
   mount_uploader :image, ImageUploader
@@ -36,6 +41,14 @@ class Organization < ActiveRecord::Base
     self.events
       .includes(:location, :organization, :categories)
       .order("start_at")
+  end
+  
+  def popular_categories
+    self.categories.first(10)
+  end
+  
+  def events_count
+    self.events.count
   end
   
   #Events, can have start and end

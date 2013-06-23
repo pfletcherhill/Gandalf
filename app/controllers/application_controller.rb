@@ -27,10 +27,10 @@ class ApplicationController < ActionController::Base
   def require_admin
     if session[:cas_user]
       unless User.find_by_netid(session[:cas_user]).admin == true
-        redirect_to '/' #halts request cycle
+        redirect_to '/welcome' #halts request cycle
       end
     else
-      redirect_to '/' #halts request cycle
+      redirect_to '/welcome' #halts request cycle
     end
   end
   
