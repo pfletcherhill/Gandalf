@@ -14,10 +14,11 @@ group :test, :development do
   gem "rspec-rails", "~> 2.0"
   gem 'fabrication'
   gem 'rack-mini-profiler'
-end
-
-group :production do
-  gem 'newrelic_rpm'
+  gem "capybara"
+  gem 'spork'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-spork'
 end
 
 gem 'thin'
