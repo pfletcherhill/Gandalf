@@ -19,6 +19,7 @@ group :test, :development do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-spork'
+  gem 'jasmine-rails'
 end
 
 gem 'thin'
