@@ -86,6 +86,7 @@ class Gandalf.Views.DashboardPopover extends Gandalf.Views.Popover
     eventId = $("[name=event_id]").val()
     e = @collection.get(eventId)
     e.set values
+    console.log 'saving event', e
     e.save(values,
       success: (e) =>
         @hide()
