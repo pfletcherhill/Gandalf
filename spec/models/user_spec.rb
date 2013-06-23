@@ -29,7 +29,7 @@ describe User do
       end
       context "and organization has events" do
         before :each do
-          @event = Fabricate(:event)
+          @event = Fabricate(:event, organization: @organization)
         end
         it "returns array of events" do
          events = @user.events
@@ -69,9 +69,12 @@ describe User do
           @event = Fabricate(:event, organization_id: @organization.id)
           @category.events << @event
         end
+        it "the category has the event" do
+          expect(@category.events).to include(@event)
+        end
         it "returns array of one event" do
           events = @user.events
-          events.should == [@event]
+          expect(events).to eq([@event])
         end
       end
     end
