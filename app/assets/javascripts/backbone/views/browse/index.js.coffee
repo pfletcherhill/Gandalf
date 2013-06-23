@@ -17,8 +17,13 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     @count = 0
     @render(@results)
   
-  renderResults: (results) ->
-    for num in [1..12]    # 12 times
+  # Render the contents of search results, numberOfResults at a time.
+  # param {Collection.<Organization|Category|Event>} results The results
+  #   fetched by the router.
+  # param {number} numberOfResults The number to render.
+  renderResults: (results, numberOfResults) ->
+    numberOfResults ||= 12 # Default to 12
+    for num in [1..numberOfResults]
       if @count < results.models.length
         @addResult results.models[@count]
         @count++
@@ -32,7 +37,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
   render: ->
     @$el.html(@template(type: @type))
     @$("#browse-list").html('')
-    @renderResults @results     # Render first 20
+    @renderResults @results, 20 # Render first 20
     @changeActive(@type)
     setTimeout(=>               # Render rest a bit later so the user can see something
       while(@renderResults(@results))

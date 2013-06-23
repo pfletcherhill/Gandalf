@@ -1,5 +1,4 @@
 # Backbone's representation of the category model.
-# Author: Paul
 
 class Gandalf.Models.Category extends Backbone.Model
   paramRoot: 'category'

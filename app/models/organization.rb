@@ -34,9 +34,6 @@ class Organization < ActiveRecord::Base
   # Image Uploader
   mount_uploader :image, ImageUploader
 
-  # Google Apps integration
-  include GAppsProvisioning
-
   def complete_events
     self.events
       .includes(:location, :organization, :categories)
@@ -85,23 +82,6 @@ class Organization < ActiveRecord::Base
     rescue
     end
   end
-
-  # Gapps methods
-
-  # def Organization.get_gapp
-  #   return @@myapp
-  # end
-
-  # # Gets an 'EliList'. 
-  # def Organization.get_gapp_group(id)
-  #   # Get the groups each time...perhaps make more efficient later
-  #   @@myapp.retrieve_all_groups.each do |g|
-  #     return g if g.group_id == id
-  #   end
-  #   return nil
-  # end
-
-  # @@myapp = ProvisioningApi.new(ENV['GAPPS_EMAIL'], ENV['GAPPS_PASS'])
   
   private
 
