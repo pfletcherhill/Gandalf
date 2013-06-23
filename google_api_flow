@@ -1,0 +1,68 @@
+YG = YaleGo
+GG = Google
+
+When a user visits:
+  Ask YG database for all groups and categories the user is associated with.
+  For each organization:
+    Query GG calendar for all events in <view time-scope> 
+    Add returned events to global events list (in order), if they don't exist
+    Mark each event's organization as this one
+  For each category:
+    Query GG calendar for all events in <view time-scope>
+    Add returned events to global events list (in order), if they don't exist
+    Append to each event's list of categories, if this category isn't in that list
+  Render event list and calendar
+
+Backend:
+  Organization (implements subscribeable):
+    has_many subscribers, as subscribeable
+    YG Id
+    GG Group Id
+    GG Cal Id
+    <meta data>
+    Color
+  Category (implements subscribeable):
+    YG Id
+    GG Group Id
+    GG Cal Id
+    <meta data>
+  User:
+    <meta data>
+    has_many subscriptions
+    has_many subscribeables, through: subscriptions
+    followed_orgs = subscibeables where type = org
+    followed_cat = subscibeables where type = cat
+    admin_orgs = followed_orgs where subscriptions.access == admin 
+    member_orgs = ""
+  Event:
+    GG event Id
+    location ID:
+    name (synced from google)
+    description (for search)
+    EVENTUALLY:
+      user plans to attend : status
+      Users attendned
+      user ratings
+    PRESTATUS:
+      0: NOT_ATTENDING
+      1: ATTENDING
+      2: UNKNOWN
+    POSTSTATUS
+      0: DID_NOT_ATTEND
+      1: DID_ATTEND
+      2: UNKNOWN (event in past, unmarked)
+
+
+  Subscription:
+    belongs_ user
+    belongs_to subscribeable
+  Location:
+    For autocomplete
+  LocationAliases:
+    Also for autocomplete
+
+
+PG_search:
+  Paul's got it hehe
+
+Emails

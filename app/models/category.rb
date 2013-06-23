@@ -30,6 +30,10 @@ class Category < ActiveRecord::Base
       .includes(:location, :organization, :categories)
       .order("start_at")
   end
+  
+  def events_count
+    self.events.count
+  end
 
   def events_with_period(*times)
     start_at = times[0]

@@ -1,8 +1,14 @@
-<div class="cover"></div>
 <div class="content">
-  <div class="name"><a href="#organizations/<%= result.get('slug') %>"><%= result.get('name') %></a></div>
-  <div class="categories"></div>
-  <% if(result.get('bio')) { %>
-    <div class="description"><%= result.get('bio') %></div>
-  <% } %>
+  <div class="content-image">
+    <img src="<%= result.get('image').thumbnail.url %>"/>
+  </div>
+  <div class="content-inline">
+    <div class="name"><a href="#organizations/<%= result.get('slug') %>"><%= result.get('name') %></a></div>
+    <% count = result.get('events_count'); %>
+    <div class="count black"><%= count %> <%= count == 1 ? "Event" : "Events" %></div>
+    <div class="categories"></div>
+    <% if(result.get('bio')) { %>
+      <div class="description"><%= result.get('bio') %></div>
+    <% } %>
+  </div>
 </div>

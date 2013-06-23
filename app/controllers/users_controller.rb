@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  
+  before_filter :require_admin
+  
   respond_to :json
   before_filter :require_login
 
@@ -11,7 +14,6 @@ class UsersController < ApplicationController
 
   def me
     me = current_user
-    p me
     render json: me
   end
 

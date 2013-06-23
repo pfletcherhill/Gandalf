@@ -20,8 +20,8 @@ CASClient::Frameworks::Rails::Filter.configure(
 # 
 # The file is already added to .gitignore, so don't worry about it being pushed  
 
-# Why not in production..?
-# unless Rails.env.production?
+# In production, set these as environment variables directly through Heroku.
+unless Rails.env.production?
   credentials = YAML.load_file("#{Rails.root}/config/credentials.yml")
   ENV['CAS_NETID']            = credentials['netid']
   ENV['CAS_PASS']             = credentials['password']
@@ -34,4 +34,4 @@ CASClient::Frameworks::Rails::Filter.configure(
   ENV['FACEBOOK_APP_SECRET']  = credentials['facebook_app_secret']
   ENV['GAPPS_EMAIL']  = credentials['gapps_email']
   ENV['GAPPS_PASS']  = credentials['gapps_password']
-# end
+end

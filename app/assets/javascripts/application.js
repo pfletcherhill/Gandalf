@@ -12,5 +12,4 @@
 //= require backbone/gandalf
 //= require bootstrap-tooltip
 //= require bootstrap-popover
-//= require backbone-forms-rails
 //= require_tree .
