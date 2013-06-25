@@ -39,6 +39,7 @@ gem 'httpclient'
 gem 'net-ldap'
 gem 'rubycas-client'
 gem 'heroku'
+gem 'google-api-client'
 
 # Style
 gem 'bourbon'

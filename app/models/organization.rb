@@ -1,5 +1,7 @@
 class Organization < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  
   # Associations
   has_many :events
   has_many :access_controls

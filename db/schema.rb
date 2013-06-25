@@ -13,20 +13,16 @@
 
 ActiveRecord::Schema.define(:version => 20130326023441) do
 
-  create_table "access_controls", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "user_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
   create_table "categories", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.string   "slug"
     t.string   "flyer"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "apps_group_id"
+    t.string   "apps_group_email"
+    t.string   "apps_cal_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   add_index "categories", ["slug"], :name => "index_categories_on_slug"
@@ -39,15 +35,18 @@ ActiveRecord::Schema.define(:version => 20130326023441) do
   create_table "events", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "start_at"
-    t.datetime "end_at"
     t.string   "room_number"
     t.integer  "organization_id"
     t.integer  "location_id"
+    t.integer  "pre_status"
+    t.integer  "post_status"
     t.string   "fb_id"
+    t.string   "apps_event_id"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  add_index "events", ["organization_id"], :name => "index_events_on_organization_id"
 
   create_table "location_aliases", :force => true do |t|
     t.string   "value"
@@ -71,13 +70,16 @@ ActiveRecord::Schema.define(:version => 20130326023441) do
     t.text     "bio"
     t.string   "slug"
     t.string   "image"
-    t.string   "color",         :default => "150,150,150"
+    t.string   "color",            :default => "150,150,150"
     t.string   "fb_id"
     t.string   "fb_access_key"
     t.string   "fb_name"
     t.string   "fb_link"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.string   "apps_group_id"
+    t.string   "apps_cal_id"
+    t.string   "apps_group_email"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
   end
 
   add_index "organizations", ["slug"], :name => "index_organizations_on_slug"
@@ -92,11 +94,15 @@ ActiveRecord::Schema.define(:version => 20130326023441) do
 
   create_table "subscriptions", :force => true do |t|
     t.integer  "subscribeable_id"
-    t.integer  "user_id"
     t.string   "subscribeable_type"
+    t.integer  "user_id"
+    t.integer  "status"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
+
+  add_index "subscriptions", ["subscribeable_id"], :name => "index_subscriptions_on_subscribeable_id"
+  add_index "subscriptions", ["user_id"], :name => "index_subscriptions_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "netid"
@@ -111,6 +117,7 @@ ActiveRecord::Schema.define(:version => 20130326023441) do
     t.string   "fb_id"
     t.string   "fb_access_token"
     t.string   "fb_accounts"
+    t.string   "apps_user_id"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
   end

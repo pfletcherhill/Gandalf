@@ -1,5 +1,7 @@
 class Category < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  
   # Associations
   has_and_belongs_to_many :events
   has_many :subscriptions, :as => :subscribeable

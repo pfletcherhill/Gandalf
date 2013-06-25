@@ -7,8 +7,6 @@
 //= require moment
 //= require underscore
 //= require backbone
-//= require backbone_rails_sync
-//= require backbone.modelbinder
 //= require backbone/gandalf
 //= require bootstrap-tooltip
 //= require bootstrap-popover

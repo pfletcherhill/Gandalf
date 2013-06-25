@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  
   # Associations
   has_many :access_controls
   has_many :organizations, :through => :access_controls
@@ -13,6 +15,23 @@ class User < ActiveRecord::Base
   validates_presence_of :netid, :name, :nickname, :email
   validates_uniqueness_of :netid, :case_sensitive => false
   validates_uniqueness_of :email, :case_sensitive => false
+  
+  # Google API Client
+  @@client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
+  
+  # Get group from Google API Client
+  def get_from_google
+    # Define directory object
+    directory = @@client.discovered_api("admin", "directory_v1")
+
+    # Execute GET groups
+    # Get group object for yalego.subscribers.tedxyale@tedxyale.com
+    result = @@client.execute(:api_method => directory.groups.get, :parameters => {
+      "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
+    })
+
+    result.data
+  end
   
   # Subscribed events
   def events(*times)
@@ -192,7 +211,7 @@ class User < ActiveRecord::Base
     form.submit
     browser
   end
-
+  
   # Keep a CAS_authenticated browser
   @@browser = User.make_cas_browser
 

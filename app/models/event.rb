@@ -1,5 +1,7 @@
 class Event < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  
   # Associations
   belongs_to :organization
   has_and_belongs_to_many :categories
