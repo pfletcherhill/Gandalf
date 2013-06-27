@@ -3,7 +3,6 @@ Gandalf.Views ||= {}
 class Gandalf.Views.Popover extends Backbone.View
 
   initialize: ->
-    console.log "POPOVER"
     # My events are the events on the currently shown calendar
     @myEvents = @options.events
     @render()
@@ -23,7 +22,6 @@ class Gandalf.Views.Popover extends Backbone.View
     return this
 
   setEvents: (evs) ->
-    console.log "popover: setting events...", evs
     @myEvents = evs
 
   # Helpers

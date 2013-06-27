@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
 
+  include Gandalf::Utilities
   include Gandalf::GoogleApiClient
   
   # Associations
@@ -7,6 +8,20 @@ class Organization < ActiveRecord::Base
   has_many :subscribers, :through => :subscriptions, :source => :user
   has_many :groups, as: :groupable
   has_many :events, through: :groups
+  
+  # Access Controls  
+  has_many :admins,
+           through: :subscriptions,
+           source: :user,
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]]
+  has_many :members,
+           through: :subscriptions,
+           source: :user,
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]]
+  has_many :followers,
+           through: :subscriptions,
+           source: :user,
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]]
 
   # Validations
   validates_uniqueness_of :name, :case_sensitive => false

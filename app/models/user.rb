@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 
+  include Gandalf::Utilities
   include Gandalf::GoogleApiClient
   
   # Associations
@@ -31,27 +32,27 @@ class User < ActiveRecord::Base
            through: :category_groups,
            source: :events
 
+  # Access Controls
+  has_many :admin_organizations,
+           through: :subscriptions,
+           source: :subscribeable,
+           source_type: "Organization",
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]]
+  has_many :member_organizations,
+           through: :subscriptions,
+           source: :subscribeable,
+           source_type: "Organization",
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]]
+  has_many :follower_organizations,
+           through: :subscriptions,
+           source: :subscribeable,
+           source_type: "Organization",
+           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]]
+
   # Validations
   validates_presence_of :netid, :name, :email
   validates_uniqueness_of :netid, :case_sensitive => false
   validates_uniqueness_of :email, :case_sensitive => false
-  
-  # Google API Client
-  @@client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
-  
-  # Get group from Google API Client
-  def get_from_google
-    # Define directory object
-    directory = @@client.discovered_api("admin", "directory_v1")
-
-    # Execute GET groups
-    # Get group object for yalego.subscribers.tedxyale@tedxyale.com
-    result = @@client.execute(:api_method => directory.groups.get, :parameters => {
-      "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
-    })
-
-    result.data
-  end
   
   def display_name
     nickname || name
@@ -69,10 +70,6 @@ class User < ActiveRecord::Base
     else
       events.uniq
     end
-  end
-  
-  def organizations
-    
   end
 
   def upcoming_events(start=Time.now, limit=10)
@@ -231,5 +228,24 @@ class User < ActiveRecord::Base
   
   # Keep a CAS_authenticated browser
   @@browser = User.make_cas_browser
+  
+  private
+  
+  # Google API Client
+  @@client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
+  
+  # Get group from Google API Client
+  def get_from_google
+    # Define directory object
+    directory = @@client.discovered_api("admin", "directory_v1")
 
+    # Execute GET groups
+    # Get group object for yalego.subscribers.tedxyale@tedxyale.com
+    result = @@client.execute(:api_method => directory.groups.get, :parameters => {
+      "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
+    })
+
+    result.data
+  end
+  
 end
