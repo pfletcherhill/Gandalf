@@ -15,11 +15,6 @@ class CreateOrganizations < ActiveRecord::Migration
       t.string :fb_name
       t.string :fb_link
       
-      # Google Apps Attributes.
-      t.string :apps_group_id
-      t.string :apps_cal_id
-      t.string :apps_group_email
-      
       # Rails Attributes.
       t.timestamps
     end

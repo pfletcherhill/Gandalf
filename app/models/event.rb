@@ -1,35 +1,42 @@
 class Event < ActiveRecord::Base
 
   include Gandalf::GoogleApiClient
+  include Gandalf::Utilities
   
   # Associations
   belongs_to :organization
-  has_and_belongs_to_many :categories
   belongs_to :location
+  has_and_belongs_to_many :groups
 
   validates_presence_of :name
   validates_presence_of :organization_id
-  validates_presence_of :start_at
-  validates_presence_of :end_at
 
   validates_uniqueness_of :fb_id, :if => :fb_id?
-  validates_uniqueness_of :name, :scope => [:organization_id, :start_at]
+  validates_uniqueness_of :name, :scope => [:organization_id]
 
-  #pg_search
+  # Search
   include PgSearch
-  multisearchable :against => [:name, :description]
+  
+  multisearchable against: [
+    :name,
+    :description
+  ]
+  
   pg_search_scope :fulltext_search,
-    against: [:name, :description],
+    against: {
+      name: "A",
+      description: "B"
+    },
     associated_against: {
       organization: [:name],
       location: [:name]
     },
-    using: { tsearch: {
-      prefix: true, 
-      dictionary: "english",
-      any_word: true
+    using: {
+      tsearch: {
+        prefix: true,
+        anyword: true
+      }
     }
-  }
 
   def date
     date = self.start_at.strftime("%Y-%m-%d")

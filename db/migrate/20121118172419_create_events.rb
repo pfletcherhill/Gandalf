@@ -4,26 +4,23 @@ class CreateEvents < ActiveRecord::Migration
       
       # Gandalf Attributes.
       t.string :name
+      t.string :slug
       t.text :description
       t.string :room_number
-      t.integer :organization_id
-      t.integer :location_id
       t.integer :pre_status
       t.integer :post_status
+      t.integer :organization_id
+      t.integer :group_id
+      t.integer :location_id
 
       # Facebook Attributes.
       t.string :fb_id
 
       # Google Apps Attributes.
-      t.string :apps_event_id
+      t.string :apps_id
       
       # Rails Attributes.
       t.timestamps
-    end
-    
-    create_table :categories_events do |t|
-      t.integer :event_id
-      t.integer :category_id
     end
   end
 end

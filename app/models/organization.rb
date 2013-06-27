@@ -3,18 +3,17 @@ class Organization < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :events
-  has_many :access_controls
-  has_many :admins, :through => :access_controls, :source => :user
   has_many :subscriptions, :as => :subscribeable
   has_many :subscribers, :through => :subscriptions, :source => :user
+  has_many :groups, as: :groupable
+  has_many :events, through: :groups
 
   # Validations
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :slug, :case_sensitive => false
 
   # Callbacks
-  before_create :make_slug
+  before_create :set_slug
 
   # pg_search
   include PgSearch
@@ -35,6 +34,10 @@ class Organization < ActiveRecord::Base
   #Image Uploader
   mount_uploader :image, ImageUploader
 
+  def set_slug
+    slug = make_slug(name)
+  end
+  
   def complete_events
     self.events
       .includes(:location, :organization, :categories)
@@ -84,10 +87,4 @@ class Organization < ActiveRecord::Base
     end
   end
   
-  private
-
-  def make_slug
-    self.slug ||= Subscription.make_slug self.name
-  end
-
 end
