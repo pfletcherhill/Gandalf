@@ -1,17 +1,15 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.2'
-gem 'rake', '10.0.2'
+gem 'rails', '4.0.0'
+gem 'rake', '10.1.0'
 
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'jquery-ui-rails'
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'jquery-ui-rails'
+gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do
-  gem "rspec-rails", "~> 2.0"
+  gem "rspec-rails", "~> 2.13.2"
   gem 'fabrication'
   gem 'rack-mini-profiler'
   gem "capybara"
@@ -21,6 +19,11 @@ group :test, :development do
   gem 'guard-spork'
   gem 'jasmine-rails'
 end
+
+# Rails 4 compatibility
+gem 'protected_attributes'
+gem 'rails-observers'
+gem 'actionpack-action_caching'
 
 gem 'thin'
 gem 'pg'
@@ -48,7 +51,7 @@ gem 'bourbon'
 gem 'bootstrap-sass', '~> 2.2.1.1'
 
 # Misc
-gem 'squeel'
+# gem 'squeel'
 gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
