@@ -28,7 +28,6 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
 
   renderOrgs: ->
     orgs = @user.get('fb_accounts')
-    console.log orgs
     if not orgs or not orgs.length
       @$("#dash-facebook-orgs").html(
         "<p><b>You're not the admin of any Facebook accounts. Nothing to do here :-/</b></p>")
@@ -37,7 +36,6 @@ class Gandalf.Views.Dashboard.Facebook extends Backbone.View
         @$("#dash-facebook-orgs").append(@showTemplate(org: org))
 
   associate: (e) ->
-    console.log "associate"
     o_id = $(e.target).data("id")
     FB.api("/#{o_id}", (data) =>
       @model.url = "/organizations/#{@model.get('id')}"

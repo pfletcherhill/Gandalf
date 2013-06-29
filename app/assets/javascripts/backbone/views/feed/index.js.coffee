@@ -17,7 +17,6 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   # Rendering functions
 
   renderSubscribedOrganizations: ->
-    console.log "rendering subscribed Organizations"
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
     hidden = @options.events.getHiddenOrgs()
     # for s in subscriptions

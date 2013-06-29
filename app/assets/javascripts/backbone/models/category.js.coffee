@@ -1,9 +1,13 @@
+# Backbone's representation of the category model.
+
 class Gandalf.Models.Category extends Backbone.Model
   paramRoot: 'category'
 
   defaults:
     name: null
   
+  # Gets all events associated with a category.
+  # param {string} string Paul what is this? How should it be formatted?
   fetchEvents: (string) ->
     if string
       string = '?' + string

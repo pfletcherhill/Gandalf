@@ -1,3 +1,5 @@
+# A User object. May be an admin.
+
 class User < ActiveRecord::Base
 
   include Gandalf::Utilities
@@ -58,7 +60,12 @@ class User < ActiveRecord::Base
     nickname || name
   end
   
-  # Subscribed events
+  # Get a user's subscribed events.
+  # param {string, string, ...} *times Optional two time strings, formatted
+  #   as Rails timestamps, specifying start and end times respectively.
+  #   If only one is provided, only the start time is specified.
+  # return {[Event]} An array of events that the user follows that also 
+  #   matching the times.
   def events_with_range(*times)
     start_at = times[0]
     end_at = times[1]
@@ -162,6 +169,9 @@ class User < ActiveRecord::Base
       end
       return u if u
     end
+
+    User.update_browser
+
     netid_regex = /^NetID:/
     name_regex = /^Name:/
     known_as_regex = /Known As:/
@@ -226,8 +236,16 @@ class User < ActiveRecord::Base
     browser
   end
   
+  # Make sure CAS credentials don't expire by refreshing every hour
+  def User.update_browser
+    if Time.now - @@browser_time > 1.hour
+      @@browser = user.make_cas_browser
+    end
+  end
+
   # Keep a CAS_authenticated browser
   @@browser = User.make_cas_browser
+  @@browser_time = Time.now
   
   private
   
@@ -246,5 +264,4 @@ class User < ActiveRecord::Base
     # 
     #     result.data
   end
-  
 end

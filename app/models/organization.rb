@@ -1,4 +1,5 @@
 class Organization < ActiveRecord::Base
+  require 'gappsprovisioning/provisioningapi'
 
   include Gandalf::Utilities
   include Gandalf::GoogleApiClient
@@ -46,7 +47,7 @@ class Organization < ActiveRecord::Base
       }
     }
 
-  #Image Uploader
+  # Image Uploader
   mount_uploader :image, ImageUploader
 
   def set_slug

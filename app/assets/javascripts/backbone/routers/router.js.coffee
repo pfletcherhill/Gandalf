@@ -26,10 +26,13 @@ class Gandalf.Router extends Backbone.Router
       Gandalf.dispatcher.trigger("flash:error", 
         "Oh no! Looks like we got an error. Please try again later :-/")
 
-  # Process period takes the date and period
-  # (either week or month, from the URL) and finds the start and end of the period
-  # Returns an object with the parameters
-  processPeriod: (date, period) ->
+  # Takes the date and type (list (aka today), week or month)
+  # and finds the start and end of the period specified by the type.
+  # param {string} date The date to get the period for.
+  # param {string} type One of [list, week, month]
+  # return {{start: moment(), end: moment(), type: type}} 
+  #   an object with the parameters.
+  processType: (date, type) ->
     if date == 'today'
       date = moment().format(Gandalf.displayFormat)
     if period == 'week'
@@ -43,7 +46,7 @@ class Gandalf.Router extends Backbone.Router
     else
       startAt = moment().day(0)
       endAt = moment(startAt).add('w',1)
-      period = 'week'
+      period = 'list'
     params = {
       start: startAt.sod()
       end: endAt.sod()
@@ -64,11 +67,6 @@ class Gandalf.Router extends Backbone.Router
     # Browse Routes
     'browse/:type'                    : 'browse'
     'browse*'                         : 'browse'
-
-    # Calendar Routes
-    'calendar/:date/:period'          : 'calendar'
-    'calendar'                        : 'calendarRedirect'
-    'calendar/:date'                  : 'calendarRedirect'
 
     # Dashboard Routes
     'dashboard'                       : 'dashboard'
@@ -95,11 +93,20 @@ class Gandalf.Router extends Backbone.Router
 
     # Static Routes
     'about'                           : 'about'
-    '.*'                              : 'calendarRedirect'
 
-  calendar: (date, period) ->
+    # Calendar Routes (catch all)
+    ':date'                           : 'calendar'
+    ':date/:type'                     : 'calendar'
+    '.*'                              : 'calendar'
+
+  next: (type) ->
+    console.log 'next'
+
+  calendar: (date, type) ->
     @showLoader('#content')
-    params = @processPeriod date, period
+    date ||= 'today'
+    type ||= 'list'
+    params = @processPeriod date, type
     string = @generateParamsString params
     @events.url = '/users/events?' + string
     @events.fetch success: (events) ->

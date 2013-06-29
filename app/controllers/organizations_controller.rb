@@ -16,7 +16,7 @@ class OrganizationsController < ApplicationController
 
   def show_by_slug
     @organization = Organization.find_by_slug(params[:slug])
-    render json: @organization.to_json(:include => [:categories])
+    render json: @organization.to_json(:include => :categories)
   end
 
   def edit

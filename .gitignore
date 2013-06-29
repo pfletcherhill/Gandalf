@@ -15,8 +15,13 @@ capybara-*.html
 rerun.txt
 pickle-email-*.html
 
+# Credentials
 /config/credentials.yml
 /config/newrelic.yml
+*.p12
+
+# lib items
+lib/gappsprovisioning
 
 *.DS_Store
 */tablesorter.js
@@ -24,3 +29,6 @@ hours.log
 
 # Random
 *.csv
+
+# Designs
+design/

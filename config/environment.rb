@@ -16,5 +16,6 @@ CASClient::Frameworks::Rails::Filter.configure(
 # 
 # netid: <YOUR NETID>
 # password: <YOUR CAS PASSWORD>
+# ...etc.
 # 
 # The file is already added to .gitignore, so don't worry about it being pushed

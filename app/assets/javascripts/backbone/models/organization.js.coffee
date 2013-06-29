@@ -45,14 +45,12 @@ class Gandalf.Models.Organization extends Backbone.Model
       else
         Gandalf.dispatcher.trigger("flash:error", "Couldn't get Facebook events for this organization...")
     )
-    console.log "Fetching Facebook events..."
 
   addFBEvents: (events) ->
     count = events.length
     counter = 0
     for e in events
       e.end_time ||= moment(e.start_time).add('h', 1).format()
-      console.log e.end_time
       newE = new Gandalf.Models.Event
       newE.save {
           name: e.name
@@ -65,7 +63,6 @@ class Gandalf.Models.Organization extends Backbone.Model
           description: ""
         }, { 
           success: (e) ->
-            console.log "fb event created!", e
             counter++
             if counter is count
               Gandalf.dispatcher.trigger("flash:success", "Facebook events synced!")

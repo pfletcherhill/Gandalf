@@ -113,7 +113,6 @@ describe User do
             @user.events.first.should == @event
           end
         end
-        
       end
     end
   end
@@ -151,6 +150,5 @@ describe User do
         end
       end
     end
-    
   end
 end
