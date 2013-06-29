@@ -231,21 +231,20 @@ class User < ActiveRecord::Base
   
   private
   
-  # Google API Client
-  @@client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
-  
+  @client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
+    
   # Get group from Google API Client
   def get_from_google
-    # Define directory object
-    directory = @@client.discovered_api("admin", "directory_v1")
-
-    # Execute GET groups
-    # Get group object for yalego.subscribers.tedxyale@tedxyale.com
-    result = @@client.execute(:api_method => directory.groups.get, :parameters => {
-      "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
-    })
-
-    result.data
+    # # Define directory object
+    #     directory = @@client.discovered_api("admin", "directory_v1")
+    # 
+    #     # Execute GET groups
+    #     # Get group object for yalego.subscribers.tedxyale@tedxyale.com
+    #     result = @@client.execute(:api_method => directory.groups.get, :parameters => {
+    #       "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
+    #     })
+    # 
+    #     result.data
   end
   
 end
