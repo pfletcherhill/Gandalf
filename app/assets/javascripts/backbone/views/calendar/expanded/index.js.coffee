@@ -1,11 +1,12 @@
-Gandalf.Views.Calendar ||= {}
+Gandalf.Views.Calendar.Expanded ||= {}
 
-class Gandalf.Views.Calendar.Expanded extends Backbone.View
+class Gandalf.Views.Calendar.Expanded.Index extends Backbone.View
   initialize: ()->
     @eventCollection = @options.eventCollection
     @eventCollection.splitMultiday(false)        # Adjust multi-day events
     @days = @eventCollection.group()
     @startDate = @options.startDate
+    @numDays = @options.numDays
     @render()
     Gandalf.dispatcher.on("multiday:show", @showMultiday, this)
     Gandalf.dispatcher.on("multiday:hide", @hideMultiday, this)
@@ -17,7 +18,7 @@ class Gandalf.Views.Calendar.Expanded extends Backbone.View
   className: "cal cal-week"
 
   addDay: (events, dayNum, date) ->
-    view = new Gandalf.Views.Calendar.Week.Day
+    view = new Gandalf.Views.Calendar.Expanded.Day
       model: events
       date: date
       dayNum: dayNum
@@ -29,7 +30,7 @@ class Gandalf.Views.Calendar.Expanded extends Backbone.View
     @$el.html(@template(startDate: moment(@startDate)))
     tempDate = moment(@startDate)
     dayCount = 0
-    while dayCount < 7
+    while dayCount < @numDays
       # Gandalf.eventKeyFormat was set when the app was initialized
       d = tempDate.format(Gandalf.eventKeyFormat)
       @addDay(@days[d], dayCount, moment(tempDate))

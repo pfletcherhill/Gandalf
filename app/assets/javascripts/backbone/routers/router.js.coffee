@@ -35,22 +35,22 @@ class Gandalf.Router extends Backbone.Router
   processType: (date, type) ->
     if date == 'today'
       date = moment().format(Gandalf.displayFormat)
-    if period == 'week'
+    if type == 'week'
       startAt = moment(date, Gandalf.displayFormat).day(0)
       endAt = moment(startAt).add('w',1)
-    else if period == 'month'
+    else if type == 'month'
       # Start at the Sunday before the first
       startAt = moment(date, Gandalf.displayFormat).date(1).day(0)
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
-    else
+    else # Default to list
       startAt = moment().day(0)
       endAt = moment(startAt).add('w',1)
-      period = 'list'
+      type = 'list'
     params = {
       start: startAt.sod()
       end: endAt.sod()
-      period: period
+      type: type
     }
     params
 
@@ -111,11 +111,10 @@ class Gandalf.Router extends Backbone.Router
     string = @generateParamsString params
     @eventCollection.url = '/users/events?' + string
     @eventCollection.fetch success: (eventCollection) ->
-      view = new Gandalf.Views.Feed.Index(
+      view = new Gandalf.Views.Feed.Index
         eventCollection: eventCollection
         startDate: params.start
-        period: params.period
-      )
+        type: params.type
       Gandalf.dispatcher.trigger("popover:eventsReady", eventCollection)
     @popover = new Gandalf.Views.CalendarPopover
     $("#popover").html @popover.el

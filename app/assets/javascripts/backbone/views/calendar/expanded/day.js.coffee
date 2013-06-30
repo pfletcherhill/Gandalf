@@ -1,6 +1,6 @@
-Gandalf.Views.Calendar.Week ||= {}
+Gandalf.Views.Calendar.Expanded ||= {}
 
-class Gandalf.Views.Calendar.Week.Day extends Backbone.View
+class Gandalf.Views.Calendar.Expanded.Day extends Backbone.View
 
   initialize: ->
     @date = @options.date
@@ -16,7 +16,7 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
       container = @$(".cal-events:first")
       for e in @model
         if not e.get("multiday")
-          view = new Gandalf.Views.Calendar.Week.Event(
+          view = new Gandalf.Views.Calendar.Expanded.Event(
             model: e
             dayNum: @options.dayNum
             calEvents: @options.calEvents

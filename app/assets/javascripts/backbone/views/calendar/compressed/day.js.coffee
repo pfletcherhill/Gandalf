@@ -1,6 +1,6 @@
-Gandalf.Views.Calendar.Month ||= {}
+Gandalf.Views.Calendar.Compressed ||= {}
 
-class Gandalf.Views.Calendar.Month.Day extends Backbone.View
+class Gandalf.Views.Calendar.Compressed.Day extends Backbone.View
 
   initialize: ->
     @date = @options.date
@@ -17,7 +17,7 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
         continued = e.get("start_at") isnt e.get("calStart")
         continues = e.get("end_at") isnt e.get("calEnd")
         if continues or continued # Multiday event
-          view = new Gandalf.Views.Calendar.Month.Event(
+          view = new Gandalf.Views.Calendar.Compressed.Event(
             model: e
             continued: continued
             continues: continues
@@ -28,7 +28,7 @@ class Gandalf.Views.Calendar.Month.Day extends Backbone.View
         continued = e.get("start_at") isnt e.get("calStart")
         continues = e.get("end_at") isnt e.get("calEnd")
         if not (continues or continued) # Not a multiday event
-          view = new Gandalf.Views.Calendar.Month.Event(model: e) 
+          view = new Gandalf.Views.Calendar.Compressed.Event(model: e) 
           $(container).append(view.el)
 
   render: () ->

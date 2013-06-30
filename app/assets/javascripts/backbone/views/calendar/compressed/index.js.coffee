@@ -1,6 +1,6 @@
-Gandalf.Views.Calendar.Month ||= {}
+Gandalf.Views.Calendar.Compressed ||= {}
 
-class Gandalf.Views.Calendar.Month.Index extends Backbone.View
+class Gandalf.Views.Calendar.Compressed.Index extends Backbone.View
   initialize: ()->
     @calEvents = @options.calEvents
     @calEvents.splitMultiday(true)        # Adjust multi-day events
@@ -27,7 +27,7 @@ class Gandalf.Views.Calendar.Month.Index extends Backbone.View
       dayCount++
 
   addDay: (events, date) ->
-    view = new Gandalf.Views.Calendar.Month.Day(
+    view = new Gandalf.Views.Calendar.Compressed.Day(
       model: events
       date: date
       calEvents: @calEvents # Passing in event collection

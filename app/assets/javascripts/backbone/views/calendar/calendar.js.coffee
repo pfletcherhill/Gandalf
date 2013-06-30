@@ -16,15 +16,19 @@ class Gandalf.Views.Calendar extends Backbone.View
 
   render: ->
     if @options.type is 'month'
-      view = new Gandalf.Views.Calendar.Compressed
+      view = new Gandalf.Views.Calendar.Compressed.Index
         startDate: moment(@startDate)
         eventCollection: @eventCollection
 
       @$el.append view.el
     else
-      view = new Gandalf.Views.Calendar.Expanded
+      numDays = 7
+      numDays = 1 if @options.type is 'list'
+      console.log @options.type, numDays
+      view = new Gandalf.Views.Calendar.Expanded.Index
         startDate: moment(@startDate)
         eventCollection: @eventCollection
+        numDays: numDays
 
       @$el.append view.el
 
