@@ -17,7 +17,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     Gandalf.dispatcher.on("feed:event:click", @click, this)
     @render()
 
-  template: JST["backbone/templates/calendar/week/event"]
+  template: JST["backbone/templates/calendar/expanded/event"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"

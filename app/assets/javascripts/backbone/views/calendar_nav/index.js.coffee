@@ -4,7 +4,7 @@ class Gandalf.Views.CalendarNav extends Backbone.View
 
   initialize: ->
     @startDate = @options.startDate || moment()
-    @root = @options.root || "calendar"
+    @root = @options.root || ""
     @multidayVisible = true
     if @options.period == "month"
       @renderMonthMenu()

@@ -1,10 +1,10 @@
-Gandalf.Views.Calendar ||= {}
+Gandalf.Views ||= {}
 
-class Gandalf.Views.Calendar.Index extends Backbone.View
+class Gandalf.Views.Calendar extends Backbone.View
 
   initialize: ->
     # Class variables
-    @calEvents = @options.events
+    @eventCollection = @options.eventCollection
     @startDate = @options.startDate
     @maxOverlaps = 4                        # Maximum allowed event overlaps
     # Listening for global events
@@ -15,39 +15,36 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
   className: "calendar"
 
   render: ->
-    if @options.type is "month"
-      @$el.append(@renderMonth().el)
-    else 
-      @$el.append(@renderWeek().el)
+    if @options.type is 'month'
+      view = new Gandalf.Views.Calendar.Compressed
+        startDate: moment(@startDate)
+        eventCollection: @eventCollection
+
+      @$el.append view.el
+    else
+      view = new Gandalf.Views.Calendar.Expanded
+        startDate: moment(@startDate)
+        eventCollection: @eventCollection
+
+      @$el.append view.el
+
       @adjustOverlappingEvents()
-    t = this
-    setInterval( ->
-      t.resetEventPositions()
-    , 20000)
+      # Due to rendering bugs, we rerender the view every 20 seconds.
+      # Ugly hack, I know...but #whateva.
+      t = this
+      setInterval( ->
+        t.resetEventPositions()
+      , 20000)
+      # @hideHidden()
     return this
-
-  renderWeek: ->
-    view = new Gandalf.Views.Calendar.Week.Index(
-      startDate: moment(@startDate)
-      calEvents: @calEvents
-    )
-    return view
-
-  renderMonth: () ->
-    view = new Gandalf.Views.Calendar.Month.Index(
-      startDate: moment(@startDate)
-      calEvents: @calEvents
-    )
-    return view
-    # @hideHidden()
 
   # Event handlers
 
-  hideHidden: () ->
-    orgs = @calEvents.getHiddenOrgs()
-    cats = @calEvents.getHiddenCats()
-    @orgVisChange(orgs)
-    @catVisChange(cats)
+  # hideHidden: () ->
+  #   orgs = @eventCollection.getHiddenOrgs()
+  #   cats = @eventCollection.getHiddenCats()
+  #   @orgVisChange(orgs)
+  #   @catVisChange(cats)
 
   resetEventPositions: () ->
     @$el.find(".cal-week-event").css({ width: "96%" }) # For window resizing
@@ -57,7 +54,7 @@ class Gandalf.Views.Calendar.Index extends Backbone.View
 
   adjustOverlappingEvents: () ->
     # If an event overlaps with one other, they both get class 'overlap-2', etc. for 3, 4
-    overlaps = @calEvents.findOverlaps()
+    overlaps = @eventCollection.findOverlaps()
     @$el.find(".cal-week-event").removeClass("overlap-2 overlap-3 overlap-4 hide")
     for myId, ids of overlaps
       num = ids.length + 1

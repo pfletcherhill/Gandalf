@@ -1,28 +1,27 @@
-Gandalf.Views.Calendar.Week ||= {}
+Gandalf.Views.Calendar ||= {}
 
-class Gandalf.Views.Calendar.Week.Index extends Backbone.View
+class Gandalf.Views.Calendar.Expanded extends Backbone.View
   initialize: ()->
-    @calEvents = @options.calEvents
-    @calEvents.splitMultiday(false)        # Adjust multi-day events
-    @days = @calEvents.group()
+    @eventCollection = @options.eventCollection
+    @eventCollection.splitMultiday(false)        # Adjust multi-day events
+    @days = @eventCollection.group()
     @startDate = @options.startDate
     @render()
     Gandalf.dispatcher.on("multiday:show", @showMultiday, this)
     Gandalf.dispatcher.on("multiday:hide", @hideMultiday, this)
 
-  template: JST["backbone/templates/calendar/week/index"]
-  headerTemplate: JST["backbone/templates/calendar/week/header"]
+  template: JST["backbone/templates/calendar/expanded/index"]
+  headerTemplate: JST["backbone/templates/calendar/expanded/header"]
   
   tagName: "div"
   className: "cal cal-week"
 
   addDay: (events, dayNum, date) ->
-    view = new Gandalf.Views.Calendar.Week.Day(
+    view = new Gandalf.Views.Calendar.Week.Day
       model: events
       date: date
       dayNum: dayNum
-      calEvents: @calEvents # Passing in event collection
-    )
+      eventCollection: @eventCollection # Passing in event collection
     @$(".cal-day-container").append(view.el)
     return view
   
@@ -40,7 +39,7 @@ class Gandalf.Views.Calendar.Week.Index extends Backbone.View
     return this
 
   renderMultidayEvents: ->
-    events = @calEvents.getMultidayEvents()
+    events = @eventCollection.getMultidayEvents()
     eNum = 0
     for e in events
       view = new Gandalf.Views.Calendar.Week.MultidayEvent(

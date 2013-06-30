@@ -2,7 +2,7 @@ Gandalf.Views.Feed ||= {}
 
 class Gandalf.Views.Feed.Index extends Backbone.View
 
-  # options has keys [events, startDate, period]
+  # options has keys [eventCollection, startDate, period]
   initialize: ()->
     _.bindAll(this,
       "renderSubscribedOrganizations",
@@ -18,7 +18,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   renderSubscribedOrganizations: ->
     subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    hidden = @options.events.getHiddenOrgs()
+    hidden = @options.eventCollection.getHiddenOrgs()
     # for s in subscriptions
     #       invisible = false
     #       invisible = true if s.id in hidden
@@ -27,7 +27,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
 
   renderSubscribedCategories: ->
     subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    hidden = @options.events.getHiddenCats()
+    hidden = @options.eventCollection.getHiddenCats()
     # for s in subscriptions
     #       invisible = false
     #       invisible = true if s.id in hidden
@@ -41,18 +41,18 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     # @days = @options.events.group()
     # @renderFeed()
     eventList = new Gandalf.Views.EventList (
-      events: @options.events
+      eventCollection: @options.eventCollection
     )
     @$(".body-feed").html(eventList.el)
     nav = new Gandalf.Views.CalendarNav(
       period: @options.period
       startDate: @options.startDate
-      root: "calendar"
+      root: ""
     )
     @$(".content-calendar-nav > .container").html(nav.el)
-    cal = new Gandalf.Views.Calendar.Index(
+    cal = new Gandalf.Views.Calendar(
       type: @options.period
-      events: @options.events
+      eventCollection: @options.eventCollection
       startDate: @options.startDate
     )
     @$(".content-calendar").html(cal.el)
@@ -61,17 +61,3 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       placement: 'right'
     )
     return this
-
-# DEPRECATED
-#    renderFeed: () ->
-#     noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period. 
-# Check out <a href='#/browse'>the discover page</a> and start following some 
-# organizations and categories!</div>"
-#     @$(".body-feed").append(noEvents) if _.isEmpty(@days)
-#     @doneEvents = []
-#     for day, events of @days
-#       @addFeedDay(day, events)
-
-#   addFeedDay: (day, events) ->
-#     view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
-#     @$(".body-feed").append(view.el)

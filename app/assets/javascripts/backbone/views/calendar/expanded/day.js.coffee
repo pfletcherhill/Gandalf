@@ -9,7 +9,7 @@ class Gandalf.Views.Calendar.Week.Day extends Backbone.View
 
   tagName: "td"
   className: "cal-day"
-  template: JST["backbone/templates/calendar/week/day"]
+  template: JST["backbone/templates/calendar/expanded/day"]
 
   addEvents: () ->
     if @model     # If there are events
