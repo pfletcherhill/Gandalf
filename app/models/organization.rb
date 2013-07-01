@@ -1,5 +1,4 @@
 class Organization < ActiveRecord::Base
-  require 'gappsprovisioning/provisioningapi'
 
   include Gandalf::Utilities
   include Gandalf::GoogleApiClient
@@ -7,29 +6,28 @@ class Organization < ActiveRecord::Base
   # Associations
   has_many :subscriptions, :as => :subscribeable
   has_many :subscribers, :through => :subscriptions, :source => :user
-  has_many :groups, as: :groupable
-  has_many :events, through: :groups
+  has_many :groups, as: :groupable, dependent: :destroy
+  has_many :events
   
   # Access Controls  
-  has_many :admins,
+  has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]},
            through: :subscriptions,
-           source: :user,
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]]
-  has_many :members,
+           source: :user
+  has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]},
            through: :subscriptions,
-           source: :user,
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]]
-  has_many :followers,
+           source: :user
+  has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]},
            through: :subscriptions,
-           source: :user,
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]]
+           source: :user
 
   # Validations
+  validates_presence_of :name, :slug
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :slug, :case_sensitive => false
 
   # Callbacks
-  before_create :set_slug
+  before_validation :set_slug
+  after_create :setup_groups
 
   # pg_search
   include PgSearch
@@ -50,8 +48,30 @@ class Organization < ActiveRecord::Base
   # Image Uploader
   mount_uploader :image, ImageUploader
 
+  # Callbacks
+  
   def set_slug
-    slug = make_slug(name)
+    self.slug = make_slug(name)
+  end
+  
+  def setup_groups
+    ["Admins", "Members", "Followers"].each do |group_type|
+      Group.create(
+        name: "#{name} #{group_type}",
+        groupable_id: id,
+        groupable_type: "Organization"
+      )
+    end
+  end
+  
+  # Methods
+  
+  def admins_group
+    groups.where(slug: "#{slug}-admins").first
+  end
+  
+  def followers_group
+    groups.where(slug: "#{slug}-followers").first
   end
   
   def complete_events

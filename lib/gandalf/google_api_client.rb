@@ -13,8 +13,4 @@ module Gandalf::GoogleApiClient
     
   end
   
-  # # Define directory object
-  #     client = build_client('curator@tedxyale.com')
-  #     directory = client.discovered_api('admin', 'directory_v1')
-  
 end

@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :subscriptions
   has_many :groups, through: :subscriptions
-  has_many :events, through: :groups, uniq: true
+  has_many :events, -> { uniq }, through: :groups
   
   # Organizations
   has_many :subscribed_organizations,
@@ -35,21 +35,18 @@ class User < ActiveRecord::Base
            source: :events
 
   # Access Controls
-  has_many :admin_organizations,
+  has_many :admin_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN] },
            through: :subscriptions,
            source: :subscribeable,
-           source_type: "Organization",
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]]
-  has_many :member_organizations,
+           source_type: "Organization"
+  has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
            through: :subscriptions,
            source: :subscribeable,
-           source_type: "Organization",
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]]
-  has_many :follower_organizations,
+           source_type: "Organization"
+  has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] },
            through: :subscriptions,
            source: :subscribeable,
-           source_type: "Organization",
-           conditions: ['subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]]
+           source_type: "Organization"
 
   # Validations
   validates_presence_of :netid, :name, :email
@@ -113,6 +110,13 @@ class User < ActiveRecord::Base
     }
   end
   
+  # Group methods
+  
+  def add_group(group_id)
+    group = Group.find(group_id)
+    Subscription.create(user_id: self.id, group_id: group_id,
+                        subscribeable_id: group.groupable_id, subscribeable_type: group.groupable_type)
+  end
   # Authorization methods
   
   def has_authorization_to(organization)

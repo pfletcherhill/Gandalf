@@ -19,9 +19,8 @@ describe User do
       end
       
       context "when the user has one subscription" do
-        before do
-          @subscription = Fabricate(:subscription)
-          @user.subscriptions << @subscription
+        before :each do
+          @subscription = Fabricate(:subscription, user_id: @user.id)
         end
         
         it "should have one subscription" do
@@ -31,9 +30,9 @@ describe User do
       end
       
       context "when the user has many subscriptions" do
-        before do
-          @user.subscriptions << Fabricate(:subscription)
-          @user.subscriptions << Fabricate(:subscription)
+        before :each do
+          Fabricate(:subscription, user_id: @user.id)
+          Fabricate(:subscription, user_id: @user.id)
         end
         
         it "should have many subscriptions" do
@@ -51,9 +50,9 @@ describe User do
       end
       
       context "when the user has one group" do
-        before do
+        before :each do
           @group = Fabricate(:group)
-          @user.groups << @group
+          @user.add_group(@group.id)
         end
         
         it "should have one group" do
@@ -67,9 +66,9 @@ describe User do
       end
       
       context "when the user has many groups" do
-        before do
-          @user.groups << Fabricate(:group)
-          @user.groups << Fabricate(:group)
+        before :each do
+          @user.add_group(Fabricate(:group).id)
+          @user.add_group(Fabricate(:group).id)
         end
         
         it "should have many groups" do
@@ -91,25 +90,25 @@ describe User do
       end
       
       context "when the user follows one organization" do
-        before do
+        before :each do
           @organization = Fabricate(:organization)
-          @user.subscribed_organizations << @organization
+          @subscription = Fabricate(:subscription, user_id: @user.id, subscribeable_id: @organization.id, subscribeable_type: "Organization", group_id: @organization.followers_group.id)
         end
         
-        context "when the organization has no events"
+        context "when the organization has no events" do
           it "should be empty" do
             @user.events.should be_empty
           end
         end
         
         context "when the organization has events" do
-          before do
-            @event = Fabricate(:event)
-            @organization.events << @event
+          before :each do
+            @event = Fabricate(:event, organization_id: @organization.id)
+            @event.groups << @organization.followers_group
           end
           
           it "should have events" do
-            @user.events.should.not be_empty
+            @user.events.count.should == 1
             @user.events.first.should == @event
           end
         end
@@ -120,14 +119,14 @@ describe User do
   context "methods" do
     
     before :each do
-      Fabricate(:user)
+      @user = Fabricate(:user)
     end
     
     describe ".create" do
       context "when using a non-unique netid" do
         it "fails to create" do
           user = User.create(
-            :netid => "prf8",
+            :netid => @user.netid,
             :name => "Paul Fletcher-Hill",
             :nickname => "Paul",
             :email => "paul.hill@yale.edu",
@@ -143,12 +142,27 @@ describe User do
             :netid => "pfh",
             :name => "Paul Fletcher-Hill",
             :nickname => "Paul",
-            :email => "paul.fletcher-hill@yale.edu",
+            :email => @user.email,
             :division => "Yale College"
           )
           user.valid?.should be_false
         end
       end
     end
+    
+    describe ".add_group" do
+      context "when adding a valid group" do
+        before :each do
+          @user = Fabricate(:user)
+          @group = Fabricate(:group)
+        end
+        
+        it "creates a subscription" do
+          @user.subscriptions.count.should == 0
+          @user.add_group(@group.id)
+          @user.subscriptions.count.should == 1
+        end
+      end
+    end   
   end
 end

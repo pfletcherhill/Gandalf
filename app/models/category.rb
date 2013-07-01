@@ -10,7 +10,7 @@ class Category < ActiveRecord::Base
   has_many :events, through: :groups
   
   # Callbacks
-  before_create :set_slug
+  before_validation :set_slug
   after_create :generate_groups
 
   # Validations
@@ -39,7 +39,7 @@ class Category < ActiveRecord::Base
     }
 
   def set_slug
-    slug = make_slug(name)
+    self.slug = make_slug(name)
   end
 
   def generate_groups

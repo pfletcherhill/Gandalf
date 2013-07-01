@@ -1,3 +1,3 @@
 Fabricator(:organization) do
-  name "TEDxYale"
+  name { sequence(:name) {|i| "TEDxYale #{i}"} }
 end
