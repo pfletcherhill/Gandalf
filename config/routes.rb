@@ -22,6 +22,7 @@ Gandalf::Application.routes.draw do
   put '/me' => "users#update", via: [:put]
   get '/mail' => "users#mail"
   get '/users/events' => 'users#events'
+  get '/users/next_events' => 'users#next_events'
   get '/users/organizations' => 'users#organizations'
   get '/users/subscribed_organizations' => 'users#subscribed_organizations'
   get '/users/subscribed_categories' => 'users#subscribed_categories'

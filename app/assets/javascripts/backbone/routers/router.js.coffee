@@ -108,9 +108,14 @@ class Gandalf.Router extends Backbone.Router
     date ||= 'today'
     type ||= 'list'
     params = @processType date, type
-    string = @generateParamsString params
-    @eventCollection.url = '/users/events?' + string
+    if type isnt 'list'
+      string = @generateParamsString params
+      @eventCollection.url = '/users/events?' + string
+    else
+      @eventCollection.url = '/users/next_events?limit=20'
+    
     @eventCollection.fetch success: (eventCollection) ->
+      console.log 'fetched', eventCollection
       view = new Gandalf.Views.Feed.Index
         eventCollection: eventCollection
         startDate: params.start

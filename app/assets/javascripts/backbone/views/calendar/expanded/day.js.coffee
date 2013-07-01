@@ -19,7 +19,7 @@ class Gandalf.Views.Calendar.Expanded.Day extends Backbone.View
           view = new Gandalf.Views.Calendar.Expanded.Event(
             model: e
             dayNum: @options.dayNum
-            calEvents: @options.calEvents
+            eventCollection: @options.eventCollection
           ) 
           $(container).append(view.el)
 

@@ -41,44 +41,8 @@ locations.each do |l|
 end
 printf("DONE\n")
 
-events = [
-  {
-    name: 'hi',
-    organization_id: 1,
-    start_at: Time.now,
-    end_at: Time.now + 2.hours
-  },
-  {
-    name: 'hi',
-    organization_id: 1,
-    start_at: Time.now + 3.hours,
-    end_at: Time.now + 10.hours
-  },
-  {
-    name: 'hi',
-    organization_id: 1,
-    start_at: Time.now + 2.hours,
-    end_at: Time.now + 5.hours
-  },
-  {
-    name: 'hi',
-    organization_id: 1,
-    start_at: Time.now + 10.hours,
-    end_at: Time.now + 22.hours
-  },
-  {
-    name: 'hi',
-    organization_id: 1,
-    start_at: Time.now + 20.hours,
-    end_at: Time.now + 60.hours
-  },
-]
 print("Creating events...")
-events.each do |e|
-  ev = Event.create(e)
-  ev.location = Location.first
-  ev.save
-end
+Event.create_some_upcoming_events
 printf("DONE\n")
 
 

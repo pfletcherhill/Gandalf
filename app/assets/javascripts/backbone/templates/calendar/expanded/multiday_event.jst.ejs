@@ -3,7 +3,7 @@
     <i class='icon-arrow-left'></i> &nbsp;
   <% } %>
   <b><%= e.get("name") %></b>&nbsp; 
-  <%= startAt.format("M/D") %> - <%= endAt.format("M/D") %> 
+  <%= moment(e.get('start_at')).format("M/D") %> - <%= moment(e.get('end_at')).format("M/D") %> 
   <% if(continues) { %>
     <i class='icon-arrow-right'></i>
   <% } %>

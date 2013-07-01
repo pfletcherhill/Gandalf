@@ -79,6 +79,28 @@ describe User do
       end
     end
   end
+
+  describe '#next_events' do
+    before :each do
+      @user.subscribed_categories << @category
+      @user.subscribed_organizations << @organization
+      # Organization event.
+      @event1 = Fabricate(:event, organization_id: @organization.id)
+      # Category event.
+      @event2 = Fabricate(:event, organization_id: @organization.id + 1)
+      # Ignores event in the past. 
+      @event3 = Fabricate(:event,
+        start_at: Time.now - 2.hours,
+        end_at: Time.now - 1.hour,
+        organization: @organization
+      )
+      @category.events << @event2
+    end
+    it 'should show organization and category events in next events' do
+      expect(@user.next_events(10)).to eq([@event1, @event2])
+    end
+
+  end
   describe '#create_from_directory' do
     # Works in development...but not in test??
     # context 'when student netid is supplied' do

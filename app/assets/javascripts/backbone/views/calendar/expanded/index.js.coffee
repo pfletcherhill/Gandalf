@@ -5,8 +5,9 @@ class Gandalf.Views.Calendar.Expanded.Index extends Backbone.View
     @eventCollection = @options.eventCollection
     @eventCollection.splitMultiday(false)        # Adjust multi-day events
     @days = @eventCollection.group()
-    @startDate = @options.startDate
     @numDays = @options.numDays
+    @startDate = @options.startDate
+    @endDate = moment(@startDate).add('d', @numDays)
     @render()
     Gandalf.dispatcher.on("multiday:show", @showMultiday, this)
     Gandalf.dispatcher.on("multiday:hide", @hideMultiday, this)
@@ -43,13 +44,16 @@ class Gandalf.Views.Calendar.Expanded.Index extends Backbone.View
     events = @eventCollection.getMultidayEvents()
     eNum = 0
     for e in events
-      view = new Gandalf.Views.Calendar.Week.MultidayEvent(
-        model: e
-        startDate: moment(@startDate)
-        eventNum: eNum
-      )
-      @$(".cal-multiday").append(view.el)
-      eNum++
+      # Make sure event is actually on the calendar (for list view).
+      if moment(e.get('start_at')) < @endDate and moment(e.get('end_at')) > @startDate
+        view = new Gandalf.Views.Calendar.Expanded.MultidayEvent
+          model: e
+          startDate: moment(@startDate)
+          eventNum: eNum
+          numDays: @numDays # Number of total days being rendered.
+
+        @$(".cal-multiday").append(view.el) if view.el
+        eNum++
 
   showMultiday: ->
     $(".cal-multiday").removeClass "hidden"
