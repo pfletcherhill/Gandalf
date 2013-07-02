@@ -6,13 +6,15 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :organization
   belongs_to :location
-  has_and_belongs_to_many :groups
+  belongs_to :calendar, class_name: "Group"
 
-  validates_presence_of :name
-  validates_presence_of :organization_id
+  validates_presence_of :name, :organization_id
 
   validates_uniqueness_of :fb_id, :if => :fb_id?
   validates_uniqueness_of :name, :scope => [:organization_id]
+  
+  # Callbacks
+  before_create :create_google_event
 
   # Search
   include PgSearch
@@ -41,6 +43,37 @@ class Event < ActiveRecord::Base
   def date
     date = self.start_at.strftime("%Y-%m-%d")
     date
+  end
+  
+  def google_calendar_id
+    self.groups.first.apps_cal_id
+  end
+  
+  def google_start
+    {
+      "dateTime" => self.start_at
+    }
+  end
+  
+  def google_end
+    {
+      "dateTime" => self.end_at
+    }
+  end
+  
+  def create_google_event
+    result = Gandalf::GoogleApiClient.insert_google_event(self.google_calendar_id, {
+      "start" => self.google_start,
+      "end" => self.google_end,
+      "description" => self.description,
+      "summary" => self.name
+    })
+    
+    self.apps_id = result.data.id
+  end
+  
+  def get_google_event
+    result = Gandalf::GoogleApiClient.get_google_event(self.google_calendar_id, self.apps_id)
   end
 
   # Takes an array of category ids and makes them the associated categories

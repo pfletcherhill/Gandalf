@@ -4,13 +4,15 @@ class Group < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_and_belongs_to_many :events
+  has_many :events
   belongs_to :groupable, polymorphic: true
   
   # Callbacks
   before_validation :set_slug
   before_create :set_apps_email
   before_create :setup_google_group
+  after_create :create_google_calendar
+  after_destroy :destroy_google_calendar
   after_destroy :destroy_google_group
   
   # Validations
@@ -31,16 +33,11 @@ class Group < ActiveRecord::Base
   
   # Google API Group Methods
   
-  # Defines scopes for the Google API
-  def self.google_scopes
-    "https://www.googleapis.com/auth/admin.directory.group"
-  end
-  
   # setup_google_group creates a google group and sets the model's
   # apps_id and apps_email
   def setup_google_group
     
-    result = Group.create_google_group({
+    result = Gandalf::GoogleApiClient.insert_google_group({
       "email" => self.apps_email || self.set_apps_email,
       "name" => self.name,
       "description" => self.description
@@ -48,7 +45,7 @@ class Group < ActiveRecord::Base
     
     # If a conflict exists in the database
     if result.status == 409
-      result = Group.get_google_group(self.apps_email)
+      result = Gandalf::GoogleApiClient.get_google_group(self.apps_email)
     end
     
     # Set the apps_id and apps_email from the returned object
@@ -59,78 +56,31 @@ class Group < ActiveRecord::Base
   
   # destroy_google_group deletes the google group
   def destroy_google_group
-    result = Group.delete_google_group(self.apps_id)
+    result = Gandalf::GoogleApiClient.delete_google_group(self.apps_id)
   end
   
-  # Google API Group Class Methods
-  
-  # List google groups
-  def self.list_google_groups
+  # create_google_calendar uses the insert_google_calendar
+  # class method to create a google calendar
+  def create_google_calendar
+    unless self.apps_cal_id
+      result = Gandalf::GoogleApiClient.insert_google_calendar({
+        "summary" => self.name
+      })
     
-    @client = Gandalf::GoogleApiClient.build_client(Group.google_scopes) unless @client
-    
-    directory = @client.discovered_api("admin", "directory")
-    
-    @client.execute({
-      api_method: directory.groups.list
-    })
+      self.apps_cal_id = result.data.id
+      self.save
+    end
   end
   
-  # Get google group
-  # group_key can be the group's email address, 
-  # alias or unique string id
-  def self.get_google_group(group_key)
-    
-    @client = Gandalf::GoogleApiClient.build_client(Group.google_scopes) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
-    
-    @client.execute({
-      api_method: directory.groups.get,
-      parameters: { "groupKey" => group_key }
-    })
+  # get_google_calendar uses the get_google_calendar
+  # class method to fetch the group's google calendar
+  def get_google_calendar
+    Gandalf::GoogleApiClient.get_google_calendar(self.apps_cal_id)
   end
   
-  # Create a google group using body_object
-  def self.create_google_group(body_object)
-    
-    @client = Gandalf::GoogleApiClient.build_client(Group.google_scopes) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
-    
-    @client.execute({
-      api_method: directory.groups.insert,
-      body_object: body_object
-    })
+  # destroy_google_calendar deletes the group's associated calendar
+  def destroy_google_calendar
+    result = Gandalf::GoogleApiClient.delete_google_calendar(self.apps_cal_id)
   end
-  
-  # Update a google group using the passed in group_object
-  def self.update_google_group(group_key, group_object)
-    
-    @client = Gandalf::GoogleApiClient.build_client(Group.google_scopes) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
-    
-    @client.execute({
-      api_method: directory.groups.update,
-      parameters: { "groupKey" => group_key },
-      body_object: group_object
-    })
-  end
-  
-  # Delete a google group
-  # group_key can be the group's email address, 
-  # alias or unique string id
-  def self.delete_google_group(group_key)
-    
-    @client = Gandalf::GoogleApiClient.build_client(Group.google_scopes) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
-    
-    @client.execute({
-      api_method: directory.groups.delete,
-      parameters: { "groupKey" => group_key }
-    })
-  end
-    
+      
 end

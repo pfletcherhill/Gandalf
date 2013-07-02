@@ -17,11 +17,5 @@ class CreateGroups < ActiveRecord::Migration
       # Rails Attributes.
       t.timestamps
     end
-    
-    # Has_and_belongs_to_many join table between Event and Group.
-    create_table :events_groups do |t|
-      t.integer :group_id
-      t.integer :event_id
-    end
   end
 end

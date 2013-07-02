@@ -12,6 +12,8 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :organization_id
       t.integer :group_id
       t.integer :location_id
+      t.datetime :start_at
+      t.datetime :end_at
 
       # Facebook Attributes.
       t.string :fb_id
