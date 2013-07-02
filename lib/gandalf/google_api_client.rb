@@ -15,17 +15,21 @@ module Gandalf::GoogleApiClient
     
   end
   
+  def self.setup_client(api, version)
+    @client = build_client(GOOGLE_SCOPES) unless @client
+    @client.discovered_api(api, version)
+  end
+  
   # Google API Group Class Methods
   
   # List google groups
   def self.list_google_groups
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    directory = @client.discovered_api("admin", "directory")
+        
+    directory = setup_client("admin", "directory_v1")
     
     @client.execute({
-      api_method: directory.groups.list
+      api_method: directory.groups.list,
+      parameters: { "customer" => ENV["ACCOUNT_EMAIL"] }
     })
   end
   
@@ -34,9 +38,7 @@ module Gandalf::GoogleApiClient
   # alias or unique string id
   def self.get_google_group(group_key)
     
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
+    directory = setup_client("admin", "directory_v1")
     
     @client.execute({
       api_method: directory.groups.get,
@@ -46,10 +48,8 @@ module Gandalf::GoogleApiClient
   
   # Create a google group using body_object
   def self.insert_google_group(body_object)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
+        
+    directory = setup_client("admin", "directory_v1")
     
     @client.execute({
       api_method: directory.groups.insert,
@@ -59,10 +59,8 @@ module Gandalf::GoogleApiClient
   
   # Update a google group using the passed in group_object
   def self.update_google_group(group_key, group_object)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
+        
+    directory = setup_client("admin", "directory_v1")
     
     @client.execute({
       api_method: directory.groups.update,
@@ -75,10 +73,8 @@ module Gandalf::GoogleApiClient
   # group_key can be the group's email address, 
   # alias or unique string id
   def self.delete_google_group(group_key)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    directory = @client.discovered_api("admin", "directory_v1")
+        
+    directory = setup_client("admin", "directory_v1")
     
     @client.execute({
       api_method: directory.groups.delete,
@@ -90,10 +86,8 @@ module Gandalf::GoogleApiClient
   
   # List google calendars
   def self.list_google_calendars
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.calendar_list.list
@@ -101,10 +95,8 @@ module Gandalf::GoogleApiClient
   end
   
   def self.get_google_calendar(calendar_id)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.calendar_list.get,
@@ -113,10 +105,8 @@ module Gandalf::GoogleApiClient
   end
   
   def self.insert_google_calendar(calendar_object)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.calendars.insert,
@@ -124,11 +114,9 @@ module Gandalf::GoogleApiClient
     })
   end
   
-  def delete_google_calendar(calendar_id)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+  def self.delete_google_calendar(calendar_id)
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.calendar_list.delete,
@@ -139,10 +127,8 @@ module Gandalf::GoogleApiClient
   # Google API Event Class Methods
   
   def self.insert_google_event(calendar_id, event_object)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.events.insert,
@@ -152,10 +138,8 @@ module Gandalf::GoogleApiClient
   end
 
   def self.get_google_event(calendar_id, event_id)
-    
-    @client = build_client(GOOGLE_SCOPES) unless @client
-    
-    calendar = @client.discovered_api("calendar", "v3")
+        
+    calendar = setup_client("calendar", "v3")
     
     @client.execute({
       api_method: calendar.events.get,
@@ -165,4 +149,5 @@ module Gandalf::GoogleApiClient
       }
     })
   end
+  
 end

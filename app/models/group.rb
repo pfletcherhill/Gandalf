@@ -4,7 +4,7 @@ class Group < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :events
+  has_many :events, foreign_key: "calendar_id"
   belongs_to :groupable, polymorphic: true
   
   # Callbacks

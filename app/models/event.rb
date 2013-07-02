@@ -8,12 +8,12 @@ class Event < ActiveRecord::Base
   belongs_to :location
   belongs_to :calendar, class_name: "Group"
 
-  validates_presence_of :name, :organization_id
-
+  validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
   validates_uniqueness_of :name, :scope => [:organization_id]
   
   # Callbacks
+  before_validation :set_slug
   before_create :create_google_event
 
   # Search
@@ -40,24 +40,31 @@ class Event < ActiveRecord::Base
       }
     }
 
+  def set_slug
+    self.slug = make_slug(self.name)
+  end
+  
   def date
     date = self.start_at.strftime("%Y-%m-%d")
     date
   end
   
   def google_calendar_id
-    self.groups.first.apps_cal_id
+    self.calendar.apps_cal_id
   end
   
   def google_start
-    {
-      "dateTime" => self.start_at
-    }
+    { "dateTime" => self.start_at }
   end
   
   def google_end
+    { "dateTime" => self.end_at }
+  end
+  
+  def google_organizer
     {
-      "dateTime" => self.end_at
+      "email" => self.calendar.apps_email,
+      "displayName" => self.calendar.name
     }
   end
   
@@ -66,7 +73,8 @@ class Event < ActiveRecord::Base
       "start" => self.google_start,
       "end" => self.google_end,
       "description" => self.description,
-      "summary" => self.name
+      "summary" => self.name,
+      "organizer" => self.google_organizer
     })
     
     self.apps_id = result.data.id
