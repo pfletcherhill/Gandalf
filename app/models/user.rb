@@ -112,11 +112,17 @@ class User < ActiveRecord::Base
   
   # Group methods
   
-  def add_group(group_id)
+  def subscribe_to(group_id)
     group = Group.find(group_id)
     Subscription.create(user_id: self.id, group_id: group_id,
                         subscribeable_id: group.groupable_id, subscribeable_type: group.groupable_type)
   end
+  
+  def unsubscribe_from(group_id)
+    subscription = Subscription.where(user_id: self.id, group_id: group_id).first
+    subscription.destroy if subscription
+  end
+  
   # Authorization methods
   
   def has_authorization_to(organization)
@@ -251,21 +257,4 @@ class User < ActiveRecord::Base
   @@browser = User.make_cas_browser
   @@browser_time = Time.now
   
-  private
-  
-  @client = Gandalf::GoogleApiClient.build_client("https://www.googleapis.com/auth/admin.directory.group")
-    
-  # Get group from Google API Client
-  def get_from_google
-    # # Define directory object
-    #     directory = @@client.discovered_api("admin", "directory_v1")
-    # 
-    #     # Execute GET groups
-    #     # Get group object for yalego.subscribers.tedxyale@tedxyale.com
-    #     result = @@client.execute(:api_method => directory.groups.get, :parameters => {
-    #       "groupKey" => "yalego.subscribers.tedxyale@tedxyale.com"
-    #     })
-    # 
-    #     result.data
-  end
 end

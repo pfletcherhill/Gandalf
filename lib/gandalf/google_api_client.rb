@@ -2,7 +2,11 @@ module Gandalf::GoogleApiClient
   
   require 'google/api_client'
   
-  GOOGLE_SCOPES = "https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/calendar"
+  SCOPES = {
+    DIRECTORY: "https://www.googleapis.com/auth/admin.directory.group",
+    CALENDAR: "https://www.googleapis.com/auth/calendar",
+    GROUP_SETTINGS: "https://www.googleapis.com/auth/apps.groups.settings"
+  }
   
   def self.build_client(scope)
 
@@ -16,7 +20,7 @@ module Gandalf::GoogleApiClient
   end
   
   def self.setup_client(api, version)
-    @client = build_client(GOOGLE_SCOPES) unless @client
+    @client = build_client(SCOPES.values.join(" ")) unless @client
     @client.discovered_api(api, version)
   end
   
@@ -147,6 +151,44 @@ module Gandalf::GoogleApiClient
         "calendarId" => calendar_id,
         "eventId" => event_id
       }
+    })
+  end
+  
+  # Google API ACL Class Methods
+  
+  def self.insert_google_acl(calendar_id, acl_object)
+    
+    calendar = setup_client("calendar", "v3")
+    
+    @client.execute({
+      api_method: calendar.acl.insert,
+      parameters: { "calendarId" => calendar_id },
+      body_object: acl_object
+    })
+  end
+  
+  # Google API Member Class Methods
+  
+  def self.insert_google_member(group_key, member_object)
+    
+    directory = setup_client("admin", "directory_v1")
+    
+    @client.execute({
+      api_method: directory.members.insert,
+      parameters: { "groupKey" => group_key },
+      body_object: member_object
+    })
+  end
+  
+  # Google API Group Settings Class Methods
+  
+  def self.get_google_group_settings(group_key)
+    
+    group_settings = setup_client("groupssettings", "v1")
+    
+    @client.execute({
+      api_method: group_settings.groups.get,
+      parameters: { "groupUniqueId" => group_key }
     })
   end
   
