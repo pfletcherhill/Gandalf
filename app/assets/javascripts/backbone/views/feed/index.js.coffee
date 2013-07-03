@@ -1,77 +1,82 @@
 Gandalf.Views.Feed ||= {}
 
+# A Feed is any view that has a calendar, a calendar nav and possibly an
+# events list. This includes all the default views for #/:date/:type.
 class Gandalf.Views.Feed.Index extends Backbone.View
 
-  # options has keys [events, startDate, period]
+  # options has keys [eventCollection, startDate, type]
   initialize: ()->
-    _.bindAll(this,
-      "renderSubscribedOrganizations",
-      "renderSubscribedCategories"
-    )
+    # _.bindAll(this,
+    #   "renderSubscribedOrganizations",
+    #   "renderSubscribedCategories"
+    # )
+    @eventCollection = @options.eventCollection
     @render()
 
-  template: JST["backbone/templates/feed/index"]
+  # When the calender is rendered full-width across the page, and there's
+  fullWidthTemplate: JST["backbone/templates/feed/full_width"]
+  panelTemplate: JST["backbone/templates/feed/panel"]
 
   el: "#content"
 
   # Rendering functions
 
-  renderSubscribedOrganizations: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    hidden = @options.events.getHiddenOrgs()
-    # for s in subscriptions
-    #       invisible = false
-    #       invisible = true if s.id in hidden
-    #       view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
-    #       $("#subscribed-organizations-list").append(view.el)
+  # renderSubscribedOrganizations: ->
+  #   subscriptions = Gandalf.currentUser.get('subscribed_organizations')
+  #   hidden = @options.eventCollection.getHiddenOrgs()
+  #   # for s in subscriptions
+  #   #       invisible = false
+  #   #       invisible = true if s.id in hidden
+  #   #       view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
+  #   #       $("#subscribed-organizations-list").append(view.el)
 
-  renderSubscribedCategories: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    hidden = @options.events.getHiddenCats()
-    # for s in subscriptions
-    #       invisible = false
-    #       invisible = true if s.id in hidden
-    #       view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
-    #       $("#subscribed-categories-list").append(view.el)
+  # renderSubscribedCategories: ->
+  #   subscriptions = Gandalf.currentUser.get('subscribed_categories')
+  #   hidden = @options.eventCollection.getHiddenCats()
+  #   # for s in subscriptions
+  #   #       invisible = false
+  #   #       invisible = true if s.id in hidden
+  #   #       view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
+  #   #       $("#subscribed-categories-list").append(view.el)
 
 
   render: () ->
-    @$el.html(@template({ user: Gandalf.currentUser, startDate: @options.startDate }))
+    if @options.type is 'list'
+      @$el.html(@panelTemplate
+        user: Gandalf.currentUser
+        startDate: @options.startDate
+      )
+      console.log @eventCollection
+      firstEvent = @eventCollection.first()
+      firstEventView = new Gandalf.Views.Feed.Event(model: firstEvent)
+      @$(".main-event").html(firstEventView.el)
+      # Add the event list
+      eventList = new Gandalf.Views.EventList 
+        eventCollection: @eventCollection
+      @$(".body-feed").html(eventList.el)
+    else 
+      @$el.html(@fullWidthTemplate
+        user: Gandalf.currentUser
+        startDate: @options.startDate
+      )
     Gandalf.calendarHeight = $(".content-calendar").height()
-    # @days = @options.events.group()
-    # @renderFeed()
-    eventList = new Gandalf.Views.EventList (
-      events: @options.events
-    )
-    @$(".body-feed").html(eventList.el)
-    nav = new Gandalf.Views.CalendarNav(
-      period: @options.period
+
+    # Add the nav.
+    nav = new Gandalf.Views.CalendarNav
+      type: @options.type
       startDate: @options.startDate
-      root: "calendar"
-    )
+      root: ""
+
     @$(".content-calendar-nav > .container").html(nav.el)
-    cal = new Gandalf.Views.Calendar.Index(
-      type: @options.period
-      events: @options.events
+    # Add the calendar.
+    cal = new Gandalf.Views.Calendar
+      type: @options.type
+      eventCollection: @eventCollection
       startDate: @options.startDate
-    )
     @$(".content-calendar").html(cal.el)
     
+    # Activate tooltips on the page.
     $("[rel=tooltip]").tooltip(
       placement: 'right'
     )
     return this
-
-# DEPRECATED
-#    renderFeed: () ->
-#     noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period. 
-# Check out <a href='#/browse'>the discover page</a> and start following some 
-# organizations and categories!</div>"
-#     @$(".body-feed").append(noEvents) if _.isEmpty(@days)
-#     @doneEvents = []
-#     for day, events of @days
-#       @addFeedDay(day, events)
-
-#   addFeedDay: (day, events) ->
-#     view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
-#     @$(".body-feed").append(view.el)

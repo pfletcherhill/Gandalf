@@ -1,0 +1,44 @@
+$panel-width: 460px; // 48%.
+.half-inline {
+  width: $panel-width;
+  display: inline-block;
+  vertical-align: top;
+  &.left {
+    margin-right: (960 - 2 * $panel-width);
+  }
+}
+$panel-top-height: 100px;
+.panel-top {
+  height: $panel-top-height;
+  border-bottom: 1pt solid #ddd;
+  h1 {
+    line-height: $panel-top-height - 20px;
+  }
+}
+/*
+.panel-left {
+  width: 400px;
+}
+.panel-right {
+  width: 520px;
+}
+*/
+.panel-left, .panel-right {
+  @extend .half-inline;
+  height: 600px;
+  overflow-y: scroll;
+  height: -moz-calc(100% - 105px);
+  height: -webkit-calc(100% - 105px);
+  height: -o-calc(100% - 105px);
+  height: calc(100% - 105px);
+}
+
+.panel-right {
+  // max-height: 500px;
+  overflow-y: scroll;
+}
+
+.content-calendar-nav-panel {
+  width: 100%;
+  border: 1pt solid black;
+}

@@ -38,6 +38,13 @@ class UsersController < ApplicationController
     respond_with events
   end
 
+  def next_events
+    user = current_user
+    respond_with {} unless user
+    events = user.next_events(params[:limit], params[:offset])
+    respond_with events
+  end
+
   def organizations
     respond_with current_user.organizations
   end

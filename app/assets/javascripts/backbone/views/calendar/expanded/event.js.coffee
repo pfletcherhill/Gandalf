@@ -1,13 +1,13 @@
-Gandalf.Views.Calendar.Week ||= {}
+Gandalf.Views.Calendar.Expanded ||= {}
 
-class Gandalf.Views.Calendar.Week.Event extends Backbone.View
+class Gandalf.Views.Calendar.Expanded.Event extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @eventId = @model.get("eventId")
     @dayNum = @options.dayNum 
-    @hourHeight = Gandalf.calendarHeight / 24.0
+    @hourHeight = 30 # $('.hour-day').height() #   Gandalf.calendarHeight / 24.0
     @css = {}
     @css.backgroundColor = @color
     @css.lightBackgroundColor = @lightColor
@@ -17,7 +17,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     Gandalf.dispatcher.on("feed:event:click", @click, this)
     @render()
 
-  template: JST["backbone/templates/calendar/week/event"]
+  template: JST["backbone/templates/calendar/expanded/event"]
 
   # This element is an li so that :nth-of-type works properly in the CSS
   tagName: "div"
@@ -60,7 +60,7 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     m = @model
     eId = m.get("eventId")
     if m.get("id") isnt eId
-      m = @options.calEvents.get(eId)
+      m = @options.eventCollection.get(eId)
 
     Gandalf.dispatcher.trigger("event:click", 
       { model: m, color: @lightColor })
@@ -73,20 +73,20 @@ class Gandalf.Views.Calendar.Week.Event extends Backbone.View
     @css.left = @$el.css("left")
     @css.zIndex = @$el.css("zIndex")
     @$el.css(
-      width: "97%"
-      padding: 0
-      left: 0
+      # width: "97%"
+      # padding: 0
+      # left: 0
       zIndex: 19
       backgroundColor: @color
-      border: "1pt solid #333"
+      border: "1pt solid white"
     )
   mouseleave: (id)->
     return if typeof id is "number" and @eventId isnt id
     @$el.css(
       width: @css.width
       # paddingLeft: @css.pLeft
-      left: @css.left
-      zIndex: @css.zIndex
+      # left: @css.left
+      # zIndex: @css.zIndex
       backgroundColor: @lightColor
       border: "1pt solid #{@color}"
     )

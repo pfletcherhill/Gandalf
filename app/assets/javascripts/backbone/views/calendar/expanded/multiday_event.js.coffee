@@ -1,23 +1,25 @@
-Gandalf.Views.Calendar.Week ||= {}
+Gandalf.Views.Calendar.Expanded ||= {}
 
-class Gandalf.Views.Calendar.Week.MultidayEvent extends Backbone.View
+class Gandalf.Views.Calendar.Expanded.MultidayEvent extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
     @lightColor = "rgba(#{@model.get("color")},0.7)"
     @hourHeight = Gandalf.calendarHeight / 24.0
     @eventId = @model.get("eventId")
-    @startDate = @options.startDate.sod() 
     @num = @options.eventNum
+    @numDays = @options.numDays
+    @startDate = @options.startDate.sod() 
     @render()
 
     Gandalf.dispatcher.on("feed:event:mouseenter", @mouseenter, this)
     Gandalf.dispatcher.on("feed:event:mouseleave", @mouseleave, this)
     Gandalf.dispatcher.on("feed:event:click", @click, this)
+    this
 
 
-  template: JST["backbone/templates/calendar/week/multiday_event"]
-  className: "js-event cal-multiday-event"
+  template: JST["backbone/templates/calendar/expanded/multiday_event"]
+  className: "js-event cal-multiday-event arrow_box"
 
   events:
     "click" : "click"
@@ -25,40 +27,45 @@ class Gandalf.Views.Calendar.Week.MultidayEvent extends Backbone.View
     "mouseleave" : "mouseleave"
 
   render: () ->
-    start = @model.get("start_at")
-    end = @model.get("end_at")
+    console.log 'multiday', @model
+    modelStart = moment(@model.get("start_at"))
+    modelEnd = moment(@model.get("end_at"))
     continued = continues = false
-    if moment(start) < @startDate
+    if modelStart < @startDate
       startDay = 0
-      start = @startDate
+      # modelStart = @startDate # Just for rendern
       continued = true
       # @model.set calStart: start.format()    # So popover renders correctly
     else
-      startDay = moment(start).day()
-    @left = startDay * 14.28
+      startDay = modelStart.day()
+    @left = startDay * (100 / @numDays)
 
-    diff = moment(end).diff(moment(start), 'days')
-    if startDay + diff > 6
-      endDay = 6
+    diff = modelEnd.diff(modelStart, 'days')
+    if startDay + diff > @numDays - 1
+      endDay = @numDays - 1
       continues = true
     else
       endDay = moment(end).day()
 
-    @width = (endDay - startDay + 1) * 14.2
+    @width = (endDay - startDay + 1) * (98/@numDays) # 14.2
 
     @$el
-      .html(@template(e: @model, continued: continued, continues: continues))
-      .css(
+      .html(@template
+        e: @model
+        continued: continued
+        continues: continues
+      ).css(
         backgroundColor: @lightColor
         # border: "1pt solid #{@color}"
         width: @width+"%"
         left: @left+"%"
-        top: "#{(@num+3)*@hourHeight}px"
+        # top: "#{(@num+3)*@hourHeight}px"
       ).attr(
         "data-event-id": @model.get("id")
         "data-organization-id" : @model.get("organization_id")
         "data-category-ids" : @model.makeCatIdString()
       )
+    this
 
   # Event handlers
 

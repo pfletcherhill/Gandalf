@@ -50,6 +50,28 @@ class User < ActiveRecord::Base
     events
   end
 
+  # Returns limit number of events ending after the current time. 
+  # If offset is specified, then gets <limit> items after
+  # the first <offset> (for pagination.)
+  # param {number} limit The maximum number of events to return.
+  # param {number=} offset The number of next events to skip before
+  #   counting towards limit.
+  def next_events(limit, offset=0)
+    # offset = opt_offset || 0
+    query = "end_at > :now"
+    organization_events = 
+        self.organization_events
+          .where(query, {now: Time.now })
+          .limit(limit)
+          .includes(:location, :organization, :categories)
+    cateogory_events = 
+      self.category_events
+        .where(query, {now: Time.now })
+        .limit(limit)
+        .includes(:location, :organization, :categories)
+    events = (organization_events + category_events).uniq
+  end
+
   def upcoming_events(start=Time.now, limit=10)
     o_events = 
       self.organization_events
