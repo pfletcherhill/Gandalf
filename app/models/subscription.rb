@@ -36,4 +36,8 @@ class Subscription < ActiveRecord::Base
     })
   end
   
+  def get_google_member
+    Gandalf::GoogleApiClient.get_google_member(self)
+  end
+  
 end

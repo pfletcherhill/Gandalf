@@ -32,6 +32,10 @@ class Group < ActiveRecord::Base
     self.apps_email = "yalego.#{self.slug}@tedxyale.com"
   end
   
+  def google_rule_id
+    "group:#{self.apps_email}"
+  end
+  
   # Google API Methods
   
   # Creates a google group and sets the model's apps_id and apps_email.
@@ -98,6 +102,11 @@ class Group < ActiveRecord::Base
         "value" => self.apps_email
       }
     })
+    result.data
+  end
+  
+  def get_google_acl
+    result = Gandalf::GoogleApiClient.get_google_acl(self.apps_cal_id, self.google_rule_id)
     result.data
   end
       

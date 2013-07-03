@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :subscriptions
+  has_many :subscriptions, dependent: :destroy
   has_many :groups, through: :subscriptions
   has_many :events, -> { uniq }, through: :groups
   
@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
   
   def display_name
     nickname || name
+  end
+  
+  def organizations
+    self.admin_organizations
   end
   
   # Get a user's subscribed events.

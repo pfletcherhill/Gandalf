@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   private
   
   def current_user
-    @current_user = User.includes(:organizations).find_by_netid(session[:cas_user])
+    @current_user = User.find_by_netid(session[:cas_user])
     if not @current_user
       @current_user = User.create_from_directory(session[:cas_user])
       flash[:error] = "Couldn't get you from the directory" if not @current_user

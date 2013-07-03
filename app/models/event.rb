@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
   
   # Callbacks
   before_validation :set_slug
-  before_create :create_google_event
+  after_create :create_google_event
 
   # Search
   include PgSearch
@@ -68,16 +68,22 @@ class Event < ActiveRecord::Base
     }
   end
   
+  def google_location
+    "#{self.location.try(:name)}, #{self.location.try(:address)}"
+  end
+  
   def create_google_event
     result = Gandalf::GoogleApiClient.insert_google_event(self.google_calendar_id, {
       "start" => self.google_start,
       "end" => self.google_end,
       "description" => self.description,
       "summary" => self.name,
+      "location" => self.google_location,
       "organizer" => self.google_organizer
     })
     
     self.apps_id = result.data.id
+    self.save
   end
   
   def get_google_event

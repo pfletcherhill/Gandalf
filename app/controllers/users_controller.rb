@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def events
     user = current_user
-    events = user.events(params[:start_at], params[:end_at])
+    events = user.events_with_range(params[:start_at], params[:end_at])
     respond_with events
   end
 

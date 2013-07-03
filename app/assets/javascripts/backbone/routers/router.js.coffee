@@ -106,7 +106,7 @@ class Gandalf.Router extends Backbone.Router
     @showLoader('#content')
     date ||= 'today'
     type ||= 'list'
-    params = @processPeriod date, type
+    params = @processType date, type
     string = @generateParamsString params
     @events.url = '/users/events?' + string
     @events.fetch success: (events) ->
@@ -116,8 +116,8 @@ class Gandalf.Router extends Backbone.Router
         period: params.period
       )
       Gandalf.dispatcher.trigger("popover:eventsReady", events)
-    @popover = new Gandalf.Views.CalendarPopover
-    $("#popover").html @popover.el
+    #@popover = new Gandalf.Views.CalendarPopover
+    #$("#popover").html @popover.el
 
   calendarRedirect: (date) ->
     date = "today" if not date
@@ -169,7 +169,7 @@ class Gandalf.Router extends Backbone.Router
   organizations: (slug, date, period) ->
     if not period or not date
       @navigate("organizations/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/slug/" + slug
@@ -185,7 +185,7 @@ class Gandalf.Router extends Backbone.Router
   categories: (slug, date, period) ->
     if not period or not date
       @navigate("categories/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @category = new Gandalf.Models.Category
     @category.url = "/categories/slug/" + slug

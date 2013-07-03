@@ -167,6 +167,19 @@ module Gandalf::GoogleApiClient
     })
   end
   
+  def self.get_google_acl(calendar_id, rule_id)
+    
+    calendar = setup_client("calendar", "v3")
+    
+    @client.execute({
+      api_method: calendar.acl.get,
+      parameters: {
+        "calendarId" => calendar_id,
+        "ruleId" => rule_id
+      }
+    })
+  end
+  
   # Google API Member Class Methods
   
   def self.insert_google_member(group_key, member_object)

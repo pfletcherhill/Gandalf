@@ -4,7 +4,7 @@ class Organization < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :subscriptions, :as => :subscribeable
+  has_many :subscriptions, :as => :subscribeable, dependent: :destroy
   has_many :subscribers, :through => :subscriptions, :source => :user
   has_many :groups, as: :groupable, dependent: :destroy
   has_many :events
