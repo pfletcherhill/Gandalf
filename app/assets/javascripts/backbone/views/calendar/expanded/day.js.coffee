@@ -4,7 +4,7 @@ class Gandalf.Views.Calendar.Expanded.Day extends Backbone.View
 
   initialize: ->
     @date = @options.date
-    @hourHeight = Gandalf.calendarHeight / 24.0
+    @hourHeight = Gandalf.hourHeight
     @render()
 
   tagName: "td"

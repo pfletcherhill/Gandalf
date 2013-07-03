@@ -14,18 +14,15 @@
       </td>
     </tr>
     <tr>
-      <% startAt = moment(e.get("start_at")); %>
-      <% endAt = moment(e.get("end_at")); %>
-      <% format = "ddd, MMM DD h:mm a" %>
       <td>When</td>
+      <% times = e.formatTimeRange() %>
       <td>
-      <% if(startAt.format("YYYY-MM-DD") == endAt.format("YYYY-MM-DD")) { %> 
-        <%= startAt.format("dddd, MMMM Do") %><br/>
-        <%= startAt.format("h:mm a") %> - <%= endAt.format("h:mm a") %>
-      <% } else { %>
-        <%= startAt.format(format) %><br/>-
-        <%= endAt.format(format) %>
-      <% } %>
+        <% if(times.sameDay) { %>
+          <%= times.startString + ' - ' + times.endString %>
+        <% } else { %>
+          <%= times.startString %><br/>
+          - <%= times.endString %>
+        <% } %>
       </td>
     </tr>
     <tr>

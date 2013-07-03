@@ -10,6 +10,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     #   "renderSubscribedOrganizations",
     #   "renderSubscribedCategories"
     # )
+    @eventCollection = @options.eventCollection
     @render()
 
   # When the calender is rendered full-width across the page, and there's
@@ -45,9 +46,13 @@ class Gandalf.Views.Feed.Index extends Backbone.View
         user: Gandalf.currentUser
         startDate: @options.startDate
       )
+      console.log @eventCollection
+      firstEvent = @eventCollection.first()
+      firstEventView = new Gandalf.Views.Feed.Event(model: firstEvent)
+      @$(".main-event").html(firstEventView.el)
       # Add the event list
       eventList = new Gandalf.Views.EventList 
-        eventCollection: @options.eventCollection
+        eventCollection: @eventCollection
       @$(".body-feed").html(eventList.el)
     else 
       @$el.html(@fullWidthTemplate
@@ -66,7 +71,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
     # Add the calendar.
     cal = new Gandalf.Views.Calendar
       type: @options.type
-      eventCollection: @options.eventCollection
+      eventCollection: @eventCollection
       startDate: @options.startDate
     @$(".content-calendar").html(cal.el)
     

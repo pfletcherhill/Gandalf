@@ -44,7 +44,8 @@ class Gandalf.Router extends Backbone.Router
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
     else # Default to list
-      startAt = moment().day(0)
+      startAt = moment().sod()
+      # Really we want to get ~ 20 events here, not one week's worth..
       endAt = moment(startAt).add('w',1)
       type = 'list'
     params = {

@@ -27,7 +27,7 @@ class Gandalf.Views.Calendar.Expanded.MultidayEvent extends Backbone.View
     "mouseleave" : "mouseleave"
 
   render: () ->
-    console.log @model
+    console.log 'multiday', @model
     modelStart = moment(@model.get("start_at"))
     modelEnd = moment(@model.get("end_at"))
     continued = continues = false

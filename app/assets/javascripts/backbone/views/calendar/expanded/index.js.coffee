@@ -45,7 +45,7 @@ class Gandalf.Views.Calendar.Expanded.Index extends Backbone.View
     eNum = 0
     for e in events
       # Make sure event is actually on the calendar (for list view).
-      if moment(e.get('start_at')) < @endDate and moment(e.get('end_at')) > @startDate
+      if moment(e.get('start_at')) < @endDate or moment(e.get('end_at')) > @startDate
         view = new Gandalf.Views.Calendar.Expanded.MultidayEvent
           model: e
           startDate: moment(@startDate)

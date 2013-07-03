@@ -3,11 +3,13 @@ Gandalf.Views.EventList ||= {}
 class Gandalf.Views.EventList extends Backbone.View
 
   initialize: ->
-    @days = @options.eventCollection.group()
+    toRender = new Gandalf.Collections.Events @options.eventCollection.rest()
+    console.log 'rest', toRender
+    @days = toRender.group()
     @render()
 
   render: ->
-    noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period. 
+    noEvents = "<div class='feed-notice'>You're not subcribed to any more events for this period. 
 Check out <a href='#/browse'>the discover page</a> and start following some 
 organizations and categories!</div>"
     @$el.append(noEvents) if _.isEmpty(@days)
