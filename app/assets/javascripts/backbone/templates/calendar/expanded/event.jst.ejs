@@ -1,0 +1,6 @@
+<p class='event-name'><strong><%= event.get("name") %></strong></p>
+<% startAt = moment(event.get("start_at")); %>
+<% endAt = moment(event.get("end_at")); %>
+<p class="event-time">
+  <%= startAt.format("h:mm a") %> - <%= endAt.format("h:mm a") %>
+</p>

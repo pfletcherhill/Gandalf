@@ -7,6 +7,11 @@ class Subscription < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
   belongs_to :subscribeable, :polymorphic => true
+
+  # Class methods
+  def Subscription.make_slug(name)
+    name.downcase.gsub(/ /, "-").gsub(/&/, "and").gsub(/[,\.\)\(:']/, "")
+  end
   
   # Validations
   validates_presence_of :user_id, :group_id, :subscribeable_id, :subscribeable_type

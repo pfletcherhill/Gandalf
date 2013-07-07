@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   # Associations
   has_many :subscriptions, dependent: :destroy
   has_many :groups, through: :subscriptions
-  has_many :events, -> { uniq }, through: :groups
+  has_many :events, through: :groups
   
   # Organizations
   has_many :subscribed_organizations,
@@ -53,6 +53,15 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :netid, :case_sensitive => false
   validates_uniqueness_of :email, :case_sensitive => false
   
+  # Constants
+  NETID_REGEX = /^NetID:/
+  NAME_REGEX = /^Name:/
+  KNOWN_AS_REGEX = /Known As:/
+  EMAIL_REGEX = /Email Address:/
+  COLLEGE_REGEX = /Residential College:/
+  YEAR_REGEX = /Class Year:/
+  DIVISION_REGEX = /Division:/
+  
   def display_name
     nickname || name
   end
@@ -79,23 +88,20 @@ class User < ActiveRecord::Base
       events.uniq
     end
   end
-
-  def upcoming_events(start=Time.now, limit=10)
-    org_events = 
-      self.organization_events
-        .where("start_at > ?", start)
-        .includes(:location, :organization, :categories)
-        .order("start_at")
-        .limit(limit)
-    cat_events = 
-      self.category_events
-        .where("start_at > ?", start)
-        .includes(:location, :organization, :categories)
-        .order("start_at")
-        .limit(limit)
-
-    events = (org_events + cat_events).uniq.sort_by { |e| e.start_at }
-    events.take(limit)
+  
+  # Returns limit number of events ending after the current time. 
+  # If offset is specified, then gets <limit> items after
+  # the first <offset> (for pagination.)
+  # param {number} limit The maximum number of events to return.
+  # param {number=} offset The number of next events to skip before
+  #   counting towards limit.
+  def next_events(*options)
+    limit = options.try(:limit) || 20
+    offset = options.try(:offset) || 0
+    query = "end_at > :now"
+    self.events.limit(limit).where(query, {now: Time.now})
+                            .includes(:location, :organization)
+                            .uniq
   end
 
   def as_json (options)
@@ -139,13 +145,13 @@ class User < ActiveRecord::Base
   end
   
   def add_authorization_to(organization)
-    self.organizations << organization
-    self.subscribed_organizations << organization
+    # self.admin_organizations << organization
+    #     self.subscribed_organizations << organization
   end
   
   def remove_authorization_to(organization)
-    access = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
-    access.destroy
+    # access = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    #     access.destroy
   end
 
   # Admin methods
@@ -162,103 +168,73 @@ class User < ActiveRecord::Base
   
   # Class methods
 
-  def User.send_daily_bulletin
+  def self.send_daily_bulletin
     User.where(bulletin_preference: "daily").find_each do |user|
       UserMailer.bulletin(user, "daily").deliver
     end
   end
 
-  def User.send_weekly_bulletin
+  def self.send_weekly_bulletin
     User.where(bulletin_preference: "weekly").find_each do |user|
       UserMailer.bulletin(user, "weekly").deliver
     end
   end
+
+  def self.name_from_email(email)
+    e = email.gsub(/@yale.edu/, "")
+    names = e.split(".")
+    names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
+    names.join(" ")
+  end
+  
+  def promote
+    self.admin = true
+    self.save
+  end
+  
+  def demote
+    self.admin = false
+    self.save
+  end
       
-  def User.create_from_directory(id, type="uid", search=false)
-    if search
-      u = nil
-      u = case type
-        when "uid" then User.find_by_netid(id)
-        when "email" then User.find_by_email(id)
-      end
-      return u if u
-    end
+  def self.create_from_directory(id, type="uid")
+    
+    browser = Gandalf::Utilities.make_cas_browser
+    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}")
 
-    User.update_browser
-
-    netid_regex = /^NetID:/
-    name_regex = /^Name:/
-    known_as_regex = /Known As:/
-    email_regex = /Email Address:/
-    college_regex = /Residential College:/
-    year_regex = /Class Year:/
-    division_regex = /Division:/
-
-    url = "http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}"
-    @@browser.get(url)
-
-    u = User.new
-    # u.netid = netid
-    @@browser.page.search('tr').each do |tr|
+    user = User.new
+    browser.page.search('tr').each do |tr|
       field = tr.at('th').text.strip
       value = tr.at('td').text.strip
       case field
-      when netid_regex
-        u.netid = value
-      when name_regex
-        u.name = value
-      when known_as_regex
-        u.nickname = value
-      when email_regex
-        u.email = value
-      when college_regex
-        u.college = value
-      when year_regex
-        u.year = value
-      when division_regex
-        u.division = value
+      when NETID_REGEX
+        user.netid = value
+      when NAME_REGEX
+        user.name = value
+      when KNOWN_AS_REGEX
+        user.nickname = value
+      when EMAIL_REGEX
+        user.email = value
+      when COLLEGE_REGEX
+        user.college = value
+      when YEAR_REGEX
+        user.year = value
+      when DIVISION_REGEX
+        user.division = value
       end
     end
-    if u.email # If a user was found
-      u.name ||= User.name_from_email(u.email)  # Make sure of name
-      u.nickname = u.name.split(" ").first      # Set nickname
-      if u.save
-        return u
+        
+    if user.email # If a user was found
+      user.name ||= User.name_from_email(user.email)  # Make sure of name
+      user.nickname = user.name.split(" ").first      # Set nickname
+      if user.save
+        return user
       else
         return nil
       end
     else
       return nil
     end
-
   end
 
-  def User.name_from_email(email)
-    e = email.gsub(/@yale.edu/, "")
-    names = e.split(".")
-    names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
-    names.join(" ")
-  end
-
-  def User.make_cas_browser
-    browser = Mechanize.new
-    browser.get( 'https://secure.its.yale.edu/cas/login' )
-    form = browser.page.forms.first
-    form.username = ENV['CAS_NETID']
-    form.password = ENV['CAS_PASS']
-    form.submit
-    browser
-  end
-  
-  # Make sure CAS credentials don't expire by refreshing every hour
-  def User.update_browser
-    if Time.now - @@browser_time > 1.hour
-      @@browser = user.make_cas_browser
-    end
-  end
-
-  # Keep a CAS_authenticated browser
-  @@browser = User.make_cas_browser
-  @@browser_time = Time.now
-  
 end

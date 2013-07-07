@@ -8,12 +8,12 @@ class ApplicationController < ActionController::Base
   
   def current_user
     @current_user = User.find_by_netid(session[:cas_user])
-    if not @current_user
+    unless @current_user
       @current_user = User.create_from_directory(session[:cas_user])
-      flash[:error] = "Couldn't get you from the directory" if not @current_user
-    end
-    if not @current_user
-      session[:cas_user] = nil
+      unless @current_user
+        flash[:error] = "Couldn't get you from the directory"
+        session[:cas_user] = nil
+      end
     end
     @current_user
   end

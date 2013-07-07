@@ -1,9 +1,7 @@
 class OrganizationsController < ApplicationController
 
   include Gandalf::GoogleApiClient
-  
-  before_filter :require_admin
-  
+    
   def index
     @organizations = Organization.all
     render :json => @organizations.as_json(:methods => [:events_count, :popular_categories])

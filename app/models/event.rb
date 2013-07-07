@@ -10,7 +10,7 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
-  validates_uniqueness_of :name, :scope => [:organization_id]
+  validates_uniqueness_of :name, :scope => [:organization_id, :start_at]
   
   # Callbacks
   before_validation :set_slug
@@ -122,7 +122,6 @@ class Event < ActiveRecord::Base
       "image" => organization.image.url,
       "thumbnail" => organization.image.thumbnail.url,
       "color" => organization.color,
-      "categories" => categories,
       "fb_id" => fb_id,
       # Data for rendering calendar with Backbone (hence the camel case)
       "calStart" => start_at,
@@ -193,5 +192,4 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  
 end

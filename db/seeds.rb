@@ -30,6 +30,21 @@ netids.each do |id|
 end
 print("DONE\n")
 
+locations = [
+  "Yale University",
+  "Harvard University"
+]
+
+print("Creating locations...")
+locations.each do |l|
+  Location.create!(:name => l, :gmaps => true)
+end
+printf("DONE\n")
+
+print("Creating events...")
+Event.create_some_upcoming_events
+printf("DONE\n")
+
 # # Scrape this month's events
 # print("Scraping this month's events...")
 # date = DateTime.now.strftime("%Y%m%d")

@@ -17,13 +17,8 @@ class Gandalf.Views.Feed.Event extends Backbone.View
 
   className: "js-event feed-event"
 
-  convertTime: (time) ->
-    moment(time).format "h:mm a"
-
   render: ->
     e = @model
-    startTime = @convertTime e.get('start_at')
-    endTime = @convertTime e.get('end_at')
     @$el.attr(
       "data-event-id": e.get("id")
       "data-organization-id" : e.get("organization_id")
@@ -32,8 +27,6 @@ class Gandalf.Views.Feed.Event extends Backbone.View
       borderTop: "5px solid #{@darkColor}"
     ).html(@template({
       event: e
-      startTime: startTime
-      endTime: endTime
       image: e.get('thumbnail') || "/assets/image.jpeg"
     }))
     return this

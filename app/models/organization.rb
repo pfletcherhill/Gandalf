@@ -122,5 +122,4 @@ class Organization < ActiveRecord::Base
     rescue
     end
   end
-  
 end
