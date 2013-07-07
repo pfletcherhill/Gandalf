@@ -100,6 +100,7 @@ class User < ActiveRecord::Base
     offset = options.try(:offset) || 0
     query = "end_at > :now"
     self.events.limit(limit).where(query, {now: Time.now})
+                            .order("start_at")
                             .includes(:location, :organization)
                             .uniq
   end

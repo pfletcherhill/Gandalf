@@ -40,7 +40,7 @@ class Gandalf.Views.Feed.Index extends Backbone.View
       startDate: @options.startDate
       root: ""
 
-    @$(".content-calendar-nav > .container").html(nav.el)
+    @$(".content-calendar-nav").html(nav.el)
     # Add the calendar.
     cal = new Gandalf.Views.Calendar
       type: @options.type
