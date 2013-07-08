@@ -6,7 +6,7 @@ class Subscription < ActiveRecord::Base
   # Associations
   belongs_to :user
   belongs_to :group
-  belongs_to :subscribeable, :polymorphic => true
+  belongs_to :organization
 
   # Class methods
   def Subscription.make_slug(name)
@@ -14,7 +14,7 @@ class Subscription < ActiveRecord::Base
   end
   
   # Validations
-  validates_presence_of :user_id, :group_id, :subscribeable_id, :subscribeable_type
+  validates_presence_of :user_id, :group_id, :access_type
   
   # Callbacks
   after_create :create_google_member

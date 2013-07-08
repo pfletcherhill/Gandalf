@@ -115,7 +115,6 @@ class Gandalf.Router extends Backbone.Router
     else
       @eventCollection.url = '/users/next_events?limit=20'
     @eventCollection.fetch success: (data) ->
-      console.log data
       view = new Gandalf.Views.Feed.Index
         eventCollection: data
         startDate: params.start

@@ -1,4 +1,5 @@
 Gandalf::Application.routes.draw do
+  
   # Add /spec route for Jasmine.
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 
@@ -36,9 +37,8 @@ Gandalf::Application.routes.draw do
   # For testing
   get '/bulletin' => "users#bulletin"
   
-  resources :events
+  resources :events, :organizations
   
-  resources :organizations
   get '/organizations/slug/:slug' => 'organizations#show_by_slug'
   post '/organizations/:id/add_image' => 'organizations#add_image'
   get '/organizations/:id/events' => 'organizations#events'

@@ -10,7 +10,6 @@ class CreateEvents < ActiveRecord::Migration
       t.integer :pre_status
       t.integer :post_status
       t.integer :organization_id
-      t.integer :calendar_id
       t.integer :location_id
       t.datetime :start_at
       t.datetime :end_at

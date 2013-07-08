@@ -4,8 +4,9 @@ class Group < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :events, foreign_key: "calendar_id"
-  belongs_to :groupable, polymorphic: true
+  has_many :subscriptions
+  has_and_belongs_to_many :events
+  belongs_to :organization
   
   # Callbacks
   before_validation :set_slug
@@ -17,11 +18,13 @@ class Group < ActiveRecord::Base
   after_destroy :destroy_google_group
   
   # Validations
-  validates_presence_of :name, :slug, :groupable_id, :groupable_type
+  validates_presence_of :name, :slug
+  validates_uniqueness_of :name, :case_sensitive => false
+  validates_uniqueness_of :slug, :case_sensitive => false
   
   # Methods
   
-  # Uses Gandalf::Utilities make_slug method to convert the group name 
+  # Uses Gandalf::Utilities make_slug method to convert the group name
   # to a hyphen-separated, lowercase string
   def set_slug
     self.slug = make_slug(name)

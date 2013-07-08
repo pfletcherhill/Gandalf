@@ -12,11 +12,6 @@ class CreateIndices < ActiveRecord::Migration
       t.index :slug
     end
     
-    # Category indices.
-    change_table :categories do |t|
-      t.index :slug
-    end
-    
     # Subscription indices
     change_table :subscriptions do |t|
       t.index :subscribeable_id
@@ -33,7 +28,8 @@ class CreateIndices < ActiveRecord::Migration
     
     # Group indices
     change_table :groups do |t|
-      t.index :groupable_id
+      t.index :slug
+      t.index :organization_id
       t.index :apps_id
     end
   end

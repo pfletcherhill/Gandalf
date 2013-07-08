@@ -13,17 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20130626083747) do
 
-  create_table "categories", force: true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.string   "slug"
-    t.string   "flyer"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "categories", ["slug"], name: "index_categories_on_slug", using: :btree
-
   create_table "events", force: true do |t|
     t.string   "name"
     t.string   "slug"
@@ -32,7 +21,6 @@ ActiveRecord::Schema.define(version: 20130626083747) do
     t.integer  "pre_status"
     t.integer  "post_status"
     t.integer  "organization_id"
-    t.integer  "calendar_id"
     t.integer  "location_id"
     t.datetime "start_at"
     t.datetime "end_at"
@@ -46,12 +34,17 @@ ActiveRecord::Schema.define(version: 20130626083747) do
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", using: :btree
 
+  create_table "events_groups", force: true do |t|
+    t.integer "event_id"
+    t.integer "group_id"
+  end
+
   create_table "groups", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.text     "description"
-    t.integer  "groupable_id"
-    t.string   "groupable_type"
+    t.integer  "organization_id"
+    t.string   "type"
     t.string   "apps_id"
     t.string   "apps_email"
     t.string   "apps_cal_id"
@@ -60,7 +53,8 @@ ActiveRecord::Schema.define(version: 20130626083747) do
   end
 
   add_index "groups", ["apps_id"], name: "index_groups_on_apps_id", using: :btree
-  add_index "groups", ["groupable_id"], name: "index_groups_on_groupable_id", using: :btree
+  add_index "groups", ["organization_id"], name: "index_groups_on_organization_id", using: :btree
+  add_index "groups", ["slug"], name: "index_groups_on_slug", using: :btree
 
   create_table "location_aliases", force: true do |t|
     t.string   "value"

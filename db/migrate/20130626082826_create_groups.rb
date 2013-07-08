@@ -6,8 +6,8 @@ class CreateGroups < ActiveRecord::Migration
       t.string :name
       t.string :slug
       t.text :description
-      t.integer :groupable_id
-      t.string :groupable_type
+      t.integer :organization_id
+      t.string :type
       
       # Google Apps Attributes.
       t.string :apps_id
@@ -16,6 +16,11 @@ class CreateGroups < ActiveRecord::Migration
       
       # Rails Attributes.
       t.timestamps
+    end
+    
+    create_table :events_groups do |t|
+      t.integer :event_id
+      t.integer :group_id
     end
   end
 end

@@ -6,8 +6,10 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :organization
   belongs_to :location
-  belongs_to :calendar, class_name: "Group"
-
+  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :calendars, -> { where type: "Calendar" }, class_name: "Group"
+  has_and_belongs_to_many :categories, -> { where type: "Category" }, class_name: "Group"
+  
   validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
   validates_uniqueness_of :name, :scope => [:organization_id, :start_at]
@@ -40,6 +42,10 @@ class Event < ActiveRecord::Base
       }
     }
 
+  def calendar
+    self.calendars.first
+  end
+  
   def set_slug
     self.slug = make_slug(self.name)
   end

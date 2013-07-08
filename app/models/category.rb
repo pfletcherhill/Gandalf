@@ -1,22 +1,10 @@
-class Category < ActiveRecord::Base
+class Category < Group
 
   include Gandalf::GoogleApiClient
   include Gandalf::Utilities
   
   # Associations
-  has_many :subscriptions, as: :subscribeable
   has_many :subscribers, through: :subscriptions, source: :user
-  has_many :groups, as: :groupable
-  has_many :events, through: :groups
-  
-  # Callbacks
-  before_validation :set_slug
-  after_create :generate_groups
-
-  # Validations
-  validates_presence_of :name
-  validates_uniqueness_of :name, :case_sensitive => false 
-  validates_uniqueness_of :slug, :case_sensitive => false
   
   # Search
   include PgSearch
@@ -37,18 +25,6 @@ class Category < ActiveRecord::Base
         anyword: true
       }
     }
-
-  def set_slug
-    self.slug = make_slug(name)
-  end
-
-  def generate_groups
-    self.groups << Group.create(name: "category.#{self.slug}")
-  end
-  
-  def group
-    self.groups.first
-  end
     
   #Events, can have start and end
 

@@ -10,43 +10,37 @@ class User < ActiveRecord::Base
   has_many :groups, through: :subscriptions
   has_many :events, through: :groups
   
-  # Organizations
-  has_many :subscribed_organizations,
+  # Calendars
+  has_many :subscribed_calendars, -> { where type: "Calendar" },
            through: :subscriptions,
-           source: :subscribeable,
-           source_type: 'Organization'
-  has_many :organization_groups,
-           through: :subscribed_organizations,
-           source: :groups
-  has_many :organization_events,
-           through: :organization_groups,
+           source: :group
+  has_many :calendar_events,
+           through: :subscribed_calendars,
            source: :events
   
   # Categories
-  has_many :subscribed_categories,
+  has_many :subscribed_categories, -> { where type: "Category" },
            through: :subscriptions,
-           source: :subscribeable,
-           source_type: 'Category'
-  has_many :category_groups,
-           through: :subscribed_categories,
-           source: :groups
+           source: :group
   has_many :category_events,
-           through: :category_groups,
+           through: :subscribed_categories,
            source: :events
 
+  # Organizations
+  has_many :subscribed_organizations,
+           through: :subscribed_calendars,
+           source: :organization
+                    
   # Access Controls
   has_many :admin_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN] },
-           through: :subscriptions,
-           source: :subscribeable,
-           source_type: "Organization"
+           through: :subscribed_calendars,
+           source: :organization
   has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
-           through: :subscriptions,
-           source: :subscribeable,
-           source_type: "Organization"
+           through: :subscribed_calendars,
+           source: :organization
   has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] },
-           through: :subscriptions,
-           source: :subscribeable,
-           source_type: "Organization"
+           through: :subscribed_calendars,
+           source: :organization
 
   # Validations
   validates_presence_of :netid, :name, :email
@@ -125,8 +119,9 @@ class User < ActiveRecord::Base
   
   def subscribe_to(group_id)
     group = Group.find(group_id)
-    Subscription.create(user_id: self.id, group_id: group_id,
-                        subscribeable_id: group.groupable_id, subscribeable_type: group.groupable_type)
+    # Subscription.create(user_id: self.id, group_id: group_id,
+    #                         subscribeable_id: group.organization_id, subscribeable_type: "Organization")
+    Subscription.create(user_id: self.id, group_id: group_id)
   end
   
   def unsubscribe_from(group_id)
