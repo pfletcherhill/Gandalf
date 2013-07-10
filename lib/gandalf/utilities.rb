@@ -14,7 +14,7 @@ module Gandalf::Utilities
     browser = Mechanize.new
     browser.get("https://secure.its.yale.edu/cas/login")
     form = browser.page.forms.first
-    form.username = ENV['CAS_NETID'] 
+    form.username = ENV['CAS_NETID']
     form.password = ENV['CAS_PASS']
     form.submit
     browser

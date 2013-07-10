@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20130626083747) do
     t.string   "subscribeable_type"
     t.integer  "group_id"
     t.integer  "user_id"
-    t.integer  "access_type"
+    t.integer  "access_type",        default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

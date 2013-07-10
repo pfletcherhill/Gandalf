@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
            through: :subscribed_calendars,
            source: :organization
-  has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] },
+  has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] or nil },
            through: :subscribed_calendars,
            source: :organization
 

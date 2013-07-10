@@ -7,7 +7,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.string :subscribeable_type
       t.integer :group_id
       t.integer :user_id
-      t.integer :access_type
+      t.integer :access_type, default: 0
       
       # Rails Attributes.
       t.timestamps

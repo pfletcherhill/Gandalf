@@ -15,30 +15,34 @@ class Subscription < ActiveRecord::Base
   
   # Validations
   validates_presence_of :user_id, :group_id, :access_type
+  validates_uniqueness_of :user_id, scope: [:group_id]
   
   # Callbacks
   after_create :create_google_member
+  after_destroy :destroy_google_member
   
   # Methods
   
   def google_role
-    case self.access_type
-    when ACCESS_STATES['FOLLOWER']
-      "MEMBER"
-    when ACCESS_STATES['MEMBER']
-      "MEMBER"
-    when ACCESS_STATES['ADMIN']
+    if self.access_type == ACCESS_STATES['ADMIN']
       "OWNER"
+    else
+      "MEMBER"
     end
   end
   
   # Google API Methods
   
   def create_google_member
+    p "create_google_member"
     Gandalf::GoogleApiClient.insert_google_member(self.group.apps_id, {
       "email" => self.user.email,
       "role" => self.google_role
     })
+  end
+  
+  def destroy_google_member
+    # pending
   end
   
   def get_google_member
