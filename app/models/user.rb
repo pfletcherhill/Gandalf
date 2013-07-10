@@ -99,7 +99,7 @@ class User < ActiveRecord::Base
                             .uniq
   end
 
-  def as_json (options)
+  def as_json (*options)
     {
       "id" => id,
       "name" => name,
@@ -108,6 +108,9 @@ class User < ActiveRecord::Base
       "college" => college,
       "year" => year,
       "organizations" => organizations,
+      "subscribed_organizations" => subscribed_organizations,
+      "calendars" => subscribed_calendars,
+      "categories" => subscribed_categories,
       "bulletin_preference" => bulletin_preference,
       "fb_id" => self.fb_id,
       "fb_access_token" => fb_access_token,

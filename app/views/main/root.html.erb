@@ -6,6 +6,6 @@
 <!-- Set up backbone -->
 <script type="text/javascript">
   // Add current user as router parameter
-  window.router = new Gandalf.Router({ currentUser: <%= @me.to_json.html_safe %> });
+  window.router = new Gandalf.Router({ currentUser: <%= @me.as_json.to_json.html_safe %> });
   Backbone.history.start();
 </script>

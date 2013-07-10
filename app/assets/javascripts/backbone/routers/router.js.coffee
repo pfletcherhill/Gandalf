@@ -12,10 +12,6 @@ class Gandalf.Router extends Backbone.Router
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @flash.el
 
-    # Load user data
-    Gandalf.currentUser.fetchSubscribedOrganizations()
-    Gandalf.currentUser.fetchSubscribedCategories()
-
     # Constants
     Gandalf.constants ||= {}
     Gandalf.constants.allCategories = new Gandalf.Collections.Categories
@@ -132,10 +128,13 @@ class Gandalf.Router extends Backbone.Router
     else if type == 'events'
       @results = new Gandalf.Collections.Events
       @results.url = '/events'
-    else
-      type = 'organizations'
-      @results = new Gandalf.Collections.Organizations
+    else if type == 'organizations'
+      @results = new Gandalf.Collections.Events
       @results.url = '/organizations'
+    else
+      type = 'all'
+      @results = new Backbone.Collection
+      @results.url = '/browse_all'
     @results.fetch success: (results) ->
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
