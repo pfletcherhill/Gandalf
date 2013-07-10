@@ -1,5 +1,7 @@
 class Location < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  
   before_save :generate_address
 
   has_many :events

@@ -22,15 +22,10 @@ class Gandalf.Views.Feed.Day extends Backbone.View
     # Add this event to the list of done events
     @numAdded++
     @options.done.push event.get("eventId")
-  
-  convertDate: (day) ->
-    date = moment(day).format("dddd, MMMM Do")
-    date
           
   render: () ->
-    day = @convertDate @options.day
+    day = Gandalf.formatDate moment(@options.day)
     @$el.html @template(day: day)
     @addAll()
     @$el.html "" if @numAdded is 0 # Don't render the day header unnecessarily
     return this
-    

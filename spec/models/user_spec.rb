@@ -1,159 +1,168 @@
+# User model spec
+
 require 'spec_helper'
+include Gandalf::Utilities
 
-describe User do 
-  before :each do 
-    @user = Fabricate(:user)
-    @organization = Fabricate(:organization)
-    @category = Fabricate(:category)
-  end
-  describe '#events' do
-    context 'when user doesn\'t have subscriptions' do
-      it 'returns an empty array' do
-        events = @user.events
-        expect(events).to eq([])
-      end
+describe User do
+  context "associations" do
+    
+    before :each do
+      @user = Fabricate(:user)
     end
-
-    it 'should not have subscriptions' do
-      @user.subscriptions.should == []
-    end
-    context 'when user is subscribed to an organization' do
-      before :each do
-        @user.subscribed_organizations << @organization
-      end
-      context 'and organization has no events' do
-        it 'returns an empty array' do
-          events = @user.events
-          events.should == []
+    
+    describe "subscriptions" do
+      
+      context "when the user is created" do
+        it "should be empty" do
+          @user.subscriptions.should be_empty
         end
       end
-      context 'and organization has events' do
+      
+      context "when the user has one subscription" do
         before :each do
-          @event = Fabricate(:event, organization: @organization)
+          @subscription = Fabricate(:subscription, user_id: @user.id)
         end
-        it 'returns array of events' do
-         events = @user.events
-         events.should == [@event]
+        
+        it "should have one subscription" do
+          @user.subscriptions.count.should == 1
+          @user.subscriptions.first.should == @subscription
+        end
+      end
+      
+      context "when the user has many subscriptions" do
+        before :each do
+          Fabricate(:subscription, user_id: @user.id)
+          Fabricate(:subscription, user_id: @user.id)
+        end
+        
+        it "should have many subscriptions" do
+          @user.subscriptions.count.should == 2
         end
       end
     end
-    context 'when user is subscribed to a category' do
-      before :each do
-        @user.subscribed_categories << @category
-      end
-      context 'and category has no events' do
-        it 'returns an empty array' do
-          events = @user.events
-          events.should == []
+    
+    describe "groups" do
+      
+      context "when the user is created" do
+        it "should be empty" do
+          @user.groups.should be_empty
         end
       end
-      context 'and category has events' do
+      
+      context "when the user has one group" do
         before :each do
-          @event = Fabricate(:event)
-          @category.events << @event
-          @category.save
+          @group = Fabricate(:group)
+          @user.add_group(@group.id)
         end
-        it 'returns array of events' do
-          events = @user.events
-          expect(events).to eq([@event])
+        
+        it "should have one group" do
+          @user.groups.count.should == 1
+          @user.groups.first.should == @group
+        end
+        
+        it "should have one subscription" do
+          @user.subscriptions.count.should == 1
+        end
+      end
+      
+      context "when the user has many groups" do
+        before :each do
+          @user.add_group(Fabricate(:group).id)
+          @user.add_group(Fabricate(:group).id)
+        end
+        
+        it "should have many groups" do
+          @user.groups.count.should == 2
+        end
+        
+        it "should have many subscriptions" do
+          @user.subscriptions.count.should == 2
         end
       end
     end
-    context 'when user is subscribed to category and organization' do
-      before :each do 
-        @user.subscribed_categories << @category
-        @user.subscribed_organizations << @organization
+    
+    describe "events" do
+      
+      context "when the user is created" do
+        it "should be empty" do
+          @user.events.should be_empty
+        end
       end
-      context 'and both have the same event' do
+      
+      context "when the user follows one organization" do
         before :each do
-          @event = Fabricate(:event, organization_id: @organization.id)
-          @category.events << @event
+          @organization = Fabricate(:organization)
+          @subscription = Fabricate(:subscription, user_id: @user.id, subscribeable_id: @organization.id, subscribeable_type: "Organization", group_id: @organization.followers_group.id)
         end
-        it 'the category has the event' do
-          expect(@category.events).to include(@event)
+        
+        context "when the organization has no events" do
+          it "should be empty" do
+            @user.events.should be_empty
+          end
         end
-        it 'returns array of one event' do
-          events = @user.events
-          expect(events).to eq([@event])
+        
+        context "when the organization has events" do
+          before :each do
+            @event = Fabricate(:event, organization_id: @organization.id)
+            @event.groups << @organization.followers_group
+          end
+          
+          it "should have events" do
+            @user.events.count.should == 1
+            @user.events.first.should == @event
+          end
         end
       end
     end
   end
-  describe '#create_from_directory' do
-    # Works in development...but not in test??
-    # context 'when student netid is supplied' do
-    #   before :each do
-    #     netid = 'fak23'
-    #     @user = User.create_from_directory(netid)
-    #   end
-    #   it 'creates correct name' do
-    #     @user.name.should == 'Faiaz Ahsan Khan'
-    #   end
-    #   it 'creates correct nickname' do
-    #     @user.nickname.should == 'Rafi'
-    #   end
-    #   it 'creates correct email' do
-    #     @user.email.should == 'faiaz.khan@yale.edu'
-    #   end
-    #   it 'creates correct year' do
-    #     @user.year.should == '2015'
-    #   end
-    #   it 'creates correct college' do
-    #     @user.college.should == 'PC'
-    #   end
-    #   it 'creates correct division' do
-    #     @user.division.should == 'Yale College'
-    #   end
-    # end
-
-    # Let's stop checking for Ric Levin.
-    # context 'when administrative netid is supplied' do
-    #   before :each do
-    #     netid = 'rcl6'
-    #     @user = User.create_from_directory(netid)
-    #   end
-    #   it 'creates correct name' do
-    #     @user.name.should == 'Richard C Levin'
-    #   end
-    #   it 'creates correct nickname' do
-    #     @user.nickname.should == 'Richard'
-    #   end
-    #   it 'creates correct email' do
-    #     @user.email.should == 'richard.levin@yale.edu'
-    #   end
-    #   it 'creates correct year' do
-    #     @user.year.should == nil
-    #   end
-    #   it 'creates correct college' do
-    #     @user.college.should == nil
-    #   end
-    #   it 'creates correct division' do
-    #     @user.division.should == 'President Office'
-    #   end
-    # end
-  end
-  describe '.create' do
-    context 'when using a non-unique netid' do
-      it 'fails to create' do
-        user = User.create(
-          :netid => 'prf8',
-          :name => 'Paul Fletcher-Hill',
-          :nickname => 'Paul',
-          :email => 'paul.hill@yale.edu',
-          :division => 'Yale College'  
-        ).valid?.should == false
+  
+  context "methods" do
+    
+    before :each do
+      @user = Fabricate(:user)
+    end
+    
+    describe ".create" do
+      context "when using a non-unique netid" do
+        it "fails to create" do
+          user = User.create(
+            :netid => @user.netid,
+            :name => "Paul Fletcher-Hill",
+            :nickname => "Paul",
+            :email => "paul.hill@yale.edu",
+            :division => "Yale College"
+          )
+          user.valid?.should be_false
+        end
+      end
+      
+      context "when using a non-unique email" do
+        it "fails to create" do
+          user = User.create(
+            :netid => "pfh",
+            :name => "Paul Fletcher-Hill",
+            :nickname => "Paul",
+            :email => @user.email,
+            :division => "Yale College"
+          )
+          user.valid?.should be_false
+        end
       end
     end
-    context 'when using a non-unique email' do
-      it 'fails to create' do
-        user = User.create(
-          :netid => 'paulsballs',
-          :name => 'Paul Fletcher-Hill',
-          :nickname => 'Paul',
-          :email => 'paul.fletcher-hill@yale.edu',
-          :division => 'Yale College'  
-        ).valid?.should == false
+    
+    describe ".add_group" do
+      context "when adding a valid group" do
+        before :each do
+          @user = Fabricate(:user)
+          @group = Fabricate(:group)
+        end
+        
+        it "creates a subscription" do
+          @user.subscriptions.count.should == 0
+          @user.add_group(@group.id)
+          @user.subscriptions.count.should == 1
+        end
       end
-    end
+    end   
   end
 end

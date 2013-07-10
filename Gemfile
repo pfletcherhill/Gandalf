@@ -18,6 +18,7 @@ group :test, :development do
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'jasmine-rails'
+  gem 'sinon-rails'
 end
 
 # Rails 4 compatibility
@@ -45,6 +46,7 @@ gem 'httpclient'
 gem 'net-ldap'
 gem 'rubycas-client'
 gem 'heroku'
+gem 'google-api-client'
 
 # Style
 gem 'bourbon'

@@ -1,19 +1,33 @@
 class Organization < ActiveRecord::Base
-  require 'gappsprovisioning/provisioningapi'
 
+  include Gandalf::Utilities
+  include Gandalf::GoogleApiClient
+  
   # Associations
-  has_many :events
-  has_many :access_controls
-  has_many :admins, :through => :access_controls, :source => :user
-  has_many :subscriptions, :as => :subscribeable
+  has_many :subscriptions, :as => :subscribeable, dependent: :destroy
   has_many :subscribers, :through => :subscriptions, :source => :user
+  has_many :groups
+  has_many :events
+  
+  # Access Controls  
+  has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]},
+           through: :subscriptions,
+           source: :user
+  has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]},
+           through: :subscriptions,
+           source: :user
+  has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]},
+           through: :subscriptions,
+           source: :user
 
   # Validations
+  validates_presence_of :name, :slug
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :slug, :case_sensitive => false
 
   # Callbacks
-  before_create :make_slug
+  before_validation :set_slug
+  after_create :setup_groups
 
   # pg_search
   include PgSearch
@@ -34,6 +48,31 @@ class Organization < ActiveRecord::Base
   # Image Uploader
   mount_uploader :image, ImageUploader
 
+  # Callbacks
+  
+  def set_slug
+    self.slug = make_slug(name)
+  end
+  
+  def setup_groups
+    ["Admins", "Members", "Followers"].each do |type|
+      Calendar.create(
+        name: "#{name} #{type}",
+        organization_id: id
+      )
+    end
+  end
+  
+  # Methods
+  
+  def admins_group
+    groups.where(slug: "#{slug}-admins").first
+  end
+  
+  def followers_group
+    groups.where(slug: "#{slug}-followers").first
+  end
+  
   def complete_events
     self.events
       .includes(:location, :organization, :categories)
@@ -82,11 +121,4 @@ class Organization < ActiveRecord::Base
     rescue
     end
   end
-  
-  private
-
-  def make_slug
-    self.slug ||= Subscription.make_slug self.name
-  end
-
 end

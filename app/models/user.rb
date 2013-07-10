@@ -2,23 +2,67 @@
 
 class User < ActiveRecord::Base
 
+  include Gandalf::Utilities
+  include Gandalf::GoogleApiClient
+  
   # Associations
-  has_many :access_controls
-  has_many :organizations, :through => :access_controls
-  has_many :subscriptions
-  has_many :subscribed_organizations, :through => :subscriptions,
-    :source => :subscribeable, :source_type => 'Organization'
-  has_many :organization_events, :through => :subscribed_organizations,
-    :source => :events
-  has_many :subscribed_categories, :through => :subscriptions,
-    :source => :subscribeable, :source_type => 'Category'
-  has_many :category_events, :through => :subscribed_categories,
-    :source => :events
+  has_many :subscriptions, dependent: :destroy
+  has_many :groups, through: :subscriptions
+  has_many :events, through: :groups
+  
+  # Calendars
+  has_many :subscribed_calendars, -> { where type: "Calendar" },
+           through: :subscriptions,
+           source: :group
+  has_many :calendar_events,
+           through: :subscribed_calendars,
+           source: :events
+  
+  # Categories
+  has_many :subscribed_categories, -> { where type: "Category" },
+           through: :subscriptions,
+           source: :group
+  has_many :category_events,
+           through: :subscribed_categories,
+           source: :events
+
+  # Organizations
+  has_many :subscribed_organizations,
+           through: :subscribed_calendars,
+           source: :organization
+                    
+  # Access Controls
+  has_many :admin_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN] },
+           through: :subscribed_calendars,
+           source: :organization
+  has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
+           through: :subscribed_calendars,
+           source: :organization
+  has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] or nil },
+           through: :subscribed_calendars,
+           source: :organization
 
   # Validations
-  validates_presence_of :netid, :name, :nickname, :email
+  validates_presence_of :netid, :name, :email
   validates_uniqueness_of :netid, :case_sensitive => false
   validates_uniqueness_of :email, :case_sensitive => false
+  
+  # Constants
+  NETID_REGEX = /^NetID:/
+  NAME_REGEX = /^Name:/
+  KNOWN_AS_REGEX = /Known As:/
+  EMAIL_REGEX = /Email Address:/
+  COLLEGE_REGEX = /Residential College:/
+  YEAR_REGEX = /Class Year:/
+  DIVISION_REGEX = /Division:/
+  
+  def display_name
+    nickname || name
+  end
+  
+  def organizations
+    self.admin_organizations
+  end
   
   # Get a user's subscribed events.
   # param {string, string, ...} *times Optional two time strings, formatted
@@ -26,46 +70,33 @@ class User < ActiveRecord::Base
   #   If only one is provided, only the start time is specified.
   # return {[Event]} An array of events that the user follows that also 
   #   matching the times.
-  def events(*times)
+  def events_with_range(*times)
     start_at = times[0]
     end_at = times[1]
     if start_at && end_at
       start_at = Date.strptime(start_at, '%m-%d-%Y')
       end_at = Date.strptime(end_at, '%m-%d-%Y')
       query = "start_at < :end AND end_at > :start"
-      organization_events = 
-        self.organization_events
-          .where(query,{ :start => start_at, :end => end_at })
-          .includes(:location, :organization, :categories)
-      category_events = 
-        self.category_events
-          .where(query, { :start => start_at, :end => end_at })
-          .includes(:location, :organization, :categories)
+      events.where(query,{ :start => start_at, :end => end_at }).includes(:location, :organization, :categories).uniq
     else
-      organization_events = self.organization_events
-      category_events = self.category_events
+      events.uniq
     end
-    events = (organization_events + category_events).uniq
-    # events are sorted clientside
-    events
   end
-
-  def upcoming_events(start=Time.now, limit=10)
-    o_events = 
-      self.organization_events
-        .where("start_at > ?", start)
-        .includes(:location, :organization, :categories)
-        .order("start_at")
-        .limit(limit)
-    c_events = 
-      self.category_events
-        .where("start_at > ?", start)
-        .includes(:location, :organization, :categories)
-        .order("start_at")
-        .limit(limit)
-
-    events = (o_events + c_events).uniq.sort_by { |e| e.start_at }
-    events.take(limit)
+  
+  # Returns limit number of events ending after the current time. 
+  # If offset is specified, then gets <limit> items after
+  # the first <offset> (for pagination.)
+  # param {number} limit The maximum number of events to return.
+  # param {number=} offset The number of next events to skip before
+  #   counting towards limit.
+  def next_events(*options)
+    limit = options.try(:limit) || 20
+    offset = options.try(:offset) || 0
+    query = "end_at > :now"
+    self.events.limit(limit).where(query, {now: Time.now})
+                            .order("start_at")
+                            .includes(:location, :organization)
+                            .uniq
   end
 
   def as_json (options)
@@ -84,25 +115,39 @@ class User < ActiveRecord::Base
     }
   end
   
+  # Group methods
+  
+  def subscribe_to(group_id)
+    group = Group.find(group_id)
+    # Subscription.create(user_id: self.id, group_id: group_id,
+    #                         subscribeable_id: group.organization_id, subscribeable_type: "Organization")
+    Subscription.create(user_id: self.id, group_id: group_id)
+  end
+  
+  def unsubscribe_from(group_id)
+    subscription = Subscription.where(user_id: self.id, group_id: group_id).first
+    subscription.destroy if subscription
+  end
+  
   # Authorization methods
   
   def has_authorization_to(organization)
-    access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
-    if access_control
-      return true
-    else
-      return false
-    end
+    # access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    #     if access_control
+    #       return true
+    #     else
+    #       return false
+    #     end
   end
   
   def add_authorization_to(organization)
-    self.organizations << organization
-    self.subscribed_organizations << organization
+    # self.admin_organizations << organization
+    #     self.subscribed_organizations << organization
   end
   
   def remove_authorization_to(organization)
-    access = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
-    access.destroy
+    # access = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
+    #     access.destroy
   end
 
   # Admin methods
@@ -119,103 +164,73 @@ class User < ActiveRecord::Base
   
   # Class methods
 
-  def User.send_daily_bulletin
+  def self.send_daily_bulletin
     User.where(bulletin_preference: "daily").find_each do |user|
       UserMailer.bulletin(user, "daily").deliver
     end
   end
 
-  def User.send_weekly_bulletin
+  def self.send_weekly_bulletin
     User.where(bulletin_preference: "weekly").find_each do |user|
       UserMailer.bulletin(user, "weekly").deliver
     end
   end
+
+  def self.name_from_email(email)
+    e = email.gsub(/@yale.edu/, "")
+    names = e.split(".")
+    names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
+    names.join(" ")
+  end
+  
+  def promote
+    self.admin = true
+    self.save
+  end
+  
+  def demote
+    self.admin = false
+    self.save
+  end
       
-  def User.create_from_directory(id, type="uid", search=false)
-    if search
-      u = nil
-      u = case type
-        when "uid" then User.find_by_netid(id)
-        when "email" then User.find_by_email(id)
-      end
-      return u if u
-    end
+  def self.create_from_directory(id, type="uid")
+    
+    browser = Gandalf::Utilities.make_cas_browser
+    browser.get("http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}")
 
-    User.update_browser
-
-    netid_regex = /^NetID:/
-    name_regex = /^Name:/
-    known_as_regex = /Known As:/
-    email_regex = /Email Address:/
-    college_regex = /Residential College:/
-    year_regex = /Class Year:/
-    division_regex = /Division:/
-
-    url = "http://directory.yale.edu/phonebook/index.htm?searchString=#{type}%3D#{id}"
-    @@browser.get(url)
-
-    u = User.new
-    # u.netid = netid
-    @@browser.page.search('tr').each do |tr|
+    user = User.new
+    browser.page.search('tr').each do |tr|
       field = tr.at('th').text.strip
       value = tr.at('td').text.strip
       case field
-      when netid_regex
-        u.netid = value
-      when name_regex
-        u.name = value
-      when known_as_regex
-        u.nickname = value
-      when email_regex
-        u.email = value
-      when college_regex
-        u.college = value
-      when year_regex
-        u.year = value
-      when division_regex
-        u.division = value
+      when NETID_REGEX
+        user.netid = value
+      when NAME_REGEX
+        user.name = value
+      when KNOWN_AS_REGEX
+        user.nickname = value
+      when EMAIL_REGEX
+        user.email = value
+      when COLLEGE_REGEX
+        user.college = value
+      when YEAR_REGEX
+        user.year = value
+      when DIVISION_REGEX
+        user.division = value
       end
     end
-    if u.email # If a user was found
-      u.name ||= User.name_from_email(u.email)  # Make sure of name
-      u.nickname = u.name.split(" ").first      # Set nickname
-      if u.save
-        return u
+        
+    if user.email # If a user was found
+      user.name ||= User.name_from_email(user.email)  # Make sure of name
+      user.nickname = user.name.split(" ").first      # Set nickname
+      if user.save
+        return user
       else
         return nil
       end
     else
       return nil
     end
-
   end
-
-  def User.name_from_email(email)
-    e = email.gsub(/@yale.edu/, "")
-    names = e.split(".")
-    names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
-    names.join(" ")
-  end
-
-  def User.make_cas_browser
-    browser = Mechanize.new
-    browser.get( 'https://secure.its.yale.edu/cas/login' )
-    form = browser.page.forms.first
-    form.username = ENV['CAS_NETID']
-    form.password = ENV['CAS_PASS']
-    form.submit
-    browser
-  end
-
-  # Make sure CAS credentials don't expire by refreshing every hour
-  def User.update_browser
-    if Time.now - @@browser_time > 1.hour
-      @@browser = user.make_cas_browser
-    end
-  end
-
-  # Keep a CAS_authenticated browser
-  @@browser = User.make_cas_browser
-  @@browser_time = Time.now
 
 end

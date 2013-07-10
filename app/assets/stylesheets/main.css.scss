@@ -11,6 +11,9 @@ $background-color: #fafafa;
 
 /* =============  GLOBAL STYLES =========== */
 
+* {
+  @include box-sizing(border-box);
+}
 body {
   margin: 0px;
   padding: 0px;
@@ -51,6 +54,7 @@ h3 {
 .container {
   width: $width;
   margin: 0 auto;
+  position: relative;
 }
 
 .hidden {
@@ -81,7 +85,7 @@ $header-z: 100;
 }
 
 .link {
-  line-height: $header-height;
+  line-height: $header-height - 3px; // For the border-top.
   color: #333;
   font-size: 13px;
   font-weight: bold;
@@ -138,27 +142,23 @@ $header-z: 100;
 
 /* ================== LAYOUT =============== */
 
-$cal-nav-height: 55px;
+$cal-nav-height: 55px; // Change value in .content-calendar (~line 182) as well.
 $calendar-height: 700px;
-$calendar-top: $header-height + 3px;
+$calendar-top: $header-height;
 $calendar-bottom: $cal-nav-height + $calendar-height;
 $cal-z: 10;
 
 // #content is the Backbone anchor onto the document
 #content {
-  position: absolute;
-  width: 100%;
-  min-width: $min-width;
-  min-height: 500px;
-  top: $header-height + 3px; // 3px for the top blue border
-  // background: #fafafa;
+  position: relative;
+  top: $header-height;
 }
 
-.content-calendar-nav {
-  position: fixed;
+// Backbone anchor for calendar navigation element.
+.content-calendar-nav-full-width {
   left: 0;
   top: $calendar-top; 
-  height: $cal-nav-height - 1px; // For the border
+  height: $cal-nav-height;
   width: 100%;
   min-width: $min-width;
   background-color: #eee;
@@ -166,21 +166,28 @@ $cal-z: 10;
   z-index: $header-z - 1;
 }
 
+// Backbone anchor for the calendar element.
 .content-calendar {
-  position: absolute;
-  top: $cal-nav-height;
-  // top: $calendar-top + $cal-nav-height + 1px;
-  left: 0;
+  // top: $cal-nav-height + $header-height;
   width: 100%;
-  min-width: $min-width;
   height: $calendar-height;
-  overflow-y: hidden;
+  overflow-y: scroll;
+  // The pixel value here is $cal-nav-height + $header-height.
+  // Can't use variables because calc() doens't except them.
+  height: -moz-calc(100% - 105px);
+  height: -webkit-calc(100% - 105px);
+  height: -o-calc(100% - 105px);
+  height: calc(100% - 105px);
+  &.content-calendar-panel {
+    height: 100%;
+  }
 }
 
+
+// Backbone anchor for all the stuff below the calendar (in v1).
 .content-body {
   position: relative;
   top: $calendar-bottom;
-  // top: $calendar-height;
   width: 100%;
   background-color: $background-color;
   min-height: 500px;

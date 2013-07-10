@@ -1,7 +1,7 @@
 # JSON API for events.
 
 class EventsController < ApplicationController
-  before_filter :require_admin
+  
   respond_to :json
 
   # Repond with all events, ordered by updated time.

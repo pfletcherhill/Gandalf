@@ -9,96 +9,109 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130326023441) do
+ActiveRecord::Schema.define(version: 20130626083747) do
 
-  create_table "access_controls", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "user_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
-  create_table "categories", :force => true do |t|
+  create_table "events", force: true do |t|
     t.string   "name"
-    t.text     "description"
     t.string   "slug"
-    t.string   "flyer"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "categories", ["slug"], :name => "index_categories_on_slug"
-
-  create_table "categories_events", :force => true do |t|
-    t.integer "event_id"
-    t.integer "category_id"
-  end
-
-  create_table "events", :force => true do |t|
-    t.string   "name"
     t.text     "description"
+    t.string   "room_number"
+    t.integer  "pre_status"
+    t.integer  "post_status"
+    t.integer  "organization_id"
+    t.integer  "location_id"
     t.datetime "start_at"
     t.datetime "end_at"
-    t.string   "room_number"
-    t.integer  "organization_id"
-    t.integer  "location_id"
     t.string   "fb_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.string   "apps_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "location_aliases", :force => true do |t|
+  add_index "events", ["apps_id"], name: "index_events_on_apps_id", using: :btree
+  add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
+  add_index "events", ["slug"], name: "index_events_on_slug", using: :btree
+
+  create_table "events_groups", force: true do |t|
+    t.integer "event_id"
+    t.integer "group_id"
+  end
+
+  create_table "groups", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.text     "description"
+    t.integer  "organization_id"
+    t.string   "type"
+    t.string   "apps_id"
+    t.string   "apps_email"
+    t.string   "apps_cal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "groups", ["apps_id"], name: "index_groups_on_apps_id", using: :btree
+  add_index "groups", ["organization_id"], name: "index_groups_on_organization_id", using: :btree
+  add_index "groups", ["slug"], name: "index_groups_on_slug", using: :btree
+
+  create_table "location_aliases", force: true do |t|
     t.string   "value"
     t.integer  "location_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "locations", :force => true do |t|
+  create_table "locations", force: true do |t|
     t.string   "name"
     t.string   "address"
     t.float    "latitude"
     t.float    "longitude"
     t.boolean  "gmaps"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "organizations", :force => true do |t|
+  create_table "organizations", force: true do |t|
     t.string   "name"
     t.text     "bio"
     t.string   "slug"
     t.string   "image"
-    t.string   "color",         :default => "150,150,150"
+    t.string   "color",         default: "150,150,150"
     t.string   "fb_id"
     t.string   "fb_access_key"
     t.string   "fb_name"
     t.string   "fb_link"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "organizations", ["slug"], :name => "index_organizations_on_slug"
+  add_index "organizations", ["slug"], name: "index_organizations_on_slug", using: :btree
 
-  create_table "pg_search_documents", :force => true do |t|
+  create_table "pg_search_documents", force: true do |t|
     t.text     "content"
     t.integer  "searchable_id"
     t.string   "searchable_type"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "subscriptions", :force => true do |t|
+  create_table "subscriptions", force: true do |t|
     t.integer  "subscribeable_id"
-    t.integer  "user_id"
     t.string   "subscribeable_type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.integer  "group_id"
+    t.integer  "user_id"
+    t.integer  "access_type",        default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "users", :force => true do |t|
+  add_index "subscriptions", ["group_id"], name: "index_subscriptions_on_group_id", using: :btree
+  add_index "subscriptions", ["subscribeable_id"], name: "index_subscriptions_on_subscribeable_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
+
+  create_table "users", force: true do |t|
     t.string   "netid"
     t.string   "name"
     t.string   "nickname"
@@ -107,15 +120,16 @@ ActiveRecord::Schema.define(:version => 20130326023441) do
     t.string   "year"
     t.string   "division"
     t.boolean  "admin"
-    t.string   "bulletin_preference", :default => "daily"
+    t.string   "bulletin_preference", default: "daily"
     t.string   "fb_id"
     t.string   "fb_access_token"
     t.string   "fb_accounts"
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
+    t.string   "apps_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "users", ["email"], :name => "index_users_on_email"
-  add_index "users", ["netid"], :name => "index_users_on_netid"
+  add_index "users", ["email"], name: "index_users_on_email", using: :btree
+  add_index "users", ["netid"], name: "index_users_on_netid", using: :btree
 
 end

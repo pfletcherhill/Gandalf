@@ -1,0 +1,61 @@
+// Stylesheet for container panels
+
+// Variables
+$width: 960px;
+$panel-width: 480px;
+$panel-top-height: 80px;
+$header-height: 50px;
+$panel-top-overlap: 10px;
+$background-color: white;
+$panel-left-padding: 15px;
+
+// Style
+.panel-top {
+  height: $panel-top-height;
+  position: fixed;
+  width: $width + 2 * $panel-top-overlap;
+  margin-left: -$panel-top-overlap;
+  padding: 0 $panel-top-overlap;
+  top: $header-height;
+  border-bottom: 1px solid #dadada;
+  @include box-shadow(0 2px 2px -2px rgba(black, 0.2));
+  z-index: 1;
+  background: $background-color;
+  
+  h1 {
+    line-height: $panel-top-height - 20px;
+  }
+}
+
+.panel-left {
+  position: absolute;
+  top: $panel-top-height;
+  @include box-shadow(2px 0px 5px -2px rgba(black, 0.2));
+  @include calc(min-height, "100% - #{$header-height} - #{$panel-top-height}");
+  padding: $panel-left-padding $panel-left-padding $panel-left-padding 0;
+  width: $panel-width - $panel-left-padding;
+  height: auto;
+}
+
+.panel-right {
+  position: fixed;
+  top: $panel-top-height + $header-height;
+  overflow-y: scroll;
+  margin-left: $panel-width;
+  width: $panel-width;
+  @include calc(height, "100% - #{$header-height} - #{$panel-top-height}");
+}
+
+.panel-intro, .panel-cal-nav {
+  display: inline-block;
+}
+
+.panel-cal-nav {
+  float: right;
+  height: $panel-top-height;
+  width: $panel-width;
+}
+
+.content-calendar-nav-panel {
+  width: 100%;
+}

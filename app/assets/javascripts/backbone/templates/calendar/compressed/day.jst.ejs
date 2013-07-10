@@ -1,0 +1,9 @@
+<div class="cal-day-inner">
+  <div class="month-date">
+    <% if(date.date() === 1) { %>
+      <%= date.format("MMM") %>
+    <% } %>
+    <%= date.format("D") %>
+  </div>
+  <div class="cal-events"></div>
+</div>

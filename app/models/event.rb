@@ -1,37 +1,99 @@
 class Event < ActiveRecord::Base
 
+  include Gandalf::GoogleApiClient
+  include Gandalf::Utilities
+  
   # Associations
   belongs_to :organization
-  has_and_belongs_to_many :categories
   belongs_to :location
-
-  validates_presence_of :name
-  validates_presence_of :organization_id
-  validates_presence_of :start_at
-  validates_presence_of :end_at
-
+  has_and_belongs_to_many :groups
+  has_and_belongs_to_many :calendars, -> { where type: "Calendar" }, class_name: "Group"
+  has_and_belongs_to_many :categories, -> { where type: "Category" }, class_name: "Group"
+  
+  validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
   validates_uniqueness_of :name, :scope => [:organization_id, :start_at]
+  
+  # Callbacks
+  before_validation :set_slug
+  after_create :create_google_event
 
-  #pg_search
+  # Search
   include PgSearch
-  multisearchable :against => [:name, :description]
+  
+  multisearchable against: [
+    :name,
+    :description
+  ]
+  
   pg_search_scope :fulltext_search,
-    against: [:name, :description],
+    against: {
+      name: "A",
+      description: "B"
+    },
     associated_against: {
       organization: [:name],
       location: [:name]
     },
-    using: { tsearch: {
-      prefix: true, 
-      dictionary: "english",
-      any_word: true
+    using: {
+      tsearch: {
+        prefix: true,
+        anyword: true
+      }
     }
-  }
 
+  def calendar
+    self.calendars.first
+  end
+  
+  def set_slug
+    self.slug = make_slug(self.name)
+  end
+  
   def date
     date = self.start_at.strftime("%Y-%m-%d")
     date
+  end
+  
+  def google_calendar_id
+    self.calendar.apps_cal_id
+  end
+  
+  def google_start
+    { "dateTime" => self.start_at }
+  end
+  
+  def google_end
+    { "dateTime" => self.end_at }
+  end
+  
+  def google_organizer
+    {
+      "email" => self.calendar.apps_email,
+      "displayName" => self.calendar.name
+    }
+  end
+  
+  def google_location
+    "#{self.location.try(:name)}, #{self.location.try(:address)}"
+  end
+  
+  def create_google_event
+    result = Gandalf::GoogleApiClient.insert_google_event(self.google_calendar_id, {
+      "start" => self.google_start,
+      "end" => self.google_end,
+      "description" => self.description,
+      "summary" => self.name,
+      "location" => self.google_location,
+      "organizer" => self.google_organizer
+    })
+    
+    self.apps_id = result.data.id
+    self.save
+  end
+  
+  def get_google_event
+    result = Gandalf::GoogleApiClient.get_google_event(self.google_calendar_id, self.apps_id)
   end
 
   # Takes an array of category ids and makes them the associated categories
@@ -66,7 +128,6 @@ class Event < ActiveRecord::Base
       "image" => organization.image.url,
       "thumbnail" => organization.image.thumbnail.url,
       "color" => organization.color,
-      "categories" => categories,
       "fb_id" => fb_id,
       # Data for rendering calendar with Backbone (hence the camel case)
       "calStart" => start_at,
@@ -137,5 +198,4 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  
 end
