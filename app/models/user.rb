@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   has_many :subscribed_teams, -> { where type: "Team" },
            through: :subscriptions,
            source: :group
-  has_many :calendar_events,
+  has_many :team_events,
            through: :subscribed_teams,
            source: :events
   

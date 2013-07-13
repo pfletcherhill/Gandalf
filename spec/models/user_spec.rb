@@ -4,120 +4,65 @@ require 'spec_helper'
 include Gandalf::Utilities
 
 describe User do
-  context "associations" do
-    
-    before :each do
-      @user = Fabricate(:user)
-    end
-    
-    describe "subscriptions" do
-      
-      context "when the user is created" do
-        it "should be empty" do
-          @user.subscriptions.should be_empty
-        end
+  describe "associations" do
+    context "when a user has subscriptions" do
+      pending "should have subscriptions" do
       end
       
-      context "when the user has one subscription" do
-        before :each do
-          @subscription = Fabricate(:subscription, user_id: @user.id)
+      context "and a user has groups" do
+
+        pending "should have groups through subscriptions" do
         end
         
-        it "should have one subscription" do
-          @user.subscriptions.count.should == 1
-          @user.subscriptions.first.should == @subscription
-        end
-      end
-      
-      context "when the user has many subscriptions" do
-        before :each do
-          Fabricate(:subscription, user_id: @user.id)
-          Fabricate(:subscription, user_id: @user.id)
-        end
-        
-        it "should have many subscriptions" do
-          @user.subscriptions.count.should == 2
-        end
-      end
-    end
-    
-    describe "groups" do
-      
-      context "when the user is created" do
-        it "should be empty" do
-          @user.groups.should be_empty
-        end
-      end
-      
-      context "when the user has one group" do
-        before :each do
-          @group = Fabricate(:group)
-          @user.add_group(@group.id)
-        end
-        
-        it "should have one group" do
-          @user.groups.count.should == 1
-          @user.groups.first.should == @group
-        end
-        
-        it "should have one subscription" do
-          @user.subscriptions.count.should == 1
-        end
-      end
-      
-      context "when the user has many groups" do
-        before :each do
-          @user.add_group(Fabricate(:group).id)
-          @user.add_group(Fabricate(:group).id)
-        end
-        
-        it "should have many groups" do
-          @user.groups.count.should == 2
-        end
-        
-        it "should have many subscriptions" do
-          @user.subscriptions.count.should == 2
-        end
-      end
-    end
-    
-    describe "events" do
-      
-      context "when the user is created" do
-        it "should be empty" do
-          @user.events.should be_empty
-        end
-      end
-      
-      context "when the user follows one organization" do
-        before :each do
-          @organization = Fabricate(:organization)
-          @subscription = Fabricate(:subscription, user_id: @user.id, subscribeable_id: @organization.id, subscribeable_type: "Organization", group_id: @organization.followers_group.id)
-        end
-        
-        context "when the organization has no events" do
-          it "should be empty" do
-            @user.events.should be_empty
-          end
-        end
-        
-        context "when the organization has events" do
-          before :each do
-            @event = Fabricate(:event, organization_id: @organization.id)
-            @event.groups << @organization.followers_group
+        context "and at least one is a team" do
+          pending "should have subscribed_teams through subscriptions" do
           end
           
-          it "should have events" do
-            @user.events.count.should == 1
-            @user.events.first.should == @event
+          pending "should have subscribed_organizations through subscribed_teams" do
+          end
+          
+          context "and that team has events" do
+            pending "should have team_events through subscribed_teams" do
+            end
+          end
+        end
+        
+        context "and at least one is a category" do
+          pending "should have subscribed_categories through subscriptions" do
+          end
+          
+          context "and that category has events" do
+            pending "should have category_events through subscribed_categories" do
+            end
+          end
+        end
+        
+        context "and a user has events" do
+          pending "should have events through groups and subscriptions" do
           end
         end
       end
+      
+      context "with admin access_type" do
+        pending "should have admin_organizations through subscriptions" do
+        end
+      end
+      
+      context "with member access_type" do
+        pending "should have member_organizations through subscriptions" do
+        end
+      end
+      
+      context "with follower access_type" do
+        pending "should have follower_organizations through subscriptions" do
+        end
+      end
+      
     end
   end
   
   context "methods" do
-    
+
     before :each do
       @user = Fabricate(:user)
     end
@@ -150,16 +95,16 @@ describe User do
       end
     end
     
-    describe ".add_group" do
+    describe ".subscribe_to" do
       context "when adding a valid group" do
         before :each do
           @user = Fabricate(:user)
-          @group = Fabricate(:group)
         end
         
         it "creates a subscription" do
           @user.subscriptions.count.should == 0
-          @user.add_group(@group.id)
+          stub_request(:any, /www.googleapis.com/)
+          @user.subscribe_to(Fabricate(:group).id)
           @user.subscriptions.count.should == 1
         end
       end

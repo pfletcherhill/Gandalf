@@ -34,7 +34,6 @@ class Subscription < ActiveRecord::Base
   # Google API Methods
   
   def create_google_member
-    p "create_google_member"
     Gandalf::GoogleApiClient.insert_google_member(self.group.apps_id, {
       "email" => self.user.email,
       "role" => self.google_role
