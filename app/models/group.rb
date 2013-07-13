@@ -90,9 +90,9 @@ class Group < ActiveRecord::Base
       result = Gandalf::GoogleApiClient.insert_google_calendar({
         "summary" => self.name
       })
-    
+      p result.status
       self.apps_cal_id = result.data.id
-      self.save
+      self.save!
     end
   end
   

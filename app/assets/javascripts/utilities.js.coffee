@@ -7,15 +7,19 @@ window.utilities =
   # <day of week> to note the next such day.
   # Defaults to a sttring like 'Sunday, March 1'.
   # param {Moment} date The moment() object to format.
+  # param {boolean} lowercase True if the canonical should be lower case
   # return {string} The formatted date string.
-  formatDate: (date) ->
+  formatDate: (date, lowercase=false) ->
     today = moment()
     diff = date.sod().diff today.sod(), 'days'
     string = switch
       when diff < -1 and diff > -7 then 'Last ' + date.format 'dddd'
-      when diff is -1 then 'Yesterday'
-      when diff is 0 then 'Today'
-      when diff is 1 then 'Tomorrow'
+      when diff is -1 
+        if lowercase then 'yesterday' else 'Yesterday'
+      when diff is 0 
+        if lowercase then 'today' else 'Today'
+      when diff is 1 
+        if lowercase then 'tomorrow' else 'Tomorrow'
       when diff > 1 and diff < 7 then date.format 'dddd'
       else date.format 'dddd, MMMM D'
     string

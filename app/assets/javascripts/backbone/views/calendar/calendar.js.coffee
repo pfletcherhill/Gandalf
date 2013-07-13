@@ -23,7 +23,6 @@ class Gandalf.Views.Calendar extends Backbone.View
     else
       numDays = 7
       numDays = 1 if @options.type is 'list'
-      console.log @options.type, numDays
       cal = new Gandalf.Views.Calendar.Expanded.Index
         startDate: moment(@startDate)
         eventCollection: @eventCollection
@@ -80,7 +79,7 @@ class Gandalf.Views.Calendar extends Backbone.View
       # overlapIndex is the number of items overlapping
       for overlapIndex in [2..@maxOverlaps]
         width = Math.floor(96/overlapIndex)
-        fraction = Math.floor(80/overlapIndex)
+        fraction = Math.floor(100/overlapIndex)
         selector = ".cal-week-event.overlap-#{overlapIndex}.day-#{i}"
         selector += ":not(.hide, .event-hidden-org, .event-hidden-cat)"
         evs = @$el.find(selector)

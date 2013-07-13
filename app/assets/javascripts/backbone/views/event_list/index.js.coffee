@@ -3,8 +3,8 @@ Gandalf.Views.EventList ||= {}
 class Gandalf.Views.EventList extends Backbone.View
 
   initialize: ->
+    # Discount the first event since it's rendered in 'main event'.
     toRender = new Gandalf.Collections.Events @options.eventCollection.rest()
-    console.log 'rest', toRender
     @days = toRender.group()
     @render()
 

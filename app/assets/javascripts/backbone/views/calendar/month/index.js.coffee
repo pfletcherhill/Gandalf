@@ -1,6 +1,6 @@
 Gandalf.Views.Calendar.Month ||= {}
 
-class Gandalf.Views.Calendar.Month.Index extends Backbone.View
+class Gandalf.Views.Calendar.Month.Indsex extends Backbone.View
   initialize: ()->
     @calEvents = @options.calEvents
     @calEvents.splitMultiday(true)        # Adjust multi-day events

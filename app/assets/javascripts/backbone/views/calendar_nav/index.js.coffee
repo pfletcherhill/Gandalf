@@ -6,10 +6,11 @@ class Gandalf.Views.CalendarNav extends Backbone.View
     @startDate = @options.startDate || moment()
     @root = @options.root || ""
     @multidayVisible = true
-    if @options.period == "month"
-      @renderMonthMenu()
-    else
-      @renderWeekMenu()
+    @type = @options.type
+    switch @type
+      when "month" then @renderMonthMenu()
+      when "week" then @enderWeekMenu()
+      else @renderDayMenu()
 
     return this
 
@@ -19,7 +20,7 @@ class Gandalf.Views.CalendarNav extends Backbone.View
   events:
     "click .toggle-multiday" : "toggleMultiday"
 
-  renderMonthMenu: () ->
+  renderMonthMenu: ->
     thisMonth = moment(@startDate).day(6).date(1)
     thisT = thisMonth.format("MMMM YYYY")
     prevT = moment(thisMonth).subtract('M', 1).format(Gandalf.displayFormat)
@@ -28,17 +29,14 @@ class Gandalf.Views.CalendarNav extends Backbone.View
       otherT = 'today'
     else
       otherT = moment(@startDate).format(Gandalf.displayFormat)
-    # Add to html
-    @$el.html @template(
-      today: "##{@root}/today/month"
+    @render(
+      prevT: prevT
+      nextT: nextT
       thisT: thisT
-      prevLink: "##{@root}/#{prevT}/month"
-      nextLink: "##{@root}/#{nextT}/month"
-      otherLink: "##{@root}/#{otherT}/week"
-    )
-    @$(".month").addClass "disabled"
+      otherT: otherT
+    , "month")
 
-  renderWeekMenu: () ->
+  renderWeekMenu: ->
     startDate = @startDate
     endDate = moment(startDate).add('d', 6)
     thisT =  startDate.format("MMM D") + " - " + endDate.format("MMM D")
@@ -46,19 +44,54 @@ class Gandalf.Views.CalendarNav extends Backbone.View
     prevT = moment(startDate).subtract('w', 1).format(Gandalf.displayFormat)
     nextT = moment(startDate).add('w', 1).format(Gandalf.displayFormat)
     if moment().day(1).format("DD") == moment(@startDate).day(1).format("DD")
-      otherT = moment().date(1).format(Gandalf.displayFormat)
+      otherT = 'today'
     else
       otherT = moment(startDate).date(1).format(Gandalf.displayFormat)
-
-    @$el.html @template(
-      today: "##{@root}/today/week"
+    @render(
+      prevT: prevT
+      nextT: nextT
       thisT: thisT
-      prevLink: "##{@root}/#{prevT}/week"
-      nextLink: "##{@root}/#{nextT}/week"
-      otherLink: "##{@root}/#{otherT}/month"
-    )
-    @$(".week").addClass 'disabled'
+      otherT: otherT
+    , "week")
 
+  renderDayMenu: ->
+    startDate = @startDate
+    endDate = moment(startDate).add('d', 1)
+    thisT = startDate.format('DD, MMM YYYY')
+    prevT = moment(startDate).subtract('d', 1).format(Gandalf.displayFormat)
+    nextT = moment(startDate).add('d', 1).format(Gandalf.displayFormat)
+    if moment(startDate).sod() == moment().sod() 
+      otherT = 'today'
+    else
+      otherT = startDate.format(Gandalf.displayFormat)
+    @render(
+      prevT: prevT
+      nextT: nextT
+      thisT: thisT
+      otherT: otherT
+    , "list")
+
+  # Renders the final calendar nav.
+  # param {Object} links An object with the following string parameters
+  #   (all in Gandalf.displayFormat):
+  #   thisT: The current date range string eg. "July 6 - July 13, 2013"
+  #   prevT: The previous time period
+  #   nextT: The next time period
+  #   dayT:  The time for the day view link
+  #   weekT: The time for the week view link
+  #   monthT:  The time for the month view link
+
+  render: (links) ->
+    @$el.html @template(
+      today: "##{@root}/today"
+      thisT: links.thisT
+      prevLink: "##{@root}/#{links.prevT}/#{@type}"
+      nextLink: "##{@root}/#{links.nextT}/#{@type}"
+      dayLink: "##{@root}/#{links.otherT}"
+      weekLink: "##{@root}/#{links.otherT}/week"
+      monthLink: "##{@root}/#{links.otherT}/month"
+    )
+    @$(".#{@type}").removeClass 'disabled'
 
   # Event handlers
 
@@ -71,4 +104,4 @@ class Gandalf.Views.CalendarNav extends Backbone.View
     else
       Gandalf.dispatcher.trigger("multiday:show")
     @multidayVisible = not @multidayVisible
-
+###

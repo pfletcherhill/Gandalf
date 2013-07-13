@@ -1,6 +1,6 @@
 Gandalf.Views.Calendar.Week ||= {}
 
-class Gandalf.Views.Calendar.Week.MultidayEvent extends Backbone.View
+class Gandalf.Views.Calendar.Week.MultisdayEvent extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"

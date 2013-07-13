@@ -27,7 +27,7 @@ class Organization < ActiveRecord::Base
 
   # Callbacks
   before_validation :set_slug
-  after_create :setup_groups
+  after_create :setup_teams_and_groups
 
   # pg_search
   include PgSearch
@@ -54,7 +54,7 @@ class Organization < ActiveRecord::Base
     self.slug = make_slug(name)
   end
   
-  def setup_groups
+  def setup_teams_and_groups
     ["Admins", "Members", "Followers"].each do |type|
       Team.create(
         name: "#{name} #{type}",
@@ -65,12 +65,12 @@ class Organization < ActiveRecord::Base
   
   # Methods
   
-  def admins_group
-    groups.where(slug: "#{slug}-admins").first
+  def admins_team
+    teams.where(slug: "#{slug}-admins").first
   end
   
-  def followers_group
-    groups.where(slug: "#{slug}-followers").first
+  def followers_team
+    teams.where(slug: "#{slug}-followers").first
   end
   
   def complete_events

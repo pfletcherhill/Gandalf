@@ -29,15 +29,13 @@ class Gandalf.Views.Calendar.Compressed.Event extends Backbone.View
 
   render: () ->
     if @continued or @continues
-      @$el.css(
+      @$el.css
         color: "#222"
         backgroundColor: @lightColor
         width: "100%"
-      )
     else
-      @$el.css(
+      @$el.css
         color: @lightColor
-      )
 
     @$el.attr(
       "data-event-id": @model.get("id")

@@ -40,8 +40,9 @@ class Gandalf.Router extends Backbone.Router
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
     else # Default to list
-      startAt = moment().sod()
-      # Really we want to get ~ 20 events here, not one week's worth..
+      startAt = moment(date, Gandalf.displayFormat).sod()
+      # TODO(rafikhan): Really we want to get ~20 events here,
+      # not one week's worth..
       endAt = moment(startAt).add('w',1)
       type = 'list'
     params = {
@@ -105,11 +106,8 @@ class Gandalf.Router extends Backbone.Router
     date ||= 'today'
     type ||= 'list'
     params = @processType date, type
-    if type isnt 'list'
-      string = @generateParamsString params
-      @eventCollection.url = '/users/events?' + string
-    else
-      @eventCollection.url = '/users/next_events?limit=20'
+    string = @generateParamsString params
+    @eventCollection.url = '/users/events?' + string
     @eventCollection.fetch success: (data) ->
       view = new Gandalf.Views.Feed.Index
         eventCollection: data
