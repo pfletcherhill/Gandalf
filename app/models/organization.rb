@@ -4,21 +4,20 @@ class Organization < ActiveRecord::Base
   include Gandalf::GoogleApiClient
   
   # Associations
-  has_many :subscriptions, :as => :subscribeable, dependent: :destroy
-  has_many :subscribers, :through => :subscriptions, :source => :user
   has_many :teams, class_name: "Group"
+  has_many :subscribers, source: :users, through: :teams
   has_many :events
   
-  # Access Controls  
+  # Access Controls
   has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]},
-           through: :subscriptions,
-           source: :user
+           through: :teams,
+           source: :users
   has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]},
-           through: :subscriptions,
-           source: :user
+           through: :teams,
+           source: :users
   has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]},
-           through: :subscriptions,
-           source: :user
+           through: :teams,
+           source: :users
 
   # Validations
   validates_presence_of :name, :slug
@@ -72,7 +71,7 @@ class Organization < ActiveRecord::Base
   def followers_team
     teams.where(slug: "#{slug}-followers").first
   end
-  
+    
   def complete_events
     self.events
       .includes(:location, :organization, :categories)

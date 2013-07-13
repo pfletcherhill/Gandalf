@@ -165,6 +165,10 @@ class User < ActiveRecord::Base
     self.save
   end
   
+  def administers_organizations?
+    self.admin_organizations.count > 0
+  end
+  
   # Class methods
 
   def self.send_daily_bulletin
