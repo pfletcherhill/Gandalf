@@ -8,8 +8,8 @@ class Event < ActiveRecord::Base
   belongs_to :location
   has_many :event_instances
   has_many :groups, through: :event_instances
-  has_many :calendars, -> { where type: "Calendar" }, class_name: "Group", through: :event_instances
-  has_many :categories, -> { where type: "Category" }, class_name: "Group", through: :event_instances
+  has_many :teams, -> { where type: "Team" }, source: :group, through: :event_instances
+  has_many :categories, -> { where type: "Category" }, source: :group, through: :event_instances
   
   validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
@@ -17,7 +17,6 @@ class Event < ActiveRecord::Base
   
   # Callbacks
   before_validation :set_slug
-  after_create :create_google_event
 
   # Search
   include PgSearch
@@ -42,10 +41,6 @@ class Event < ActiveRecord::Base
         anyword: true
       }
     }
-
-  def calendar
-    self.calendars.first
-  end
   
   def set_slug
     self.slug = make_slug(self.name)
@@ -56,10 +51,6 @@ class Event < ActiveRecord::Base
     date
   end
   
-  def google_calendar_id
-    self.calendar.apps_cal_id
-  end
-  
   def google_start
     { "dateTime" => self.start_at }
   end
@@ -68,29 +59,8 @@ class Event < ActiveRecord::Base
     { "dateTime" => self.end_at }
   end
   
-  def google_organizer
-    {
-      "email" => self.calendar.apps_email,
-      "displayName" => self.calendar.name
-    }
-  end
-  
   def google_location
     "#{self.location.try(:name)}, #{self.location.try(:address)}"
-  end
-  
-  def create_google_event
-    result = Gandalf::GoogleApiClient.insert_google_event(self.google_calendar_id, {
-      "start" => self.google_start,
-      "end" => self.google_end,
-      "description" => self.description,
-      "summary" => self.name,
-      "location" => self.google_location,
-      "organizer" => self.google_organizer
-    })
-    
-    self.apps_id = result.data.id
-    self.save
   end
   
   def get_google_event

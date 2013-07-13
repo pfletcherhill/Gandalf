@@ -1,9 +1,9 @@
-# Seed all categories if in production
-print("Importing categories...")
-unless Rails.env.production?
-  Category.import_categories("lib/data/categories.csv")
-end
-print("DONE\n")
+# # Seed all categories if in production
+# print("Importing categories...")
+# unless Rails.env.production?
+#   Category.import_categories("lib/data/categories.csv")
+# end
+# print("DONE\n")
 
 # Seed all student organizations
 # Or just admins if in production
@@ -20,15 +20,15 @@ else
 end
 print("DONE\n")
 
-# Promote admins
-print("Promoting admins...")
-netids = %w(prf8 fak23)
-netids.each do |id|
-  u = User.find_by_netid(id)
-  u.admin = true
-  u.save
-end
-print("DONE\n")
+# # Promote admins
+# print("Promoting admins...")
+# netids = %w(prf8 fak23)
+# netids.each do |id|
+#   u = User.find_by_netid(id)
+#   u.admin = true
+#   u.save
+# end
+# print("DONE\n")
 
 locations = [
   "Yale University",
@@ -39,10 +39,6 @@ print("Creating locations...")
 locations.each do |l|
   Location.create!(:name => l, :gmaps => true)
 end
-printf("DONE\n")
-
-print("Creating events...")
-Event.create_some_upcoming_events
 printf("DONE\n")
 
 # # Scrape this month's events

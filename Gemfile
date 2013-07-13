@@ -19,6 +19,10 @@ group :test, :development do
   gem 'guard-spork'
   gem 'jasmine-rails'
   gem 'sinon-rails'
+  gem 'excon', '>= 0.22.0'
+end
+
+group :test do
   gem 'webmock'
 end
 
