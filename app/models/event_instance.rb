@@ -33,9 +33,7 @@ class EventInstance < ActiveRecord::Base
       "location" => self.event.google_location,
       "organizer" => self.google_organizer
     })
-    
-    self.apps_id = result.data.id
+    self.apps_id = result.data.id if result.data
     self.save
   end
-  
 end

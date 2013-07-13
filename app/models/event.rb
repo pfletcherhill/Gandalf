@@ -109,6 +109,23 @@ class Event < ActiveRecord::Base
   end
   
   # Class methods
+
+  # Helper method for testing.
+  # param {Number=} num Number of events to create.
+  # param {Organization=} organization The organization to create the event
+  #   for.
+  # return {Array.<Event>} The created events.
+  def Event.create_upcoming_events(num=5, organization=Organization.first)
+    events = []
+    num.times do |index|
+      e = Event.create!(name: "Event #{index}", organization: organization,
+        start_at: Time.now + index.hours,
+        end_at: Time.now + (index+2).hours + (index*index*10).minutes)
+      organization.followers_team.events << e
+      events << e
+    end
+    return events
+  end
   
   def Event.scrape_yale_events(url)
     page = Nokogiri::HTML(open(url))

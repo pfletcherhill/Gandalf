@@ -54,7 +54,6 @@ class Gandalf.Models.Event extends Backbone.Model
     # Different day, give full date.
     else 
       end = Gandalf.formatDate(endAt) + ' ' + Gandalf.formatTime(endAt)
-    console.log {startString: start, endString: end, sameDay: sameDay}
     {startString: start, endString: end, sameDay: sameDay}
 
   # An event's JSON representation, to be sent to the server.
@@ -126,7 +125,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   # Gets all events that are multiday: i.e. span more than 24 hours.
   # return {Array.<Events>} The events.
-  getMultidayEvents: () ->
+  getMultidayEvents: ->
     events = _.filter(@models, (e) ->
       e.get("multiday")
     )
