@@ -8,7 +8,9 @@ module Gandalf::GoogleApiClient
     GROUP_SETTINGS: "https://www.googleapis.com/auth/apps.groups.settings"
   }
   
-  before_filter :setup_client
+  def self.included(base)
+    setup_client
+  end
   
   def self.build_client(scope)
 
@@ -17,11 +19,12 @@ module Gandalf::GoogleApiClient
     asserter = Google::APIClient::JWTAsserter.new(ENV['SERVICE_ACCOUNT_EMAIL'], scope, key)
     client = Google::APIClient.new(application_name: 'TEDxYaleGo')
     client.authorization = asserter.authorize(ENV['ACCOUNT_EMAIL'])
-    client
     
     @directory = client.discovered_api("admin", "directory_v1")
     @calendar = client.discovered_api("calendar", "v3")
     @group_settings = client.discovered_api("groupssettings", "v1")
+    
+    return client
     
   end
   

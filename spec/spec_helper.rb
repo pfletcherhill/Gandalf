@@ -24,10 +24,10 @@ Spork.prefork do
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     # config.fixture_path = "#{::Rails.root}/spec/fixtures"
     
-    WebMock.disable_net_connect!(:allow => ["accounts.google.com", "googleapis.com"])
+    WebMock.allow_net_connect!
+    #WebMock.disable_net_connect!(:allow => ["accounts.google.com", "www.googleapis.com"])
 
     include Gandalf::GoogleApiClient
-    Gandalf::GoogleApiClient.build_client
 
     WebMock.disable_net_connect!
 
