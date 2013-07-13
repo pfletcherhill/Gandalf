@@ -11,11 +11,11 @@ class User < ActiveRecord::Base
   has_many :events, through: :groups
   
   # Calendars
-  has_many :subscribed_calendars, -> { where type: "Calendar" },
+  has_many :subscribed_teams, -> { where type: "Team" },
            through: :subscriptions,
            source: :group
   has_many :calendar_events,
-           through: :subscribed_calendars,
+           through: :subscribed_teams,
            source: :events
   
   # Categories
@@ -28,18 +28,18 @@ class User < ActiveRecord::Base
 
   # Organizations
   has_many :subscribed_organizations,
-           through: :subscribed_calendars,
+           through: :subscribed_teams,
            source: :organization
                     
   # Access Controls
   has_many :admin_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN] },
-           through: :subscribed_calendars,
+           through: :subscribed_teams,
            source: :organization
   has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
-           through: :subscribed_calendars,
+           through: :subscribed_teams,
            source: :organization
   has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] or nil },
-           through: :subscribed_calendars,
+           through: :subscribed_teams,
            source: :organization
 
   # Validations
@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
       "year" => year,
       "organizations" => organizations,
       "subscribed_organizations" => subscribed_organizations,
-      "calendars" => subscribed_calendars,
+      "teams" => subscribed_teams,
       "categories" => subscribed_categories,
       "bulletin_preference" => bulletin_preference,
       "fb_id" => self.fb_id,
@@ -122,8 +122,6 @@ class User < ActiveRecord::Base
   
   def subscribe_to(group_id)
     group = Group.find(group_id)
-    # Subscription.create(user_id: self.id, group_id: group_id,
-    #                         subscribeable_id: group.organization_id, subscribeable_type: "Organization")
     Subscription.create(user_id: self.id, group_id: group_id)
   end
   

@@ -19,6 +19,7 @@ group :test, :development do
   gem 'guard-spork'
   gem 'jasmine-rails'
   gem 'sinon-rails'
+  gem 'webmock'
 end
 
 # Rails 4 compatibility

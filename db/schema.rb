@@ -11,33 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130626083747) do
+ActiveRecord::Schema.define(version: 20130713044761) do
+
+  create_table "event_instances", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "event_id"
+    t.string   "apps_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_instances", ["apps_id"], name: "index_event_instances_on_apps_id", using: :btree
+  add_index "event_instances", ["event_id"], name: "index_event_instances_on_event_id", using: :btree
+  add_index "event_instances", ["group_id"], name: "index_event_instances_on_group_id", using: :btree
 
   create_table "events", force: true do |t|
     t.string   "name"
     t.string   "slug"
     t.text     "description"
     t.string   "room_number"
-    t.integer  "pre_status"
-    t.integer  "post_status"
     t.integer  "organization_id"
     t.integer  "location_id"
     t.datetime "start_at"
     t.datetime "end_at"
     t.string   "fb_id"
-    t.string   "apps_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "events", ["apps_id"], name: "index_events_on_apps_id", using: :btree
   add_index "events", ["organization_id"], name: "index_events_on_organization_id", using: :btree
   add_index "events", ["slug"], name: "index_events_on_slug", using: :btree
-
-  create_table "events_groups", force: true do |t|
-    t.integer "event_id"
-    t.integer "group_id"
-  end
 
   create_table "groups", force: true do |t|
     t.string   "name"

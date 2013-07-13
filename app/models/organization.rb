@@ -6,7 +6,7 @@ class Organization < ActiveRecord::Base
   # Associations
   has_many :subscriptions, :as => :subscribeable, dependent: :destroy
   has_many :subscribers, :through => :subscriptions, :source => :user
-  has_many :groups
+  has_many :teams, class_name: "Group"
   has_many :events
   
   # Access Controls  
@@ -56,7 +56,7 @@ class Organization < ActiveRecord::Base
   
   def setup_groups
     ["Admins", "Members", "Followers"].each do |type|
-      Calendar.create(
+      Team.create(
         name: "#{name} #{type}",
         organization_id: id
       )

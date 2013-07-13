@@ -5,8 +5,21 @@ class Group < ActiveRecord::Base
   
   # Associations
   has_many :subscriptions
-  has_and_belongs_to_many :events
+  has_many :users, through: :subscriptions
+  has_many :event_instances
+  has_many :events, through: :event_instances
   belongs_to :organization
+  
+  # Access Controls  
+  has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]},
+           through: :subscriptions,
+           source: :user
+  has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]},
+           through: :subscriptions,
+           source: :user
+  has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]},
+           through: :subscriptions,
+           source: :user
   
   # Callbacks
   before_validation :set_slug

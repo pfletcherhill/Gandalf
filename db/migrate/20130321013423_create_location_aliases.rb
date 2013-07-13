@@ -4,7 +4,7 @@ class CreateLocationAliases < ActiveRecord::Migration
       
       # Gandalf Attributes.
       t.string :value
-      t.integer :location_id
+      t.references :location
       
       # Rails Attributes.
       t.timestamps

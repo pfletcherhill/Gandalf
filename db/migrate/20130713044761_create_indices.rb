@@ -23,7 +23,13 @@ class CreateIndices < ActiveRecord::Migration
     change_table :events do |t|
       t.index :slug
       t.index :organization_id
+    end
+    
+    # Event instances indices
+    change_table :event_instances do |t|
       t.index :apps_id
+      t.index :group_id
+      t.index :event_id
     end
     
     # Group indices

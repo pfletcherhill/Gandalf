@@ -7,18 +7,13 @@ class CreateEvents < ActiveRecord::Migration
       t.string :slug
       t.text :description
       t.string :room_number
-      t.integer :pre_status
-      t.integer :post_status
-      t.integer :organization_id
-      t.integer :location_id
+      t.references :organization
+      t.references :location
       t.datetime :start_at
       t.datetime :end_at
 
       # Facebook Attributes.
       t.string :fb_id
-
-      # Google Apps Attributes.
-      t.string :apps_id
       
       # Rails Attributes.
       t.timestamps

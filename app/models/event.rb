@@ -6,9 +6,10 @@ class Event < ActiveRecord::Base
   # Associations
   belongs_to :organization
   belongs_to :location
-  has_and_belongs_to_many :groups
-  has_and_belongs_to_many :calendars, -> { where type: "Calendar" }, class_name: "Group"
-  has_and_belongs_to_many :categories, -> { where type: "Category" }, class_name: "Group"
+  has_many :event_instances
+  has_many :groups, through: :event_instances
+  has_many :calendars, -> { where type: "Calendar" }, class_name: "Group", through: :event_instances
+  has_many :categories, -> { where type: "Category" }, class_name: "Group", through: :event_instances
   
   validates_presence_of :name, :organization_id, :start_at, :end_at
   validates_uniqueness_of :fb_id, :if => :fb_id?
