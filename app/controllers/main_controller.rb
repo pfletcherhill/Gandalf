@@ -2,7 +2,7 @@
 class MainController < ApplicationController
   
   before_action CASClient::Frameworks::Rails::Filter, :only => ["login"]
-  before_filter :require_login, :only => ["root"]
+  before_action :require_login, :only => ["root"]
   
   def welcome
   end

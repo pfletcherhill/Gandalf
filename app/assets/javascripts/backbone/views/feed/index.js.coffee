@@ -15,19 +15,22 @@ class Gandalf.Views.Feed.Index extends Backbone.View
   panelTemplate: JST["backbone/templates/feed/panel"]
   el: "#content"
 
+  # return {boolean} True if @startDate is today.
   today: ->
     @startDate.format(Gandalf.displayFormat) is
       moment().format(Gandalf.displayFormat)
 
+  # Makes text for the panel header, specific for today, tomorrow, and
+  # all other dates.
+  # return {string} The header text.
   makeHeaderText: ->
-    startText = ""
     if @today()
       return "Up next for you"
-    else if @startDate is moment().subtract('d', 1).format(Gandalf.displayFormat)
-      startText = "Yesterday, "
-    else if @startDate is moment().add('d', 1).format(Gandalf.displayFormat)
-      startText = "Tomorrow, "
-    return startText + @startDate.format("MMMM D, YYYY")
+    else if @startDate.format(Gandalf.displayFormat) is
+      moment().add('d', 1).format(Gandalf.displayFormat)
+        return "Upcoming tomorrow"
+    
+    return @startDate.format("MMMM D, YYYY")
 
   render: ->
     if @options.type is 'list'
