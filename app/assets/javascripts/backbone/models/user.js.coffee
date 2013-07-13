@@ -30,6 +30,12 @@ class Gandalf.Models.User extends Backbone.Model
     for mod in this.get(collection).models
       return true if mod.id is model.id     # Found the model!
     return false
+  
+  has_organizations: ->
+    if this.get('organizations').count > 0
+      return true
+    else
+      return false
 
   followOrg: (oid) ->
     # We cannot use the constructor because when assets are compiled,

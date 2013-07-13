@@ -16,11 +16,13 @@
           Calendar
         </div>
       </a>
-      <a href="#dashboard">
-        <div class="link" name='fb_logout'>
-          Dashboard
-        </div>
-      </a>
+      <% if me.administers_organizations? %>
+        <a href="#dashboard">
+          <div class="link" name='fb_logout'>
+            Dashboard
+          </div>
+        </a>
+      <% end %>
       <a href="#about">
         <div class="link">
           About

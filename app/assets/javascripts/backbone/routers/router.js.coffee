@@ -140,23 +140,26 @@ class Gandalf.Router extends Backbone.Router
       $("#content").html(view.el)
 
   dashboard: (slug, type) ->
-    slug ||= @organizations.first().get('slug')
-    id = @organizations.where(slug: slug)[0].id
-    type ||= 'events'
-    @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/#{id}/edit"
-    @organization.fetch
-      success: (organization) =>
-        view = new Gandalf.Views.Dashboard.Index(
-          organizations: @organizations
-          organization: organization
-          type: type
-        )
-      error: ->
-        alert 'You do not have access to this organization.'
-        window.location = "#organizations"
-    @popover = new Gandalf.Views.DashboardPopover
-    $("#popover").html @popover.el
+    if Gandalf.currentUser.has_organizations()
+      slug ||= @organizations.first().get('slug')
+      id = @organizations.where(slug: slug)[0].id
+      type ||= 'events'
+      @organization = new Gandalf.Models.Organization
+      @organization.url = "/organizations/#{id}/edit"
+      @organization.fetch
+        success: (organization) =>
+          view = new Gandalf.Views.Dashboard.Index(
+            organizations: @organizations
+            organization: organization
+            type: type
+          )
+        error: ->
+          alert 'You do not have access to this organization.'
+          window.location = "#organizations"
+      @popover = new Gandalf.Views.DashboardPopover
+      $("#popover").html @popover.el
+    else
+      @navigate("today", {trigger: true, replace: true});
 
   eventRoute: (id) ->
     @event = new Gandalf.Models.Event
