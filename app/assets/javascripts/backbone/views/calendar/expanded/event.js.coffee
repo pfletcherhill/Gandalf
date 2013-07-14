@@ -4,7 +4,7 @@ class Gandalf.Views.Calendar.Expanded.Event extends Backbone.View
 
   initialize: ()->
     @color = "rgba(#{@model.get("color")},1)"
-    @lightColor = "rgba(#{@model.get("color")},0.7)"
+    @lightColor = "rgba(#{@model.get("color")},0.95)"
     @eventId = @model.get("eventId")
     @dayNum = @options.dayNum 
     @hourHeight = 30 # $('.hour-day').height() #   Gandalf.calendarHeight / 24.0
@@ -46,7 +46,7 @@ class Gandalf.Views.Calendar.Expanded.Event extends Backbone.View
         top: "#{@top}px"
         height: "#{@height}px"
         backgroundColor: @lightColor
-        border: "1pt solid #{@color}"
+        border: "1pt solid white" # "1pt solid #{@color}"
       ).attr(
         "data-event-id": e.get("id") # Should be unique per visual event
         "data-organization-id" : e.get("organization_id")
@@ -76,7 +76,7 @@ class Gandalf.Views.Calendar.Expanded.Event extends Backbone.View
       # width: "97%"
       # padding: 0
       # left: 0
-      zIndex: 19
+      # zIndex: 19
       backgroundColor: @color
       border: "1pt solid white"
     )
@@ -88,5 +88,5 @@ class Gandalf.Views.Calendar.Expanded.Event extends Backbone.View
       # left: @css.left
       # zIndex: @css.zIndex
       backgroundColor: @lightColor
-      border: "1pt solid #{@color}"
+      # border: "1pt solid #{@lightColor}"
     )
