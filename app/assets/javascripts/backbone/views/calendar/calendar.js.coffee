@@ -78,8 +78,8 @@ class Gandalf.Views.Calendar extends Backbone.View
     for i in [0...7]
       # overlapIndex is the number of items overlapping
       for overlapIndex in [2..@maxOverlaps]
-        width = Math.floor(96/overlapIndex)
-        fraction = Math.floor(100/overlapIndex)
+        width = Math.floor(105/overlapIndex)
+        fraction = Math.floor(90/overlapIndex)
         selector = ".cal-week-event.overlap-#{overlapIndex}.day-#{i}"
         selector += ":not(.hide, .event-hidden-org, .event-hidden-cat)"
         evs = @$el.find(selector)
@@ -92,7 +92,7 @@ class Gandalf.Views.Calendar extends Backbone.View
             # left = 50%
           $(e).css(
             left: "#{fraction*num}%"
-            zIndex: calZ - num
+            # zIndex: calZ - num
           )
 
   orgVisChange: (hiddenOrgs) ->

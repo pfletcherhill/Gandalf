@@ -103,7 +103,11 @@ describe User do
         
         it "creates a subscription" do
           @user.subscriptions.count.should == 0
-          stub_request(:any, /www.googleapis.com/)
+          stub_request(:any, /www.googleapis.com/).to_return({
+            data: {
+              id:
+            }
+          })
           @user.subscribe_to(Fabricate(:group).id)
           @user.subscriptions.count.should == 1
         end
