@@ -25,17 +25,14 @@ class Gandalf.Models.User extends Backbone.Model
         categories.add data
         @set subscribed_categories: categories
 
-  isFollowing: (model, collection) ->
-    collection = 'subscribed_organizations' unless collection
-    for mod in this.get(collection).models
-      return true if mod.id is model.id     # Found the model!
+  isFollowing: (group, groupType='subscribed_organizations') ->
+    groups = this.get(groupType) # collecton is a array.
+    for candidateGroup in groups
+      return true if candidateGroup.id is group.id     # Found the group
     return false
   
   has_organizations: ->
-    if this.get('organizations').count > 0
-      return true
-    else
-      return false
+    return this.get('organizations').count > 0
 
   followOrg: (oid) ->
     # We cannot use the constructor because when assets are compiled,
