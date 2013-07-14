@@ -10,6 +10,7 @@ gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.13.2"
+  gem 'debugger'
   gem 'fabrication'
   gem 'rack-mini-profiler'
   gem "capybara"

@@ -98,17 +98,18 @@ describe User do
       context "when adding a valid group" do
         before :each do
           @user = Fabricate(:user)
+          make_group(@group_name) # Makes groups and handles stubs for callbacks.
         end
         
         it "creates a subscription" do
           expect(@user.subscriptions.count).to eq 0
-          stub_request(:any, /www.googleapis.com/).to_return({
-            data: {
-              id: 'hi'
-            }
-          })
-          @user.subscribe_to(Fabricate(:group).id)
-          @user.subscriptions.count.should == 1
+          @user.subscribe_to(@group.id)
+          expect(@user.subscriptions.count).to eq 1
+        end
+      end
+      context "bogus group" do
+        it "throws error" do
+          expect { @user.subscribe_to(-1) }.to raise_error
         end
       end
     end   

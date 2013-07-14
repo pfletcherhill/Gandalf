@@ -2,6 +2,7 @@
 require 'rubygems'
 require 'webmock/rspec'
 require 'spork'
+require 'json'
 
 Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -21,10 +22,14 @@ Spork.prefork do
     # config.mock_with :flexmock
     # config.mock_with :rr
 
+    # Rollback data after each test.
+    config.use_transactional_examples = true
+
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     include Gandalf::Utilities
+    include SpecUtilities
     
     # Allow web connections when making the client.
     WebMock.allow_net_connect!

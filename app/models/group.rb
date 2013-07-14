@@ -67,7 +67,6 @@ class Group < ActiveRecord::Base
     if result.status == 409
       result = Gandalf::GoogleApiClient.get_google_group(self.apps_email)
     end
-    
     # Set the apps_id and apps_email from the returned object.
     self.apps_id = result.data.id
     self.apps_email = result.data.email
@@ -90,7 +89,6 @@ class Group < ActiveRecord::Base
       result = Gandalf::GoogleApiClient.insert_google_calendar({
         "summary" => self.name
       })
-      p result.status
       self.apps_cal_id = result.data.id
       self.save!
     end
