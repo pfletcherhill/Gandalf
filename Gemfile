@@ -13,7 +13,7 @@ group :test, :development do
   gem 'fabrication'
   gem 'rack-mini-profiler'
   gem "capybara"
-  gem 'spork'
+  gem 'spork-rails', :github => 'sporkrb/spork-rails'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-spork'

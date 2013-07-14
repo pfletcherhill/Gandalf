@@ -23,11 +23,12 @@ Spork.prefork do
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     # config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+    include Gandalf::Utilities
     
+    # Allow web connections when making the client.
     WebMock.allow_net_connect!
-
     include Gandalf::GoogleApiClient
-
     WebMock.disable_net_connect!
 
     # If true, the base class of anonymous controllers will be inferred
@@ -45,5 +46,6 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
+  Fabrication.clear_definitions
 end
 

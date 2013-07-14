@@ -1,7 +1,6 @@
 # User model spec
 
 require 'spec_helper'
-include Gandalf::Utilities
 
 describe User do
   describe "associations" do
@@ -70,7 +69,7 @@ describe User do
     describe ".create" do
       context "when using a non-unique netid" do
         it "fails to create" do
-          user = User.create(
+          user = User.new(
             :netid => @user.netid,
             :name => "Paul Fletcher-Hill",
             :nickname => "Paul",
@@ -83,7 +82,7 @@ describe User do
       
       context "when using a non-unique email" do
         it "fails to create" do
-          user = User.create(
+          user = User.new(
             :netid => "pfh",
             :name => "Paul Fletcher-Hill",
             :nickname => "Paul",
@@ -102,10 +101,10 @@ describe User do
         end
         
         it "creates a subscription" do
-          @user.subscriptions.count.should == 0
+          expect(@user.subscriptions.count).to eq 0
           stub_request(:any, /www.googleapis.com/).to_return({
             data: {
-              id:
+              id: 'hi'
             }
           })
           @user.subscribe_to(Fabricate(:group).id)
