@@ -122,9 +122,9 @@ class User < ActiveRecord::Base
   
   # Group methods
   
-  def subscribe_to(group_id)
+  def subscribe_to(group_id, access_type = 0)
     group = Group.find(group_id)
-    Subscription.create(user_id: self.id, group_id: group_id)
+    Subscription.create(user_id: self.id, group_id: group_id, access_type: access_type)
   end
   
   def unsubscribe_from(group_id)

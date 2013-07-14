@@ -52,10 +52,6 @@ Gandalf::Application.routes.draw do
   get '/categories/:id' => 'categories#show'
   
   #Search
-  get '/search/organizations/:query' => 'organizations#search'
-  get '/search/events/:query' => 'events#search'
-  get '/search/categories/:query' => 'categories#search'
-  get '/search/location/:query' => 'locations#search'
-  get '/search/all/:query' => 'main#search_all'
+  get '/search' => 'main#search'
   
 end

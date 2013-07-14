@@ -13,14 +13,24 @@ class Location < ActiveRecord::Base
   acts_as_gmappable
 
   include PgSearch
+  
   multisearchable :against => [:name]
-  pg_search_scope :name_search, 
-    against: [:name, :address],
-    associated_against: { location_aliases: :value },
-    using: { tsearch: { 
-      prefix: true, 
-      any_word: true
-   } }
+  
+  pg_search_scope :search,
+    against: {
+      name: "A",
+      address: "B"
+    },
+    associated_against: {
+      location_aliases: [:value]
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "english",
+        any_word: true
+      }
+    }
 
   def short_address
     # Remove state and zipcode

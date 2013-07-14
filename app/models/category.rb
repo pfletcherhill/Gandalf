@@ -14,15 +14,16 @@ class Category < Group
     :description
   ]
   
-  pg_search_scope :fulltext_search,
-    :against => {
-      :name => "A", 
-      :description => "B"
-    }, 
-    :using => {
-      :tsearch => {
-        :prefix => true,
-        anyword: true
+  pg_search_scope :search,
+    against: {
+      name: "A",
+      description: "B"
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "english",
+        any_word: true
       }
     }
     

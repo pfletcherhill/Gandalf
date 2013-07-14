@@ -19,7 +19,18 @@ class MainController < ApplicationController
     CASClient::Frameworks::Rails::Filter.logout(self)
   end
   
-  def search_all
+  def search
+    results = Hash.new
+    if params[:query]
+      results["organizations"] = Organization.search(params[:query])
+      results["categories"] = Category.search(params[:query])
+      results["events"] = Event.search(params[:query])
+    else
+      results["organizations"] = Organization.all
+      results["categories"] = Category.all
+      results["events"] = Event.all
+    end
+    render json: results
   end
   
 end

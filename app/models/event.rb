@@ -26,7 +26,7 @@ class Event < ActiveRecord::Base
     :description
   ]
   
-  pg_search_scope :fulltext_search,
+  pg_search_scope :search,
     against: {
       name: "A",
       description: "B"
@@ -38,7 +38,8 @@ class Event < ActiveRecord::Base
     using: {
       tsearch: {
         prefix: true,
-        anyword: true
+        dictionary: "english",
+        any_word: true
       }
     }
   

@@ -30,17 +30,22 @@ class Organization < ActiveRecord::Base
 
   # pg_search
   include PgSearch
-  multisearchable :against => [:name, :bio]
-  pg_search_scope :fulltext_search, 
-    :against => {
-      :name => "A", 
-      :bio => "B"
-    }, 
-    :using => {
-      :tsearch => {
-        :prefix => true,
-        :dictionary => "english",
-        :any_word => true
+  
+  multisearchable :against => [
+    :name,
+    :bio
+  ]
+  
+  pg_search_scope :search,
+    against: {
+      name: "A",
+      bio: "B"
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "english",
+        any_word: true
       }
     }
 

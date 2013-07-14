@@ -28,11 +28,11 @@ class Gandalf.Models.User extends Backbone.Model
   isFollowing: (model, collection) ->
     collection = 'subscribed_organizations' unless collection
     for mod in this.get(collection).models
-      return true if mod.id is model.id     # Found the model!
+      return true if mod.id is model.id
     return false
   
   has_organizations: ->
-    if this.get('organizations').count > 0
+    if this.get('organizations').length > 0
       return true
     else
       return false

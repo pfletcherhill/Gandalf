@@ -6,7 +6,7 @@ class Gandalf.Router extends Backbone.Router
     
     #Initialize @eventCollection and @organizations
     @eventCollection = new Gandalf.Collections.Events
-    @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('admin_organizations'))
+    @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('organizations'))
     window.orgs = @organizations
     @popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
@@ -117,22 +117,11 @@ class Gandalf.Router extends Backbone.Router
     @popover = new Gandalf.Views.CalendarPopover
     $("#popover").html @popover.el
 
-  browse: (type) ->
+  browse: (type = 'all') ->
     @showLoader('.content-main')
     $(".search-list a").removeClass 'active'
-    if type == 'categories'
-      @results = new Gandalf.Collections.Categories
-      @results.url = '/categories'
-    else if type == 'events'
-      @results = new Gandalf.Collections.Events
-      @results.url = '/events'
-    else if type == 'organizations'
-      @results = new Gandalf.Collections.Events
-      @results.url = '/organizations'
-    else
-      type = 'all'
-      @results = new Backbone.Collection
-      @results.url = '/browse_all'
+    @results = new Backbone.Model
+    @results.url = '/search?type=' + type
     @results.fetch success: (results) ->
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
