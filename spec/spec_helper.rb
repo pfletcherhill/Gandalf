@@ -28,8 +28,12 @@ Spork.prefork do
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
+    # Define spec-wide constants.
+    
     include Gandalf::Utilities
     include SpecUtilities
+    include GroupSpecHelper
+    include EventSpecHelper
     
     # Allow web connections when making the client.
     WebMock.allow_net_connect!

@@ -4,6 +4,16 @@ require 'spec_helper'
 
 describe User do
   describe "associations" do
+    # TO TEST:
+    # subscribed_teams
+    # team_events
+    # subscribed_categories
+    # category_events
+    # access level to groups
+    # add as member to organization team
+    # follow organization
+    # follow category
+    # 
     context "when a user has subscriptions" do
       pending "should have subscriptions" do
       end
@@ -69,41 +79,39 @@ describe User do
     describe ".create" do
       context "when using a non-unique netid" do
         it "fails to create" do
-          user = User.new(
-            :netid => @user.netid,
-            :name => "Paul Fletcher-Hill",
-            :nickname => "Paul",
-            :email => "paul.hill@yale.edu",
-            :division => "Yale College"
-          )
-          user.valid?.should be_false
+          expect { Fabricate(:user, netid: @user.netid )}.to raise_error
         end
       end
       
       context "when using a non-unique email" do
         it "fails to create" do
-          user = User.new(
-            :netid => "pfh",
-            :name => "Paul Fletcher-Hill",
-            :nickname => "Paul",
-            :email => @user.email,
-            :division => "Yale College"
-          )
-          user.valid?.should be_false
+          expect { Fabricate(:user, email: @user.email )}.to raise_error
         end
       end
     end
     
     describe ".subscribe_to" do
-      context "when adding a valid group" do
+      context "valid group" do
         before :each do
           @user = Fabricate(:user)
-          make_group(@group_name) # Makes groups and handles stubs for callbacks.
+          @group = make_group(@group_name)
         end
         
-        it "creates a subscription" do
+        it "creates subscription" do
           expect(@user.subscriptions.count).to eq 0
+          member_stub = stub_request(:post, API_MEMBER_REGEX(:create, @group.apps_id)).to_return({
+            status: 200,
+            headers: {'Content-Type' => 'application/json'},
+            body: {
+              kind: 'admin#directory#member',
+              id: make_random_hash,
+              email: @user.email,
+              role: 'MEMBER',
+              type: 'MEMBER'
+            }.to_json
+          })
           @user.subscribe_to(@group.id)
+          assert_requested member_stub
           expect(@user.subscriptions.count).to eq 1
         end
       end

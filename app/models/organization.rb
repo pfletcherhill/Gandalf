@@ -9,13 +9,16 @@ class Organization < ActiveRecord::Base
   has_many :events
   
   # Access Controls
-  has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN]},
+  has_many :admins, -> { where 'subscriptions.access_type = ?',
+                         ACCESS_STATES[:WRITE]},
            through: :teams,
            source: :users
-  has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER]},
+  has_many :members, -> { where 'subscriptions.access_type = ?',
+                          ACCESS_STATES[:READONLY]},
            through: :teams,
            source: :users
-  has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER]},
+  has_many :followers, -> { where 'subscriptions.access_type = ?',
+                            ACCESS_STATES[:RESTRICTED]},
            through: :teams,
            source: :users
 

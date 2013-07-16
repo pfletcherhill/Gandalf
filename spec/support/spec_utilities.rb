@@ -1,48 +1,49 @@
 module SpecUtilities
-  API_GROUPS_URL_REGEX = /www.googleapis.com\/admin\/directory\/v1\/groups/
-  API_CAL_URL_REGEX = /www.googleapis.com\/calendar\/v3\/calendars/
-
-  # Fabricates a group. Also sets stub api calls for group creation
-  # callbacks and ensures that those callbacks are called.
-  # param {string=} name An optional name for the group.
-  # return {Group} The created group.
-  def make_group(name)
-    group_name = name || Gandalf::Utilities.make_random_hash
-    group_stub = stub_request(:post, API_GROUPS_URL_REGEX).to_return({
-      status: 200,
-      headers: {'Content-Type' => 'application/json'},
-      # body has to be JSON string.
-      body: {
-        kind: "admin#directory#group",
-        id: "#{Gandalf::Utilities.make_random_hash}",
-        email: "yalego.#{make_slug(group_name)}@elilists.yale.edu",
-        name: "#{group_name}"
-        # Also can send adminCreated, description, aliases, nonEditableAliases.
-      }.to_json
-    })
-    cal_stub = stub_request(:post, API_CAL_URL_REGEX).to_return({
-      status: 200,
-      headers: {'Content-Type' => 'application/json'},
-      # Has to be JSON string.
-      body: {
-        kind: "calendar#calendar",
-        id: "#{Gandalf::Utilities.make_random_hash}",
-        summary: "#{group_name}",
-        # Also can send description, location, timeZone.
-      }.to_json
-    })
-    group = Fabricate(:group, name: group_name)
-    assert_requested group_stub
-    assert_requested cal_stub
-    return group
+  API_GROUPS_BASE = "www.googleapis.com/admin/directory/v1/groups"
+  API_CAL_BASE = "www.googleapis.com/calendar/v3/calendars"
+  # The following methods are macros for generating URL regexes for querying
+  # different APIs. They all take a method, and an ID which is required for
+  # all methods but create.
+  # For security, all Regexs are terminated with a $ for end of line.
+  # param {symbol|string} method The API method to call
+  # param {string=} id The item ID. Not required for the :create action.
+  # return {RegExp} The RegExp that matches the Google API query for that method
+  #   to that service.
+  def API_GROUP_REGEX(method, id=nil)
+    if method == :create or method == "create"
+      return Regexp.new(API_GROUPS_BASE + "$")
+    else
+      raise ArgumentError.new('No group ID given') unless id
+      return Regexp.new(API_GROUPS_BASE + "/" + id + "$")
+    end
   end
 
-  # Fabricates an event. Also sets stub api calls for event creation
-  # callbacks and ensures that those callbacks are called.
-  # param {string=} name An optional name for the event.
-  # return {Event} The created event.
-  def make_event
+  def API_MEMBER_REGEX(method, group_id, member_id=nil)
+    if method == "create" or method == :create
+      # ACLs are created by querying the calendar.
+      return Regexp.new(API_GROUPS_BASE + "/" + group_id + "/members$")
+    else
+      raise ArgumentError.new('No member ID given') unless member_id
+      return Regexp.new(API_GROUPS_BASE + "/" + group_id + "/members/" + member_id + "$")
+    end
+  end
 
+  def API_CAL_REGEX(method, id=nil)
+    if method == "create" or method == :create
+      return Regexp.new(API_CAL_BASE + "$")
+    else
+      raise ArgumentError.new('No calendar ID given') unless id
+      return Regexp.new(API_CAL_BASE + "/" + id + "$")
+    end
+  end
 
+  def API_ACL_REGEX(method, cal_id, acl_id=nil)
+    if method == "create" or method == :create
+      # ACLs are created by querying the calendar.
+      return Regexp.new(API_CAL_BASE + "/" + cal_id + "/acl$")
+    else
+      raise ArgumentError.new('No ACL ID given') unless acl_id
+      return Regexp.new(API_CAL_BASE + "/" + cal_id + "/acl/" + acl_id + "$")
+    end
   end
 end

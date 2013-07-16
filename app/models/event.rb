@@ -64,20 +64,17 @@ class Event < ActiveRecord::Base
   end
   
   def get_google_event
-    result = Gandalf::GoogleApiClient.get_google_event(self.google_calendar_id, self.apps_id)
+    result = Gandalf::GoogleApiClient.get_google_event(self.google_calendar_id,
+      self.apps_id)
   end
 
   # Takes an array of category ids and makes them the associated categories
   def set_categories(ids)
-    self.categories = []
-    if ids
-      ids.each do |id|
-        self.categories << Category.find(id)
-      end
-    end
+    self.categories = Category.find(ids)
+    self.save
   end
 
-  def as_json(options)
+  def as_json(options={})
     # If no location, then create a dummy location so function returns
     location = self.location || Location.new(
       name: "Unavailable", address: "Unavailable")

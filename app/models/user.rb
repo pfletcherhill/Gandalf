@@ -156,12 +156,12 @@ class User < ActiveRecord::Base
   # Admin methods
   
   def promote
-    self.admin = true
+    self.go_admin = true
     self.save
   end
   
   def demote
-    self.admin = false
+    self.go_admin = false
     self.save
   end
   
@@ -188,16 +188,6 @@ class User < ActiveRecord::Base
     names = e.split(".")
     names.map! { |n| n.gsub(/(\b|-)(\w)/) { |s| s.upcase } }
     names.join(" ")
-  end
-  
-  def promote
-    self.admin = true
-    self.save
-  end
-  
-  def demote
-    self.admin = false
-    self.save
   end
       
   def self.create_from_directory(id, type="uid")

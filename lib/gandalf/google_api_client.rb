@@ -101,10 +101,10 @@ module Gandalf::GoogleApiClient
       body_object: calendar_object
     })
   end
-  
+
   def self.delete_google_calendar(calendar_id)
     @client.execute({
-      api_method: @calendar.calendar_list.delete,
+      api_method: @calendar.calendars.delete,
       parameters: { "calendarId" => calendar_id }
     })
   end
@@ -128,8 +128,29 @@ module Gandalf::GoogleApiClient
       }
     })
   end
+
+  def self.update_google_event(calendar_id, event_id, event_object)
+    @client.execute({
+      api_method: @calendar.events.update,
+      parameters: {
+        "calendarId" => calendar_id,
+        "eventId" => event_object.id
+      },
+      body_object: event_object
+    })
+  end
+
+  def self.delete_google_event(calendar_id, event_id)
+    @client.execute({
+      api_method: @calendar.events.delete,
+      parameters: {
+        "calendarId" => calendar_id,
+        "eventId" => event_id
+      }
+    })
+  end
   
-  # Google API ACL Class Methods
+  # Google API Access Control (ACL) Class Methods
   
   def self.insert_google_acl(calendar_id, acl_object)
     @client.execute({
@@ -146,6 +167,13 @@ module Gandalf::GoogleApiClient
         "calendarId" => calendar_id,
         "ruleId" => rule_id
       }
+    })
+  end
+
+  def self.delete_google_acl(calendar_id)
+    @client.execute({
+      api_method: @calendar.acl.delete,
+      parameters: { "calendarId" => calendar_id }
     })
   end
   

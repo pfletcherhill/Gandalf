@@ -10,7 +10,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :college
       t.string :year
       t.string :division
-      t.boolean :admin
+      t.boolean :go_admin # To differentiate from the 10,0000 other kinds of admins a user can be.
       t.string :bulletin_preference, :default => "daily"
       
       # Facebook Attributes.
