@@ -10,7 +10,7 @@ class Gandalf.Views.EventList extends Backbone.View
 
   render: ->
     noEvents = "<div class='feed-notice'>You're not subcribed to any more events for this period. 
-Check out <a href='#/browse'>the discover page</a> and start following some 
+Check out <a href='#browse'>the discover page</a> and start following some 
 organizations and categories!</div>"
     @$el.append(noEvents) if _.isEmpty(@days)
     @doneEvents = []

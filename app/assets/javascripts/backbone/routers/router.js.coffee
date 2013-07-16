@@ -128,13 +128,14 @@ class Gandalf.Router extends Backbone.Router
 
   dashboard: (slug, type) ->
     if Gandalf.currentUser.has_organizations()
-      slug ||= @organizations.first().get('slug')
-      id = @organizations.where(slug: slug)[0].id
+      slug ||= @organizations.first().get("slug")
+      id = @organizations.first().get("id")
       type ||= 'events'
       @organization = new Gandalf.Models.Organization
       @organization.url = "/organizations/#{id}/edit"
       @organization.fetch
         success: (organization) =>
+          console.log "organization", organization
           view = new Gandalf.Views.Dashboard.Index(
             organizations: @organizations
             organization: organization

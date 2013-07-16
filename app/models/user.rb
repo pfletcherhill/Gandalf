@@ -135,12 +135,12 @@ class User < ActiveRecord::Base
   # Authorization methods
   
   def has_authorization_to(organization)
-    # access_control = AccessControl.where(:organization_id => organization.id, :user_id => self.id).first
-    #     if access_control
-    #       return true
-    #     else
-    #       return false
-    #     end
+    organization_ids = self.admin_organizations.map{|org| org.id}
+    if organization_ids.include? organization.id
+      return true
+    else
+      return false
+    end
   end
   
   def add_authorization_to(organization)
