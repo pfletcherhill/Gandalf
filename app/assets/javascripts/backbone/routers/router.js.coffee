@@ -60,42 +60,52 @@ class Gandalf.Router extends Backbone.Router
 
   showLoader: (selector) ->
     $(selector).html("<div class='loader'></div>")
+  
+  authenticateOrganization: (slug) ->
+    if Gandalf.currentUser.has_organizations()
+      if slug
+        @organizations.where(slug: slug)[0]
+      else
+        @organizations.first()
 
   routes:
     # Browse Routes
-    'browse/:type'                    : 'browse'
-    'browse*'                         : 'browse'
+    'browse/:type'                      : 'browse'
+    'browse*'                           : 'browse'
 
+    # Dashboard Groups
+    'dashboard/:slug/groups/:groupSlug' : 'group'
+    
     # Dashboard Routes
-    'dashboard'                       : 'dashboard'
-    'dashboard/:slug'                 : 'dashboard'
-    'dashboard/:slug/:type'           : 'dashboard'
+    'dashboard/:slug/:section'          : 'dashboard'
+    'dashboard/:slug'                   : 'dashboard'
+    'dashboard'                         : 'dashboard'
 
     # Events Routes
-    'events/:id'                      : 'eventRoute'
-    'events*'                         : 'eventRoute'
+    'events/:id'                        : 'eventRoute'
+    'events*'                           : 'eventRoute'
 
     # Organization Routes
-    'organizations/:slug'             : 'organizations'
     'organizations/:slug/:date/:period' : 'organizations'
-    'organizations*'                  : 'organizations'
+    'organizations/:slug'               : 'organizations'
+    'organizations*'                    : 'organizations'
 
     # Category Routes
-    'categories/:slug'                : 'categories'
-    'categories/:slug/:date/:period'  : 'categories'
-    'categories*'                     : 'categories'
+    'categories/:slug/:date/:period'    : 'categories'
+    'categories/:slug'                  : 'categories'
+    'categories*'                       : 'categories'
 
     # Preferences Routes
-    'preferences/:type'               : 'preferences'
-    'preferences*'                    : 'preferences'
+    'preferences/:type'                 : 'preferences'
+    'preferences*'                      : 'preferences'
 
     # Static Routes
-    'about'                           : 'about'
+    'about'                             : 'about'
 
     # Calendar Routes (catch all)
-    ':date'                           : 'calendar'
-    ':date/:type'                     : 'calendar'
-    '.*'                              : 'calendarRedirect'
+    ':date/:type'                       : 'calendar'
+    ':date'                             : 'calendar'
+    '.*'                                : 'calendarRedirect'
 
 
   calendarRedirect: ->
@@ -125,29 +135,32 @@ class Gandalf.Router extends Backbone.Router
     @results.fetch success: (results) ->
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
-
-  dashboard: (slug, type) ->
-    if Gandalf.currentUser.has_organizations()
-      slug ||= @organizations.first().get("slug")
-      id = @organizations.first().get("id")
-      type ||= 'events'
-      @organization = new Gandalf.Models.Organization
-      @organization.url = "/organizations/#{id}/edit"
-      @organization.fetch
-        success: (organization) =>
-          console.log "organization", organization
-          view = new Gandalf.Views.Dashboard.Index(
-            organizations: @organizations
-            organization: organization
-            type: type
-          )
-        error: ->
-          alert 'You do not have access to this organization.'
-          window.location = "#organizations"
-      @popover = new Gandalf.Views.DashboardPopover
-      $("#popover").html @popover.el
+    
+  group: (slug, groupSlug) ->
+    if organization = @authenticateOrganization(slug)
+      view = new Gandalf.Views.Dashboard.Index
+        organizations: @organizations
+        organization: organization
+        section: 'groups'
+      group = new Gandalf.Models.Team
+      group.url = "/teams/#{groupSlug}"
+      group.fetch
+        success: (data) ->
+          view = new Gandalf.Views.Dashboard.Groups.Show
+            model: group
+        errors: ->
+          console.log "errors"
     else
-      @navigate("today", {trigger: true, replace: true});
+      @navigate("today", {trigger: true, replace: true})
+      
+  dashboard: (slug, section) ->
+    if organization = @authenticateOrganization(slug)
+      view = new Gandalf.Views.Dashboard.Index
+        organizations: @organizations
+        organization: organization
+        section: section || 'events'
+    else
+      @navigate("today", {trigger: true, replace: true})
 
   eventRoute: (id) ->
     @event = new Gandalf.Models.Event

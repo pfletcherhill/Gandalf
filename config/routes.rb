@@ -37,7 +37,7 @@ Gandalf::Application.routes.draw do
   # For testing
   get '/bulletin' => "users#bulletin"
   
-  resources :events, :organizations
+  resources :events, :organizations, :teams
   
   get '/organizations/slug/:slug' => 'organizations#show_by_slug'
   post '/organizations/:id/add_image' => 'organizations#add_image'
@@ -45,12 +45,13 @@ Gandalf::Application.routes.draw do
   get '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
   get '/organizations/:id/admins' => 'organizations#admins'
   post '/organizations/:id/email' => 'organizations#subscriber_email'
+  get '/organizations/:id/teams' => 'organizations#teams'
   
   get '/categories' => 'categories#all'
   get '/categories/:id/events' => 'categories#events'
   get '/categories/slug/:slug' => 'categories#show_by_slug'
   get '/categories/:id' => 'categories#show'
-  
+    
   #Search
   get '/search' => 'main#search'
   

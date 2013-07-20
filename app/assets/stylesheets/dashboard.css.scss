@@ -1,3 +1,143 @@
+// Variables
+$content-nav-height: 65px;
+
+// Style
+.dashboard-content {
+  margin-top: 20px;
+}
+
+#dashboard-organizations-list {
+  border: 2px solid $blue;
+}
+
+#dashboard-organizations-list,
+#dashboard-organizations-selected {
+  border-radius: 5px;
+}
+
+#dashboard-organizations-selected {
+  border: none;
+  width: 100%;
+  text-align: left;
+  background: white;
+  @include HN-Bold;
+  @include transition(0.2s);
+  
+  #button-arrow {
+    float: right;
+  }
+  
+  &.open {
+    background: #fafafa;
+    color: $blue;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+}
+
+#dashboard-organizations-selected,
+#dashboard-organizations-nav li {
+  padding: 10px;
+  cursor: pointer;
+  color: black;
+  
+  &:hover {
+    background: #fafafa;
+    color: $blue;
+    text-decoration: none;
+  }
+}
+
+#dashboard-organizations-nav {
+  display: none;
+  border-top: 1px solid $blue;
+  
+  li {
+    border-bottom: 1px solid #ccc;
+    
+    &:last-child {
+      border-bottom: none;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+}
+
+#dashboard-menu {
+  margin-top: 20px;
+}
+
+.dashboard-content-nav {
+  top: $header-height + 20px;
+  height: $content-nav-height;
+  width: $width - 230px;
+  background: white;
+  
+  h5 {
+    margin: 0;
+    display: inline-block;
+    color: $blue;
+  }
+  
+  #groups-search {
+    line-height: 26px;
+  }
+}
+
+.dashboard-content-main {
+  margin-top: $content-nav-height;
+  padding-top: 20px;
+  
+  table {
+    width: 100%;
+  }
+  
+  td {
+    padding: 10px;
+  }
+}
+
+.dashboard-group-form {
+  background: #fafafa;
+  padding: 30px;
+  
+  label {
+    color: #777;
+  }
+  
+  input, 
+  textarea {
+    display: block;
+    width: 60%;
+    padding: 10px;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+  
+  input {
+    color: $blue;
+    line-height: 30px;
+  }
+  
+  textarea {
+    height: 100px;
+  }
+  
+  input[type="submit"] {
+    background: #81C1FF;
+    border: 2px solid $blue;
+    color: white;
+    border-radius: 5px;
+    @include HN-Light;
+    @include transition(0.2s);
+    
+    &:hover {
+      background: $blue;
+    }
+  }
+}
+
 ul.dash-menu {
   width: $main-width;
   height: 57px;

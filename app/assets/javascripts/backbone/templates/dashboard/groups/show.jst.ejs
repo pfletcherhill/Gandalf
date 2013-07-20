@@ -1,0 +1,6 @@
+<tr class="dashboard-group">
+  <td><%= group.get("name") %></td>
+  <td><%= group.get("users").length %> Members</td>
+  <td><%= group.get("events").length %> Events</td>
+  <td><a href="#dashboard/<%= organization.get('slug') %>/groups/<%= group.get('slug') %>">Show</a></td>
+</tr>

@@ -1,5 +1,8 @@
-<a href="#dashboard/<%= slug %>/events"><li data-type='events'>Events</li></a>
-<a href="#dashboard/<%= slug %>/facebook"><li data-type='facebook'>Facebook</li></a>
-<a href='#dashboard/<%= slug %>/users'><li data-type='users'>Users</li></a>
-<a href='#dashboard/<%= slug %>/admins'><li data-type='admins'>Admins</li></a>
-<a href="#dashboard/<%= slug %>/settings"><li data-type='settings'>Settings</li></a>
+<% items = ["events", "groups", "users", "settings"]; %>
+<% for( i = 0; i < items.length; i++ ) { %>
+  <a href="#dashboard/<%= model.get("slug") %>/<%= items[i] %>">
+    <li data-type="<%= items[i] %>" class="<%= type == items[i] ? 'selected' : '' %>">
+      <%= Gandalf.capitalizeString(items[i]) %>
+    </li>
+  </a>
+<% } %>

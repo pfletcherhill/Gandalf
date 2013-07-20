@@ -208,20 +208,52 @@ $cal-z: 10;
 }
 
 $left-width: 200px;
-$left-margin: 10px;
+$left-margin: 30px;
 $main-width: $width - $left-width - $left-margin;
+
+.content-left,
+.content-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
 .content-left {
   width: $left-width - 2px; // -2 for borders
   background: white;
-  position: absolute;
-  top: 0;
-  left: 0;
   margin-right: $left-margin;
-  border: 1px solid #DADADA;
-  border-bottom: 0px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+}
+
+.content-main {
+  width: $main-width;
+  margin-left: $left-width + $left-margin;
+}
+
+.fixed-lined-header {
+  position: fixed;
+  border-bottom: 1px solid #dadada;
+  @include box-shadow(0 2px 2px -2px rgba(black, 0.2));
+  z-index: 1;
+  
+  .fixed-header-search-bar {
+    font-size: 20px;
+    line-height: 24px;
+    padding: 8px 10px;
+    width: 50%;
+    @include HN-Light;
+    border: 1px solid #dadada;
+    color: $blue;
+    @include transition(0.2s);
+    border-radius: 3px;
+
+    &:hover {
+      border: 1px solid #ddd;
+    }
+
+    &:focus {
+      border: 1px solid #aaa;
+    }
+  }
 }
 
 .left-header {
@@ -253,11 +285,6 @@ $main-width: $width - $left-width - $left-margin;
       background: #fafafa;
     }
   }
-}
-
-.content-main {
-  width: $main-width;
-  margin-left: $left-width + $left-margin;
 }
 
 .loading {

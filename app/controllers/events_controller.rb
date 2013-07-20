@@ -2,6 +2,7 @@
 
 class EventsController < ApplicationController
   
+  before_filter :require_login
   respond_to :json
 
   # Repond with all events, ordered by updated time.

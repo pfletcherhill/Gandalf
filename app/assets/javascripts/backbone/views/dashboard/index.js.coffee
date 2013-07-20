@@ -3,6 +3,7 @@ Gandalf.Views.Dashboard ||= {}
 class Gandalf.Views.Dashboard.Index extends Backbone.View
   
   template: JST["backbone/templates/dashboard/index"]
+  organizationsListTemplate: JST["backbone/templates/dashboard/organizations_list"]
   menuTemplate: JST["backbone/templates/dashboard/menu"]
   
   el: '#content'
@@ -11,43 +12,44 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @organizations = @options.organizations
     @organization = @options.organization
     @organization.on 'updated', @updateOrganizations
-    @render(@options.type)
+    @render(@organizations, @organization, @options.section)
   
-  updateOrganizations: =>
+  updateOrganizations: ->
     @organizations.url = "/users/organizations"
     @organizations.fetch success: (organizations) =>
       @organizations = organizations
       @renderOrganizationsList()
     
-  renderOrganizationsList: =>
-    @$(".left-list").html('')
-    for organization in @organizations.models
-      @$(".left-list").append(
-        "<a href='#dashboard/#{organization.get('slug')}'>
-        <li data-id=#{organization.id}>#{organization.get('name')}</li></a>")
-    $("li[data-id='#{@organization.id}']").addClass 'selected'
+  renderOrganizationsList: (organizations, organization)->
+    @$("#dashboard-organizations-list").html @organizationsListTemplate(
+      collection: organizations,
+      active: organization
+    )
   
-  renderOrganizationMenu: (type) ->
-    @$('.dash-menu').html( @menuTemplate( @organization.toJSON()) )
-    @$(".dash-menu li[data-type=#{type}]").addClass 'selected'
+  renderMenu: (organization, type) ->
+    $("#dashboard-menu").html @menuTemplate(
+      model: organization,
+      type: type
+    )
           
-  render: (type) =>
+  render: (organizations, organization, section) ->
     @$el.html @template()
-    @renderOrganizationsList()
-    @renderOrganizationMenu(type)
-    view = switch type
-      when 'events' 
-        new Gandalf.Views.Dashboard.Events(model: @organization)
-      when 'facebook'
-        new Gandalf.Views.Dashboard.Facebook(model: @organization)
-      when 'users' 
-        new Gandalf.Views.Dashboard.Users(model: @organization)
-      when 'admins' 
-        new Gandalf.Views.Dashboard.Admins(model: @organization)
-      when 'settings' 
-        new Gandalf.Views.Dashboard.Settings(model: @organization)
-      else # Should never happen
-        new Gandalf.Views.Dashboard.Events(model: @organization)
-      
+    @renderOrganizationsList(organizations, organization)
+    @renderMenu(organization, section)
+    view = new Gandalf.Views.Dashboard[Gandalf.capitalizeString(section)](model: organization)
     @$('.content-main .dash-content').html view.el
     return this
+  
+  events:
+    "click #dashboard-organizations-selected" : "toggleOrganizationsList"
+  
+  toggleOrganizationsList: (event) ->
+    $button = $("#dashboard-organizations-selected")
+    if $button.hasClass "open"
+      $("#dashboard-organizations-nav").hide()
+      $("#button-arrow").removeClass("icon-chevron-up").addClass("icon-chevron-down")
+      $button.removeClass "open"
+    else
+      $("#dashboard-organizations-nav").show()
+      $("#button-arrow").removeClass("icon-chevron-down").addClass("icon-chevron-up")
+      $button.addClass "open"

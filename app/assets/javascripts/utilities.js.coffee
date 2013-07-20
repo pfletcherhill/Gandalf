@@ -27,6 +27,10 @@ window.utilities =
   # Formats time. Yay.
   formatTime: (time) ->
     time.format 'h:mm a'
+  
+  capitalizeString: (string) ->
+    string.charAt(0).toUpperCase() + string.slice(1)
+    
   dispatcher: _.clone(Backbone.Events)
 
 window.onresize = (e) ->
