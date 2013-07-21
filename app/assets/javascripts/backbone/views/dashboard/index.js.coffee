@@ -36,8 +36,6 @@ class Gandalf.Views.Dashboard.Index extends Backbone.View
     @$el.html @template()
     @renderOrganizationsList(organizations, organization)
     @renderMenu(organization, section)
-    view = new Gandalf.Views.Dashboard[Gandalf.capitalizeString(section)](model: organization)
-    @$('.content-main .dash-content').html view.el
     return this
   
   events:

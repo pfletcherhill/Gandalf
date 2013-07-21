@@ -42,6 +42,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
   
   events:
     'keyup #search-form input' : 'search'
+    'submit #search-form' : 'search'
   
   search: (event) ->
     event.preventDefault()

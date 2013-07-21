@@ -1,9 +1,15 @@
 // Variables
-$content-nav-height: 65px;
+$content-nav-height: 85px;
 
 // Style
 .dashboard-content {
   margin-top: 20px;
+}
+
+.dashboard-padded-top,
+.dashboard-content-nav,
+.fixed-header-links {
+  padding-top: 20px;
 }
 
 #dashboard-organizations-list {
@@ -68,7 +74,7 @@ $content-nav-height: 65px;
 }
 
 .dashboard-content-nav {
-  top: $header-height + 20px;
+  top: $header-height;
   height: $content-nav-height;
   width: $width - 230px;
   background: white;
@@ -84,9 +90,31 @@ $content-nav-height: 65px;
   }
 }
 
+.dashboard-header-link {
+  display: inline-block;
+  padding: 0 15px;
+  line-height: 44px;
+  font-size: 13px;
+  border: 2px solid $blue;
+  background: $light-blue;
+  border-radius: 5px;
+  color: white;
+  @include transition(0.1s);
+  
+  .icon-plus {
+    color: white;
+  }
+  
+  &:hover {
+    color: white;
+    text-decoration: none;
+    background: $blue;
+    border: 2px solid $dark-blue;
+  }
+}
+
 .dashboard-content-main {
   margin-top: $content-nav-height;
-  padding-top: 20px;
   
   table {
     width: 100%;
@@ -94,6 +122,32 @@ $content-nav-height: 65px;
   
   td {
     padding: 10px;
+    font-size: 12px;
+    
+    &.primary {
+      @include HN-Bold;
+      font-size: 15px;
+    }
+  }
+  
+  .dashboard-table-link {
+    background: #eee;
+    color: #777;
+    padding: 7px 12px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    @include transition(0.1s);
+    float: right;
+    
+    &:hover {
+      background: #eaeaea;
+      border: 2px solid #aaa;
+      text-decoration: none;
+    }
+    
+    &:after {
+      content: " →";
+    }
   }
 }
 

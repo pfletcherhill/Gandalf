@@ -1,13 +1,13 @@
-Gandalf.Views.Dashboard ||= {}
+Gandalf.Views.Dashboard.Groups ||= {}
 
-class Gandalf.Views.Dashboard.Groups extends Backbone.View
+class Gandalf.Views.Dashboard.Groups.Index extends Backbone.View
   
   template: JST["backbone/templates/dashboard/groups/index"]
-  groupTemplate: JST["backbone/templates/dashboard/groups/show"]
+  groupTemplate: JST["backbone/templates/dashboard/groups/row"]
   table: "#dashboard-content-groups"
   
   initialize: ->
-    $(@el).html @template
+    $(@el).html @template(organization: @model)
     @groups = new Gandalf.Collections.Teams
     @groups.url = "/organizations/#{@model.id}/teams"
     @groups.fetch success: (data) =>

@@ -1,7 +1,9 @@
 /* ============ VARIABLES ================ */
 
 $yellow: rgba(255,203,5,1);
+$light-blue: #93CAFF;
 $blue: #4BA6FF;
+$dark-blue: #1975D1;
 $green: #058412;
 $font: 12px;
 $min-width: 960px;
@@ -229,6 +231,13 @@ $main-width: $width - $left-width - $left-margin;
   margin-left: $left-width + $left-margin;
 }
 
+.fixed {
+  position: fixed;
+  top: $header-height;
+  left: 50%;
+  @include calc(margin-left, "-#{$width}/2");
+}
+
 .fixed-lined-header {
   position: fixed;
   border-bottom: 1px solid #dadada;
@@ -254,6 +263,12 @@ $main-width: $width - $left-width - $left-margin;
       border: 1px solid #aaa;
     }
   }
+}
+
+.fixed-header-links {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .left-header {

@@ -1,7 +1,14 @@
 <div class="dashboard-content-nav fixed-lined-header">
   <form class="fixed-header-search">
-    <input placeholder="Search groups..." id="groups-search" class="fixed-header-search-bar"></input>
+    <input placeholder="Search groups..." id="groups-search"
+           class="fixed-header-search-bar"></input>
   </form>
+  <div class="fixed-header-links">
+    <a href="#dashboard/<%= organization.get('slug') %>/groups/new"
+       class="dashboard-header-link">
+      <span class="icon-plus"/>  Create New Group
+    </a>
+  </div>
 </div>
 <div class="dashboard-content-main">
   <table id="dashboard-content-groups" class="table-striped"></table>

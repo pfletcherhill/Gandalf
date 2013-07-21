@@ -1,0 +1,16 @@
+<h3>Subscribers</h3>
+<table class="table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Access</th>
+  </tr>
+  <% for( i = 0; i < users.length; i++ ) { %>
+    <% var user = users[i] %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td></td>
+    </tr>
+  <% } %>
+</table>

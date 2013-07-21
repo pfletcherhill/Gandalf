@@ -7,4 +7,13 @@ class TeamsController < ApplicationController
     render json: team.as_json(include: [:users])
   end
   
+  def create
+    team = Team.new(params[:team])
+    if team.save
+      render json: team
+    else
+      render json: "Group was not created", status: 500
+    end
+  end
+  
 end
