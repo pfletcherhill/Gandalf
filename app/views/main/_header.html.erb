@@ -16,21 +16,18 @@
           Calendar
         </div>
       </a>
-      <a href="#dashboard">
-        <div class="link" name='fb_logout'>
-          Dashboard
-        </div>
-      </a>
+      <% if me.administers_organizations? %>
+        <a href="#dashboard">
+          <div class="link" name='fb_logout'>
+            Dashboard
+          </div>
+        </a>
+      <% end %>
       <a href="#about">
         <div class="link">
           About
         </div>
       </a>
-      <!-- <a href="/bulletin" data-remote="true">
-              <div class="link">
-                Test Bulletin (<%= ENV['SENDGRID_USERNAME'] %>)
-              </div>
-            </a> -->
     </div>
     <div class="pull-right">
       <div id="user-dropdown">

@@ -8,7 +8,6 @@ class Gandalf.Views.Browse.Index extends Backbone.View
 
   events:
     'keyup input' : 'search'
-    # 'scroll #browse-list' : 'scroll'
   
   initialize: =>
     @results = @options.results
@@ -46,7 +45,7 @@ class Gandalf.Views.Browse.Index extends Backbone.View
     return this
   
   changeActive: (type) ->
-    @$("li[data-type=#{type}]").addClass 'selected'
+    @$("a[data-type=#{type}]").addClass 'active'
   
   stringToUrl: (string) ->
     string = string.replace(' ','%20')

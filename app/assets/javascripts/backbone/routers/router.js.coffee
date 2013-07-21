@@ -4,17 +4,13 @@ class Gandalf.Router extends Backbone.Router
     # Set Global Gandalf.currentUser
     Gandalf.currentUser = new Gandalf.Models.User(options.currentUser)
     
-    #Initialize @events and @organizations
-    @events = new Gandalf.Collections.Events
-    @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('organizations'))
+    #Initialize @eventCollection and @organizations
+    @eventCollection = new Gandalf.Collections.Events
+    @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('admin_organizations'))
     window.orgs = @organizations
-    #@popover = new Gandalf.Views.Popover
+    @popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @flash.el
-
-    # Load user data
-    Gandalf.currentUser.fetchSubscribedOrganizations()
-    Gandalf.currentUser.fetchSubscribedCategories()
 
     # Constants
     Gandalf.constants ||= {}
@@ -35,22 +31,24 @@ class Gandalf.Router extends Backbone.Router
   processType: (date, type) ->
     if date == 'today'
       date = moment().format(Gandalf.displayFormat)
-    if period == 'week'
+    if type == 'week'
       startAt = moment(date, Gandalf.displayFormat).day(0)
       endAt = moment(startAt).add('w',1)
-    else if period == 'month'
+    else if type == 'month'
       # Start at the Sunday before the first
       startAt = moment(date, Gandalf.displayFormat).date(1).day(0)
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
-    else
-      startAt = moment().day(0)
+    else # Default to list
+      startAt = moment(date, Gandalf.displayFormat).sod()
+      # TODO(rafikhan): Really we want to get ~20 events here,
+      # not one week's worth..
       endAt = moment(startAt).add('w',1)
-      period = 'list'
+      type = 'list'
     params = {
       start: startAt.sod()
       end: endAt.sod()
-      period: period
+      type: type
     }
     params
 
@@ -74,8 +72,8 @@ class Gandalf.Router extends Backbone.Router
     'dashboard/:slug/:type'           : 'dashboard'
 
     # Events Routes
-    'events/:id'                      : 'events'
-    'events*'                         : 'events'
+    'events/:id'                      : 'eventRoute'
+    'events*'                         : 'eventRoute'
 
     # Organization Routes
     'organizations/:slug'             : 'organizations'
@@ -97,31 +95,27 @@ class Gandalf.Router extends Backbone.Router
     # Calendar Routes (catch all)
     ':date'                           : 'calendar'
     ':date/:type'                     : 'calendar'
-    '.*'                              : 'calendar'
+    '.*'                              : 'calendarRedirect'
 
-  next: (type) ->
-    console.log 'next'
+
+  calendarRedirect: ->
+    @navigate("today", {trigger: true, replace: true});
 
   calendar: (date, type) ->
     @showLoader('#content')
     date ||= 'today'
     type ||= 'list'
-    params = @processPeriod date, type
+    params = @processType date, type
     string = @generateParamsString params
-    @events.url = '/users/events?' + string
-    @events.fetch success: (events) ->
-      view = new Gandalf.Views.Feed.Index(
-        events: events
+    @eventCollection.url = '/users/events?' + string
+    @eventCollection.fetch success: (data) ->
+      view = new Gandalf.Views.Feed.Index
+        eventCollection: data
         startDate: params.start
-        period: params.period
-      )
-      Gandalf.dispatcher.trigger("popover:eventsReady", events)
+        type: params.type
+      Gandalf.dispatcher.trigger("popover:eventsReady", data)
     @popover = new Gandalf.Views.CalendarPopover
     $("#popover").html @popover.el
-
-  calendarRedirect: (date) ->
-    date = "today" if not date
-    @navigate("calendar/#{date}/week", {trigger: true, replace: true});
 
   browse: (type) ->
     @showLoader('.content-main')
@@ -132,34 +126,40 @@ class Gandalf.Router extends Backbone.Router
     else if type == 'events'
       @results = new Gandalf.Collections.Events
       @results.url = '/events'
-    else
-      type = 'organizations'
-      @results = new Gandalf.Collections.Organizations
+    else if type == 'organizations'
+      @results = new Gandalf.Collections.Events
       @results.url = '/organizations'
+    else
+      type = 'all'
+      @results = new Backbone.Collection
+      @results.url = '/browse_all'
     @results.fetch success: (results) ->
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
 
   dashboard: (slug, type) ->
-    slug ||= @organizations.first().get('slug')
-    id = @organizations.where(slug: slug)[0].id
-    type ||= 'events'
-    @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/#{id}/edit"
-    @organization.fetch
-      success: (organization) =>
-        view = new Gandalf.Views.Dashboard.Index(
-          organizations: @organizations
-          organization: organization
-          type: type
-        )
-      error: ->
-        alert 'You do not have access to this organization.'
-        window.location = "#organizations"
-    @popover = new Gandalf.Views.DashboardPopover
-    $("#popover").html @popover.el
+    if Gandalf.currentUser.has_organizations()
+      slug ||= @organizations.first().get('slug')
+      id = @organizations.where(slug: slug)[0].id
+      type ||= 'events'
+      @organization = new Gandalf.Models.Organization
+      @organization.url = "/organizations/#{id}/edit"
+      @organization.fetch
+        success: (organization) =>
+          view = new Gandalf.Views.Dashboard.Index(
+            organizations: @organizations
+            organization: organization
+            type: type
+          )
+        error: ->
+          alert 'You do not have access to this organization.'
+          window.location = "#organizations"
+      @popover = new Gandalf.Views.DashboardPopover
+      $("#popover").html @popover.el
+    else
+      @navigate("today", {trigger: true, replace: true});
 
-  events: (id) ->
+  eventRoute: (id) ->
     @event = new Gandalf.Models.Event
     @event.url = "/events/" + id
     @event.fetch
@@ -169,7 +169,7 @@ class Gandalf.Router extends Backbone.Router
   organizations: (slug, date, period) ->
     if not period or not date
       @navigate("organizations/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/slug/" + slug
@@ -179,13 +179,13 @@ class Gandalf.Router extends Backbone.Router
           model: organization,
           string: @string,
           startDate: params.start,
-          period: params.period
+          period: params.type
         )
 
   categories: (slug, date, period) ->
     if not period or not date
       @navigate("categories/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @category = new Gandalf.Models.Category
     @category.url = "/categories/slug/" + slug
@@ -195,7 +195,7 @@ class Gandalf.Router extends Backbone.Router
           model: category,
           string: @string
           startDate: params.start,
-          period: params.period
+          period: params.type
         )
 
   # preferences tab with subscriptions and account info
