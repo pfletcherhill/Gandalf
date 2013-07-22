@@ -4,17 +4,13 @@ class Gandalf.Router extends Backbone.Router
     # Set Global Gandalf.currentUser
     Gandalf.currentUser = new Gandalf.Models.User(options.currentUser)
     
-    #Initialize @events and @organizations
-    @events = new Gandalf.Collections.Events
+    #Initialize @eventCollection and @organizations
+    @eventCollection = new Gandalf.Collections.Events
     @organizations = new Gandalf.Collections.Organizations(Gandalf.currentUser.get('organizations'))
     window.orgs = @organizations
-    #@popover = new Gandalf.Views.Popover
+    @popover = new Gandalf.Views.Popover
     @flash = new Gandalf.Views.Flash
     $(".wrapper").append @flash.el
-
-    # Load user data
-    Gandalf.currentUser.fetchSubscribedOrganizations()
-    Gandalf.currentUser.fetchSubscribedCategories()
 
     # Constants
     Gandalf.constants ||= {}
@@ -35,22 +31,24 @@ class Gandalf.Router extends Backbone.Router
   processType: (date, type) ->
     if date == 'today'
       date = moment().format(Gandalf.displayFormat)
-    if period == 'week'
+    if type == 'week'
       startAt = moment(date, Gandalf.displayFormat).day(0)
       endAt = moment(startAt).add('w',1)
-    else if period == 'month'
+    else if type == 'month'
       # Start at the Sunday before the first
       startAt = moment(date, Gandalf.displayFormat).date(1).day(0)
       # And go for 5 weeks
       endAt = moment(startAt).add('w', 5)
-    else
-      startAt = moment().day(0)
+    else # Default to list
+      startAt = moment(date, Gandalf.displayFormat).sod()
+      # TODO(rafikhan): Really we want to get ~20 events here,
+      # not one week's worth..
       endAt = moment(startAt).add('w',1)
-      period = 'list'
+      type = 'list'
     params = {
       start: startAt.sod()
       end: endAt.sod()
-      period: period
+      type: type
     }
     params
 
@@ -62,104 +60,127 @@ class Gandalf.Router extends Backbone.Router
 
   showLoader: (selector) ->
     $(selector).html("<div class='loader'></div>")
+  
+  authenticateOrganization: (slug) ->
+    if Gandalf.currentUser.has_organizations()
+      if slug
+        @organizations.where(slug: slug)[0]
+      else
+        @organizations.first()
 
   routes:
     # Browse Routes
-    'browse/:type'                    : 'browse'
-    'browse*'                         : 'browse'
+    'browse/:type'                                : 'browse'
+    'browse*'                                     : 'browse'  
 
+    # Dashboard Groups
+    'dashboard/:slug/groups/new'                  : 'newGroup'
+    'dashboard/:slug/groups/:groupSlug/:section'  : 'group'
+    'dashboard/:slug/groups/:groupSlug'           : 'group'
+    
     # Dashboard Routes
-    'dashboard'                       : 'dashboard'
-    'dashboard/:slug'                 : 'dashboard'
-    'dashboard/:slug/:type'           : 'dashboard'
+    'dashboard/:slug/:section'                    : 'dashboard'
+    'dashboard/:slug'                             : 'dashboard'
+    'dashboard'                                   : 'dashboard'
 
     # Events Routes
-    'events/:id'                      : 'events'
-    'events*'                         : 'events'
+    'events/:id'                                  : 'eventRoute'
+    'events*'                                     : 'eventRoute'
 
     # Organization Routes
-    'organizations/:slug'             : 'organizations'
-    'organizations/:slug/:date/:period' : 'organizations'
-    'organizations*'                  : 'organizations'
+    'organizations/:slug/:date/:period'           : 'organizations'
+    'organizations/:slug'                         : 'organizations'
+    'organizations*'                              : 'organizations'
 
     # Category Routes
-    'categories/:slug'                : 'categories'
-    'categories/:slug/:date/:period'  : 'categories'
-    'categories*'                     : 'categories'
+    'categories/:slug/:date/:period'              : 'categories'
+    'categories/:slug'                            : 'categories'
+    'categories*'                                 : 'categories'
 
     # Preferences Routes
-    'preferences/:type'               : 'preferences'
-    'preferences*'                    : 'preferences'
+    'preferences/:type'                           : 'preferences'
+    'preferences*'                                : 'preferences'
 
     # Static Routes
-    'about'                           : 'about'
+    'about'                                       : 'about'
 
     # Calendar Routes (catch all)
-    ':date'                           : 'calendar'
-    ':date/:type'                     : 'calendar'
-    '.*'                              : 'calendar'
+    ':date/:type'                                 : 'calendar'
+    ':date'                                       : 'calendar'
+    '.*'                                          : 'calendarRedirect'
 
-  next: (type) ->
-    console.log 'next'
+
+  calendarRedirect: ->
+    @navigate("today", {trigger: true, replace: true});
 
   calendar: (date, type) ->
     @showLoader('#content')
     date ||= 'today'
     type ||= 'list'
-    params = @processPeriod date, type
+    params = @processType date, type
     string = @generateParamsString params
-    @events.url = '/users/events?' + string
-    @events.fetch success: (events) ->
-      view = new Gandalf.Views.Feed.Index(
-        events: events
+    @eventCollection.url = '/users/events?' + string
+    @eventCollection.fetch success: (data) ->
+      view = new Gandalf.Views.Feed.Index
+        eventCollection: data
         startDate: params.start
-        period: params.period
-      )
-      Gandalf.dispatcher.trigger("popover:eventsReady", events)
+        type: params.type
+      Gandalf.dispatcher.trigger("popover:eventsReady", data)
     @popover = new Gandalf.Views.CalendarPopover
     $("#popover").html @popover.el
 
-  calendarRedirect: (date) ->
-    date = "today" if not date
-    @navigate("calendar/#{date}/week", {trigger: true, replace: true});
-
-  browse: (type) ->
+  browse: (type = 'all') ->
     @showLoader('.content-main')
     $(".search-list a").removeClass 'active'
-    if type == 'categories'
-      @results = new Gandalf.Collections.Categories
-      @results.url = '/categories'
-    else if type == 'events'
-      @results = new Gandalf.Collections.Events
-      @results.url = '/events'
-    else
-      type = 'organizations'
-      @results = new Gandalf.Collections.Organizations
-      @results.url = '/organizations'
+    @results = new Backbone.Model
+    @results.url = '/search?type=' + type
     @results.fetch success: (results) ->
       view = new Gandalf.Views.Browse.Index(results: results, type: type)
       $("#content").html(view.el)
+  
+  newGroup: (slug) ->
+    if organization = @authenticateOrganization(slug)
+      new Gandalf.Views.Dashboard.Index
+        organizations: @organizations
+        organization: organization
+        section: 'groups'
+      new Gandalf.Views.Dashboard.Groups.New
+        organization: organization
+    else
+      @navigate("today", {trigger: true, replace: true})
+    
+  group: (slug, groupSlug, section) ->
+    if organization = @authenticateOrganization(slug)
+      new Gandalf.Views.Dashboard.Index
+        organizations: @organizations
+        organization: organization
+        section: 'groups'
+      group = new Gandalf.Models.Team
+      group.url = "/teams/#{groupSlug}"
+      group.fetch
+        success: (data) ->
+          section ||= "subscribers"
+          view = new Gandalf.Views.Dashboard.Groups[Gandalf.capitalizeString(section)]
+            model: group,
+            organization: organization
+        errors: ->
+          Gandalf.dispatcher.trigger("flash:error", "Whoops, an error occurred...")
+    else
+      @navigate("today", {trigger: true, replace: true})
+      
+  dashboard: (slug, section) ->
+    if organization = @authenticateOrganization(slug)
+      new Gandalf.Views.Dashboard.Index
+        organizations: @organizations
+        organization: organization
+        section: section || 'events'
+      view = new Gandalf.Views.Dashboard[Gandalf.capitalizeString(section || 'events')].Index
+        model: organization
+      $('.content-main .dash-content').html view.el
+    else
+      @navigate("today", {trigger: true, replace: true})
 
-  dashboard: (slug, type) ->
-    slug ||= @organizations.first().get('slug')
-    id = @organizations.where(slug: slug)[0].id
-    type ||= 'events'
-    @organization = new Gandalf.Models.Organization
-    @organization.url = "/organizations/#{id}/edit"
-    @organization.fetch
-      success: (organization) =>
-        view = new Gandalf.Views.Dashboard.Index(
-          organizations: @organizations
-          organization: organization
-          type: type
-        )
-      error: ->
-        alert 'You do not have access to this organization.'
-        window.location = "#organizations"
-    @popover = new Gandalf.Views.DashboardPopover
-    $("#popover").html @popover.el
-
-  events: (id) ->
+  eventRoute: (id) ->
     @event = new Gandalf.Models.Event
     @event.url = "/events/" + id
     @event.fetch
@@ -169,7 +190,7 @@ class Gandalf.Router extends Backbone.Router
   organizations: (slug, date, period) ->
     if not period or not date
       @navigate("organizations/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @organization = new Gandalf.Models.Organization
     @organization.url = "/organizations/slug/" + slug
@@ -179,13 +200,13 @@ class Gandalf.Router extends Backbone.Router
           model: organization,
           string: @string,
           startDate: params.start,
-          period: params.period
+          period: params.type
         )
 
   categories: (slug, date, period) ->
     if not period or not date
       @navigate("categories/#{slug}/today/week", {trigger: true, replace: true});
-    params = @processPeriod date, period
+    params = @processType date, period
     @string = @generateParamsString params
     @category = new Gandalf.Models.Category
     @category.url = "/categories/slug/" + slug
@@ -195,7 +216,7 @@ class Gandalf.Router extends Backbone.Router
           model: category,
           string: @string
           startDate: params.start,
-          period: params.period
+          period: params.type
         )
 
   # preferences tab with subscriptions and account info

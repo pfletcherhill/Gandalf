@@ -1,8 +1,16 @@
-<div class="event-image" style="background-image: url(<%= image %>)" >
-</div>
+<div class="event-image" style="background-image: url(<%= image %>)" ></div>
 <div class="details">
-  <div class="name"><%= event.get("name") %></div>
-  <div class="organization"><%= event.get("organization") %></div>
-  <div class="time"><span class="icon-time"></span><%= startTime %></div>
+  <span class="name"><%= event.get("name") %></span>
+  <span class="organization">
+    by 
+    <a class="organization-link" href="#/organizations/<%= event.get('organization_slug') %>">
+      <%= event.get("organization") %>
+    </a>
+  </span>
+  <div class="time">
+    <% times = event.formatTimeRange() %>
+    <span class="icon-time"></span><%= times.startString %>
+    <span class="main-attr">- <%= times.endString %></span>
+  </div>
   <div class="location"><span class="icon-map-marker"></span><%= event.get("location") %></div>
 </div>

@@ -1,6 +1,6 @@
-Gandalf.Views.Dashboard ||= {}
+Gandalf.Views.Dashboard.Users ||= {}
 
-class Gandalf.Views.Dashboard.Users extends Backbone.View
+class Gandalf.Views.Dashboard.Users.Index extends Backbone.View
   
   template: JST["backbone/templates/dashboard/users/index"]
   

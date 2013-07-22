@@ -1,7 +1,5 @@
 class UsersController < ApplicationController
-  
-  before_filter :require_admin
-  
+    
   respond_to :json
   before_filter :require_login
 
@@ -34,7 +32,15 @@ class UsersController < ApplicationController
 
   def events
     user = current_user
-    events = user.events(params[:start_at], params[:end_at])
+    events = user.events_with_range(params[:start_at], params[:end_at])
+    # Why was this next line here?
+    # events = user.events(params[:start_at], params[:end_at])
+    respond_with events
+  end
+
+  def next_events
+    events = current_user.next_events(
+      params[:startDate], params[:limit], params[:offset])
     respond_with events
   end
 

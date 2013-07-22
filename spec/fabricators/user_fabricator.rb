@@ -1,7 +1,5 @@
 Fabricator(:user) do
-  netid "prf8"
+  netid { sequence(:netid) {|i| "prf#{i}"} }
   name "Paul Fletcher-Hill"
-  nickname "Paul"
-  email "paul.fletcher-hill@yale.edu"
-  division "Yale College"
+  email { sequence(:email) {|i| "paul.fletcher-hill+#{i}@yale.edu"} }
 end

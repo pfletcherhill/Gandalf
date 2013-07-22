@@ -1,39 +1,85 @@
 class Organization < ActiveRecord::Base
-  require 'gappsprovisioning/provisioningapi'
 
+  include Gandalf::Utilities
+  include Gandalf::GoogleApiClient
+  
   # Associations
+  has_many :teams, class_name: "Group"
+  has_many :subscribers, source: :users, through: :teams
   has_many :events
-  has_many :access_controls
-  has_many :admins, :through => :access_controls, :source => :user
-  has_many :subscriptions, :as => :subscribeable
-  has_many :subscribers, :through => :subscriptions, :source => :user
+  
+  # Access Controls
+  has_many :admins, -> { where 'subscriptions.access_type = ?',
+                         ACCESS_STATES[:WRITE]},
+           through: :teams,
+           source: :users
+  has_many :members, -> { where 'subscriptions.access_type = ?',
+                          ACCESS_STATES[:READONLY]},
+           through: :teams,
+           source: :users
+  has_many :followers, -> { where 'subscriptions.access_type = ?',
+                            ACCESS_STATES[:RESTRICTED]},
+           through: :teams,
+           source: :users
 
   # Validations
+  validates_presence_of :name, :slug
   validates_uniqueness_of :name, :case_sensitive => false
   validates_uniqueness_of :slug, :case_sensitive => false
 
   # Callbacks
-  before_create :make_slug
+  before_validation :set_slug
+  after_create :setup_teams_and_groups
 
   # pg_search
   include PgSearch
-  multisearchable :against => [:name, :bio]
-  pg_search_scope :fulltext_search, 
-    :against => {
-      :name => "A", 
-      :bio => "B"
-    }, 
-    :using => {
-      :tsearch => {
-        :prefix => true,
-        :dictionary => "english",
-        :any_word => true
+  
+  multisearchable :against => [
+    :name,
+    :bio
+  ]
+  
+  pg_search_scope :search,
+    against: {
+      name: "A",
+      bio: "B"
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "english",
+        any_word: true
       }
     }
 
   # Image Uploader
   mount_uploader :image, ImageUploader
 
+  # Callbacks
+  
+  def set_slug
+    self.slug = make_slug(name)
+  end
+  
+  def setup_teams_and_groups
+    ["Admins", "Members", "Followers"].each do |type|
+      Team.create(
+        name: "#{name} #{type}",
+        organization_id: id
+      )
+    end
+  end
+  
+  # Methods
+  
+  def admins_team
+    teams.where(slug: "#{slug}-admins").first
+  end
+  
+  def followers_team
+    teams.where(slug: "#{slug}-followers").first
+  end
+    
   def complete_events
     self.events
       .includes(:location, :organization, :categories)
@@ -82,11 +128,4 @@ class Organization < ActiveRecord::Base
     rescue
     end
   end
-  
-  private
-
-  def make_slug
-    self.slug ||= Subscription.make_slug self.name
-  end
-
 end

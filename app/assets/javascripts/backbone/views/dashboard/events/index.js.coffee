@@ -1,6 +1,6 @@
-Gandalf.Views.Dashboard ||= {}
+Gandalf.Views.Dashboard.Events ||= {}
 
-class Gandalf.Views.Dashboard.Events extends Backbone.View
+class Gandalf.Views.Dashboard.Events.Index extends Backbone.View
   
   template: JST["backbone/templates/dashboard/events/index"]
   

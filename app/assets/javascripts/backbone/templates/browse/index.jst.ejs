@@ -1,18 +1,14 @@
-<div class="content-header container">
-  <h1>Discover</h1>
+<div class="fixed-browse-header content-header container">
+  <form id="search-form">
+    <input placeholder="Search..." id="browse-search"></input>
+  </form>
+  <div class="pull-right browse-nav-links">
+    <a href="#browse" data-type="all">All</a>
+    <a href="#browse/organizations" data-type='organizations'>Organizations</a>
+    <a href="#browse/categories" data-type='categories'>Categories</a>
+    <a href="#browse/events" data-type='events'>Events</a>
+  </div>
 </div>
-<div class="content-container container">
-  <div class="content-left">
-    <div class="left-header">Search Events, Organizations or Categories:</div>
-    <div class='left-search'>
-      <input placeholder="Search <%= type %>..."></input>
-    </div>
-    <ul class="left-list">
-      <a href="#browse/organizations"><li data-type='organizations'>Organizations</li></a>
-      <a href="#browse/categories"><li data-type='categories'>Categories</li></a>
-      <a href="#browse/events"><li data-type='events'>Events</li></a>
-    </ul>
-  </div>
-  <div class="content-main" id="browse-list">
-  </div>
+<div class="content-container browse-content container">
+  <div id="browse-list"></div>
 </div>

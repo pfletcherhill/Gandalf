@@ -20,19 +20,41 @@ class Gandalf.Models.Event extends Backbone.Model
 
   # Get all the categoryIDs for this event.
   # return {Array.<string>} The ids.
-  categoryIds: () ->
+  categoryIds: ->
     arr = []
-    for c in @get("categories")
-      arr.push c.id
+    # for c in @get("categories")
+    #       arr.push c.id
     arr
 
   # Make a comma-joined string of all category ids.
   # return {string} A string of the form "id1,id2,id3".
-  makeCatIdString: () ->
+  makeCatIdString: ->
     string = ""
-    for c in @get("categories")
-      string += (c.id + ",")
+    # for c in @get("categories")
+    #       string += (c.id + ",")
     string
+
+  # Formats an event's start and end time into canonical time range.
+  # When events starts and ends on the same day,
+  #   we want <date> <start time> - <end time>
+  # Otherwise we want <date> <start time> - <date> <end time>.
+  # return {{startString: string, endString: string, sameDay: boolean}}
+  #   An object with the start time and end time formatted canonically
+  #   (also see formatDate above). Also holds a boolean for whether the
+  #   event starts and ends on the same day (true if yes).
+  formatTimeRange: ->
+    startAt = moment @get("start_at")
+    endAt = moment @get("end_at")
+    start = Gandalf.formatDate(startAt) + ' ' + Gandalf.formatTime(startAt)
+    sameDay = false
+    # Same day: give just end time.
+    if startAt.diff(endAt) is 0
+      end = Gandalf.formatTime(endAt)
+      sameDay = true
+    # Different day, give full date.
+    else 
+      end = Gandalf.formatDate(endAt) + ' ' + Gandalf.formatTime(endAt)
+    {startString: start, endString: end, sameDay: sameDay}
 
   # An event's JSON representation, to be sent to the server.
   # NOTE(Rafi): This method must be updated whenever the event model
@@ -103,7 +125,7 @@ class Gandalf.Collections.Events extends Backbone.Collection
 
   # Gets all events that are multiday: i.e. span more than 24 hours.
   # return {Array.<Events>} The events.
-  getMultidayEvents: () ->
+  getMultidayEvents: ->
     events = _.filter(@models, (e) ->
       e.get("multiday")
     )

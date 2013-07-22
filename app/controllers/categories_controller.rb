@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
 
-  before_filter :require_admin
+  before_filter :require_login
   
   def all
     categories = Category.all.sort_by { |c| c.name }

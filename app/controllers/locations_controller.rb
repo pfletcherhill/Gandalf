@@ -1,4 +1,6 @@
 class LocationsController < ApplicationController
+  
+  before_filter :require_login
   respond_to :json
 
   def search
