@@ -1,10 +1,19 @@
 # User model spec
 
 require 'spec_helper'
-include Gandalf::Utilities
 
 describe User do
   describe "associations" do
+    # TO TEST:
+    # subscribed_teams
+    # team_events
+    # subscribed_categories
+    # category_events
+    # access level to groups
+    # add as member to organization team
+    # follow organization
+    # follow category
+    # 
     context "when a user has subscriptions" do
       pending "should have subscriptions" do
       end
@@ -70,46 +79,45 @@ describe User do
     describe ".create" do
       context "when using a non-unique netid" do
         it "fails to create" do
-          user = User.create(
-            :netid => @user.netid,
-            :name => "Paul Fletcher-Hill",
-            :nickname => "Paul",
-            :email => "paul.hill@yale.edu",
-            :division => "Yale College"
-          )
-          user.valid?.should be_false
+          expect { Fabricate(:user, netid: @user.netid )}.to raise_error
         end
       end
       
       context "when using a non-unique email" do
         it "fails to create" do
-          user = User.create(
-            :netid => "pfh",
-            :name => "Paul Fletcher-Hill",
-            :nickname => "Paul",
-            :email => @user.email,
-            :division => "Yale College"
-          )
-          user.valid?.should be_false
+          expect { Fabricate(:user, email: @user.email )}.to raise_error
         end
       end
     end
     
     describe ".subscribe_to" do
-      context "when adding a valid group" do
+      context "valid group" do
         before :each do
           @user = Fabricate(:user)
+          @group = make_group(@group_name)
         end
         
-        it "creates a subscription" do
-          @user.subscriptions.count.should == 0
-          stub_request(:any, /www.googleapis.com/).to_return({
-            data: {
-              id:
-            }
+        it "creates subscription" do
+          expect(@user.subscriptions.count).to eq 0
+          member_stub = stub_request(:post, API_MEMBER_REGEX(:create, @group.apps_id)).to_return({
+            status: 200,
+            headers: {'Content-Type' => 'application/json'},
+            body: {
+              kind: 'admin#directory#member',
+              id: make_random_hash,
+              email: @user.email,
+              role: 'MEMBER',
+              type: 'MEMBER'
+            }.to_json
           })
-          @user.subscribe_to(Fabricate(:group).id)
-          @user.subscriptions.count.should == 1
+          @user.subscribe_to(@group.id)
+          assert_requested member_stub
+          expect(@user.subscriptions.count).to eq 1
+        end
+      end
+      context "bogus group" do
+        it "throws error" do
+          expect { @user.subscribe_to(-1) }.to raise_error
         end
       end
     end   

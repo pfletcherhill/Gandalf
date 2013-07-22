@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20130713044761) do
     t.string   "college"
     t.string   "year"
     t.string   "division"
-    t.boolean  "admin"
+    t.boolean  "go_admin"
     t.string   "bulletin_preference", default: "daily"
     t.string   "fb_id"
     t.string   "fb_access_token"
