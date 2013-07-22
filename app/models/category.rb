@@ -1,28 +1,32 @@
-class Category < ActiveRecord::Base
+class Category < Group
 
+  include Gandalf::GoogleApiClient
+  include Gandalf::Utilities
+  
   # Associations
-  has_and_belongs_to_many :events
-  has_many :subscriptions, :as => :subscribeable
-  has_many :subscribers, :through => :subscriptions, :source => :user
-
-  # Validations
-  validates_uniqueness_of :name, :case_sensitive => false
-  validates_uniqueness_of :slug, :case_sensitive => false
-
-  # Callbacks
-  before_create :make_slug
-
-  # pg_search
+  has_many :subscribers, through: :subscriptions, source: :user
+  
+  # Search
   include PgSearch
-  multisearchable :against => [:name, :description]
-  pg_search_scope :fulltext_search,
-    against: [:name, :description],
-    using: { tsearch:  {
-      prefix: true, 
-      dictionary: "english",
-      any_word: true
-    } }
-
+  
+  multisearchable against: [
+    :name,
+    :description
+  ]
+  
+  pg_search_scope :search,
+    against: {
+      name: "A",
+      description: "B"
+    },
+    using: {
+      tsearch: {
+        prefix: true,
+        dictionary: "english",
+        any_word: true
+      }
+    }
+    
   #Events, can have start and end
 
   def complete_events
@@ -52,7 +56,7 @@ class Category < ActiveRecord::Base
     cat = Category.where(:name => name).first
     unless cat
       cat = Category.new(:name => name, :description => name)
-      cat.slug = Subscription.make_slug(name)
+      cat.slug = make_slug(name)
       cat.save
     end
     cat
@@ -67,12 +71,6 @@ class Category < ActiveRecord::Base
       end
     rescue
     end
-  end
-  
-  private
-
-  def make_slug
-    self.slug ||= Subscription.make_slug self.name
   end
 
 end

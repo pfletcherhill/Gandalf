@@ -1,0 +1,12 @@
+<button id="dashboard-organizations-selected">
+  <%= active.get("name") %>
+  <span id="button-arrow" class="icon-chevron-down"/>
+</button>
+<ul id="dashboard-organizations-nav">
+  <% for( i = 0; i < collection.length; i++ ) { %>
+    <% model = collection.at(i); %>
+    <a href="#dashboard/<%= model.get("slug") %>">
+      <li><%= model.get("name") %></li>
+    </a>
+  <% } %>
+</ul>

@@ -1,6 +1,8 @@
 class OrganizationsController < ApplicationController
 
-  before_filter :require_admin
+  include Gandalf::GoogleApiClient
+
+  before_filter :require_login
   
   def index
     @organizations = Organization.all
@@ -19,7 +21,7 @@ class OrganizationsController < ApplicationController
 
   def edit
     @organization = Organization.find(params[:id])
-    if current_user.has_authorization_to(@organization)
+    if @organization && current_user.has_authorization_to(@organization)
       render json: @organization
     else
       render json: "User does not have access", status: 403
@@ -64,6 +66,12 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     @admins = @organization.admins
     render json: @admins
+  end
+  
+  def teams
+    @organization = Organization.find(params[:id])
+    @teams = @organization.teams
+    render json: @teams.as_json(include: [:users, :events])
   end
 
   def search

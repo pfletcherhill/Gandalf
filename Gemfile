@@ -10,14 +10,21 @@ gem 'uglifier', '>= 1.3.0'
 
 group :test, :development do
   gem "rspec-rails", "~> 2.13.2"
+  gem 'debugger'
   gem 'fabrication'
   gem 'rack-mini-profiler'
   gem "capybara"
-  gem 'spork'
+  gem 'spork-rails', :github => 'sporkrb/spork-rails'
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'jasmine-rails'
+  gem 'sinon-rails'
+  gem 'excon', '>= 0.22.0'
+end
+
+group :test do
+  gem 'webmock'
 end
 
 # Rails 4 compatibility
@@ -45,6 +52,7 @@ gem 'httpclient'
 gem 'net-ldap'
 gem 'rubycas-client'
 gem 'heroku'
+gem 'google-api-client'
 
 # Style
 gem 'bourbon'

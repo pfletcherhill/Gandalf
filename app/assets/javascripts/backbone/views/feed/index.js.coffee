@@ -1,77 +1,85 @@
 Gandalf.Views.Feed ||= {}
 
+# A Feed is any view that has a calendar, a calendar nav and possibly an
+# events list. This includes all the default views for #/:date/:type.
 class Gandalf.Views.Feed.Index extends Backbone.View
 
-  # options has keys [events, startDate, period]
-  initialize: ()->
-    _.bindAll(this,
-      "renderSubscribedOrganizations",
-      "renderSubscribedCategories"
-    )
+  # @options should have keys [eventCollection, startDate, type]
+  initialize: ->
+    @eventCollection = @options.eventCollection
+    @startDate = @options.startDate
     @render()
 
-  template: JST["backbone/templates/feed/index"]
-
+  # When the calender is rendered full-width across the page
+  fullWidthTemplate: JST["backbone/templates/feed/full_width"]
+  panelTemplate: JST["backbone/templates/feed/panel"]
   el: "#content"
 
-  # Rendering functions
+  # return {boolean} True if @startDate is today.
+  today: ->
+    @startDate.format(Gandalf.displayFormat) is
+      moment().format(Gandalf.displayFormat)
 
-  renderSubscribedOrganizations: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_organizations')
-    hidden = @options.events.getHiddenOrgs()
-    # for s in subscriptions
-    #       invisible = false
-    #       invisible = true if s.id in hidden
-    #       view = new Gandalf.Views.Organizations.Short(model: s, invisible: invisible)
-    #       $("#subscribed-organizations-list").append(view.el)
+  # Makes text for the panel header, specific for today, tomorrow, and
+  # all other dates.
+  # return {string} The header text.
+  makeHeaderText: ->
+    if @today()
+      return "Up next for you"
+    else if @startDate.format(Gandalf.displayFormat) is
+      moment().add('d', 1).format(Gandalf.displayFormat)
+        return "Upcoming tomorrow"
+    
+    return @startDate.format("MMMM D, YYYY")
 
-  renderSubscribedCategories: ->
-    subscriptions = Gandalf.currentUser.get('subscribed_categories')
-    hidden = @options.events.getHiddenCats()
-    # for s in subscriptions
-    #       invisible = false
-    #       invisible = true if s.id in hidden
-    #       view = new Gandalf.Views.Categories.Short(model: s, invisible: invisible)
-    #       $("#subscribed-categories-list").append(view.el)
-
-
-  render: () ->
-    @$el.html(@template({ user: Gandalf.currentUser, startDate: @options.startDate }))
+  render: ->
+    if @options.type is 'list'
+      @$el.html @panelTemplate
+        user: Gandalf.currentUser
+        startDate: @startDate
+        headerText: @makeHeaderText()
+      # If it's today, then try to show the "large" event.
+      # Note if an event shouldn't be rendered in the feed.
+      skippedEventId = null 
+      if @today()
+        upcomingEvents = @eventCollection.filter (e) ->
+          return moment(e.get('start_at')) > moment()
+        nextEvent = upcomingEvents[0]
+        console.log 'first event', nextEvent, upcomingEvents
+        if nextEvent
+          skippedEventId = nextEvent.id
+          nextEventView = new Gandalf.Views.Feed.Event(model: nextEvent)
+          @$(".main-event").html(nextEventView.el)
+      # Add the event list
+      eventList = new Gandalf.Views.EventList 
+        eventCollection: @eventCollection
+        skippedEventId: skippedEventId
+      console.log 'event col', @eventCollection
+      @$(".body-feed").html(eventList.el)
+    else 
+      @$el.html(@fullWidthTemplate
+        user: Gandalf.currentUser
+        startDate: @options.startDate
+      )
+    # Not sure why this line is necessary but it is.
     Gandalf.calendarHeight = $(".content-calendar").height()
-    # @days = @options.events.group()
-    # @renderFeed()
-    eventList = new Gandalf.Views.EventList (
-      events: @options.events
-    )
-    @$(".body-feed").html(eventList.el)
-    nav = new Gandalf.Views.CalendarNav(
-      period: @options.period
+
+    # Add the nav.
+    nav = new Gandalf.Views.CalendarNav
+      type: @options.type
       startDate: @options.startDate
-      root: "calendar"
-    )
-    @$(".content-calendar-nav > .container").html(nav.el)
-    cal = new Gandalf.Views.Calendar.Index(
-      type: @options.period
-      events: @options.events
+      root: ""
+    @$(".content-calendar-nav").html(nav.el)
+
+    # Add the calendar.
+    cal = new Gandalf.Views.Calendar
+      type: @options.type
+      eventCollection: @eventCollection
       startDate: @options.startDate
-    )
     @$(".content-calendar").html(cal.el)
     
+    # Activate tooltips on the page.
     $("[rel=tooltip]").tooltip(
       placement: 'right'
     )
     return this
-
-# DEPRECATED
-#    renderFeed: () ->
-#     noEvents = "<div class='feed-notice'>You aren't subcribed to any events for this period. 
-# Check out <a href='#/browse'>the discover page</a> and start following some 
-# organizations and categories!</div>"
-#     @$(".body-feed").append(noEvents) if _.isEmpty(@days)
-#     @doneEvents = []
-#     for day, events of @days
-#       @addFeedDay(day, events)
-
-#   addFeedDay: (day, events) ->
-#     view = new Gandalf.Views.Feed.Day(day: day, collection: events, done: @doneEvents)
-#     @$(".body-feed").append(view.el)

@@ -18,9 +18,7 @@ pickle-email-*.html
 # Credentials
 /config/credentials.yml
 /config/newrelic.yml
-
-# lib items
-lib/gappsprovisioning
+*.p12
 
 *.DS_Store
 */tablesorter.js

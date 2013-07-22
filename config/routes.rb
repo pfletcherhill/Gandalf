@@ -1,4 +1,5 @@
 Gandalf::Application.routes.draw do
+  
   # Add /spec route for Jasmine.
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
 
@@ -22,6 +23,7 @@ Gandalf::Application.routes.draw do
   put '/me' => "users#update", via: [:put]
   get '/mail' => "users#mail"
   get '/users/events' => 'users#events'
+  get '/users/next_events' => 'users#next_events'
   get '/users/organizations' => 'users#organizations'
   get '/users/subscribed_organizations' => 'users#subscribed_organizations'
   get '/users/subscribed_categories' => 'users#subscribed_categories'
@@ -35,26 +37,22 @@ Gandalf::Application.routes.draw do
   # For testing
   get '/bulletin' => "users#bulletin"
   
-  resources :events
+  resources :events, :organizations, :teams
   
-  resources :organizations
   get '/organizations/slug/:slug' => 'organizations#show_by_slug'
   post '/organizations/:id/add_image' => 'organizations#add_image'
   get '/organizations/:id/events' => 'organizations#events'
   get '/organizations/:id/subscribed_users' => 'organizations#subscribed_users'
   get '/organizations/:id/admins' => 'organizations#admins'
   post '/organizations/:id/email' => 'organizations#subscriber_email'
+  get '/organizations/:id/teams' => 'organizations#teams'
   
   get '/categories' => 'categories#all'
   get '/categories/:id/events' => 'categories#events'
   get '/categories/slug/:slug' => 'categories#show_by_slug'
   get '/categories/:id' => 'categories#show'
-  
+    
   #Search
-  get '/search/organizations/:query' => 'organizations#search'
-  get '/search/events/:query' => 'events#search'
-  get '/search/categories/:query' => 'categories#search'
-  get '/search/location/:query' => 'locations#search'
-  get '/search/all/:query' => 'main#search_all'
+  get '/search' => 'main#search'
   
 end

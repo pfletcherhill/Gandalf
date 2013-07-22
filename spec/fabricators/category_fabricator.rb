@@ -1,3 +1,4 @@
 Fabricator(:category) do
-  name "TED Talks"
+  name { sequence(:name) {|i| "TED Talks #{i}"} }
+  type "Category"
 end

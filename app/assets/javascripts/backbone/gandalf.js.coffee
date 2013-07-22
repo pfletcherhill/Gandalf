@@ -4,15 +4,9 @@
 #= require_tree ./views
 #= require_tree ./routers
 
-window.Gandalf =
+window.Gandalf = jQuery.extend({}, window.utilities, {
   Models: {}
   Collections: {}
   Routers: {}
   Views: {}
-  # Why use two different formats..?
-  eventKeyFormat: "YYYY-MM-DD"
-  displayFormat: "MM-DD-YYYY"
-  dispatcher: _.clone(Backbone.Events)
-
-window.onresize = (e) ->
-  Gandalf.dispatcher.trigger("window:resize")
+})

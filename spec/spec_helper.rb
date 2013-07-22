@@ -1,6 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'rubygems'
+require 'webmock/rspec'
 require 'spork'
+require 'json'
 
 Spork.prefork do
   # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -13,20 +15,30 @@ Spork.prefork do
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
+  
   RSpec.configure do |config|
     # ## Mock Framework
     # config.mock_with :mocha
     # config.mock_with :flexmock
     # config.mock_with :rr
 
+    # Rollback data after each test.
+    config.use_transactional_examples = true
+
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     # config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+    # Define spec-wide constants.
     
-    # If you're not using ActiveRecord, or you'd prefer not to run each of your
-    # examples within a transaction, remove the following line or assign false
-    # instead of true.
-    config.use_transactional_fixtures = true
+    include Gandalf::Utilities
+    include SpecUtilities
+    include GroupSpecHelper
+    include EventSpecHelper
+    
+    # Allow web connections when making the client.
+    WebMock.allow_net_connect!
+    include Gandalf::GoogleApiClient
+    WebMock.disable_net_connect!
 
     # If true, the base class of anonymous controllers will be inferred
     # automatically. This will be the default behavior in future versions of
@@ -43,5 +55,6 @@ end
 
 Spork.each_run do
   # This code will be run each time you run your specs.
+  Fabrication.clear_definitions
 end
 

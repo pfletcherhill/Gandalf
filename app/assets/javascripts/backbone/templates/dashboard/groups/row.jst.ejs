@@ -1,0 +1,7 @@
+<tr class="dashboard-group">
+  <td class="primary"><%= group.get("name") %></td>
+  <td><%= group.get("apps_email") %></td>
+  <td><%= group.get("users").length %> Members</td>
+  <td><%= group.get("events").length %> Events</td>
+  <td><a class="dashboard-table-link" href="#dashboard/<%= organization.get('slug') %>/groups/<%= group.get('slug') %>">Manage</a></td>
+</tr>

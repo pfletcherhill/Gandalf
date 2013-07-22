@@ -29,8 +29,8 @@ class Gandalf.Views.Organizations.Show extends Backbone.View
 
   renderEvents: =>
     events = @model.get("events")
-    view = new Gandalf.Views.Calendar.Index(
-      type: @options.period
+    view = new Gandalf.Views.Calendar(
+      type: @options.type
       events: events
       startDate: @options.startDate
     )

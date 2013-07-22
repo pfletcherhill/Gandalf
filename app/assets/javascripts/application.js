@@ -5,11 +5,12 @@
 //= require jquery-fileupload/basic
 //= require chosen-jquery
 //= require moment
+//= require bootstrap-tooltip
+//= require bootstrap-popover
 //= require underscore
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone.modelbinder
+//= require utilities
 //= require backbone/gandalf
-//= require bootstrap-tooltip
-//= require bootstrap-popover
 //= require_tree .

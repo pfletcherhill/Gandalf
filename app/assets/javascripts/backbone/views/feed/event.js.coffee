@@ -9,40 +9,29 @@ class Gandalf.Views.Feed.Event extends Backbone.View
     @render()
 
   events:
-    #"mouseenter" : "mouseenter"
-    #"mouseleave" : "mouseleave"
     "click" : "click"
 
   template: JST["backbone/templates/feed/event"]
 
   className: "js-event feed-event"
 
-  convertTime: (time) ->
-    moment(time).format "h:mm a"
-
   render: ->
-    e = @model
-    startTime = @convertTime e.get('start_at')
-    endTime = @convertTime e.get('end_at')
     @$el.attr(
-      "data-event-id": e.get("id")
-      "data-organization-id" : e.get("organization_id")
-      "data-category-ids" : e.makeCatIdString()
+      "data-event-id": @model.get("id")
+      "data-organization-id" : @model.get("organization_id")
+      "data-category-ids" : @model.makeCatIdString()
     ).css(
       borderTop: "5px solid #{@darkColor}"
-    ).html(@template({
-      event: e
-      startTime: startTime
-      endTime: endTime
-      image: e.get('thumbnail') || "/assets/image.jpeg"
-    }))
+    ).html(
+      @template({
+        event: @model
+        image: @model.get('thumbnail') || "/assets/image.jpeg"
+      })
+    )
     return this
-
-  mouseenter: () ->
-    @$el.css({ backgroundColor: @darkColor })
-    Gandalf.dispatcher.trigger("feed:event:mouseenter", @eventId)
-  mouseleave: () ->
-    @$el.css({ backgroundColor: @color })
-    Gandalf.dispatcher.trigger("feed:event:mouseleave", @eventId)
-  click: () ->
-    Gandalf.dispatcher.trigger("feed:event:click", @eventId)
+  
+  # Trigger feed:event:click event when feed-event object is clicked
+  # Do not trigger if the organization link within the object is clicked
+  click: (event) ->
+    unless $(event.target).hasClass "organization-link"
+      Gandalf.dispatcher.trigger("feed:event:click", @eventId)

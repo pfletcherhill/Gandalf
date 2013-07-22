@@ -5,52 +5,14 @@
   <link rel="shortcut icon" href="/assets/y_logo_200.png" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="google-site-verification" content="q1eOWvzJqu60zry4uUiiIOOmboMBqHveYDLf7rYmIBI" />
-  <%= stylesheet_link_tag "application", :media => "all" %>
+  
   <%= csrf_meta_tags %>
-  <!-- Load javascript assets -->
+  <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  
 </head>
-<body>
-<div id="fb-root"></div>
-<!-- Set up Facebook first since Backbone uses it -->
-<script>
-window.fbAsyncInit = function() {
-  FB.init({
-    appId      : 444785732265505, // App ID
-    // Uncomment channel when going into production, and set up route
-    // channelUrl : '//WWW.YOUR_DOMAIN.COM/channel.html', // Channel File
-    status     : true, // check login status
-    cookie     : true, // enable cookies to allow the server to access the session
-    xfbml      : true  // parse XFBML
-  });
-  FB.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-      Gandalf.facebookStatus = 'connected';
-      Gandalf.facebookResponse = response.authResponse;
-      Gandalf.currentUser.updateFacebook(
-        response.authResponse.userID, response.authResponse.accessToken);
-      // For development only
-      // Gandalf.dispatcher.trigger("facebook:login");
-    } else if (response.status === 'not_authorized') {
-      Gandalf.facebookStatus = 'not_authorized';
-      Gandalf.dispatcher.trigger("facebook:login");
-    } else {
-      Gandalf.facebookStatus = 'not_connected';
-      Gandalf.dispatcher.trigger("facebook:login");
-    }
-  });
-  // Additional init code here
-};
 
-// Load the SDK Asynchronously
-(function(d){
-   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement('script'); js.id = id; js.async = true;
-   js.src = "//connect.facebook.net/en_US/all.js";
-   ref.parentNode.insertBefore(js, ref);
- }(document));
-</script>
+<body>
 <div class="wrapper">
   <%= yield %>
 </div>
@@ -69,6 +31,7 @@ window.fbAsyncInit = function() {
     s.parentNode.insertBefore(t, s);
   })();
 </script>
+
 <!-- Google analytics -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -80,8 +43,10 @@ window.fbAsyncInit = function() {
   ga('send', 'pageview');
 
 </script>
+
 <!-- Google maps -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC09xDhfZSSQwy2-P9x7LAyz7T-TLjNQwo&sensor=false">
 </script>
+
 </body>
 </html>
