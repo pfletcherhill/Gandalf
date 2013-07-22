@@ -35,7 +35,7 @@ module Gandalf::GoogleApiClient
   # Google API Group Class Methods
   
   # List google groups
-  def self.list_google_groups    
+  def self.list_google_groups   
     @client.execute({
       api_method: @directory.groups.list,
       parameters: { "customer" => ENV["ACCOUNT_EMAIL"] }

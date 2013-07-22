@@ -7,7 +7,9 @@ class Gandalf.Views.Dashboard.Groups.Index extends Backbone.View
   table: "#dashboard-content-groups"
   
   initialize: ->
-    $(@el).html @template(organization: @model)
+    $(@el).html @template
+      organization: @model,
+      group: null
     @groups = new Gandalf.Collections.Teams
     @groups.url = "/organizations/#{@model.id}/teams"
     @groups.fetch success: (data) =>

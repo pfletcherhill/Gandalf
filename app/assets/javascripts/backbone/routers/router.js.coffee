@@ -159,7 +159,7 @@ class Gandalf.Router extends Backbone.Router
       group.url = "/teams/#{groupSlug}"
       group.fetch
         success: (data) ->
-          section ||= "account"
+          section ||= "subscribers"
           view = new Gandalf.Views.Dashboard.Groups[Gandalf.capitalizeString(section)]
             model: group,
             organization: organization

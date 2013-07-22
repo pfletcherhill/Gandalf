@@ -27,6 +27,7 @@ class Group < ActiveRecord::Base
   before_create :setup_google_group
   after_create :create_google_calendar
   after_create :create_google_acl
+  after_update :update_google_group
   after_destroy :destroy_google_calendar
   after_destroy :destroy_google_group
   
@@ -71,6 +72,10 @@ class Group < ActiveRecord::Base
     # Set the apps_id and apps_email from the returned object.
     self.apps_id = result.data.id
     self.apps_email = result.data.email
+    
+  end
+  
+  def update_google_group
     
   end
   

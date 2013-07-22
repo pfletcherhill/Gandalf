@@ -4,6 +4,12 @@
            class="fixed-header-search-bar"></input>
   </form>
   <div class="fixed-header-links">
+    <% if (group) { %>
+      <a href="#dashboard/<%= organization.get('slug') %>/groups/<%= group.get('slug') %>/account" 
+         class="dashboard-header-link">Account</a>
+      <a href="#dashboard/<%= organization.get('slug') %>/groups/<%= group.get('slug') %>/subscribers"
+         class="dashboard-header-link">Subscribers</a>
+    <% } %>
     <a href="#dashboard/<%= organization.get('slug') %>/groups/new"
        class="dashboard-header-link">
       <span class="icon-plus"/>  Create New Group
