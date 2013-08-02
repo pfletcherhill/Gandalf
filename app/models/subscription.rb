@@ -24,7 +24,7 @@ class Subscription < ActiveRecord::Base
   # Methods
   
   def google_role
-    if self.access_type == ACCESS_STATES['ADMIN']
+    if self.access_type == ACCESS_STATES['WRITE']
       "OWNER"
     else
       "MEMBER"

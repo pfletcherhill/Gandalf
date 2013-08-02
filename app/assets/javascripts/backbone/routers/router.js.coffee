@@ -169,6 +169,7 @@ class Gandalf.Router extends Backbone.Router
       @navigate("today", {trigger: true, replace: true})
       
   dashboard: (slug, section) ->
+    console.log Gandalf.currentUser
     if organization = @authenticateOrganization(slug)
       new Gandalf.Views.Dashboard.Index
         organizations: @organizations

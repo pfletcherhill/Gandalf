@@ -21,7 +21,7 @@
         %tr
           %td= link_to org.name, "/#organizations/#{org.id}"
           %td= org.events.count
-          %td= org.subscribers.count
+          %td= org.users.count
           %td
             -if org.admins
               -org.admins.each do |user|

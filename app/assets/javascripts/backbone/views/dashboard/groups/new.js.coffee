@@ -9,7 +9,9 @@ class Gandalf.Views.Dashboard.Groups.New extends Backbone.View
   content: ".dashboard-content-main"
   
   initialize: ->
-    $(@el).html @headerTemplate(organization: @options.organization)
+    $(@el).html @headerTemplate
+      organization: @options.organization
+      group: null
     @newGroup = new Gandalf.Models.Team
     @render()
     

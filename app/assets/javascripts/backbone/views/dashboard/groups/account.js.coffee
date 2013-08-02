@@ -16,3 +16,12 @@ class Gandalf.Views.Dashboard.Groups.Account extends Backbone.View
     
   render: ->
     $(@content).html @template(@model.toJSON())
+  
+  events:
+    "click #destroy-group" : "destroyGroup"
+  
+  destroyGroup: (event) ->
+    event.preventDefault();
+    if confirm "Are you sure you want to delete this group?"
+      @model.destroy success: (data) =>
+        window.location = "#dashboard/#{@options.organization.get('slug')}/groups"

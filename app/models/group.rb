@@ -10,17 +10,6 @@ class Group < ActiveRecord::Base
   has_many :events, through: :event_instances
   belongs_to :organization
   
-  # Access Controls  
-  has_many :admins, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:WRITE]},
-           through: :subscriptions,
-           source: :user
-  has_many :members, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:READONLY]},
-           through: :subscriptions,
-           source: :user
-  has_many :followers, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:RESTRICTED]},
-           through: :subscriptions,
-           source: :user
-  
   # Callbacks
   before_validation :set_slug
   # google group is created before create to make sure the group
@@ -36,6 +25,10 @@ class Group < ActiveRecord::Base
   validates_uniqueness_of :slug, :case_sensitive => false
   
   # Methods
+  
+  def users_with_access(access_type = ACCESS_STATES[:RESTRICTED])
+    users.includes(:subscriptions).where("subscriptions.access_type = ?", access_type)
+  end
   
   # Uses Gandalf::Utilities make_slug method to convert the group name
   # to a hyphen-separated, lowercase string

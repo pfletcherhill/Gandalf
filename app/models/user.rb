@@ -30,17 +30,6 @@ class User < ActiveRecord::Base
   has_many :subscribed_organizations,
            through: :subscribed_teams,
            source: :organization
-                    
-  # Access Controls
-  has_many :admin_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:ADMIN] },
-           through: :subscribed_teams,
-           source: :organization
-  has_many :member_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:MEMBER] },
-           through: :subscribed_teams,
-           source: :organization
-  has_many :follower_organizations, -> { where 'subscriptions.access_type = ?', ACCESS_STATES[:FOLLOWER] or nil },
-           through: :subscribed_teams,
-           source: :organization
 
   # Validations
   validates_presence_of :netid, :name, :email
@@ -60,8 +49,10 @@ class User < ActiveRecord::Base
     nickname || name
   end
   
-  def organizations
-    self.admin_organizations
+  # Returns an array of organizations based on the access_type parameter
+  # The default access_type is RESTRICTED
+  def organizations_with_access(access_type = ACCESS_STATES[:RESTRICTED])
+    subscribed_organizations.includes(teams: :subscriptions).where("subscriptions.access_type = ?", access_type)
   end
   
   # Get a user's subscribed events.
@@ -109,7 +100,7 @@ class User < ActiveRecord::Base
       "nickname" => nickname,
       "college" => college,
       "year" => year,
-      "organizations" => organizations,
+      "organizations" => organizations_with_access(ACCESS_STATES[:WRITE]),
       "subscribed_organizations" => subscribed_organizations,
       "teams" => subscribed_teams,
       "categories" => subscribed_categories,
@@ -122,7 +113,7 @@ class User < ActiveRecord::Base
   
   # Group methods
   
-  def subscribe_to(group_id, access_type = 0)
+  def subscribe_to(group_id, access_type = ACCESS_TYPES[:RESTRICTED])
     group = Group.find(group_id)
     Subscription.create(user_id: self.id, group_id: group_id, access_type: access_type)
   end
@@ -135,7 +126,7 @@ class User < ActiveRecord::Base
   # Authorization methods
   
   def has_authorization_to(organization)
-    organization_ids = self.admin_organizations.map{|org| org.id}
+    organization_ids = self.organizations(ACCESS_TYPES[:WRITE]).map{|org| org.id}
     if organization_ids.include? organization.id
       return true
     else
@@ -166,7 +157,7 @@ class User < ActiveRecord::Base
   end
   
   def administers_organizations?
-    self.admin_organizations.count > 0
+    self.organizations_with_access(ACCESS_STATES[:WRITE]).count > 0
   end
   
   # Class methods

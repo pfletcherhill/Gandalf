@@ -192,6 +192,22 @@ $content-nav-height: 85px;
   }
 }
 
+.dashboard-group-message {
+  text-align: center;
+  font-size: 30px;
+  background: #fafafa;
+  @include HN-Light;
+  width: 100%;
+  padding: 50px 0;
+  color: $blue;
+}
+
+#destroy-group {
+  color: #A52A2A;
+  @include HN-Bold;
+  cursor: pointer;
+}
+
 ul.dash-menu {
   width: $main-width;
   height: 57px;

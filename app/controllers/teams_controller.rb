@@ -16,4 +16,13 @@ class TeamsController < ApplicationController
     end
   end
   
+  def destroy
+    team = Team.find_by_slug(params[:id])
+    if team.destroy
+      render json: team
+    else
+      render json: "Unable to destroy team", status: 500
+    end
+  end
+  
 end

@@ -56,8 +56,8 @@ class OrganizationsController < ApplicationController
 
   def subscribed_users
     @organization = Organization.find(params[:id])
-    @users = @organization.subscribers
-    @admins = @organization.admins
+    @users = @organization.users
+    @admins = @organization.users_with_access(ACCESS_STATES[:WRITE])
     @users = @users - @admins
     render json: @users
   end

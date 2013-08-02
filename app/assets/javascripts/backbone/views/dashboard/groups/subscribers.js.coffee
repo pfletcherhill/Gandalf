@@ -15,4 +15,7 @@ class Gandalf.Views.Dashboard.Groups.Subscribers extends Backbone.View
     @render()
     
   render: ->
-    $(@content).html @template(@model.toJSON())
+    $(@content).html @template
+      group: @model
+      organization: @options.organization
+      

@@ -1,11 +1,16 @@
-<h3>Subscribers</h3>
-<table class="table-striped">
-  <% for( i = 0; i < users.length; i++ ) { %>
-    <% var user = users[i] %>
-    <tr>
-      <td class="primary"><%= user.name %></td>
-      <td><%= user.email %></td>
-      <td><% console.log(user); %></td>
-    </tr>
-  <% } %>
-</table>
+<div class="dashboard-group-subscribers-menu">
+  <a href="#dashboard/<%= organization.get('slug') %>/groups/<%= group.get('slug') %>/subscribers/new">New User</a>
+</div>
+<% if (group.get('users').length > 0) { %>
+  <table class="table-striped">
+    <% for( i = 0; i < group.get('users').length; i++ ) { %>
+      <% var user = group.get('users')[i] %>
+      <tr>
+        <td class="primary"><%= user.name %></td>
+        <td><%= user.email %></td>
+      </tr>
+    <% } %>
+  </table>
+<% } else { %>
+  <div class="dashboard-group-message">No subscribers for this group</div>
+<% } %>

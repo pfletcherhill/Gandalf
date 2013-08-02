@@ -1,7 +1,3 @@
-<div class="dashboard-group-header">
-  <h3><%= name %></h4>
-</div>
-
 <form class="dashboard-group-form">
   <label name="name">Group Name</label>
   <input name="name" type="text" value="<%= name %>"></input>
@@ -10,4 +6,5 @@
   <label name="description">Group Description</label>
   <textarea name="description"><%= description %></textarea>
   <input type="submit" value="Update Group"></input>
+  <a id="destroy-group"><i class="icon-remove"></i> Delete Group</a>
 </form>

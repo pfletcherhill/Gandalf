@@ -5,22 +5,8 @@ class Organization < ActiveRecord::Base
   
   # Associations
   has_many :teams, class_name: "Group"
-  has_many :subscribers, source: :users, through: :teams
+  has_many :users, source: :users, through: :teams
   has_many :events
-  
-  # Access Controls
-  has_many :admins, -> { where 'subscriptions.access_type = ?',
-                         ACCESS_STATES[:WRITE]},
-           through: :teams,
-           source: :users
-  has_many :members, -> { where 'subscriptions.access_type = ?',
-                          ACCESS_STATES[:READONLY]},
-           through: :teams,
-           source: :users
-  has_many :followers, -> { where 'subscriptions.access_type = ?',
-                            ACCESS_STATES[:RESTRICTED]},
-           through: :teams,
-           source: :users
 
   # Validations
   validates_presence_of :name, :slug
@@ -71,6 +57,10 @@ class Organization < ActiveRecord::Base
   end
   
   # Methods
+  
+  def users_with_access(access_type = ACCESS_STATES[:RESTRICTED])
+    subscribers.includes(:subscriptions).where("subscriptions.access_type = ?", access_type)
+  end
   
   def admins_team
     teams.where(slug: "#{slug}-admins").first
